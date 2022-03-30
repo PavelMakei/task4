@@ -16,4 +16,18 @@ public class User extends AbstractEntity{
     private BigDecimal amount; //TODO double?
 
 
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return null;
+    }
 }
