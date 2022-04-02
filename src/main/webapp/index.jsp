@@ -13,11 +13,11 @@
     <table>
         <tbody><tr>
             <td>Введите имя</td>
-            <td><input type="text" placeholder="Name" required="true" name="user_name" pattern="[a-zAZА-ЯЁа-яЁ]{2,16}"></td>
+            <td><input type="text" placeholder="Name" required="true" name="first_name" pattern="[a-zAZА-ЯЁа-яЁ]{2,16}"></td>
         </tr>
         <tr>
             <td>Surname</td>
-            <td><input type="text" placeholder="Surname" required="true" name="surname"></td>
+            <td><input type="text" placeholder="Surname" required="true" name="last_name"></td>
         </tr>
         <tr>
             <td>Login</td>

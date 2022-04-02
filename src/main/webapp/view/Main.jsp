@@ -11,6 +11,9 @@
     <title>Title</title>
 </head>
 <body>
-RESULT = ${result}
+First Name = ${FIRSTNAME}
+Last Name = ${LASSTNAME}
+Password = ${PASSWORD}
+
 </body>
 </html>

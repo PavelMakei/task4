@@ -1,4 +1,4 @@
-package by.makei.shop.entity;
+package by.makei.shop.model.entity;
 
 import java.io.Serializable;
 

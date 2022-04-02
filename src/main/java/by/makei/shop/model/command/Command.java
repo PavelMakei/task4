@@ -1,4 +1,4 @@
-package by.makei.shop.command;
+package by.makei.shop.model.command;
 
 import jakarta.servlet.http.HttpServletRequest;
 
