@@ -17,44 +17,21 @@ import java.util.concurrent.locks.ReentrantLock;
 public class DBConnectionPool {
     private static final Logger logger = LogManager.getLogger();
     private static AtomicReference<DBConnectionPool> instance = new AtomicReference<>();
-    private static final int max_connections;
     private static final ReentrantLock lock = new ReentrantLock();
 
     private BlockingDeque<Connection> freeDeque;
     private BlockingDeque<Connection> busyDeque;
 
-    static {
-        max_connections = ConnectionFactory.getMaxConnections();
-    }
 
     {
-        freeDeque = new LinkedBlockingDeque<>(max_connections);
-        busyDeque = new LinkedBlockingDeque<>(max_connections);
+        freeDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
+        busyDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
         fillConnectionsIntoPool();
         checkIfPoolEmpty();
     }
 
-    private DBConnectionPool() {
-    }
+    private DBConnectionPool() {}
 
-    private void fillConnectionsIntoPool() {
-        //TODO remake while  freeDeque.size() = max_connections ?
-        for (int i = 0; i < max_connections; i++) {
-            try {
-                freeDeque.add(ConnectionFactory.getConnection());
-            } catch (DbPoolException e) {
-                logger.log(Level.ERROR, "Can't create connection", e);
-                //TODO if throw new exception?
-            }
-        }
-    }
-
-    private void checkIfPoolEmpty() {
-        if (freeDeque.isEmpty()) {
-            logger.log(Level.FATAL, "Can't create connections");
-            throw new RuntimeException("Can't create connections");
-        }
-    }
 
     public static DBConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
         if (instance.get() == null) {
@@ -71,7 +48,6 @@ public class DBConnectionPool {
         return instance.get();
     }
 
-
     public Connection takeConnection() {
         Connection connection = null;
         try {
@@ -79,11 +55,10 @@ public class DBConnectionPool {
             busyDeque.put(connection);
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
-            Thread.currentThread().interrupt(); // TODO what is the purpose?
+            Thread.currentThread().interrupt();
         }
         return connection;
     }
-
 
     public boolean returnConnection(Connection connection) {
         boolean result = false;
@@ -93,7 +68,7 @@ public class DBConnectionPool {
             result = true;
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
-            Thread.currentThread().interrupt(); // TODO what is the purpose?
+            Thread.currentThread().interrupt();
         }
         return result;
     }
@@ -106,7 +81,7 @@ public class DBConnectionPool {
                 logger.log(Level.INFO, "free connection is closed");
             } catch (InterruptedException e) {
                 logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
-                Thread.currentThread().interrupt(); // TODO what is the purpose?
+                Thread.currentThread().interrupt();
             }
         }
         while (!busyDeque.isEmpty()) {
@@ -115,12 +90,31 @@ public class DBConnectionPool {
                 logger.log(Level.INFO, "busy connection is closed");
             } catch (InterruptedException e) {
                 logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
-                Thread.currentThread().interrupt(); // TODO what is the purpose?
+                Thread.currentThread().interrupt();
             }
         }
-        deregisterDrivers();// TODO If it is necessary?
+        deregisterDrivers();
         logger.log(Level.INFO, "DBConnectionPool is closed ");
         return true;
+    }
+
+    private void fillConnectionsIntoPool() {
+        //TODO remake while  freeDeque.size() = max_connections ?
+        for (int i = 0; i < ConnectionFactory.MAX_CONNECTIONS; i++) {
+            try {
+                freeDeque.add(ConnectionFactory.getConnection());
+            } catch (DbPoolException e) {
+                logger.log(Level.ERROR, "Can't create connection", e);
+                //TODO if throw new exception?
+            }
+        }
+    }
+
+    private void checkIfPoolEmpty() {
+        if (freeDeque.isEmpty()) {
+            logger.log(Level.FATAL, "Can't create connections");
+            throw new RuntimeException("Can't create connections");
+        }
     }
 
     private void deregisterDrivers() {

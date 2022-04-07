@@ -4,8 +4,6 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
 
-
-
     <filter>
         <filter-name>CharEncodingFilter</filter-name>
         <filter-class>by.makei.shop.controller.filter.CharEncodingFilter</filter-class>

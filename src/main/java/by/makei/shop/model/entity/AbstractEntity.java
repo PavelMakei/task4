@@ -10,6 +10,7 @@ public abstract class AbstractEntity implements Serializable, Cloneable {
     @Override
     public abstract boolean equals(Object obj);
 
-    @Override
-    protected abstract Object clone() throws CloneNotSupportedException;
+   //TODO if clone need?
+//    @Override
+//    protected abstract Object clone() throws CloneNotSupportedException;
 }
