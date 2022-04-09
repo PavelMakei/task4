@@ -1,7 +1,7 @@
 package by.makei.shop.controller;
 
 
-import by.makei.shop.model.connectionpool.DBConnectionPool;
+import by.makei.shop.model.connectionpool.DbConnectionPool;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +34,7 @@ public class DataViewerServlet extends HttpServlet {
     PrintWriter out = response.getWriter();
 
     String sql = "SELECT first_name, last_name, login, password FROM lightingshop.users";
-    Connection con = DBConnectionPool.getInstance().takeConnection();
+    Connection con = DbConnectionPool.getInstance().takeConnection();
     Statement s = null;
     try {
       s = con.createStatement();

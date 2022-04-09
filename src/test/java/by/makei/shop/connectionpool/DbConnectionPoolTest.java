@@ -1,19 +1,19 @@
 package by.makei.shop.connectionpool;
 
-import by.makei.shop.model.connectionpool.DBConnectionPool;
+import by.makei.shop.model.connectionpool.DbConnectionPool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-class DBConnectionPoolTest {
-    public DBConnectionPool dbConnectionPool;
+class DbConnectionPoolTest {
+    public DbConnectionPool dbConnectionPool;
 
     @BeforeEach
     @Test
     void getInstanceTest() {
-        dbConnectionPool = DBConnectionPool.getInstance();
+        dbConnectionPool = DbConnectionPool.getInstance();
         assert (dbConnectionPool != null);
     }
 

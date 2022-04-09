@@ -1,6 +1,6 @@
 package by.makei.shop.model.connectionpool;
 
-import by.makei.shop.exception.DbPoolException;
+import by.makei.shop.exception.DbConnectionPoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,31 +14,30 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-public class DBConnectionPool {
+public final class DbConnectionPool {
     private static final Logger logger = LogManager.getLogger();
-    private static AtomicReference<DBConnectionPool> instance = new AtomicReference<>();
+    private static final AtomicReference<DbConnectionPool> instance = new AtomicReference<>();
     private static final ReentrantLock lock = new ReentrantLock();
 
-    private BlockingDeque<Connection> freeDeque;
-    private BlockingDeque<Connection> busyDeque;
+    private BlockingDeque<ProxyConnection> freeDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
+    private BlockingDeque<ProxyConnection> busyDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
 
 
-    {
-        freeDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
-        busyDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
+    private DbConnectionPool() {
         fillConnectionsIntoPool();
+        if (freeDeque.size() < ConnectionFactory.MAX_CONNECTIONS) {
+            logger.log(Level.ERROR, "Attention!!! {} connections from expected {} were created!",
+                    freeDeque.size(), ConnectionFactory.MAX_CONNECTIONS);
+        }
         checkIfPoolEmpty();
     }
 
-    private DBConnectionPool() {}
-
-
-    public static DBConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
+    public static DbConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
         if (instance.get() == null) {
             lock.lock();
             try {
                 if (instance.get() == null) {
-                    instance.set(new DBConnectionPool());
+                    instance.set(new DbConnectionPool());
                     logger.log(Level.INFO, "new DBConnectionPool is created");
                 }
             } finally {
@@ -49,7 +48,7 @@ public class DBConnectionPool {
     }
 
     public Connection takeConnection() {
-        Connection connection = null;
+        ProxyConnection connection = null;
         try {
             connection = freeDeque.take();
             busyDeque.put(connection);
@@ -62,13 +61,21 @@ public class DBConnectionPool {
 
     public boolean returnConnection(Connection connection) {
         boolean result = false;
+
+        if (!(connection instanceof ProxyConnection)) {
+            logger.log(Level.ERROR, "incorrect connection!");
+            return false;
+        }
         try {
-            freeDeque.put(connection);
+            lock.lock();// method "remove" isn't thread safe
+            freeDeque.put((ProxyConnection) connection);
             busyDeque.remove(connection);
             result = true;
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
             Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
         }
         return result;
     }
@@ -99,11 +106,12 @@ public class DBConnectionPool {
     }
 
     private void fillConnectionsIntoPool() {
-        //TODO remake while  freeDeque.size() = max_connections ?
-        for (int i = 0; i < ConnectionFactory.MAX_CONNECTIONS; i++) {
+
+        for (int i = (freeDeque.size()+ busyDeque.size()); i < ConnectionFactory.MAX_CONNECTIONS; i++) {
             try {
-                freeDeque.add(ConnectionFactory.getConnection());
-            } catch (DbPoolException e) {
+                freeDeque.add(new ProxyConnection(ConnectionFactory.getConnection()));
+                logger.log(Level.DEBUG, "connection created. freeDeque size = {}, busy deQue = {}", freeDeque.size(), busyDeque.size());
+            } catch (DbConnectionPoolException e) {
                 logger.log(Level.ERROR, "Can't create connection", e);
                 //TODO if throw new exception?
             }

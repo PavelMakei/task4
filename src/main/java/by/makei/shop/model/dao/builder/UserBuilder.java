@@ -1,4 +1,4 @@
-package by.makei.shop.model.entity.Builder;
+package by.makei.shop.model.dao.builder;
 
 import by.makei.shop.model.entity.AccessLevel;
 import by.makei.shop.model.entity.User;

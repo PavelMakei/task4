@@ -1,6 +1,6 @@
 package by.makei.shop.model.connectionpool;
 
-import by.makei.shop.exception.DbPoolException;
+import by.makei.shop.exception.DbConnectionPoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,12 +43,12 @@ public class ConnectionFactory {
     private ConnectionFactory() {}
 
     //friendly methods
-    static Connection getConnection() throws DbPoolException {
+    static Connection getConnection() throws DbConnectionPoolException {
         try {
             return DriverManager.getConnection(DB_URL, properties);
         } catch (SQLException e) {
             logger.log(Level.ERROR, "connection create error", e);
-            throw new DbPoolException("connection create error", e);
+            throw new DbConnectionPoolException("connection create error", e);
         }
     }
 
@@ -63,7 +63,7 @@ public class ConnectionFactory {
     }
 
     private static void setServerTimeZoneProperty() {
-        if (Boolean.valueOf(properties.getProperty("set_serverTomezone_localTimezone"))) {
+        if (Boolean.valueOf(properties.getProperty("set_serverTimezone_localTimezone"))) {
             Calendar now = Calendar.getInstance();
             TimeZone timeZone = now.getTimeZone();
             String timeZoneName = timeZone.getID();

@@ -1,9 +1,8 @@
 package by.makei.shop.controller;
 
 import by.makei.shop.exception.DaoException;
-import by.makei.shop.model.dao.impl.UserDaoImpl;
-import by.makei.shop.model.entity.Builder.UserBuilder;
-import by.makei.shop.model.entity.User;
+import by.makei.shop.model.command.Command;
+import by.makei.shop.model.command.CommandFabric;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -18,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.Optional;
 
 import static by.makei.shop.controller.Parameter.COMMAND;
@@ -67,25 +65,14 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, DaoException {
         String commandName = request.getParameter(COMMAND);
         logger.log(Level.DEBUG, "controller get command : {}", commandName);
-
-
-        //TODO
-        if(commandName!=null && commandName.equals("login")){
-            String login = request.getParameter("login");
-            String password = request.getParameter("password");
-            Optional<User> optionalUser = new UserDaoImpl().selectUserByLoginAndPassword(login, password);
-            User user = optionalUser.get();
-            System.out.println(user);
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/view/pages/Login.jsp");
+        Command command = CommandFabric.defineCommand(commandName);
+        String page = command.execute(request);
+//TODO проверить что происходит если неверна команда
+            RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);
 
-           // response.sendRedirect("/view/Login.jsp");
-        }else{
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user");
-            dispatcher.forward(request, response);
           //  response.sendRedirect("/view/Main.jsp");
-        }
+
 
     }
 
