@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.selectUserByLoginAndPassword(login,password);
         } catch (DaoException e) {
-            throw new ServiceException("e");
+            throw new ServiceException(e);
         }
 
     }

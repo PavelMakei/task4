@@ -33,7 +33,7 @@ public class LogInCommand implements Command {
                 session.setAttribute(USER, user);
                 //TODO!!!!!!!!!
                 System.out.println(user);
-                page = "/view/pages/Login.jsp";
+                page = "/view/pages/login.jsp";
             }
         } catch (ServiceException e) {
             e.printStackTrace();

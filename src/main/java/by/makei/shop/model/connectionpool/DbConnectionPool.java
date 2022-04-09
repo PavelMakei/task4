@@ -80,11 +80,11 @@ public final class DbConnectionPool {
         return result;
     }
 
-    public boolean shutdown() throws SQLException {
+    public boolean shutdown() {
 
         while (!freeDeque.isEmpty()) {
             try {
-                freeDeque.take().close();
+                freeDeque.take().reallyClose();
                 logger.log(Level.INFO, "free connection is closed");
             } catch (InterruptedException e) {
                 logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
@@ -93,7 +93,7 @@ public final class DbConnectionPool {
         }
         while (!busyDeque.isEmpty()) {
             try {
-                busyDeque.take().close();
+                busyDeque.take().reallyClose();
                 logger.log(Level.INFO, "busy connection is closed");
             } catch (InterruptedException e) {
                 logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());

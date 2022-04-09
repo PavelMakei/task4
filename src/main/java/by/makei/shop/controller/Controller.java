@@ -71,7 +71,7 @@ public class Controller extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);
 
-          //  response.sendRedirect("/view/Main.jsp");
+          //  response.sendRedirect("/view/main.jsp");
 
 
     }
