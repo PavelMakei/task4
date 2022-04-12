@@ -15,7 +15,7 @@ public class ServletContextListenerImpl implements ServletContextListener{
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         logger.log(Level.INFO, "------context initialized :" + sce.getServletContext().getServerInfo());
-        // create connection pool
+        // create connection pool or replace it to controller init
         DbConnectionPool.getInstance();
 
         /* This method is called when the servlet context is initialized(when the Web application is deployed). */
@@ -24,7 +24,7 @@ public class ServletContextListenerImpl implements ServletContextListener{
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         logger.log(Level.INFO, "------context destroyed :" + sce.getServletContext().getServerInfo());
-        // shutdown connection pool
+        // shutdown connection pool or replace it to controller destroy
         DbConnectionPool.getInstance().shutdown();
 
         /* This method is called when the servlet Context is undeployed or Application Server shuts down. */

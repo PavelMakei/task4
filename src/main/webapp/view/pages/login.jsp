@@ -10,7 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${locale}" scope="session"/>
 <%--<fmt:setLocale value="ru_RU"/>--%>
-<fmt:setBundle basename="text"/>
+<fmt:setBundle basename="language_text"/>
 
 <!DOCTYPE html>
 <html>
@@ -19,30 +19,42 @@
 </head>
 <body>
 <center>
-    <br><h2><fmt:message key="login.page"/></h2>
+    <br>
+    <h2><fmt:message key="login.page"/></h2>
     <br><fmt:message key="login.welcome"/>
     <br>
-    <br><form action="controller" method="post">
-    <table>
-        <tbody><tr>
-            <input type="hidden" name="command" value="login">
-            <td><fmt:message key="enter.login"/></td>
-            <td><input type="text" placeholder=<fmt:message key="login"/> required="true" name="login">
-                pattern="^[a-zAZА-ЯЁа-яё\d]{2,16}$"></td>
-        </tr>
-        <tr>
-<%--            TODO correct pattern!!!!!!!!!! --%>
-            <td><fmt:message key="enter.password"/></td>
-            <td><input type="password" placeholder=<fmt:message key="password"/>  required="true" name="password"
-                       pattern="[a-zAZА-ЯЁа-яЁ]{2,16}"></td>
-        </tr>
 
-        <tr>
-            <td><input type="reset" value=<fmt:message key="reset.button"/> ></td>
-            <td><input type="submit" value=<fmt:message key="enter.button"/> </td>
-        </tr>
-        </tbody></table>
-</form>
+    <c:if test="${not empty sessionScope.message && sessionScope.message == 'incorrect'}">
+        <br><fmt:message key="incorrect.login"/>
+    </c:if>
+    <br>
+    <form action="controller" method="post">
+        <table>
+            <tbody>
+            <tr>
+                <input type="hidden" name="command" value="login">
+                <td><fmt:message key="enter.login"/></td>
+                <td><input type="text" placeholder=
+                <fmt:message key="login"/> required="true" name="login"
+                           pattern="^[a-zA-ZА-ЯЁа-яё\d]{2,16}$"></td>
+            </tr>
+            <tr>
+                <%--            TODO correct pattern!!!!!!!!!! --%>
+                <td><fmt:message key="enter.password"/></td>
+                <td><input type="password" placeholder=
+                <fmt:message key="password"/>  required="true" name="password"
+                           ></td>
+            </tr>
+
+            <tr>
+                <td><input type="reset" value=
+                <fmt:message key="reset.button"/>></td>
+                <td><input type="submit" value=
+                <fmt:message key="enter.button"/> </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 
 
 </center>

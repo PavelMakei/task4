@@ -12,10 +12,17 @@ public class CommandFabric {
     private  CommandFabric () {}
 
     public static Command defineCommand(String commandName){
-        if (commandName == null){
+        if (commandName == null || commandName.isEmpty()){
             logger.log(Level.ERROR, "command is empty");
-            //TODO go to main page? Throw exception?
+            return CommandType.valueOf("DEFAULT").getCommand();
+
         }
-        return CommandType.valueOf(commandName.toUpperCase(Locale.ROOT)).getCommand();
+        try{
+            return CommandType.valueOf(commandName.toUpperCase(Locale.ROOT)).getCommand();
+        }catch (IllegalArgumentException e){
+           logger.log(Level.ERROR,"incorrect command name. {}", e.getMessage());
+            //TODO go to main page? Throw exception?
+            return CommandType.valueOf("DEFAULT").getCommand();
+        }
     }
 }

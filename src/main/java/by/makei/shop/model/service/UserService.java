@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserService {
     //TODO
     Optional<User> signIn(String login, String password) throws ServiceException;
+
 }
