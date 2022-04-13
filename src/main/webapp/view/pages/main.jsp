@@ -18,7 +18,7 @@
     <c:when test="${empty language}"> <fmt:setLocale value="ru_RU"
                                                      scope="session"/></c:when><%--если пустой, установить локаль ru_RU--%>
 </c:choose>
-<fmt:setBundle basename="language_text"/> <%--локаль будет тянуть из language.text проперти--%>
+<fmt:setBundle basename="language_text"/> <%--локаль будет тянуть из language_text проперти--%>
 
 <c:choose>
     <c:when test="${empty user}"> <c:set var="access_level" scope="session"
