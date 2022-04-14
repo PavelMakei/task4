@@ -1,4 +1,4 @@
-package by.makei.shop.model.dao.builder;
+package by.makei.shop.model.dao.mapper;
 
 import by.makei.shop.model.entity.AccessLevel;
 import by.makei.shop.model.entity.User;
@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class UserBuilder {
+public class UserMapper implements Mapper{
     private static final String USER_ID = "id";
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
@@ -19,7 +19,7 @@ public class UserBuilder {
     private static final String REGISTRATION_DATE = "registration_date";
     private static final String MONEY_AMOUNT = "money_amount";
 
-    public Optional<User> mapUser(ResultSet resultSet){
+    public Optional<User> mapEntity(ResultSet resultSet){
         User user = new User();
         Optional<User> optionalUser;
 

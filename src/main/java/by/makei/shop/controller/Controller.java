@@ -1,10 +1,7 @@
 package by.makei.shop.controller;
 
 import by.makei.shop.exception.DaoException;
-import by.makei.shop.model.command.Command;
-import by.makei.shop.model.command.CommandFabric;
-import by.makei.shop.model.command.PagePath;
-import by.makei.shop.model.command.Router;
+import by.makei.shop.model.command.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -19,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-import static by.makei.shop.controller.Parameter.COMMAND;
+import static by.makei.shop.model.command.AttributeName.COMMAND;
 
 
 @WebServlet(name = "Controller", value = "/controller")
@@ -32,24 +29,11 @@ import static by.makei.shop.controller.Parameter.COMMAND;
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
 
-
-    enum TTT {
-        TEST,
-        NOTEST;
-    }
-
-
-//TODO remove init?
-    // public void init() {}
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /////////
         ServletContext servletContext = getServletContext();
         HttpSession session = request.getSession(true);
         session.setAttribute("attributeName", "attributeValue");
-
-        //////////
         logger.log(Level.DEBUG, "controller " + request.getMethod());
         try {
             processRequest(request, response);
@@ -73,7 +57,7 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, DaoException {
         String commandName = request.getParameter(COMMAND);
         logger.log(Level.DEBUG, "controller get command : {}", commandName);
-        Command command = CommandFabric.defineCommand(commandName);
+        Command command = CommandType.defineCommand(commandName);
         Router router = command.execute(request);
 
 
@@ -87,13 +71,14 @@ public class Controller extends HttpServlet {
                 logger.log(Level.INFO, "redirect type. To page :{}", router.getCurrentPage());
                 response.sendRedirect(router.getCurrentPage());
             }
-
+            case ERROR -> {
+                logger.log(Level.INFO,"error type. To page :{}", router.getCurrentType() );
+                response.sendRedirect(PagePath.ERROR500);
+            }
             default -> {
                 logger.log(Level.ERROR, "wrong router type :{}", router.getCurrentType());
                 response.sendRedirect(PagePath.MAIN);
             }
         }
-
     }
-    // TODO Destroy add shutdown DBConnectionPool?
 }

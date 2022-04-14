@@ -8,6 +8,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
+/**
+ * используется для проверки прав доступа к страницам, например admin в одноимённую папку
+ */
+
+//TODO написать функционал
+
 //@WebFilter(filterName = "SecurityFilter", urlPatterns = {"/pages/*"})
 public class PageRedirectSecurityFilter implements Filter {
     private static final Logger logger = LogManager.getLogger();

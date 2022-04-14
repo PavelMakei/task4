@@ -4,10 +4,13 @@ import by.makei.shop.exception.DaoException;
 import by.makei.shop.model.connectionpool.DbConnectionPool;
 import by.makei.shop.model.dao.AbstractDao;
 import by.makei.shop.model.dao.UserDao;
-import by.makei.shop.model.dao.builder.UserBuilder;
+import by.makei.shop.model.dao.mapper.UserMapper;
 import by.makei.shop.model.entity.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,10 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
             login = ?
             AND
             password = ?""";
+
+    public static final String SQL_ADD_NEW_USER = """
+            INSERT INTO lightingshop.users(first_name, last_name, login, password, email, phone)
+            VALUES(?,?,?,?,?,?)""";
 
     @Override
     public List<User> findAll() {
@@ -61,18 +68,39 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
             preparedStatement.setString(2, password);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    optionalUser = new UserBuilder().mapUser(resultSet);
+                    optionalUser = new UserMapper().mapEntity(resultSet);
                 }
-
             } catch (SQLException ex) {
                 //TODO logger
                 throw new DaoException(ex);
             }
-            return optionalUser;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DaoException(e);
         }
         return optionalUser;
+    }
+
+    @Override
+    public boolean create(User user, String hashPassword) throws DaoException {
+
+        try (Connection connection = DbConnectionPool.getInstance().takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER)) {
+
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getLogin());
+            preparedStatement.setString(4, hashPassword);
+            preparedStatement.setString(5, user.getEmail());
+            preparedStatement.setString(6, user.getPhone());
+
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            //TODO logger
+            throw new DaoException(e);
+        }
+        //connection close automatically
+        return true;
     }
 
 }

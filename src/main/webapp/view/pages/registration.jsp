@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Pavel_Makei
-  Date: 09.04.2022
-  Time: 15:12
+  Date: 12.04.2022
+  Time: 14:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,59 +11,166 @@
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="language_text"/>
 
-<!DOCTYPE html>
+
 <html>
 <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
     <title><fmt:message key="registration.user"/></title>
 </head>
-<center>
-    <body>
-    <br>
-    <h2><fmt:message key="registration.user"/></h2>
-    <br>Please enter the user details.
-    <br>
-    <br>
-    <form action="controller" method="post">
-        <table>
-            <tbody>
-            <tr>
-                <input type="hidden" name="command" value="registration">
-                <td>Введите имя</td>
-                <td><input type="text" placeholder="Name" required="true" name="first_name"
-                           pattern="^[a-zAZА-ЯЁа-яё]{2,16}$"></td>
-            </tr>
-            <tr>
-                <td>Surname</td>
-                <td><input type="text" placeholder="Surname" required="true" name="last_name"
-                           pattern="^[a-zAZА-ЯЁа-яё]{2,16}$"></td>
-            </tr>
-            <tr>
-                <td>Login</td>
-                <td><input type="text" placeholder="Login" required="true" name="login"
-                           pattern="^[a-zAZА-ЯЁа-яё\d]{2,16}$"></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" placeholder="Password" required="true" name="password"></td>
-            </tr>
-            <tr>
-                <td>E-mail</td>
-                <td><input type="email" placeholder="example@asd.wer" required="true" name="email"></td>
-            </tr>
-            <tr>
-                <td>Phone number</td>
-                <td><input type="tel" required="true" placeholder="(029)1234567" pattern="^\(\d{3}\)\d{7}$"
-                           name="phone"></td>
-            </tr>
-            <tr>
-                <td><input type="reset"></td>
-                <td><input type="submit"></td>
-            </tr>
-            </tbody>
-        </table>
-    </form>
-    <jsp:forward page="/view/pages/login.jsp"/>
-    </body>
-</center>
+<body>
 
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+
+                <div class="card-header"><fmt:message key="registration.user"/></div>
+                <div class="card-body">
+
+                    <form class="form-horizontal" method="post" action="controller">
+                        <input type="hidden" name="command" value="registration">
+                        <div class="form-group">
+                            <label for="first_name" class="cols-sm-2 control-label"
+                                    <c:if test="${!empty invalid_first_name}">
+                                        style="color: red"
+                                    </c:if>
+                            >
+                                <fmt:message key="first.name"/>
+                            </label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa"
+                                                                       aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="first_name" id="first_name"
+                                            <c:if test="${!empty first_name}">
+                                                value="${first_name}"
+                                            </c:if>
+                                           placeholder="<fmt:message key="name.pattern"/>"
+                                           required pattern="^[A-Za-zА-Яа-я]{3,20}$"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="cols-sm-2 control-label"
+                                    <c:if test="${!empty invalid_last_name}">
+                                        style="color: red"
+                                    </c:if>
+                            >
+                                <fmt:message key="last.name"/>
+                            </label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa"
+                                                                       aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="last_name" id="last_name"
+                                           placeholder="<fmt:message key="name.pattern"/>"
+                                            <c:if test="${!empty last_name}">
+                                                value="${last_name}"
+                                            </c:if>
+                                           required pattern="^[A-Za-zА-Яа-я]{3,20}$"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login" class="cols-sm-2 control-label"
+                                    <c:if test="${!empty phone}">
+                                        value="${phone}"
+                                    </c:if>
+                            >
+                                <fmt:message key="login"/>
+                            </label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-users fa"
+                                                                       aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="login" id="login"
+                                           placeholder="<fmt:message key="enter.login"/>"
+                                            <c:if test="${!empty login}">
+                                                value="${login}"
+                                            </c:if>
+                                           required pattern="^[A-Za-zА-Яа-я0-9_]{6,16}$"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="cols-sm-2 control-label"
+                                    <c:if test="${!empty invalid_email}">
+                                        style="color: red"
+                                    </c:if>
+                            >
+                                <fmt:message key="email"/></label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                    <input type="email" class="form-control" name="email" id="email"
+                                           placeholder="example@mail.com"
+                                            <c:if test="${!empty email}">
+                                                value="${email}"
+                                            </c:if>
+                                           required
+                                           pattern="^[^[\d\.]][A-Za-z\.\d]{1,30}@[a-z]{2,10}\.([a-z]{2,4}|[a-z]{2,4}\.[a-z]{2,4})$"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="cols-sm-2 control-label"><fmt:message key="password"/></label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <input type="password" class="form-control" name="password" id="password"
+                                           placeholder="<fmt:message key="password.pattern"/>"
+                                           required pattern="^[A-Za-zА-Яа-я0-9_!@#,\.]{6,16}$"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="cols-sm-2 control-label"
+                                    <c:if test="${!empty invalid_phone}">
+                                        style="color: red"
+                                    </c:if> ><fmt:message key="mobile.phone"/>
+
+                            </label>
+                            <div class="cols-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <input type="tel" class="form-control" name="phone" id="phone"
+                                           placeholder="(025,029,044)1234567"
+                                            <c:if test="${!empty phone}">
+                                                value="${phone}"
+                                            </c:if>
+                                           required pattern="^\((025|029|044)\)\d{7}$"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+
+                            <button type="submit" class="btn btn-primary btn-lg btn-block login-button"><fmt:message
+                                    key="register"/></button>
+                        </div>
+
+                        <%--                        //TODO куда переходить?--%>
+
+
+                        <div class="login-register">
+                            <a href="index.php">Login</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
 </html>

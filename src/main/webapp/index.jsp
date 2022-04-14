@@ -12,5 +12,5 @@
 </head>
 <body>
 <%--<jsp:forward page="/view/pages/main.jsp"/>--%>
-<jsp:forward page="/view/pages/registration1.jsp"/>
+<jsp:forward page="/view/pages/registration.jsp"/>
 </body>

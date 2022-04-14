@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserDao  {
     Optional<User> selectUserByLoginAndPassword(String login, String password) throws DaoException;
 
+    boolean create(User user, String hashPassword) throws DaoException;
 }

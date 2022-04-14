@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
+//TODO удалить, если не будет применения
+
 
 //@WebFilter(filterName = "PreindexFilter", urlPatterns = "/pages/*", dispatcherTypes = {DispatcherType.FORWARD, DispatcherType.INCLUDE})
 public class PreindexFilter implements Filter {

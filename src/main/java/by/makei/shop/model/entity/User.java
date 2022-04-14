@@ -11,7 +11,7 @@ public class User extends AbstractEntity{
     private String email;
     private String phone;
     private AccessLevel accessLevel;
-    private Date date;
+    private Date date; // TODO рекомендовано заменить на более свежую реализацию
     private BigDecimal amount;
 
     public User() {}

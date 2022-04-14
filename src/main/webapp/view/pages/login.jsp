@@ -24,7 +24,7 @@
     <br><fmt:message key="login.welcome"/>
     <br>
 
-    <c:if test="${not empty sessionScope.message && sessionScope.message == 'incorrect'}">
+    <c:if test="${not empty sessionScope.message && sessionScope.message == 'incorrect_login_or_password'}">
         <br><fmt:message key="incorrect.login"/>
     </c:if>
     <br>
