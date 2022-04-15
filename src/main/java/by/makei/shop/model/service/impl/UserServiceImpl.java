@@ -9,6 +9,7 @@ import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.validator.AttributeValidator;
 import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
 import by.makei.shop.util.PasswordEncoder;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,16 +33,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> signIn(String login, String password) throws ServiceException {
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        if(!validator.isLoginValid(login) || !validator.isPasswordValid(password)){
+            logger.log(Level.INFO,"user -{}- or password wasn't found", login);
+            return Optional.empty();
+        }
         UserDao userDao = new UserDaoImpl();
-        //TODO validation
-        //TODO encrypt password
-        //TODO transaction???
+        String hashPassword =PasswordEncoder.getHashedPassword(password);
         try {
-            return userDao.selectUserByLoginAndPassword(login,password);
+            return userDao.selectUserByLoginAndPassword(login,hashPassword);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
-
     }
 
     public boolean validateUserData (Map<String,String> userData){

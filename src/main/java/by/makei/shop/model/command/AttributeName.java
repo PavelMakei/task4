@@ -20,6 +20,9 @@ public final class AttributeName {
     public static final String BUSY_LOGIN = "busy_login";
     public static final String BUSY_PHONE = "busy_phone";
     public static final String BUSY_EMAIL = "busy_email";
+    public static final String REGISTRATION_DATE = "registration_date";
+    public static final String MONEY_AMOUNT = "money_amount";
+    public static final String USER_ID = "id";
 
 
 

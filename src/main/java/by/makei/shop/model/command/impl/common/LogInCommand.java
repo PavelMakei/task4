@@ -20,12 +20,9 @@ import static by.makei.shop.model.command.AttributeName.*;
 public class LogInCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
-
     @Override
     public Router execute(HttpServletRequest request) {
         Router router = new Router();
-        //TODO remake!!!!!!!!!!!!
-        //TODO VALIDATOR
         //TODO add cookies?
 
         HttpSession session = request.getSession();
@@ -38,8 +35,9 @@ public class LogInCommand implements Command {
                 User user = optionalUser.get();
                 session.setAttribute(USER, user);
                 session.setAttribute(ACCESS_LEVEL, user.getAccessLevel());
-                logger.log(Level.DEBUG,user);
+                logger.log(Level.DEBUG,"attributes for user {} were set.", user);
                 router.setCurrentPage(PagePath.MAIN);
+                //TODO переход на main?
             }else {
                 request.setAttribute(INVALID_LOGIN_OR_PASSWORD_MESSAGE, INVALID_LOGIN_OR_PASSWORD_MESSAGE);
                 router.setCurrentPage(PagePath.LOGIN);

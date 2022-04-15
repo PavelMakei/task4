@@ -8,16 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import static by.makei.shop.model.command.AttributeName.*;
+
 public class UserMapper implements Mapper{
-    private static final String USER_ID = "id";
-    private static final String FIRST_NAME = "first_name";
-    private static final String LAST_NAME = "last_name";
-    private static final String LOGIN = "login";
-    private static final String EMAIL = "email";
-    private static final String PHONE = "phone";
-    private static final String ACCESS_LEVEL = "access_level";
-    private static final String REGISTRATION_DATE = "registration_date";
-    private static final String MONEY_AMOUNT = "money_amount";
+//    private static final String USER_ID = "id";
+//    private static final String FIRST_NAME = "first_name";
+//    private static final String LAST_NAME = "last_name";
+//    private static final String LOGIN = "login";
+//    private static final String EMAIL = "email";
+//    private static final String PHONE = "phone";
+
 
     public Optional<User> mapEntity(ResultSet resultSet){
         User user = new User();
