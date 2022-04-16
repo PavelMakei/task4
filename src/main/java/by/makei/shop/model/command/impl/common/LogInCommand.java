@@ -16,9 +16,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.command.PagePath.*;
 
 public class LogInCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final String ERROR = "LoginCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) {
@@ -39,13 +41,15 @@ public class LogInCommand implements Command {
                 router.setCurrentPage(PagePath.MAIN);
                 //TODO переход на main?
             }else {
+                logger.log(Level.INFO,"user wasn't found.");
                 request.setAttribute(INVALID_LOGIN_OR_PASSWORD_MESSAGE, INVALID_LOGIN_OR_PASSWORD_MESSAGE);
-                router.setCurrentPage(PagePath.LOGIN);
+                router.setCurrentPage(PagePath.LOGINATION);
             }
 
         } catch (ServiceException e) {
-            //TODO ?????
-            e.printStackTrace();
+            logger.log(Level.ERROR,"login command error. {}",e.getMessage());
+            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
+            router.setCurrentPage(ERROR500);
         }
         return router;
     }

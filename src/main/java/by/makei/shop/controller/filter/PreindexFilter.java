@@ -25,7 +25,7 @@ public class PreindexFilter implements Filter {
         logger.log(Level.INFO, "preindex Filter started");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpSession session = httpServletRequest.getSession();
-        logger.log(Level.INFO, "-----> Session in  PreIndexFilter" + (session != null ? session.getId() : "dsession not created"));
+        logger.log(Level.INFO, "-----> Session in  PreIndexFilter" + (session != null ? session.getId() : "session not created"));
         chain.doFilter(request, response);
 
     }

@@ -25,15 +25,7 @@ public enum AttributeName {
     public static final String REGISTRATION_DATE = "registration_date";
     public static final String MONEY_AMOUNT = "money_amount";
     public static final String USER_ID = "id";
-
-
-
-
-
-
-
-
-
-
+    public static final String ERROR_MESSAGE = "error_message";
+    public static final String LOCALE = "locale";
 
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import static by.makei.shop.model.command.AttributeName.*;
 
-public class UserMapper implements Mapper{
+public class UserMapper implements Mapper<User>{
 //    private static final String USER_ID = "id";
 //    private static final String FIRST_NAME = "first_name";
 //    private static final String LAST_NAME = "last_name";

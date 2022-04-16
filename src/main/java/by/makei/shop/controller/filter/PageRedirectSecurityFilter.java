@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 /**
- * используется для проверки прав доступа к страницам, например admin в одноимённую папку
+ * используется для проверки прав доступа к страницам, например admin в одноимённую папку 403
  */
 
 //TODO написать функционал
@@ -20,7 +20,7 @@ public class PageRedirectSecurityFilter implements Filter {
     private String indexPath;
     public void init(FilterConfig config) throws ServletException {
 
-        indexPath = config.getInitParameter("INDEX_PATH");
+//        indexPath = config.getInitParameter("INDEX_PATH");
     }
 
     @Override

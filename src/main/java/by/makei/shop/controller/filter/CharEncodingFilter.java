@@ -12,9 +12,7 @@ import java.io.IOException;
 public class CharEncodingFilter implements Filter {
     private static final Logger logger = LogManager.getLogger();
 
-
     public void init() throws ServletException {
-
 }
 
 @Override

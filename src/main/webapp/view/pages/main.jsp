@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <c:set var="absolutePath">${pageContext.request.contextPath}</c:set> <%--путь к корневой папке проекта--%>
 <c:set var="current_page" value="${pageContext.request.requestURI}" scope="session"/> <%--ссылка на текущую страницу--%>
 
@@ -39,7 +40,7 @@
 
 
     <br>
-    <form action="controller" method="post">
+    <form action="${absolutePath}/controller" method="post">
         <table>
             <tbody>
             <tr>

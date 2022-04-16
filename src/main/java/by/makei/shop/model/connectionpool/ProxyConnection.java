@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-public class ProxyConnection implements Connection{
+class ProxyConnection implements Connection { //ограничить доступность извне
     private static final Logger logger = LogManager.getLogger();
     private Connection connection;
 
@@ -22,11 +22,11 @@ public class ProxyConnection implements Connection{
         DbConnectionPool.getInstance().returnConnection(this);
     }
 
-    void reallyClose(){
+    void reallyClose() {
         try {
             connection.close();
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "connection close error. {}",e.getMessage());
+            logger.log(Level.ERROR, "connection close error. {}", e.getMessage());
         }
     }
 
@@ -62,7 +62,6 @@ public class ProxyConnection implements Connection{
     public void rollback() throws SQLException {
         connection.rollback();
     }
-
 
 
     public boolean isClosed() throws SQLException {

@@ -16,7 +16,7 @@ import java.util.Properties;
 import java.util.TimeZone;
 
 
-public class ConnectionFactory {
+ class ConnectionFactory {//ограничить доступ извне
     private static final Logger logger = LogManager.getLogger();
     private static final String FILE_NAME = "sql_config.properties";
     private static final String DB_URL;

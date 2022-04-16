@@ -10,6 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="language_text"/>
+<c:set var="absolutePath">${pageContext.request.contextPath}</c:set>
 
 
 <html>
@@ -29,10 +30,10 @@
         <div class="col-md-8">
             <div class="card">
 
-                <div class="card-header"><fmt:message key="registration.user"/></div>
+                <div class="card-header" style="text-align:center;"><fmt:message key="registration.user"/></div>
                 <div class="card-body">
 
-                    <form class="form-horizontal" method="post" action="controller">
+                    <form class="form-horizontal" method="post" action="${absolutePath}/controller">
                         <input type="hidden" name="command" value="registration">
                         <div class="form-group">
                             <label for="first_name" class="cols-sm-2 control-label"
@@ -41,6 +42,9 @@
                                     </c:if>
                             >
                                 <fmt:message key="first.name"/>
+                                <c:if test="${!empty invalid_first_name}">
+                                    <fmt:message key="incorrect.enter"/>
+                                </c:if>
                             </label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
@@ -62,6 +66,9 @@
                                     </c:if>
                             >
                                 <fmt:message key="last.name"/>
+                                <c:if test="${!empty invalid_last_name}">
+                                    <fmt:message key="incorrect.enter"/>
+                                </c:if>
                             </label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
@@ -77,35 +84,47 @@
                             </div>
                         </div>
 
+                        <label for="login" class="cols-sm-2 control-label"
+                                <c:if test="${!empty invalid_login ||!empty busy_login }">
+                                    style="color: red"
+                                </c:if>
+                        >
+                            <fmt:message key="login"/>
+                            <c:if test="${!empty invalid_login}">
+                                <fmt:message key="incorrect.enter"/>
+                            </c:if>
+                            <c:if test="${!empty busy_login}">
+                                <fmt:message key="exists.choose.other"/>
+                            </c:if>
+                        </label>
                         <div class="form-group">
-                            <label for="login" class="cols-sm-2 control-label"
-                                    <c:if test="${!empty phone}">
-                                        value="${phone}"
-                                    </c:if>
-                            >
-                                <fmt:message key="login"/>
-                            </label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-users fa"
                                                                        aria-hidden="true"></i></span>
                                     <input type="text" class="form-control" name="login" id="login"
-                                           placeholder="<fmt:message key="enter.login"/>"
+                                           placeholder="<fmt:message key="login.pattern"/>"
                                             <c:if test="${!empty login}">
                                                 value="${login}"
                                             </c:if>
-                                           required pattern="^[A-Za-zА-Яа-я0-9_]{6,16}$"/>
+                                           required pattern="^[A-Za-zА-Яа-я0-9_]{4,16}$"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="email" class="cols-sm-2 control-label"
-                                    <c:if test="${!empty invalid_email}">
-                                        style="color: red"
-                                    </c:if>
+                            <c:if test="${!empty invalid_email ||!empty busy_email }">
+                                   style="color: red"
+                            </c:if>
                             >
-                                <fmt:message key="email"/></label>
+                                <fmt:message key="email"/>
+                                <c:if test="${!empty invalid_email}">
+                                    <fmt:message key="incorrect.enter"/>
+                                </c:if>
+                                <c:if test="${!empty busy_email}">
+                                    <fmt:message key="exists.choose.other"/>
+                                </c:if>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
@@ -131,12 +150,20 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="phone" class="cols-sm-2 control-label"
-                                    <c:if test="${!empty invalid_phone}">
+                                    <c:if test="${!empty invalid_phone ||!empty busy_phone }">
                                         style="color: red"
-                                    </c:if> ><fmt:message key="mobile.phone"/>
-
+                                    </c:if>
+                            >
+                                <fmt:message key="mobile.phone"/>
+                                <c:if test="${!empty invalid_phone}">
+                                    <fmt:message key="incorrect.enter"/>
+                                </c:if>
+                                <c:if test="${!empty busy_phone}">
+                                    <fmt:message key="exists.choose.other"/>
+                                </c:if>
                             </label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
@@ -161,7 +188,7 @@
 
 
                         <div class="login-register">
-                            <a href="index.php">Login</a>
+                            <a href="${absolutePath}/index.jsp"><fmt:message key="return.main.page"/></a>
                         </div>
                     </form>
                 </div>
