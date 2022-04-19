@@ -11,7 +11,7 @@
     <title>Index</title>
 </head>
 <body>
-<%--<jsp:forward page="/view/pages/login.jsp"/>--%>
-<jsp:forward page="/view/pages/main.jsp"/>
+<jsp:forward page="/view/pages/login.jsp"/>
+<%--<jsp:forward page="/view/pages/main.jsp"/>--%>
 <%--<jsp:forward page="/view/pages/registration.jsp"/>--%>
 </body>

@@ -37,4 +37,11 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <jsp-config>
+        <taglib>
+            <taglib-uri>lightingshoptags</taglib-uri>
+            <taglib-location>/WEB-INF/tld/footertaglib.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
 </web-app>
