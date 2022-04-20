@@ -13,18 +13,29 @@
 <fmt:setBundle basename="language_text"/>
 <c:set var="absolutePath">${pageContext.request.contextPath}</c:set>
 
-<link rel="stylesheet" href="${absolutePath}/css/login.css">
+<link rel="stylesheet" href="${absolutePath}/css/enter.css">
 
 <!DOCTYPE html>
 
 <html>
 <head>
 
-<%--    <link href="${absolutePath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">--%>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout("preventBack()", 0);
+        window.onunload = function() {
+            null
+        };
+    </script>
+
+    <link href="${absolutePath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<%--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">--%>
 <%--    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>--%>
 <%--    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
     <!------ Include the above in your HEAD tag ---------->
