@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -17,11 +18,13 @@ import java.util.concurrent.locks.ReentrantLock;
 public final class DbConnectionPool {
     private static final Logger logger = LogManager.getLogger();
     private static final AtomicReference<DbConnectionPool> instance = new AtomicReference<>();
-    private static final ReentrantLock lock = new ReentrantLock();
+    private static final ReentrantLock getterLock = new ReentrantLock();
+    static Semaphore semaphore = new Semaphore(ConnectionFactory.MAX_CONNECTIONS);
+
 
     private BlockingDeque<ProxyConnection> freeDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
     private BlockingDeque<ProxyConnection> busyDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
-
+    private BlockingDeque<ProxyConnection> forCheckingDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
 
     private DbConnectionPool() {
         fillConnectionsIntoPool();
@@ -30,67 +33,82 @@ public final class DbConnectionPool {
                     freeDeque.size(), ConnectionFactory.MAX_CONNECTIONS);
         }
         checkIfPoolEmpty();
-        if (ConnectionFactory.IS_TIMER_SERVICE_ON){
-            PoolService.startPoolService(this, freeDeque, busyDeque);
+        if (ConnectionFactory.IS_TIMER_SERVICE_ON) {
+            PoolService.startPoolService(this, freeDeque, busyDeque, forCheckingDeque);
         }
     }
 
     public static DbConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
         if (instance.get() == null) {
-            lock.lock();
+            getterLock.lock();
             try {
                 if (instance.get() == null) {
                     instance.set(new DbConnectionPool());
                     logger.log(Level.INFO, "new DBConnectionPool is created");
                 }
             } finally {
-                lock.unlock(); // снятие блокировки
+                getterLock.unlock(); // снятие блокировки
             }
         }
         return instance.get();
     }
 
     public Connection takeConnection() {
-        while (!PoolService.isPoolFree.get()){//replace with semafor
-            Thread.yield();
-        }
+//        ProxyConnection connection = null;
+//        try {
+//            connection = freeDeque.take();
+//            busyDeque.put(connection);
+//            connection.setLastThread(Thread.currentThread());
+//        } catch (InterruptedException e) {
+//            logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
+//            Thread.currentThread().interrupt();
+//        }
+//        return connection;
+
         ProxyConnection connection = null;
+
         try {
+            semaphore.acquire();
             connection = freeDeque.take();
-            busyDeque.put(connection);
             connection.setLastThread(Thread.currentThread());
+            busyDeque.put(connection);
         } catch (InterruptedException e) {
-            logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
+            logger.log(Level.ERROR, "Thread in take connection has been interrupted! :{}", e.getMessage());
             Thread.currentThread().interrupt();
+        } finally {
+            semaphore.release();
         }
         return connection;
     }
 
     public boolean returnConnection(Connection connection) {
-        while (!PoolService.isPoolFree.get()){
-            Thread.yield();
-        }
         boolean result = false;
         if (!(connection instanceof ProxyConnection)) {
             logger.log(Level.ERROR, "incorrect connection!");
             return false;
         }
         try {
-            lock.lock();// method "remove" isn't thread safe
-            freeDeque.put((ProxyConnection) connection);
-            busyDeque.remove(connection);
+            getterLock.lock();// method "remove" isn't thread safe
+            semaphore.acquire();
+            busyDeque.remove(connection);//дешевле создать новый, чем искать дубли в очередях
+            if (((ProxyConnection) connection).isForChecking()) {
+                forCheckingDeque.put((ProxyConnection) connection);
+            } else {
+                freeDeque.put((ProxyConnection) connection);
+            }
             result = true;
         } catch (InterruptedException e) {
-            logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
+            logger.log(Level.ERROR, "Thread in return connection has been interrupted! :{}", e.getMessage());
             Thread.currentThread().interrupt();
         } finally {
-            lock.unlock();
+            getterLock.unlock();
+            semaphore.release();
         }
         return result;
     }
 
     public boolean shutdown() {
-        if(ConnectionFactory.IS_TIMER_SERVICE_ON){
+        if (ConnectionFactory.IS_TIMER_SERVICE_ON) {
             PoolService.stopPoolService();
         }
 
@@ -112,6 +130,16 @@ public final class DbConnectionPool {
                 Thread.currentThread().interrupt();
             }
         }
+        while (!forCheckingDeque.isEmpty()) {
+            try {
+                busyDeque.take().reallyClose();
+                logger.log(Level.INFO, "forChecking connection is closed");
+            } catch (InterruptedException e) {
+                logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }
+
         deregisterDrivers();
         logger.log(Level.INFO, "DBConnectionPool is closed ");
         return true;
@@ -119,7 +147,7 @@ public final class DbConnectionPool {
 
     private void fillConnectionsIntoPool() {
 
-        for (int i = (freeDeque.size()+ busyDeque.size()); i < ConnectionFactory.MAX_CONNECTIONS; i++) {
+        for (int i = (freeDeque.size() + busyDeque.size()); i < ConnectionFactory.MAX_CONNECTIONS; i++) {
             try {
                 freeDeque.add(new ProxyConnection(ConnectionFactory.getConnection()));
                 logger.log(Level.DEBUG, "connection created. freeDeque size = {}, busy deQue = {}", freeDeque.size(), busyDeque.size());

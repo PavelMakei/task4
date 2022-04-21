@@ -2,6 +2,7 @@ package by.makei.shop.model.dao.impl;
 
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.model.connectionpool.DbConnectionPool;
+import by.makei.shop.model.connectionpool.ProxyConnection;
 import by.makei.shop.model.dao.UserDao;
 import by.makei.shop.model.dao.mapper.UserMapper;
 import by.makei.shop.model.entity.AbstractEntity;
@@ -40,7 +41,6 @@ public class UserDaoImpl implements UserDao {
 
         try (Connection connection = DbConnectionPool.getInstance().takeConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
-//TODO if it needs?            connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, hashPassword);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -49,6 +49,7 @@ public class UserDaoImpl implements UserDao {
                     logger.log(Level.INFO, "user was found by login {} and hash password {}", login, hashPassword);
                 }
             } catch (SQLException ex) {
+                ((ProxyConnection) connection).setForChecking(true);
                 logger.log(Level.ERROR, "error in findUserByLoginAndPassword");
                 throw new DaoException(ex);
             }
@@ -61,9 +62,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean create(User user, String hashPassword) throws DaoException {
-
-        try (Connection connection = DbConnectionPool.getInstance().takeConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER)) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {connection = DbConnectionPool.getInstance().takeConnection();
+             preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER);
 
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
@@ -75,12 +77,44 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.execute();
             logger.log(Level.INFO, "new user was created. \n---- {}", user);
         } catch (SQLException e) {
+            ((ProxyConnection) connection).setForChecking(true);
             logger.log(Level.ERROR, "new user wasn't created." + e.getMessage());
             throw new DaoException(e);
+        }finally {
+            try {
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                ((ProxyConnection) connection).setForChecking(true);
+               logger.log(Level.ERROR,"error while connection close");
+            }
         }
-        //connection close automatically by close methods and try(resources). Connection - override in proxyConnection, statement and resultset in baseDao
         return true;
     }
+
+
+//    @Override
+//    public boolean create(User user, String hashPassword) throws DaoException {
+//
+//        try (Connection connection = DbConnectionPool.getInstance().takeConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER)) {
+//
+//            preparedStatement.setString(1, user.getFirstName());
+//            preparedStatement.setString(2, user.getLastName());
+//            preparedStatement.setString(3, user.getLogin());
+//            preparedStatement.setString(4, hashPassword);
+//            preparedStatement.setString(5, user.getEmail());
+//            preparedStatement.setString(6, user.getPhone());
+//
+//            preparedStatement.execute();
+//            logger.log(Level.INFO, "new user was created. \n---- {}", user);
+//        } catch (SQLException e) {
+//            logger.log(Level.ERROR, "new user wasn't created." + e.getMessage());
+//            throw new DaoException(e);
+//        }
+//        //connection close automatically by close methods and try(resources). Connection - override in proxyConnection, statement and resultset in baseDao
+//        return true;
+//    }
 
     @Override
     public Optional<User> findUserByOneParam(String paramName, String paramValue) throws DaoException {
@@ -88,16 +122,16 @@ public class UserDaoImpl implements UserDao {
         String fullQuery = SQL_SELECT_USER_BY_VAR_PARAM + "WHERE " + paramName + " = ?";
         try (Connection connection = DbConnectionPool.getInstance().takeConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement(String.format(SQL_SELECT_USER_BY_VAR_PARAM, paramName)))
-        {
+                     connection.prepareStatement(String.format(SQL_SELECT_USER_BY_VAR_PARAM, paramName))) {
             preparedStatement.setString(1, paramValue);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     optionalUser = new UserMapper().mapEntity(resultSet);
-                    logger.log(Level.INFO, "user was found by param {} and param value {}",paramName, paramValue );
+                    logger.log(Level.INFO, "user was found by param {} and param value {}", paramName, paramValue);
                 }
             } catch (SQLException ex) {
+                ((ProxyConnection) connection).setForChecking(true);
                 logger.log(Level.ERROR, "error in findUserByOneParam");
                 throw new DaoException(ex);
             }

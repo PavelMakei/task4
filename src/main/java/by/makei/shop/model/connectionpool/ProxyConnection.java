@@ -9,14 +9,18 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-class ProxyConnection implements Connection { //ограничить доступность извне
+public class ProxyConnection implements Connection {// нужен доступ в DAO
     private static final Logger logger = LogManager.getLogger();
+    private static final boolean FOR_CHECKING_DEFAULT_VALUE = false;
     private Connection connection;
     private Thread lastThread;
+    private boolean forChecking;
+
 
     ProxyConnection(Connection connection) {
         this.connection = connection;
-    } // создание только из пакета DAO
+        this.forChecking = FOR_CHECKING_DEFAULT_VALUE;
+    } // создание только из пакета connection pool
 
     @Override
     public void close() throws SQLException {
@@ -277,4 +281,11 @@ class ProxyConnection implements Connection { //ограничить досту�
         this.lastThread = lastThread;
     }
 
+    public boolean isForChecking() {
+        return forChecking;
+    }
+
+    public void setForChecking(boolean forChecking) {
+        this.forChecking = forChecking;
+    }
 }
