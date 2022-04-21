@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+//TODO add check connection to catch block and close methods
+
 
 public class UserDaoImpl implements UserDao {
 
@@ -39,24 +41,34 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findUserByLoginAndPassword(String login, String hashPassword) throws DaoException {
         Optional<User> optionalUser = Optional.empty();
 
-        try (Connection connection = DbConnectionPool.getInstance().takeConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, hashPassword);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    optionalUser = new UserMapper().mapEntity(resultSet);
-                    logger.log(Level.INFO, "user was found by login {} and hash password {}", login, hashPassword);
-                }
-            } catch (SQLException ex) {
-                ((ProxyConnection) connection).setForChecking(true);
-                logger.log(Level.ERROR, "error in findUserByLoginAndPassword");
-                throw new DaoException(ex);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                optionalUser = new UserMapper().mapEntity(resultSet);
+                logger.log(Level.INFO, "user was found by login {} and hash password {}", login, hashPassword);
             }
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            ((ProxyConnection) connection).setForChecking(true);
             logger.log(Level.ERROR, "error in findUserByLoginAndPassword");
-            throw new DaoException(e);
+            throw new DaoException(ex);
+        } finally {
+            try {
+                if(resultSet!=null)resultSet.close();
+                if(preparedStatement!=null) preparedStatement.close();
+                if(connection!=null)connection.close();
+            } catch (SQLException e) {
+                ((ProxyConnection) connection).setForChecking(true);
+               logger.log(Level.ERROR, "error while connection close");
+            }
         }
+
         return optionalUser;
     }
 
@@ -64,8 +76,9 @@ public class UserDaoImpl implements UserDao {
     public boolean create(User user, String hashPassword) throws DaoException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        try {connection = DbConnectionPool.getInstance().takeConnection();
-             preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER);
+        try {
+            connection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER);
 
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
@@ -80,13 +93,13 @@ public class UserDaoImpl implements UserDao {
             ((ProxyConnection) connection).setForChecking(true);
             logger.log(Level.ERROR, "new user wasn't created." + e.getMessage());
             throw new DaoException(e);
-        }finally {
+        } finally {
             try {
-                preparedStatement.close();
-                connection.close();
+                if(preparedStatement!=null) preparedStatement.close();
+                if(connection!=null)connection.close();
             } catch (SQLException e) {
                 ((ProxyConnection) connection).setForChecking(true);
-               logger.log(Level.ERROR,"error while connection close");
+                logger.log(Level.ERROR, "error while connection close");
             }
         }
         return true;
