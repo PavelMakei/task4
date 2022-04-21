@@ -30,6 +30,9 @@ public final class DbConnectionPool {
                     freeDeque.size(), ConnectionFactory.MAX_CONNECTIONS);
         }
         checkIfPoolEmpty();
+        if (ConnectionFactory.IS_TIMER_SERVICE_ON){
+            PoolService.startPoolService(this, freeDeque, busyDeque);
+        }
     }
 
     public static DbConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
@@ -48,10 +51,14 @@ public final class DbConnectionPool {
     }
 
     public Connection takeConnection() {
+        while (!PoolService.isPoolFree.get()){//replace with semafor
+            Thread.yield();
+        }
         ProxyConnection connection = null;
         try {
             connection = freeDeque.take();
             busyDeque.put(connection);
+            connection.setLastThread(Thread.currentThread());
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
             Thread.currentThread().interrupt();
@@ -60,8 +67,10 @@ public final class DbConnectionPool {
     }
 
     public boolean returnConnection(Connection connection) {
+        while (!PoolService.isPoolFree.get()){
+            Thread.yield();
+        }
         boolean result = false;
-
         if (!(connection instanceof ProxyConnection)) {
             logger.log(Level.ERROR, "incorrect connection!");
             return false;
@@ -81,6 +90,9 @@ public final class DbConnectionPool {
     }
 
     public boolean shutdown() {
+        if(ConnectionFactory.IS_TIMER_SERVICE_ON){
+            PoolService.stopPoolService();
+        }
 
         while (!freeDeque.isEmpty()) {
             try {

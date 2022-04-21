@@ -11,6 +11,9 @@ public class AttributeValidatorImpl implements AttributeValidator {
     public static final String PHONE_PATTERN = "^\\((025|029|044)\\)\\d{7}$";
     public static final String DECIMAL_STRING_PATTERN = "^((\\d{1,5}\\.\\d{0,2})|(\\d{1,5}))$";
 
+    //TODO дописать паттерны для проверки полей товара
+    //TODO переделать в 1 метод с передачей строки для проверки и статической стринги с паттерном?
+
     private AttributeValidatorImpl(){}
 
     public static AttributeValidator getInstance (){

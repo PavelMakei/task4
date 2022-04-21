@@ -5,39 +5,37 @@ import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.CommandType;
 import by.makei.shop.model.command.Router;
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import static by.makei.shop.model.command.AttributeName.COMMAND;
 import static by.makei.shop.model.command.AttributeName.ERROR_MESSAGE;
-import static by.makei.shop.model.command.PagePath.ERROR500;
 
 
 @WebServlet(name = "Controller", value = "/controller")
 //@MultipartConfig(maxFileSize = 16777215)
 
-//@MultipartConfig(fileSizeThreshold = 1024 * 1024,
-//        maxFileSize = 1024 * 1024 * 5,
-//        maxRequestSize = 1024 * 1024 * 25)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 25)
+
+//TODO разобраться с аннотациями
 
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        ServletContext servletContext = getServletContext();
-//        HttpSession session = request.getSession(true);
-//        session.setAttribute("attributeName", "attributeValue");
         logger.log(Level.DEBUG, "controller " + request.getMethod());
         processRequest(request, response);
     }
@@ -65,15 +63,6 @@ public class Controller extends HttpServlet {
                     logger.log(Level.INFO, "redirect type. To page :{}", router.getCurrentPage());
                     response.sendRedirect(router.getCurrentPage());
                 }
-//            case ERROR -> {
-//                logger.log(Level.INFO, "error command type. To page :{}", router.getCurrentType());
-//                throw new ControllerException();
-//                response.sendRedirect(PagePath.ERROR500);
-//            }
-//            default -> {
-//                logger.log(Level.ERROR, "wrong router type :{}", router.getCurrentType());
-//                response.sendRedirect(PagePath.ERROR500);
-//            }
             }
         } catch (CommandException e) {
             logger.log(Level.ERROR, "incorrect command : {}", e.getMessage());

@@ -16,21 +16,29 @@ import java.util.Properties;
 import java.util.TimeZone;
 
 
- class ConnectionFactory {//ограничить доступ извне
+class ConnectionFactory {//ограничить доступ извне
     private static final Logger logger = LogManager.getLogger();
     private static final String FILE_NAME = "sql_config.properties";
     private static final String DB_URL;
     private static final String PROPERTIES_FILE;
-    public static final int MAX_CONNECTIONS;
     private static final Properties properties = new Properties();
+    public static final int MAX_CONNECTIONS;
+    public static final boolean IS_TIMER_SERVICE_ON;
+    public static final int TIMER_SERVICE_INTERVAL;
+    public static final int TIMER_SERVICE_DELAY = 0;
+    public static final int NUMBER_OF_ATTEMPTS;
 
     static {
         URL resource = getUrl();
         PROPERTIES_FILE = resource.getFile();
         loadPropertyFromFile();
-        DB_URL = properties.getProperty("db_url");
+        DB_URL = properties.getProperty("db_url", "jdbc:mysql://localhost:3306/lightingshop");
         MAX_CONNECTIONS = Integer.parseInt(properties.getProperty("max_connections", "8"));
-        String driverClassName = properties.getProperty("db_driver");
+        String driverClassName = properties.getProperty("db_driver", "com.mysql.cj.jdbc.Driver");
+        IS_TIMER_SERVICE_ON = Boolean.parseBoolean(properties.getProperty("is_timer_service_on", "false"));
+        TIMER_SERVICE_INTERVAL = Integer.parseInt(properties.getProperty("timer_service_interval", "1000"));
+        NUMBER_OF_ATTEMPTS = Integer.parseInt(properties.getProperty("number_of_attempts", "3"));
+
         try {
             Class.forName(driverClassName);
         } catch (ClassNotFoundException e) {
@@ -40,7 +48,8 @@ import java.util.TimeZone;
         setServerTimeZoneProperty();
     }
 
-    private ConnectionFactory() {}
+    private ConnectionFactory() {
+    }
 
     //friendly methods
     static Connection getConnection() throws DbConnectionPoolException {
@@ -53,8 +62,7 @@ import java.util.TimeZone;
     }
 
     private static void loadPropertyFromFile() {
-        try (FileInputStream fileInputStream = new FileInputStream(PROPERTIES_FILE))
-        {
+        try (FileInputStream fileInputStream = new FileInputStream(PROPERTIES_FILE)) {
             properties.load(fileInputStream);
         } catch (IOException e) {
             logger.log(Level.FATAL, "file - {} - can't be read", FILE_NAME);
@@ -63,7 +71,7 @@ import java.util.TimeZone;
     }
 
     private static void setServerTimeZoneProperty() {
-        if (Boolean.valueOf(properties.getProperty("set_serverTimezone_localTimezone"))) {
+        if (Boolean.valueOf(properties.getProperty("set_serverTimezone_localTimezone", "true"))) {
             Calendar now = Calendar.getInstance();
             TimeZone timeZone = now.getTimeZone();
             String timeZoneName = timeZone.getID();

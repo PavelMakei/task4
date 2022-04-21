@@ -12,6 +12,7 @@ import java.util.concurrent.Executor;
 class ProxyConnection implements Connection { //ограничить доступность извне
     private static final Logger logger = LogManager.getLogger();
     private Connection connection;
+    private Thread lastThread;
 
     ProxyConnection(Connection connection) {
         this.connection = connection;
@@ -267,4 +268,13 @@ class ProxyConnection implements Connection { //ограничить досту�
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return connection.isWrapperFor(iface);
     }
+
+    public Thread getLastThread() {
+        return lastThread;
+    }
+
+    public void setLastThread(Thread lastThread) {
+        this.lastThread = lastThread;
+    }
+
 }
