@@ -15,8 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-//TODO add check connection to catch block and close methods
-
 
 public class UserDaoImpl implements UserDao {
 
@@ -40,46 +38,41 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findUserByLoginAndPassword(String login, String hashPassword) throws DaoException {
         Optional<User> optionalUser = Optional.empty();
+        ProxyConnection proxyConnection = null;
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = DbConnectionPool.getInstance().takeConnection();
-            preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD);
+        try (Connection connection = DbConnectionPool.getInstance().takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
+            proxyConnection = (ProxyConnection) connection;
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, hashPassword);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                optionalUser = new UserMapper().mapEntity(resultSet);
-                logger.log(Level.INFO, "user was found by login {} and hash password {}", login, hashPassword);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    optionalUser = new UserMapper().mapEntity(resultSet);
+                    logger.log(Level.INFO, "user was found by login {} and hash password {}", login, hashPassword);
+                }
+            } catch (SQLException ex) {
+                proxyConnection.setForChecking(true);
+                logger.log(Level.ERROR, "error in findUserByLoginAndPassword");
+                throw new DaoException(ex);
             }
-        } catch (SQLException ex) {
-            ((ProxyConnection) connection).setForChecking(true);
+        } catch (SQLException e) {
+            if (proxyConnection != null) {
+                proxyConnection.setForChecking(true);
+            }
             logger.log(Level.ERROR, "error in findUserByLoginAndPassword");
-            throw new DaoException(ex);
-        } finally {
-            try {
-                if(resultSet!=null)resultSet.close();
-                if(preparedStatement!=null) preparedStatement.close();
-                if(connection!=null)connection.close();
-            } catch (SQLException e) {
-                ((ProxyConnection) connection).setForChecking(true);
-               logger.log(Level.ERROR, "error while connection close");
-            }
+            throw new DaoException(e);
         }
-
         return optionalUser;
     }
 
+
     @Override
     public boolean create(User user, String hashPassword) throws DaoException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = DbConnectionPool.getInstance().takeConnection();
-            preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER);
+        ProxyConnection proxyConnection = null;
 
+        try (Connection connection = DbConnectionPool.getInstance().takeConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER)) {
+            proxyConnection = (ProxyConnection) connection;
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getLogin());
@@ -90,52 +83,25 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.execute();
             logger.log(Level.INFO, "new user was created. \n---- {}", user);
         } catch (SQLException e) {
-            ((ProxyConnection) connection).setForChecking(true);
+            if (proxyConnection != null) {
+                proxyConnection.setForChecking(true);
+            }
             logger.log(Level.ERROR, "new user wasn't created." + e.getMessage());
             throw new DaoException(e);
-        } finally {
-            try {
-                if(preparedStatement!=null) preparedStatement.close();
-                if(connection!=null)connection.close();
-            } catch (SQLException e) {
-                ((ProxyConnection) connection).setForChecking(true);
-                logger.log(Level.ERROR, "error while connection close");
-            }
         }
+        //connection close automatically by close methods and try(resources). Connection - override in proxyConnection, statement and resultset in baseDao
         return true;
     }
 
-
-//    @Override
-//    public boolean create(User user, String hashPassword) throws DaoException {
-//
-//        try (Connection connection = DbConnectionPool.getInstance().takeConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_NEW_USER)) {
-//
-//            preparedStatement.setString(1, user.getFirstName());
-//            preparedStatement.setString(2, user.getLastName());
-//            preparedStatement.setString(3, user.getLogin());
-//            preparedStatement.setString(4, hashPassword);
-//            preparedStatement.setString(5, user.getEmail());
-//            preparedStatement.setString(6, user.getPhone());
-//
-//            preparedStatement.execute();
-//            logger.log(Level.INFO, "new user was created. \n---- {}", user);
-//        } catch (SQLException e) {
-//            logger.log(Level.ERROR, "new user wasn't created." + e.getMessage());
-//            throw new DaoException(e);
-//        }
-//        //connection close automatically by close methods and try(resources). Connection - override in proxyConnection, statement and resultset in baseDao
-//        return true;
-//    }
-
     @Override
     public Optional<User> findUserByOneParam(String paramName, String paramValue) throws DaoException {
+        ProxyConnection proxyConnection = null;
         Optional<User> optionalUser = Optional.empty();
         String fullQuery = SQL_SELECT_USER_BY_VAR_PARAM + "WHERE " + paramName + " = ?";
         try (Connection connection = DbConnectionPool.getInstance().takeConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement(String.format(SQL_SELECT_USER_BY_VAR_PARAM, paramName))) {
+            proxyConnection = (ProxyConnection) connection;
             preparedStatement.setString(1, paramValue);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -144,11 +110,16 @@ public class UserDaoImpl implements UserDao {
                     logger.log(Level.INFO, "user was found by param {} and param value {}", paramName, paramValue);
                 }
             } catch (SQLException ex) {
-                ((ProxyConnection) connection).setForChecking(true);
+                if (proxyConnection != null) {
+                    proxyConnection.setForChecking(true);
+                }
                 logger.log(Level.ERROR, "error in findUserByOneParam");
                 throw new DaoException(ex);
             }
         } catch (SQLException e) {
+            if (proxyConnection != null) {
+                proxyConnection.setForChecking(true);
+            }
             logger.log(Level.ERROR, "error in findUserByOneParam");
             throw new DaoException(e);
         }
