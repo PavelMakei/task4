@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ import static by.makei.shop.model.command.AttributeName.*;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
-    private static UserServiceImpl instance;
+    public static UserServiceImpl instance;
 
     private UserServiceImpl() {
     }
@@ -45,81 +44,9 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.findUserByLoginAndPassword(login, hashPassword);
         } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while signIn in UserService. {}",e.getMessage());
             throw new ServiceException(e);
         }
-    }
-
-    public boolean validateUserData(Map<String, String> userData) throws ServiceException {
-        Map<String, String> invalidParameters = new HashMap<>();
-        AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        UserDaoImpl userDao = new UserDaoImpl();
-        boolean isCorrect = true;
-        try {
-
-            for (Map.Entry<String, String> entry : userData.entrySet()) {
-                String key = entry.getKey();
-                switch (key) {
-                    case FIRST_NAME -> {
-                        if (!validator.isNameValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
-                            isCorrect = false;
-                        }
-                    }
-                    case LAST_NAME -> {
-                        if (!validator.isNameValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
-                            isCorrect = false;
-                        }
-                    }
-                    case LOGIN -> {
-                        if (!validator.isLoginValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
-                            isCorrect = false;
-                        } else {
-                            Optional<User> optionalUser = userDao.findUserByOneParam(LOGIN, entry.getValue());
-                            if (!optionalUser.isEmpty()) {
-                                invalidParameters.put(BUSY_LOGIN, BUSY_LOGIN);
-                                isCorrect = false;
-                            }
-                        }
-                    }
-                    case EMAIL -> {
-                        if (!validator.isEmailValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
-                            isCorrect = false;
-                        } else {
-                            Optional<User> optionalUser = userDao.findUserByOneParam(EMAIL, entry.getValue());
-                            if (!optionalUser.isEmpty()) {
-                                invalidParameters.put(BUSY_EMAIL, BUSY_EMAIL);
-                                isCorrect = false;
-                            }
-                        }
-                    }
-                    case PHONE -> {
-                        if (!validator.isPhoneValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
-                            isCorrect = false;
-                        } else {
-                            Optional<User> optionalUser = userDao.findUserByOneParam(PHONE, entry.getValue());
-                            if (!optionalUser.isEmpty()) {
-                                invalidParameters.put(BUSY_PHONE, BUSY_PHONE);
-                                isCorrect = false;
-                            }
-                        }
-                    }
-                    case PASSWORD -> {
-                        if (!validator.isPasswordValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
-                            isCorrect = false;
-                        }
-                    }
-                }
-            }
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        userData.putAll(invalidParameters);
-        return isCorrect;
     }
 
     public boolean addNewUser(Map<String, String> userData) throws ServiceException {
@@ -128,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(userData.get(FIRST_NAME));
         user.setLastName(userData.get(LAST_NAME));
-        user.setLogin(userData.get(LOGIN));
-        user.setEmail(userData.get(EMAIL));
+        user.setLogin(userData.get(LOGIN.toLowerCase()));
+        user.setEmail(userData.get(EMAIL.toLowerCase()));
         user.setPhone(userData.get(PHONE));
 
         hashPassword = PasswordEncoder.getHashedPassword(userData.get(PASSWORD));
@@ -138,9 +65,11 @@ public class UserServiceImpl implements UserService {
         try {
             userDao.create(user, hashPassword);
         } catch (DaoException e) {
-            //TODO
+            logger.log(Level.ERROR, "error while addNewUser in UserService. {}",e.getMessage());
             throw new ServiceException(e);
         }
         return true;
     }
+
+
 }

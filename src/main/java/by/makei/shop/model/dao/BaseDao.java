@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface BaseDao< T extends AbstractEntity> {
     static final Logger logger = LogManager.getLogger();
+    static final String PARAMETER_VALIDATOR_PATTERN = "[a-z_]+";
 
     List<T> findAll()throws DaoException;
 

@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 import static by.makei.shop.model.command.PagePath.INDEX;
 
 public class LogOutCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
-
 
     @Override
     public Router execute(HttpServletRequest request) {

@@ -35,7 +35,6 @@ public class ProxyConnection implements Connection {// нужен доступ �
         }
     }
 
-
     public Statement createStatement() throws SQLException {
         return connection.createStatement();
     }

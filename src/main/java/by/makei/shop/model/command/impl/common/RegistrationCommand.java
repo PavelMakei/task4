@@ -6,9 +6,10 @@ import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.PagePath;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.service.impl.UserServiceImpl;
-import by.makei.shop.model.validator.AttributeValidator;
-import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
+import by.makei.shop.model.validator.ParameterValidator;
+import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,12 +19,10 @@ import java.util.Map;
 import static by.makei.shop.model.command.AttributeName.*;
 
 public class RegistrationCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
-
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         UserServiceImpl userService = UserServiceImpl.getInstance();
         Router router = new Router();
 
@@ -37,16 +36,15 @@ public class RegistrationCommand implements Command {
 
 
         try {
-        //TODO проверку на наличие такого пользователя по логину, паролю, телефону, мылу?
 
-        if (userService.validateUserData(userDataMap)) {
+        if (parameterValidator.validateUserData(userDataMap)) {
             // если валидно, то добавляем юзера в БД и переходим в мэин?
 
                 userService.addNewUser(userDataMap);
 
             //TODO переход по редирект и/или на страницу с уведомлением?
             router.setCurrentPage(PagePath.TEMP);
-            //TODO only for test - remove!!!
+            //TODO only for test - place right page!!!
 
             return router;
         } else {
@@ -57,8 +55,8 @@ public class RegistrationCommand implements Command {
             router.setCurrentPage(PagePath.REGISTRATION);
         }
         } catch (ServiceException e) {
-            //TODO!!!!
-            throw new CommandException(e);
+            logger.log(Level.ERROR, "registration command error. {}", e.getMessage());
+            throw new CommandException("registration command error.",e);
         }
         return router;
     }

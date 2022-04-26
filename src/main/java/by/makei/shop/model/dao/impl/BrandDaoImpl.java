@@ -1,0 +1,140 @@
+package by.makei.shop.model.dao.impl;
+
+import by.makei.shop.exception.DaoException;
+import by.makei.shop.model.connectionpool.DbConnectionPool;
+import by.makei.shop.model.connectionpool.ProxyConnection;
+import by.makei.shop.model.dao.BrandDao;
+import by.makei.shop.model.dao.mapper.impl.BrandMapper;
+import by.makei.shop.model.entity.Brand;
+import org.apache.logging.log4j.Level;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class BrandDaoImpl implements BrandDao {
+
+    private static final String SQL_SELECT_BRAND_BY_VAR_PARAM = """
+            SELECT id, brand_name FROM lightingshop.brands WHERE %s = ?""";
+
+    private static final String SQL_SELECT_ALL_BRANDS = """
+            SELECT id, brand_name FROM lightingshop.brands""";
+
+
+    public Optional<Brand> findBrandByOneParam(String paramName, String paramValue) throws DaoException {
+        if (!paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
+            logger.log(Level.ERROR, "findBrandByOneParam incorrect paramName");
+            throw new DaoException("findBrandByOneParam incorrect paramName");
+        }
+        Connection connection = null;
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Optional<Brand> optionalBrand = Optional.empty();
+        String fullQuery = SQL_SELECT_BRAND_BY_VAR_PARAM + "WHERE " + paramName + " = ?";
+        try {
+            connection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement =
+                    connection.prepareStatement(String.format(SQL_SELECT_BRAND_BY_VAR_PARAM, paramName));
+            proxyConnection = (ProxyConnection) connection;
+            preparedStatement.setString(1, paramValue.toLowerCase());
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                optionalBrand = new BrandMapper().mapEntity(resultSet);
+                logger.log(Level.INFO, "brand was found by param {} and param value {}", paramName, paramValue);
+            }
+        } catch (SQLException e) {
+            if (proxyConnection != null) {
+                proxyConnection.setForChecking(true);
+            }
+            logger.log(Level.ERROR, "error while findBrandByOneParam");
+            throw new DaoException(e);
+        } finally {
+            finallyWhileClosing(connection, preparedStatement, resultSet);
+        }
+        return optionalBrand;
+    }
+
+    public List<Brand> findAllBrands() throws DaoException {
+        Connection connection = null;
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Optional<Brand> optionalBrand = Optional.empty();
+        List<Brand> resultList = new ArrayList<>();
+        try {
+            connection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement =
+                    connection.prepareStatement(SQL_SELECT_ALL_BRANDS);
+            proxyConnection = (ProxyConnection) connection;
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                optionalBrand = new BrandMapper().mapEntity(resultSet);
+                if (optionalBrand.isPresent()) {
+                    resultList.add(optionalBrand.get());
+                }
+                logger.log(Level.DEBUG, "brand was found by param");
+            }
+        } catch (SQLException e) {
+            if (proxyConnection != null) {
+                proxyConnection.setForChecking(true);
+            }
+            logger.log(Level.ERROR, "error while findAllBrands");
+            throw new DaoException(e);
+        } finally {
+            finallyWhileClosing(connection, preparedStatement, resultSet);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<Brand> findAll() throws DaoException {
+        return null;
+    }
+
+    @Override
+    public Brand findEntityById(int id) throws DaoException {
+        return null;
+    }
+
+    @Override
+    public boolean delete(Brand entity) throws DaoException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(int id) throws DaoException {
+        return false;
+    }
+
+    @Override
+    public boolean create(Brand entity) throws DaoException {
+        return false;
+    }
+
+    @Override
+    public Brand update(Brand entity) throws DaoException {
+        return null;
+    }
+
+    private void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
+            resultSet) {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "error while closing. {}", e.getMessage());
+        }
+    }
+}

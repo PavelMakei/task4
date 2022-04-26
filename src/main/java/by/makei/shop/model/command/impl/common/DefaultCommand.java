@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class DefaultCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) {
         logger.log(Level.INFO, "null or empty command");

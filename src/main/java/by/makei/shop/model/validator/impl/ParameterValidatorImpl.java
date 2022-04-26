@@ -1,0 +1,240 @@
+package by.makei.shop.model.validator.impl;
+
+import by.makei.shop.exception.DaoException;
+import by.makei.shop.exception.ServiceException;
+import by.makei.shop.model.dao.impl.*;
+import by.makei.shop.model.entity.Brand;
+import by.makei.shop.model.entity.Product;
+import by.makei.shop.model.entity.ProductType;
+import by.makei.shop.model.entity.User;
+import by.makei.shop.model.validator.AttributeValidator;
+import by.makei.shop.model.validator.ParameterValidator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+
+import static by.makei.shop.model.command.AttributeName.*;
+
+public class ParameterValidatorImpl implements ParameterValidator {
+    private static final Logger logger = LogManager.getLogger();
+    private static final ParameterValidatorImpl instance = new ParameterValidatorImpl();
+    private static final int MAX_FILE_VALUE = 4194304;
+
+    private ParameterValidatorImpl() {
+    }
+
+    public static ParameterValidatorImpl getInstance() {
+        return instance;
+    }
+
+    @Override
+    public boolean validateUserData(Map<String, String> userData) throws ServiceException {
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        UserDaoImpl userDao = new UserDaoImpl();
+        boolean isCorrect = true;
+        try {
+
+            for (Map.Entry<String, String> entry : userData.entrySet()) {
+                String key = entry.getKey();
+                switch (key) {
+                    case FIRST_NAME -> {
+                        if (!validator.isNameValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
+                            isCorrect = false;
+                        }
+                    }
+                    case LAST_NAME -> {
+                        if (!validator.isNameValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
+                            isCorrect = false;
+                        }
+                    }
+                    case LOGIN -> {
+                        if (!validator.isLoginValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
+                            isCorrect = false;
+                        } else {
+                            Optional<User> optionalUser = userDao.findUserByOneParam(LOGIN, entry.getValue());
+                            if (optionalUser.isPresent()) {
+                                invalidParameters.put(BUSY_LOGIN, BUSY_LOGIN);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                    case EMAIL -> {
+                        if (!validator.isEmailValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
+                            isCorrect = false;
+                        } else {
+                            Optional<User> optionalUser = userDao.findUserByOneParam(EMAIL, entry.getValue());
+                            if (optionalUser.isPresent()) {
+                                invalidParameters.put(BUSY_EMAIL, BUSY_EMAIL);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                    case PHONE -> {
+                        if (!validator.isPhoneValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
+                            isCorrect = false;
+                        } else {
+                            Optional<User> optionalUser = userDao.findUserByOneParam(PHONE, entry.getValue());
+                            if (optionalUser.isPresent()) {
+                                invalidParameters.put(BUSY_PHONE, BUSY_PHONE);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                    case PASSWORD -> {
+                        if (!validator.isPasswordValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
+                            isCorrect = false;
+                        }
+                    }
+                }
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        userData.putAll(invalidParameters);
+        return isCorrect;
+    }
+
+    @Override
+    public boolean validateJpg(byte[] photo) {
+        InputStream targetStream = new ByteArrayInputStream(photo);
+        if (photo.length > MAX_FILE_VALUE) {
+            logger.log(Level.INFO, "ParameterValidator validateJpg file too big, allowed length is 4194304, but {}", photo.length);
+            return false;
+        }
+
+        boolean canRead = false;
+        try (ImageInputStream iis = ImageIO.createImageInputStream(targetStream)) {
+            Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("jpg");
+            while (readers.hasNext()) {
+                ImageReader reader = readers.next();
+                reader.setInput(iis);
+                reader.read(0);
+                canRead = true;
+                logger.log(Level.INFO, "photo file.jpg validated true");
+                break;
+            }
+        } catch (IOException exp) {
+            logger.log(Level.INFO, "photo file.jpg can't be recognised");
+        }
+        return canRead;
+    }
+
+    @Override
+    public boolean validateProductData(Map<String, String> productData, byte[] photoJpg) throws ServiceException {
+        boolean isCorrect = true;
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        ProductDaoImpl productDao = new ProductDaoImpl();
+        BrandDaoImpl brandDao = new BrandDaoImpl();
+        ProductTypeDaoImpl productTypeDao = new ProductTypeDaoImpl();
+        try {
+            for (Map.Entry<String, String> entry : productData.entrySet()) {
+                String key = entry.getKey();
+                switch (key) {
+                    case BRAND_ID -> {
+                        if (!validator.isIntValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_BRAND_ID, INVALID_BRAND_ID);
+                            isCorrect = false;
+                        } else {
+                            Optional<Brand> optionalBrand = brandDao.findBrandByOneParam(ID, entry.getValue());
+                            if (optionalBrand.isEmpty()) {
+                                invalidParameters.put(INVALID_BRAND_ID, INVALID_BRAND_ID);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                    case TYPE_ID -> {
+                        if (!validator.isIntValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_TYPE_ID, INVALID_TYPE_ID);
+                            isCorrect = false;
+                        } else {
+                            Optional<ProductType> optionalType = productTypeDao.findTypeByOneParam(ID, entry.getValue());
+                            if (optionalType.isEmpty()) {
+                                invalidParameters.put(INVALID_TYPE_ID, INVALID_TYPE_ID);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                    case PRODUCT_NAME -> {
+                        if (!validator.isProductNameValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_PRODUCT_NAME, INVALID_PRODUCT_NAME);
+                            isCorrect = false;
+                        } else {
+                            Optional<Product> optionalProduct = productDao.findProductByOneParam(PRODUCT_NAME, entry.getValue());
+                            if (optionalProduct.isPresent()) {
+                                invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                    case DESCRIPTION -> {
+                        if (!validator.isDescriptionValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_DESCRIPTION, INVALID_DESCRIPTION);
+                            isCorrect = false;
+                        }
+                    }
+                    case PRICE -> {
+                        if (!validator.isDecimalValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_PRICE, INVALID_PRICE);
+                            isCorrect = false;
+                        }
+                    }
+                    case COLOUR -> {
+                        if (!validator.isColourValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_COLOUR, INVALID_COLOUR);
+                            isCorrect = false;
+                        }
+                    }
+                    case POWER -> {
+                        if (!validator.isIntValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_POWER, INVALID_POWER);
+                            isCorrect = false;
+                        }
+                    }
+                    case SIZE -> {
+                        if (!validator.isSizeValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_SIZE, INVALID_SIZE);
+                            isCorrect = false;
+                        }
+                    }
+                    case QUANTITY -> {
+                        if (!validator.isIntValid(entry.getValue())) {
+                            invalidParameters.put(INVALID_QUANTITY, INVALID_QUANTITY);
+                            isCorrect = false;
+                        }
+                    }
+                }
+            }
+        } catch (DaoException e) {
+            //TODO
+            e.printStackTrace();
+        }
+
+        if (!validateJpg(photoJpg)) {
+            invalidParameters.put(INVALID_PHOTO, INVALID_PHOTO);
+            isCorrect = false;
+        }
+
+
+        productData.putAll(invalidParameters);
+        return isCorrect;
+    }
+}

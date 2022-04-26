@@ -33,9 +33,8 @@ public final class DbConnectionPool {
                     freeDeque.size(), ConnectionFactory.MAX_CONNECTIONS);
         }
         checkIfPoolEmpty();
-        if (ConnectionFactory.IS_TIMER_SERVICE_ON) {
-            PoolService.startPoolService(this, freeDeque, busyDeque, forCheckingDeque);
-        }
+        PoolService.startPoolService( freeDeque, busyDeque, forCheckingDeque);
+
     }
 
     public static DbConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
@@ -54,19 +53,7 @@ public final class DbConnectionPool {
     }
 
     public Connection takeConnection() {
-//        ProxyConnection connection = null;
-//        try {
-//            connection = freeDeque.take();
-//            busyDeque.put(connection);
-//            connection.setLastThread(Thread.currentThread());
-//        } catch (InterruptedException e) {
-//            logger.log(Level.ERROR, "Thread has been interrupted! :{}", e.getMessage());
-//            Thread.currentThread().interrupt();
-//        }
-//        return connection;
-
         ProxyConnection connection = null;
-
         try {
             semaphore.acquire();
             connection = freeDeque.take();
@@ -108,10 +95,7 @@ public final class DbConnectionPool {
     }
 
     public boolean shutdown() {
-        if (ConnectionFactory.IS_TIMER_SERVICE_ON) {
-            PoolService.stopPoolService();
-        }
-
+        PoolService.stopPoolService();
         while (!freeDeque.isEmpty()) {
             try {
                 freeDeque.take().reallyClose();
@@ -161,7 +145,7 @@ public final class DbConnectionPool {
     private void checkIfPoolEmpty() {
         if (freeDeque.isEmpty()) {
             logger.log(Level.FATAL, "Can't create connections");
-            throw new RuntimeException("Can't create connections");
+            throw new RuntimeException("Can't create connections. Stop application");
         }
     }
 

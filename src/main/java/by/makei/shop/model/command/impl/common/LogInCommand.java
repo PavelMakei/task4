@@ -19,7 +19,6 @@ import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.*;
 
 public class LogInCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     private static final String ERROR = "LoginCommand Service exception : ";
 
     @Override

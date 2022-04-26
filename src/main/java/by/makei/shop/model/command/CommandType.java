@@ -1,6 +1,7 @@
 package by.makei.shop.model.command;
 
 import by.makei.shop.exception.CommandException;
+import by.makei.shop.model.command.impl.admin.AddNewProductCommand;
 import by.makei.shop.model.command.impl.common.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +11,9 @@ public enum CommandType {
     DEFAULT(new DefaultCommand()),
     LOGIN(new LogInCommand()),
     LOGOUT(new LogOutCommand()),
-    REGISTRATION(new RegistrationCommand());
-//    ERROR(new ErrorCommand());
+    REGISTRATION(new RegistrationCommand()),
+    ADD_NEW_PRODUCT(new AddNewProductCommand()),
+    GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProduct());
 
 
     private static final Logger logger = LogManager.getLogger();

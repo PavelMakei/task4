@@ -7,16 +7,25 @@
     <filter>
         <filter-name>CharEncodingFilter</filter-name>
         <filter-class>by.makei.shop.controller.filter.CharEncodingFilter</filter-class>
-        <init-param>
-            <param-name>charset</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-
+<!--        <init-param>-->
+<!--            <param-name>charset</param-name>-->
+<!--            <param-value>UTF-8</param-value>-->
+<!--        </init-param>-->
     </filter>
     <filter-mapping>
         <filter-name>CharEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+<!-- 0000000000000000000000000000000000000000000000-->
+    <filter>
+        <filter-name>ParameterCorrectFilter</filter-name>
+        <filter-class>by.makei.shop.controller.filter.ParameterCorrectFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ParameterCorrectFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+<!--  000000000000000000000000000000000000000000000  -->
 
     <error-page>
         <error-code>403</error-code>

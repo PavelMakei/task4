@@ -23,7 +23,6 @@ class ConnectionFactory {//ограничить доступ извне
     private static final String PROPERTIES_FILE;
     private static final Properties properties = new Properties();
     public static final int MAX_CONNECTIONS;
-    public static final boolean IS_TIMER_SERVICE_ON;
     public static final int TIMER_SERVICE_INTERVAL;
     public static final int TIMER_SERVICE_DELAY = 0;
     public static final int NUMBER_OF_ATTEMPTS;
@@ -35,7 +34,6 @@ class ConnectionFactory {//ограничить доступ извне
         DB_URL = properties.getProperty("db_url", "jdbc:mysql://localhost:3306/lightingshop");
         MAX_CONNECTIONS = Integer.parseInt(properties.getProperty("max_connections", "8"));
         String driverClassName = properties.getProperty("db_driver", "com.mysql.cj.jdbc.Driver");
-        IS_TIMER_SERVICE_ON = Boolean.parseBoolean(properties.getProperty("is_timer_service_on", "false"));
         TIMER_SERVICE_INTERVAL = Integer.parseInt(properties.getProperty("timer_service_interval", "1000"));
         NUMBER_OF_ATTEMPTS = Integer.parseInt(properties.getProperty("number_of_attempts", "3"));
 
@@ -48,9 +46,7 @@ class ConnectionFactory {//ограничить доступ извне
         setServerTimeZoneProperty();
     }
 
-    private ConnectionFactory() {
-    }
-
+    private ConnectionFactory() {}
     //friendly methods
     static Connection getConnection() throws DbConnectionPoolException {
         try {

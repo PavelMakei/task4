@@ -20,16 +20,16 @@
 <html>
 <head>
 
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
+<%--    <script>--%>
+<%--        function preventBack() {--%>
+<%--            window.history.forward();--%>
+<%--        }--%>
 
-        setTimeout("preventBack()", 0);
-        window.onunload = function() {
-            null
-        };
-    </script>
+<%--        setTimeout("preventBack()", 0);--%>
+<%--        window.onunload = function() {--%>
+<%--            null--%>
+<%--        };--%>
+<%--    </script>--%>
 
     <link href="${absolutePath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -64,7 +64,7 @@
                                     >
                                         <fmt:message key="first.name"/>
                                         <c:if test="${!empty invalid_first_name}">
-                                            <fmt:message key="incorrect.enter"/>
+                                            <fmt:message key="incorrect.it.enter"/>
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -89,7 +89,7 @@
                                     >
                                         <fmt:message key="last.name"/>
                                         <c:if test="${!empty invalid_last_name}">
-                                            <fmt:message key="incorrect.enter"/>
+                                            <fmt:message key="incorrect.it.enter"/>
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -114,7 +114,7 @@
                                     >
                                         <fmt:message key="login"/>
                                         <c:if test="${!empty invalid_login}">
-                                            <fmt:message key="incorrect.enter"/>
+                                            <fmt:message key="incorrect.he.enter"/>
                                         </c:if>
                                         <c:if test="${!empty busy_login}">
                                             <fmt:message key="exists.choose.other"/>
@@ -143,7 +143,7 @@
                                     >
                                         <fmt:message key="email"/>
                                         <c:if test="${!empty invalid_email}">
-                                            <fmt:message key="incorrect.enter"/>
+                                            <fmt:message key="incorrect.he.enter"/>
                                         </c:if>
                                         <c:if test="${!empty busy_email}">
                                             <fmt:message key="exists.choose.other"/>
@@ -186,7 +186,7 @@
                                     >
                                         <fmt:message key="mobile.phone"/>
                                         <c:if test="${!empty invalid_phone}">
-                                            <fmt:message key="incorrect.enter"/>
+                                            <fmt:message key="incorrect.he.enter"/>
                                         </c:if>
                                         <c:if test="${!empty busy_phone}">
                                             <fmt:message key="exists.choose.other"/>

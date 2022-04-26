@@ -1,5 +1,6 @@
-package by.makei.shop.model.dao.mapper;
+package by.makei.shop.model.dao.mapper.impl;
 
+import by.makei.shop.model.dao.mapper.Mapper;
 import by.makei.shop.model.entity.AccessLevel;
 import by.makei.shop.model.entity.User;
 
@@ -10,25 +11,18 @@ import java.util.Optional;
 
 import static by.makei.shop.model.command.AttributeName.*;
 
-public class UserMapper implements Mapper<User>{
-//    private static final String USER_ID = "id";
-//    private static final String FIRST_NAME = "first_name";
-//    private static final String LAST_NAME = "last_name";
-//    private static final String LOGIN = "login";
-//    private static final String EMAIL = "email";
-//    private static final String PHONE = "phone";
-
+public class UserMapper implements Mapper<User> {
 
     public Optional<User> mapEntity(ResultSet resultSet){
         User user = new User();
         Optional<User> optionalUser;
 
         try {
-            user.setId(resultSet.getInt(USER_ID));
+            user.setId(resultSet.getInt(ID));
             user.setFirstName(resultSet.getString(FIRST_NAME));
             user.setLastName(resultSet.getString(LAST_NAME));
-            user.setLogin(resultSet.getString(LOGIN));
-            user.setEmail(resultSet.getString(EMAIL));
+            user.setLogin(resultSet.getString(LOGIN.toLowerCase()));
+            user.setEmail(resultSet.getString(EMAIL.toLowerCase()));
             user.setPhone(resultSet.getString(PHONE));
             user.setAccessLevel(AccessLevel.valueOf(resultSet.getString(ACCESS_LEVEL)));
             user.setDate(resultSet.getDate(REGISTRATION_DATE));

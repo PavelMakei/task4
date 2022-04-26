@@ -119,15 +119,7 @@ public class User extends AbstractEntity{
 
         User user = (User) o;
 
-        if (id != user.id) return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
-        if (login != null ? !login.equals(user.login) : user.login != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
-        if (accessLevel != user.accessLevel) return false;
-        if (date != null ? !date.equals(user.date) : user.date != null) return false;
-        return amount != null ? amount.equals(user.amount) : user.amount == null;
+       return  (id == user.id);
     }
 
     @Override

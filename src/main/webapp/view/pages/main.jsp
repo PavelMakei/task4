@@ -57,6 +57,24 @@
             </tbody>
         </table>
     </form>
+
+    <br>
+    <form action="${absolutePath}/controller" method="post">
+        <table>
+            <tbody>
+            <tr>
+                <input type="hidden" name="command" value="go_to_add_new_product">
+                First Name = ${sessionScope.user.firstName}
+                <br/>
+                Last Name = ${sessionScope.user.lastName}
+                <br/>
+                Access level = ${sessionScope.user.accessLevel}
+                <br/>
+                <td><input type="submit" value="AddNewProductPage"> </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 </c:if>
 
 
