@@ -5,7 +5,6 @@ import by.makei.shop.model.connectionpool.DbConnectionPool;
 import by.makei.shop.model.connectionpool.ProxyConnection;
 import by.makei.shop.model.dao.UserDao;
 import by.makei.shop.model.dao.mapper.impl.UserMapper;
-import by.makei.shop.model.entity.AbstractEntity;
 import by.makei.shop.model.entity.User;
 import org.apache.logging.log4j.Level;
 
@@ -106,8 +105,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findUserByOneParam(String paramName, String paramValue) throws DaoException {
-        if (!paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
+    public Optional<User> findEntityByOneParam(String paramName, String paramValue) throws DaoException {
+        if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
             logger.log(Level.ERROR, "findUserByOneParam incorrect paramName");
             throw new DaoException("findUserByOneParam incorrect paramName");
         }
@@ -141,46 +140,18 @@ public class UserDaoImpl implements UserDao {
         return optionalUser;
     }
 
-    private void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, "error while closing. {}", e.getMessage());
-        }
+    @Override
+    public List<User> findAll() throws DaoException {
+        return null;
     }
 
 
     //TODO override methods!!!!!!!!!!!
-    @Override
-    public boolean delete(User entity) {
-        return false;
-    }
+
+
 
     @Override
-    public boolean create(User entity) {
-        return false;
-    }
-
-    @Override
-    public List findAll() throws DaoException {
-        return null;
-    }
-
-    @Override
-    public AbstractEntity findEntityById(int id) throws DaoException {
-        return null;
-    }
-
-    @Override
-    public boolean delete(AbstractEntity entity) throws DaoException {
+    public boolean delete(User entity) throws DaoException {
         return false;
     }
 
@@ -190,12 +161,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean create(AbstractEntity entity) throws DaoException {
+    public boolean create(User entity) throws DaoException {
         return false;
     }
 
     @Override
-    public AbstractEntity update(AbstractEntity entity) throws DaoException {
+    public User update(User entity) throws DaoException {
         return null;
     }
 

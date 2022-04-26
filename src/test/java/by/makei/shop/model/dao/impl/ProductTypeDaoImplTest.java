@@ -13,7 +13,7 @@ class ProductTypeDaoImplTest {
     @Test
     void findAllTypesTest() throws DaoException {
         ProductTypeDaoImpl productTypeDao = new ProductTypeDaoImpl();
-        List<ProductType> types = productTypeDao.findAllTypes();
+        List<ProductType> types = productTypeDao.findAll();
         assertTrue(types.size() > 0);
     }
 }

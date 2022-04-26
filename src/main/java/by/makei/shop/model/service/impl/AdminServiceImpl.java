@@ -2,6 +2,7 @@ package by.makei.shop.model.service.impl;
 
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.exception.ServiceException;
+import by.makei.shop.model.dao.BaseDao;
 import by.makei.shop.model.dao.impl.BrandDaoImpl;
 import by.makei.shop.model.dao.impl.ProductDaoImpl;
 import by.makei.shop.model.dao.impl.ProductTypeDaoImpl;
@@ -60,10 +61,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Map<String, Integer> getAllBrandsMap() throws ServiceException {
-        BrandDaoImpl brandDao = new BrandDaoImpl();
+        BaseDao<Brand> brandDao = new BrandDaoImpl();
         Map<String,Integer> brandsMap = new TreeMap<>();
         try {
-            List<Brand> brandsList = brandDao.findAllBrands();
+            List<Brand> brandsList = brandDao.findAll();
             for (Brand brand:brandsList){
                 brandsMap.put(brand.getBrandName(), brand.getId());
             }
@@ -76,10 +77,10 @@ return brandsMap;
 
     @Override
     public Map<String, Integer> getAllTypesMap() throws ServiceException{
-        ProductTypeDaoImpl productTypeDao = new ProductTypeDaoImpl();
+        BaseDao<ProductType> productTypeDao = new ProductTypeDaoImpl();
         Map<String,Integer> typesMap = new TreeMap<>();
         try{
-            List<ProductType> productTypeList = productTypeDao.findAllTypes();
+            List<ProductType> productTypeList = productTypeDao.findAll();
             for(ProductType productType:productTypeList){
                 typesMap.put(productType.getTypeName(), productType.getId());
             }

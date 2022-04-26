@@ -24,9 +24,9 @@ public class BrandDaoImpl implements BrandDao {
     private static final String SQL_SELECT_ALL_BRANDS = """
             SELECT id, brand_name FROM lightingshop.brands""";
 
-
-    public Optional<Brand> findBrandByOneParam(String paramName, String paramValue) throws DaoException {
-        if (!paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
+    @Override
+    public Optional<Brand> findEntityByOneParam(String paramName, String paramValue) throws DaoException {
+        if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
             logger.log(Level.ERROR, "findBrandByOneParam incorrect paramName");
             throw new DaoException("findBrandByOneParam incorrect paramName");
         }
@@ -59,7 +59,8 @@ public class BrandDaoImpl implements BrandDao {
         return optionalBrand;
     }
 
-    public List<Brand> findAllBrands() throws DaoException {
+    @Override
+    public List<Brand> findAll() throws DaoException {
         Connection connection = null;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
@@ -91,15 +92,6 @@ public class BrandDaoImpl implements BrandDao {
         return resultList;
     }
 
-    @Override
-    public List<Brand> findAll() throws DaoException {
-        return null;
-    }
-
-    @Override
-    public Brand findEntityById(int id) throws DaoException {
-        return null;
-    }
 
     @Override
     public boolean delete(Brand entity) throws DaoException {
@@ -121,20 +113,20 @@ public class BrandDaoImpl implements BrandDao {
         return null;
     }
 
-    private void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
-            resultSet) {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, "error while closing. {}", e.getMessage());
-        }
-    }
+//    private void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
+//            resultSet) {
+//        try {
+//            if (resultSet != null) {
+//                resultSet.close();
+//            }
+//            if (preparedStatement != null) {
+//                preparedStatement.close();
+//            }
+//            if (connection != null) {
+//                connection.close();
+//            }
+//        } catch (SQLException e) {
+//            logger.log(Level.ERROR, "error while closing. {}", e.getMessage());
+//        }
+//    }
 }

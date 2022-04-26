@@ -52,21 +52,24 @@
 </head>
 <body>
 <div class="wrapper">
+    <div class="header">
+        <%@include file="../header.jsp" %>
+    </div> <!-- end of header -->
     <div class="content">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-7">
                     <div class="card">
 
-                        <div class="card-header" style="text-align:center;"><fmt:message key="add.new.product"/></div>
-                        <div class="card-body">
+                        <div class="card-header bg-light" style="text-align:center; color: black; font-size: large"><fmt:message key="add.new.product"/></div>
+                        <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal" method="post" action="${absolutePath}/controller"
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="add_new_product">
 
                                 <%------------------------------------------------------Brands---------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="brand" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_brand_id}">
                                                 style="color: red"
@@ -96,7 +99,7 @@
                                     </div>
                                 </div>
                                 <%--------------------------------------------------Types------------------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="type_id" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_type_id}">
                                                 style="color: red"
@@ -127,7 +130,7 @@
                                     </div>
                                 </div>
                                 <%------------------------------------------------------ProductName---------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="product_name" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_product_name || !empty busy_product_name }">
                                                 style="color: red"
@@ -159,7 +162,7 @@
                                 </div>
 
                                 <%--                                ------------------------------------------- description (text)--------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="description" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_description}">
                                                 style="color: red"
@@ -188,7 +191,7 @@
                                 </div>
 
                                 <%--                    ------------------------------------------- price dec(10,2)--------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="price" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_price}">
                                                 style="color: red"
@@ -217,7 +220,7 @@
                                 </div>
 
                                 <%--                                ------------------------------------------- colour varchar(45)----------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="colour" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_colour}">
                                                 style="color: red"
@@ -246,7 +249,7 @@
                                 </div>
 
                                 <%--                                ------------------------------------------- power int--------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="power" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_power}">
                                                 style="color: red"
@@ -275,7 +278,7 @@
                                 </div>
 
                                 <%--                                ------------------------------------------- size varchar (45)--------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="size" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_size}">
                                                 style="color: red"
@@ -305,7 +308,7 @@
                                 </div>
 
                                 <%--                                ------------------------------------------- quantity_in_stock int--------------------------------------%>
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="quantity" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_quantity}">
                                                 style="color: red"
@@ -334,7 +337,7 @@
                                 </div>
                                 <%--                                ------------------------------------------- photo blob--------------------------------------%>
 
-                                <div class="form-group">
+                                <div class="form-group" style="color: white">
                                     <label for="photo" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_photo}">
                                                 style="color: red"
@@ -359,7 +362,6 @@
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <%------------------------------------------Button--------------------------------------------%>
                                 <button type="submit" class="btn btn-primary btn-lg btn-block login-button">

@@ -2,7 +2,6 @@ package by.makei.shop.model.dao.impl;
 
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.model.entity.Brand;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ Logger logger = LogManager.getLogger();
     @Test
     void findAllBrandsTest() throws DaoException {
         BrandDaoImpl brandDao = new BrandDaoImpl();
-        List<Brand> brands = brandDao.findAllBrands();
+        List<Brand> brands = brandDao.findAll();
         assertTrue(brands.size() > 0);
     }
 

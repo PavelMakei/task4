@@ -27,8 +27,9 @@ public class ProductDaoImpl implements ProductDao {
             SELECT id, brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock
             FROM lightingshop.products WHERE %s = ?""";
 
-    public Optional<Product> findProductByOneParam(String paramName, String paramValue) throws DaoException {
-        if (!paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
+    @Override
+    public Optional<Product> findEntityByOneParam(String paramName, String paramValue) throws DaoException {
+        if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
             logger.log(Level.ERROR, "findProductByOneParam incorrect paramName");
             throw new DaoException("findProductByOneParam incorrect paramName");
         }
@@ -61,8 +62,6 @@ public class ProductDaoImpl implements ProductDao {
         }
         return optionalProduct;
     }
-
-
 
 
     public boolean create(Product product, int quantity) throws DaoException {
@@ -118,10 +117,6 @@ public class ProductDaoImpl implements ProductDao {
         return null;
     }
 
-    @Override
-    public Product findEntityById(int id) throws DaoException {
-        return null;
-    }
 
     @Override
     public boolean delete(Product entity) throws DaoException {
@@ -143,20 +138,20 @@ public class ProductDaoImpl implements ProductDao {
         return null;
     }
 
-    private void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
-            resultSet) {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, "error while closing. {}", e.getMessage());
-        }
-    }
+//    private void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
+//            resultSet) {
+//        try {
+//            if (resultSet != null) {
+//                resultSet.close();
+//            }
+//            if (preparedStatement != null) {
+//                preparedStatement.close();
+//            }
+//            if (connection != null) {
+//                connection.close();
+//            }
+//        } catch (SQLException e) {
+//            logger.log(Level.ERROR, "error while closing. {}", e.getMessage());
+//        }
+//    }
 }

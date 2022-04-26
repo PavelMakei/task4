@@ -6,18 +6,17 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 
 public interface BaseDao< T extends AbstractEntity> {
     static final Logger logger = LogManager.getLogger();
     static final String PARAMETER_VALIDATOR_PATTERN = "[a-z_]+";
 
-    List<T> findAll()throws DaoException;
+    Optional<T> findEntityByOneParam(String paramName, String paramValue) throws DaoException;
 
-    T findEntityById(int id)throws DaoException;
+    List<T> findAll()throws DaoException;
 
     boolean delete(T entity)throws DaoException;
 
@@ -37,14 +36,20 @@ public interface BaseDao< T extends AbstractEntity> {
             }
         }
     }
-
-    default void close(ResultSet resultSet){
-        try{
-            if(resultSet != null){
+    default void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
+            resultSet) {
+        try {
+            if (resultSet != null) {
                 resultSet.close();
             }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         } catch (SQLException e) {
-            logger.log(Level.ERROR,"result set was not closed. {}", e.getMessage());
+            logger.log(Level.ERROR, "Dao error while closing resources. {}", e.getMessage());
         }
     }
 

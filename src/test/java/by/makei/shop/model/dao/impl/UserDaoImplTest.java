@@ -21,7 +21,7 @@ class UserDaoImplTest {
 
     @Test
     void findUserByByOneParamTest() throws DaoException {
-        Optional<User> actual = userDao.findUserByOneParam(LOGIN,USER_LOGIN);
+        Optional<User> actual = userDao.findEntityByOneParam(LOGIN,USER_LOGIN);
         assert(!actual.isEmpty());
     }
 

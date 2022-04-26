@@ -2,7 +2,11 @@ package by.makei.shop.model.validator.impl;
 
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.exception.ServiceException;
-import by.makei.shop.model.dao.impl.*;
+import by.makei.shop.model.dao.BaseDao;
+import by.makei.shop.model.dao.impl.BrandDaoImpl;
+import by.makei.shop.model.dao.impl.ProductDaoImpl;
+import by.makei.shop.model.dao.impl.ProductTypeDaoImpl;
+import by.makei.shop.model.dao.impl.UserDaoImpl;
 import by.makei.shop.model.entity.Brand;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.entity.ProductType;
@@ -66,7 +70,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
                             isCorrect = false;
                         } else {
-                            Optional<User> optionalUser = userDao.findUserByOneParam(LOGIN, entry.getValue());
+                            Optional<User> optionalUser = userDao.findEntityByOneParam(LOGIN, entry.getValue());
                             if (optionalUser.isPresent()) {
                                 invalidParameters.put(BUSY_LOGIN, BUSY_LOGIN);
                                 isCorrect = false;
@@ -78,7 +82,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
                             isCorrect = false;
                         } else {
-                            Optional<User> optionalUser = userDao.findUserByOneParam(EMAIL, entry.getValue());
+                            Optional<User> optionalUser = userDao.findEntityByOneParam(EMAIL, entry.getValue());
                             if (optionalUser.isPresent()) {
                                 invalidParameters.put(BUSY_EMAIL, BUSY_EMAIL);
                                 isCorrect = false;
@@ -90,7 +94,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
                             isCorrect = false;
                         } else {
-                            Optional<User> optionalUser = userDao.findUserByOneParam(PHONE, entry.getValue());
+                            Optional<User> optionalUser = userDao.findEntityByOneParam(PHONE, entry.getValue());
                             if (optionalUser.isPresent()) {
                                 invalidParameters.put(BUSY_PHONE, BUSY_PHONE);
                                 isCorrect = false;
@@ -133,6 +137,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
             }
         } catch (IOException exp) {
             logger.log(Level.INFO, "photo file.jpg can't be recognised");
+            //it's normal work of validator
         }
         return canRead;
     }
@@ -142,8 +147,8 @@ public class ParameterValidatorImpl implements ParameterValidator {
         boolean isCorrect = true;
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        ProductDaoImpl productDao = new ProductDaoImpl();
-        BrandDaoImpl brandDao = new BrandDaoImpl();
+        BaseDao<Product> productDao = new ProductDaoImpl();
+        BaseDao<Brand> brandDao = new BrandDaoImpl();
         ProductTypeDaoImpl productTypeDao = new ProductTypeDaoImpl();
         try {
             for (Map.Entry<String, String> entry : productData.entrySet()) {
@@ -154,7 +159,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             invalidParameters.put(INVALID_BRAND_ID, INVALID_BRAND_ID);
                             isCorrect = false;
                         } else {
-                            Optional<Brand> optionalBrand = brandDao.findBrandByOneParam(ID, entry.getValue());
+                            Optional<Brand> optionalBrand = brandDao.findEntityByOneParam(ID, entry.getValue());
                             if (optionalBrand.isEmpty()) {
                                 invalidParameters.put(INVALID_BRAND_ID, INVALID_BRAND_ID);
                                 isCorrect = false;
@@ -166,7 +171,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             invalidParameters.put(INVALID_TYPE_ID, INVALID_TYPE_ID);
                             isCorrect = false;
                         } else {
-                            Optional<ProductType> optionalType = productTypeDao.findTypeByOneParam(ID, entry.getValue());
+                            Optional<ProductType> optionalType = productTypeDao.findEntityByOneParam(ID, entry.getValue());
                             if (optionalType.isEmpty()) {
                                 invalidParameters.put(INVALID_TYPE_ID, INVALID_TYPE_ID);
                                 isCorrect = false;
@@ -178,7 +183,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             invalidParameters.put(INVALID_PRODUCT_NAME, INVALID_PRODUCT_NAME);
                             isCorrect = false;
                         } else {
-                            Optional<Product> optionalProduct = productDao.findProductByOneParam(PRODUCT_NAME, entry.getValue());
+                            Optional<Product> optionalProduct = productDao.findEntityByOneParam(PRODUCT_NAME, entry.getValue());
                             if (optionalProduct.isPresent()) {
                                 invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
                                 isCorrect = false;
@@ -224,15 +229,15 @@ public class ParameterValidatorImpl implements ParameterValidator {
                 }
             }
         } catch (DaoException e) {
-            //TODO
-            e.printStackTrace();
+            logger.log(Level.ERROR, "ParameterValidator error while validateProductData {}", e.getMessage());
+            throw new ServiceException("ParameterValidator error while validateProductData", e);
+            //TODO Создать новый validator exception?
         }
 
         if (!validateJpg(photoJpg)) {
             invalidParameters.put(INVALID_PHOTO, INVALID_PHOTO);
             isCorrect = false;
         }
-
 
         productData.putAll(invalidParameters);
         return isCorrect;
