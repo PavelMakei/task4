@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BaseDao< T extends AbstractEntity> {
-    static final Logger logger = LogManager.getLogger();
-    static final String PARAMETER_VALIDATOR_PATTERN = "[a-z_]+";
+    Logger logger = LogManager.getLogger();
+    String PARAMETER_VALIDATOR_PATTERN = "[a-z_]+";
 
     Optional<T> findEntityByOneParam(String paramName, String paramValue) throws DaoException;
 

@@ -6,11 +6,11 @@ import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.service.impl.AdminServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.Map;
 
-import static by.makei.shop.model.command.AttributeName.BRANDS_MAP;
-import static by.makei.shop.model.command.AttributeName.TYPES_MAP;
+import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ADDNEWPRODUCT;
 
 public class GoToAddNewProduct implements Command {
@@ -22,6 +22,8 @@ public class GoToAddNewProduct implements Command {
         Map<String,Integer> types;
         Router router = new Router();
         AdminServiceImpl adminService = new AdminServiceImpl();
+        HttpSession session = request.getSession();
+        session.setAttribute(CURRENT_PAGE,ADDNEWPRODUCT);
         try {
             brands = adminService.getAllBrandsMap();
             types = adminService.getAllTypesMap();

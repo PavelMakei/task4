@@ -16,7 +16,7 @@ public class User extends AbstractEntity{
 
     public User() {}
 
-    public User(int id, String firstName, String lastName, String login, String password, String email, String phone, AccessLevel accessLevel, Date date, BigDecimal amount) {
+    public User(int id, String firstName, String lastName, String login, String email, String phone, AccessLevel accessLevel, Date date, BigDecimal amount) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -119,7 +119,15 @@ public class User extends AbstractEntity{
 
         User user = (User) o;
 
-       return  (id == user.id);
+        if (id != user.id) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
+        if (accessLevel != user.accessLevel) return false;
+        if (date != null ? !date.equals(user.date) : user.date != null) return false;
+        return amount != null ? amount.equals(user.amount) : user.amount == null;
     }
 
     @Override

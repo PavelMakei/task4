@@ -52,6 +52,10 @@ public enum AttributeName {
     public static final String BUSY_PRODUCT_NAME = "busy_product_name";
     public static final String BRANDS_MAP = "brands_map";
     public static final String TYPES_MAP = "types_map";
+    public static final String CURRENT_PAGE = "current_page";
+    public static final String LOCALE_EN_US = "en_US";
+    public static final String LOCALE_RU_RU = "ru_RU";
+
 
 
 

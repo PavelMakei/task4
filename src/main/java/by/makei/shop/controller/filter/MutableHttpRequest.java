@@ -14,9 +14,9 @@ public class MutableHttpRequest extends HttpServletRequestWrapper {
     }
 
     public MutableHttpRequest addParameter(String name, String value) {
-        if (value != null)
-            mutableParams.put(name, new String[] { value });
-
+        if (value != null) {
+            mutableParams.put(name, new String[]{value});
+        }
         return this;
     }
 

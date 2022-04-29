@@ -13,7 +13,8 @@ public enum CommandType {
     LOGOUT(new LogOutCommand()),
     REGISTRATION(new RegistrationCommand()),
     ADD_NEW_PRODUCT(new AddNewProductCommand()),
-    GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProduct());
+    GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProduct()),
+    CHANGE_LANGUAGE(new ChangeLanguageCommand());
 
 
     private static final Logger logger = LogManager.getLogger();

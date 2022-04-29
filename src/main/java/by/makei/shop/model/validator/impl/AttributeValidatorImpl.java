@@ -17,7 +17,6 @@ public class AttributeValidatorImpl implements AttributeValidator {
     public static final String SIZE_PATTERN = "^[A-Za-zА-Яа-я0-9_* ]{3,45}$";
 
 
-
     private AttributeValidatorImpl(){}
 
     public static AttributeValidator getInstance (){

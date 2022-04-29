@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(userData.get(FIRST_NAME));
         user.setLastName(userData.get(LAST_NAME));
-        user.setLogin(userData.get(LOGIN.toLowerCase()));
-        user.setEmail(userData.get(EMAIL.toLowerCase()));
+        user.setLogin(userData.get(LOGIN));
+        user.setEmail(userData.get(EMAIL));
         user.setPhone(userData.get(PHONE));
 
         hashPassword = PasswordEncoder.getHashedPassword(userData.get(PASSWORD));

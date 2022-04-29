@@ -111,6 +111,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
             }
         } catch (DaoException e) {
             throw new ServiceException(e);
+            //TODO переделать метод с передачей проверки наличия в базу в отдельные сервисы? Бросать отдельный (validator?)эесепшен?
         }
         userData.putAll(invalidParameters);
         return isCorrect;
@@ -132,6 +133,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                 reader.setInput(iis);
                 reader.read(0);
                 canRead = true;
+                targetStream.close();
                 logger.log(Level.INFO, "photo file.jpg validated true");
                 break;
             }

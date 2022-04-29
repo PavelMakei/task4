@@ -17,6 +17,22 @@
 <fmt:setBundle basename="context.language"/>
 <html>
 <head>
+
+    <%-----------------Prevent to return to previous page---------------%>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout("preventBack()", 0);
+        window.onunload = function () {
+            null
+        };
+        history.pushState(null, null, document.URL);
+    </script>
+    <%------------------------------------------%>
+
+
     <title><fmt:message key="menu.title"/> </title>
     <script>
         function preventBack() {

@@ -7,8 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 @FunctionalInterface
 public interface Command {
-    Router execute(HttpServletRequest request) throws CommandException;
     Logger logger = LogManager.getLogger();
+
+    Router execute(HttpServletRequest request) throws CommandException;
 
     default void refresh(){}; //TODO realize
 }

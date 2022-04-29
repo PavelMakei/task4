@@ -8,7 +8,8 @@ import java.sql.ResultSet;
 import java.util.Optional;
 
 public interface Mapper <T extends AbstractEntity> {
-    Optional<T> mapEntity (ResultSet resultSet);
     Logger logger = LogManager.getLogger();
+
+    Optional<T> mapEntity (ResultSet resultSet);
 
 }

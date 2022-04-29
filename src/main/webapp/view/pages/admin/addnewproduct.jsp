@@ -1,4 +1,4 @@
-<%@ page import="java.util.HashMap" %>
+<%--<%@ page import="java.util.HashMap" %>--%>
 
 
 <%--
@@ -15,39 +15,34 @@
 <%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="language_text"/>
-<c:set var="absolutePath">${pageContext.request.contextPath}</c:set>
+<c:set var="path">${pageContext.request.contextPath}</c:set>
 
-
-<div> <%--TODO only for tests!!!!!!!!!--%>
-
-<%--    <%--%>
-<%--        HashMap brands_map = new HashMap();--%>
-<%--        brands_map.put("Belsvet", "1");--%>
-<%--        brands_map.put("Beltma", "2");--%>
-<%--        brands_map.put("SunLight", "7");--%>
-<%--        pageContext.setAttribute("brands_map", brands_map);--%>
-<%--    %>--%>
-<%--    <%--%>
-<%--        HashMap types_map = new HashMap();--%>
-<%--        types_map.put("Wall", "1");--%>
-<%--        types_map.put("Ceiling", "2");--%>
-<%--        types_map.put("Outdoor", "200");--%>
-<%--        pageContext.setAttribute("types_map", types_map);--%>
-<%--    %>--%>
-
-</div><%--TODO end for tests--%>
-
-
-<link rel="stylesheet" href="${absolutePath}/css/enter.css">
-
-<!DOCTYPE html>
 
 <head>
-    <title><title><fmt:message key="add.new.product"/></title>
-    <link href="${absolutePath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title><fmt:message key="add.new.product"/></title>
+    <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${path}/css/enter.css">
 
     <%--    TODO Check if Admin?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
     <%--    TODO Not ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
+
+
+    <%-----------------Prevent to return to previous page---------------%>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload = function() {
+            null
+        };
+        history.pushState(null, null, document.URL);
+    </script>
+    <%------------------------------------------%>
+
+    <script>
+        history.forward();
+    </script>
 
 </head>
 <body>
@@ -61,10 +56,10 @@
                 <div class="col-md-7">
                     <div class="card">
 
-                        <div class="card-header bg-light" style="text-align:center; color: black; font-size: large"><fmt:message key="add.new.product"/></div>
+                        <div class="card-header bg-light fw-bold" style="text-align:center; color: black; font-size: large"><fmt:message key="add.new.product"/></div>
                         <div class="card-body bg-dark bg-opacity-75">
 
-                            <form class="form-horizontal" method="post" action="${absolutePath}/controller"
+                            <form class="form-horizontal needs-validation" novalidate method="post" action="${absolutePath}/controller"
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="add_new_product">
 
@@ -348,7 +343,7 @@
                                             <fmt:message key="incorrect.she.enter"/>
                                         </c:if>
                                     </label>
-                                    <div class="cols-sm-10">
+
                                         <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
@@ -360,19 +355,23 @@
                                                        accept=".jpg, .jpeg"/>
                                             </div>
                                         </div>
-                                    </div>
+
                                 </div>
 
                                 <%------------------------------------------Button--------------------------------------------%>
-                                <button type="submit" class="btn btn-primary btn-lg btn-block login-button">
+                                <div class="d-grid gap-1">
+                                <button type="submit" class="btn btn-primary btn-warning "
+                                        style="background-color: goldenrod; color: white">
                                     <fmt:message
                                             key="add.new.product.button"/></button>
+                                </div>
+
 
                                 <%--                        //TODO куда переходить?--%>
 
 
                                 <div class="login-register">
-                                    <a href="${absolutePath}/index.jsp"><fmt:message key="return.main.page"/></a>
+                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp"><fmt:message key="return.main.page"/></a>
                                 </div>
                             </form>
                         </div>
@@ -381,8 +380,23 @@
             </div>
         </div>
     </div>
-    <div class="footer"><ft:footerTag/></div>
+<div class="footer"style="color: white"><ft:footerTag/></div>
 </div>
-
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 </body>
 </html>

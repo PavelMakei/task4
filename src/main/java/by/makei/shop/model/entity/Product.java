@@ -129,7 +129,16 @@ public class Product extends AbstractEntity{
 
         Product product = (Product) o;
 
-        return  (id == product.id);
+        if (id != product.id) return false;
+        if (brandId != product.brandId) return false;
+        if (typeId != product.typeId) return false;
+        if (Double.compare(product.price, price) != 0) return false;
+        if (power != product.power) return false;
+        if (productName != null ? !productName.equals(product.productName) : product.productName != null) return false;
+        if (description != null ? !description.equals(product.description) : product.description != null) return false;
+        if (colour != null ? !colour.equals(product.colour) : product.colour != null) return false;
+        if (size != null ? !size.equals(product.size) : product.size != null) return false;
+        return Arrays.equals(photo, product.photo);
     }
 
     @Override

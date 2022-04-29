@@ -11,6 +11,7 @@ import java.util.Optional;
 import static by.makei.shop.model.command.AttributeName.*;
 
 public class ProductMapper implements Mapper<Product> {
+
     @Override
     public Optional<Product> mapEntity(ResultSet resultSet) {
         Product product = new Product();
@@ -29,7 +30,7 @@ public class ProductMapper implements Mapper<Product> {
 
             optionalProduct = Optional.of(product);
         } catch (SQLException e) {
-            logger.log(Level.INFO,"product wasn't mapped in ProductMapper. {}", e.getMessage());
+            logger.log(Level.INFO, "product wasn't mapped in ProductMapper. {}", e.getMessage());
             optionalProduct = Optional.empty();
         }
         return optionalProduct;

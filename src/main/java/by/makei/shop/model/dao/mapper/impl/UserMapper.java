@@ -3,6 +3,7 @@ package by.makei.shop.model.dao.mapper.impl;
 import by.makei.shop.model.dao.mapper.Mapper;
 import by.makei.shop.model.entity.AccessLevel;
 import by.makei.shop.model.entity.User;
+import org.apache.logging.log4j.Level;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -13,7 +14,7 @@ import static by.makei.shop.model.command.AttributeName.*;
 
 public class UserMapper implements Mapper<User> {
 
-    public Optional<User> mapEntity(ResultSet resultSet){
+    public Optional<User> mapEntity(ResultSet resultSet) {
         User user = new User();
         Optional<User> optionalUser;
 
@@ -30,15 +31,11 @@ public class UserMapper implements Mapper<User> {
 
             optionalUser = Optional.of(user);
         } catch (SQLException e) {
-            //TODO
+            logger.log(Level.DEBUG,"user wasn't mapped in UserMapper. {}", e.getMessage());
             optionalUser = Optional.empty();
         }
         return optionalUser;
     }
-
-
-
-
 
 
 }

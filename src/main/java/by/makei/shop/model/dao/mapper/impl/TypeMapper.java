@@ -8,9 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.command.AttributeName.ID;
+import static by.makei.shop.model.command.AttributeName.TYPE_NAME;
 
 public class TypeMapper implements Mapper<ProductType> {
+
     @Override
     public Optional<ProductType> mapEntity(ResultSet resultSet) {
         ProductType productType = new ProductType();
@@ -20,7 +22,7 @@ public class TypeMapper implements Mapper<ProductType> {
             productType.setTypeName(resultSet.getString(TYPE_NAME));
             optionalProductType = Optional.of(productType);
         } catch (SQLException e) {
-            logger.log(Level.INFO,"brand wasn't mapped in BrandMapper. {}", e.getMessage());
+            logger.log(Level.INFO, "brand wasn't mapped in BrandMapper. {}", e.getMessage());
             optionalProductType = Optional.empty();
         }
         return optionalProductType;

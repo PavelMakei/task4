@@ -14,7 +14,7 @@ public class FooterTag extends TagSupport {
     public int doStartTag() throws JspException {
         logger.log(Level.DEBUG,"Footer tag doStart");
         try {
-            pageContext.getOut().print("© Lighting shop by Pavel Makei 2022");
+            pageContext.getOut().print("<footer><p class=\"footer\"> <br> © Lighting shop by Pavel Makei 2022</p></footer>");
         } catch (Exception ex) {
             logger.log(Level.ERROR,"Footer tag exception : {}", ex.getMessage());
             throw new JspTagException("SimpleTag: " +

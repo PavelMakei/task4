@@ -8,7 +8,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static by.makei.shop.model.command.AttributeName.LOCALE;
+import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.command.PagePath.INDEX;
 
 @WebListener
 public class SessionCreateListenerImpl implements HttpSessionListener {
@@ -22,8 +23,9 @@ public class SessionCreateListenerImpl implements HttpSessionListener {
         HttpSession session = se.getSession();
 
         session.setAttribute(LOCALE, DEFAULT_LOCALE);
+        session.setAttribute(CURRENT_PAGE, INDEX);
 
-        logger.log(Level.INFO, "------>>>session created :" + session.getId());
+        logger.log(Level.DEBUG, "------>>>session created :" + session.getId());
 
         /* Session is created. */
     }
