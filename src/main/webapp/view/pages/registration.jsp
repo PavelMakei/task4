@@ -13,15 +13,36 @@
 <fmt:setBundle basename="language_text"/>
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
+<c:set var="name_pattern" value="^[A-Za-zА-Яа-я]{3,20}$"/>
+<c:set var="login_pattern" value="^[A-Za-zА-Яа-я0-9_]{4,16}$"/>
+<c:set var="email_pattern" value= "^[^[\d\.]][A-Za-z\.\d]{1,30}@[a-z]{2,10}\.([a-z]{2,4}|[a-z]{2,4}\.[a-z]{2,4})$"/>
+<c:set var="password_pattern" value="^[A-Za-zА-Яа-я0-9_!@#,\.]{6,16}$"/>
+<c:set var="phone_pattern" value="^\((025|029|044)\)\d{7}$"/>
 
 
-<html>
+<fmt:message key="registration.user" var="registration_label"/>
+<fmt:message key="first.name" var="first_name_label"/>
+<fmt:message key="incorrect.he.enter" var="incorrect_he_message"/>
+<fmt:message key="incorrect.she.enter" var="incorrect_she_message"/>
+<fmt:message key="incorrect.it.enter" var="incorrect_it_message"/>
+<fmt:message key="name.placeholder" var="name_placeholder"/>
+<fmt:message key="last.name" var="last_name_label"/>
+<fmt:message key="login" var="login_label"/>
+<fmt:message key="exists.choose.other" var="exists_choose_other"/>
+<fmt:message key="login.placeholder" var="login_placeholder"/>
+<fmt:message key="email" var="email_label"/>
+<fmt:message key="password" var="password_label"/>
+<fmt:message key="password.placeholder" var="password_placeholder"/>
+<fmt:message key="mobile.phone" var="phone_label"/>
+<fmt:message key="accept.rules" var="accept_rules_label"/>
+<fmt:message key="register" var="register_button"/>
+<fmt:message key="return.main.page" var="return_main_page"/>
+
 <head>
         <script>
             function preventBack() {
                 window.history.forward();
             }
-
             setTimeout("preventBack()", 0);
             window.onunload = function() {
                 null
@@ -39,29 +60,28 @@
 <div class="wrapper">
     <div class="header">
         <%@include file="header.jsp" %>
-    </div> <!-- end of header -->
+    </div>
     <div class="content">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-7">
                     <div class="card">
-
-                        <div class="card-header bg-light fw-bold" style="text-align:center;"><fmt:message
-                                key="registration.user"/></div>
+                        <div class="card-header bg-light fw-bold" style="text-align:center;">${registration_label}</div>
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" method="post"
                                   action="${absolutePath}/controller" novalidate>
                                 <input type="hidden" name="command" value="registration">
+<%--                                ---------------------------first name-----------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="first_name" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_first_name}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="first.name"/>
+                                        ${first_name_label}
                                         <c:if test="${!empty invalid_first_name}">
-                                            <fmt:message key="incorrect.it.enter"/>
+                                            ${incorrect_it_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -74,22 +94,22 @@
                                                         <c:if test="${!empty first_name}">
                                                             value="${first_name}"
                                                         </c:if>
-                                                       placeholder="<fmt:message key="name.pattern"/>"
-                                                       required pattern="^[A-Za-zА-Яа-я]{3,20}$"/>
+                                                       placeholder="${name_placeholder}"
+                                                       required pattern="${name_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+<%--                                ---------------------------last name------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="last_name" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_last_name}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="last.name"/>
+                                        ${last_name_label}
                                         <c:if test="${!empty invalid_last_name}">
-                                            <fmt:message key="incorrect.it.enter"/>
+                                            ${incorrect_she_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -98,28 +118,28 @@
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="last_name" id="last_name"
-                                                       placeholder="<fmt:message key="name.pattern"/>"
+                                                       placeholder="${name_placeholder}"
                                                         <c:if test="${!empty last_name}">
                                                             value="${last_name}"
                                                         </c:if>
-                                                       required pattern="^[A-Za-zА-Яа-я]{3,20}$"/>
+                                                       required pattern="${name_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+<%--                                ---------------------------login----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="login" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_login ||!empty busy_login }">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="login"/>
+                                        ${login_label}
                                         <c:if test="${!empty invalid_login}">
-                                            <fmt:message key="incorrect.he.enter"/>
+                                            ${incorrect_he_message}
                                         </c:if>
                                         <c:if test="${!empty busy_login}">
-                                            <fmt:message key="exists.choose.other"/>
+                                            ${exists_choose_other}
                                         </c:if>
                                     </label>
 
@@ -129,28 +149,28 @@
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="login" id="login"
-                                                       placeholder="<fmt:message key="login.pattern"/>"
+                                                       placeholder="${login_placeholder}"
                                                         <c:if test="${!empty login}">
                                                             value="${login}"
                                                         </c:if>
-                                                       required pattern="^[A-Za-zА-Яа-я0-9_]{4,16}$"/>
+                                                       required pattern="${login_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+<%--                                ---------------------------email----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="email" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_email ||!empty busy_email }">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="email"/>
+                                        ${email_label}
                                         <c:if test="${!empty invalid_email}">
-                                            <fmt:message key="incorrect.he.enter"/>
+                                            ${incorrect_he_message}
                                         </c:if>
                                         <c:if test="${!empty busy_email}">
-                                            <fmt:message key="exists.choose.other"/>
+                                            ${exists_choose_other}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -164,14 +184,14 @@
                                                             value="${email}"
                                                         </c:if>
                                                        required
-                                                       pattern="^[^[\d\.]][A-Za-z\.\d]{1,30}@[a-z]{2,10}\.([a-z]{2,4}|[a-z]{2,4}\.[a-z]{2,4})$"/>
+                                                       pattern="${email_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+<%--                                ---------------------------password-------------------------------%>
                                 <div class="form-group" style="color: white">
-                                    <label for="password" class="cols-sm-2 control-label"><fmt:message key="password"/>
+                                    <label for="password" class="cols-sm-2 control-label">${password_label}
                                     </label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
@@ -180,25 +200,25 @@
                                             <div class="input-group mb-3">
                                                 <input type="password" class="form-control" name="password"
                                                        id="password"
-                                                       placeholder="<fmt:message key="password.pattern"/>"
-                                                       required pattern="^[A-Za-zА-Яа-я0-9_!@#,\.]{6,16}$"/>
+                                                       placeholder="${password_placeholder}"
+                                                       required pattern="${password_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+<%--                                ---------------------------phone----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="phone" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_phone ||!empty busy_phone }">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="mobile.phone"/>
+                                        ${phone_label}
                                         <c:if test="${!empty invalid_phone}">
-                                            <fmt:message key="incorrect.he.enter"/>
+                                            ${incorrect_he_message}
                                         </c:if>
                                         <c:if test="${!empty busy_phone}">
-                                            <fmt:message key="exists.choose.other"/>
+                                            ${exists_choose_other}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -211,40 +231,34 @@
                                                         <c:if test="${!empty phone}">
                                                             value="${phone}"
                                                         </c:if>
-                                                       required pattern="^\((025|029|044)\)\d{7}$"/>
+                                                       required pattern="${phone_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+<%--                                ---------------------------check box------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <div class="input-group mb-3">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="" id="invalidCheck2"
                                                    required>
                                             <label class="form-check-label" for="invalidCheck2">
-                                                <fmt:message
-                                                        key="accept.rules"/>
+                                                ${accept_rules_label}
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-
-
+<%--                                ---------------------------button---------------------------------%>
                                 <div class="d-grid gap-1">
-
                                     <button type="submit" class="btn btn-primary btn-warning "
                                             style="background-color: goldenrod; color: white">
-                                        <fmt:message
-                                                key="register"/></button>
+                                        ${register_button}</button>
                                 </div>
 
                                 <%--                        //TODO куда переходить?--%>
 
-
                                 <div class="login-register">
-                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp"><fmt:message
-                                            key="return.main.page"/></a>
+                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp">${return_main_page}</a>
                                 </div>
                             </form>
                         </div>
@@ -255,7 +269,6 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
-
 
 <script>
     (function () {

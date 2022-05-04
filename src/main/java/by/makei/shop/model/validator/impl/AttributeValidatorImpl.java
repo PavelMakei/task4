@@ -5,16 +5,16 @@ import by.makei.shop.model.validator.AttributeValidator;
 public class AttributeValidatorImpl implements AttributeValidator {
     private static final AttributeValidatorImpl instance = new AttributeValidatorImpl();
     public static final String NAME_PATTERN = "^[A-Za-zА-Яа-я]{3,20}$";
-    public static final String LOGIN_PATTERN = "^[A-Za-zА-Яа-я0-9_]{4,16}$";
-    public static final String PASSWORD_PATTERN = "^[A-Za-zА-Яа-я0-9_!@#,\\.]{6,16}$";
+    public static final String LOGIN_PATTERN = "^[A-Za-zА-Яа-я\\d_]{4,16}$";
+    public static final String PASSWORD_PATTERN = "^[A-Za-zА-Яа-я\\d_!@#,\\.]{6,16}$";
     public static final String EMAIL_PATTERN = "^[^[\\d\\.]][A-Za-z\\.\\d]{1,30}@[a-z]{2,10}\\.([a-z]{2,4}|[a-z]{2,4}\\.[a-z]{2,4})$";
     public static final String PHONE_PATTERN = "^\\((025|029|044)\\)\\d{7}$";
     public static final String DECIMAL_STRING_PATTERN = "^((\\d{1,5}\\.\\d{0,2})|(\\d{1,5}))$";
     public static final String INTEGER_STRING_PATTERN = "^((\\d{1,5}))$";
-    public static final String PRODUCT_NAME_PATTERN = "^[A-Za-zА-Яа-я0-9_\\- ]{3,60}$";
-    public static final String DESCRIPTION_PATTERN = "^[A-Za-zА-Яа-я0-9_ //.;,//(//)]+$";
-    public static final String COLOUR_PATTERN = "^[A-Za-zА-Яа-я0-9\\-_ ]{3,60}$";
-    public static final String SIZE_PATTERN = "^[A-Za-zА-Яа-я0-9_* ]{3,45}$";
+    public static final String PRODUCT_NAME_PATTERN = "^[A-Za-zА-Яа-я\\d_,\\.,;:\\- ]{3,60}$";
+    public static final String DESCRIPTION_PATTERN = "^[A-Za-zА-Яа-я\\d_ \\.;,\\(\\)]+$";
+    public static final String COLOUR_PATTERN = "^[A-Za-zА-Яа-я\\d\\-_ ]{3,60}$";
+    public static final String SIZE_PATTERN = "^[A-Za-zА-Яа-я\\d_* ]{3,45}$";
 
 
     private AttributeValidatorImpl(){}

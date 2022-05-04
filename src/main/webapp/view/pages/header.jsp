@@ -17,6 +17,9 @@
 
 
 <head>
+    <link rel="icon" href="${pageContext.request.contextPath}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon"${pageContext.request.contextPath}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="${pageContext.request.contextPath}/icons/favicon.ico" type="image/x-icon" />
     <%-----------------Prevent to return to previous page---------------%>
 <%--    <script>--%>
 <%--        function preventBack() {--%>

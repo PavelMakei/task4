@@ -1,5 +1,3 @@
-<%--<%@ page import="java.util.HashMap" %>--%>
-
 
 <%--
   Created by IntelliJ IDEA.
@@ -18,8 +16,45 @@
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
 
+<fmt:message key="add.new.product" var="head_label"/>
+<fmt:message key="brands_id" var="brands_id_label"/>
+<fmt:message key="incorrect.he.enter" var="incorrect_he_enter_message"/>
+<fmt:message key="incorrect.she.enter" var="incorrect_she_enter_message"/>
+<fmt:message key="incorrect.it.enter" var="incorrect_it_enter_message"/>
+<fmt:message key="select.your.brand" var="select_your_brand_option"/>
+<fmt:message key="types_id" var="types_id_label"/>
+<fmt:message key="select.your.productType" var="select_your_type_option"/>
+<fmt:message key="product.name" var="product_name_label"/>
+<fmt:message key="exists.choose.other" var="exists_choose_other_message"/>
+<fmt:message key="product.name.placeholder" var="product_name_placeholder"/>
+<fmt:message key="description.name" var="description_name_label"/>
+<fmt:message key="description.placeholder" var="description_name_placeholder"/>
+<fmt:message key="price.name" var="price_name_label"/>
+<fmt:message key="price.placeholder" var="price_placeholder"/>
+<fmt:message key="colour.name" var="colour_name_label"/>
+<fmt:message key="colour.placeholder" var="colour_placeholder"/>
+<fmt:message key="power.name" var="power_name_label"/>
+<fmt:message key="power.placeholder" var="power_placeholder"/>
+<fmt:message key="power.placeholder" var="quantity_placeholder"/>
+<fmt:message key="size.name" var="size_name_label"/>
+<fmt:message key="size.placeholder" var="size_placeholder"/>
+<fmt:message key="quantity.name" var="quantity_name_label"/>
+<fmt:message key="photo.name" var="photo_name_label"/>
+<fmt:message key="choose.picture" var="choose_picture_label"/>
+<fmt:message key="add.new.product.button" var="add_new_product_button"/>
+<fmt:message key="return.main.page" var="return_main_page"/>
+
+<c:set var="product_name_pattern">^[A-Za-zА-Яа-я\d_,\.,;:\- ]{3,60}$</c:set>
+<c:set var="description_name_pattern">^[A-Za-zА-Яа-я\d_ /.;,/(/)-]+}$</c:set>
+<c:set var="colour_pattern">^[A-Za-zА-Яа-я\d_ //-]{3,60}$</c:set>
+<c:set var="size_pattern">^[A-Za-zА-Яа-я\d_* ]{3,45}$</c:set>
+<c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>
+<c:set var="power_pattern">^[\d]{1,3}$</c:set>
+<c:set var="quantity_pattern">^[\d]{1,3}$</c:set>
+
+
 <head>
-    <title><fmt:message key="add.new.product"/></title>
+    <title>${head_label}</title>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
 
@@ -32,7 +67,6 @@
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -58,8 +92,7 @@
                     <div class="card">
 
                         <div class="card-header bg-light fw-bold"
-                             style="text-align:center; color: black; font-size: large"><fmt:message
-                                key="add.new.product"/></div>
+                             style="text-align:center; color: black; font-size: large">${head_label}</div>
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" novalidate method="post"
@@ -67,16 +100,16 @@
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="add_new_product">
 
-                                <%------------------------------------------------------Brands---------------------------%>
+                                <%------------------------------------------------------Brands-----------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="brand" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_brand_id}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="brands_id"/>
+                                        ${brands_id_label}
                                         <c:if test="${!empty invalid_brand_id}">
-                                            <fmt:message key="incorrect.he.enter"/>
+                                            ${incorrect_he_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -86,8 +119,8 @@
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
                                                 <select class="form-select" name="brand_id" id="brand" required>
-                                                    <option value="" disabled selected><fmt:message
-                                                            key="select.your.brand"/></option>
+                                                    <option value="" disabled
+                                                            selected>${select_your_brand_option}</option>
                                                     <c:forEach var="brandEnter" items="${brands_map}">
                                                         <option value=${brandEnter.value}>${brandEnter.key}</option>
                                                     </c:forEach>
@@ -97,16 +130,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--------------------------------------------------Types------------------------------------------------%>
+                                <%------------------------------------------------------Types------------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="type_id" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_type_id}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="types_id"/>
+                                        ${types_id_label}
                                         <c:if test="${!empty invalid_type_id}">
-                                            <fmt:message key="incorrect.he.enter"/>
+                                            ${incorrect_he_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -117,8 +150,8 @@
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
                                                 <select class="form-select" id="type_id" name="type_id" required>
-                                                    <option value="" disabled selected><fmt:message
-                                                            key="select.your.productType"/></option>
+                                                    <option value="" disabled
+                                                            selected>${select_your_type_option}</option>
                                                     <c:forEach var="typeEnter" items="${types_map}">
                                                         <option value=${typeEnter.value}>${typeEnter.key}</option>
                                                     </c:forEach>
@@ -128,19 +161,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%------------------------------------------------------ProductName---------------------------------------%>
+                                <%------------------------------------------------------ProductName------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="product_name" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_product_name || !empty busy_product_name }">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="product.name"/>
+                                        ${product_name_label}
                                         <c:if test="${!empty invalid_product_name}">
-                                            <fmt:message key="incorrect.it.enter"/>
+                                            ${incorrect_it_enter_message}
                                         </c:if>
                                         <c:if test="${!empty busy_product_name}">
-                                            <fmt:message key="exists.choose.other"/>
+                                            ${exists_choose_other_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -150,26 +183,25 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="product_name"
                                                        id="product_name"
-                                                       placeholder="<fmt:message key="product.name.pattern"/>"
+                                                       placeholder="${product_name_placeholder}"
                                                         <c:if test="${!empty product_name}">
                                                             value="${product_name}"
                                                         </c:if>
-                                                       required pattern="^[A-Za-zА-Яа-я0-9_ //-]{3,60}$"/>
+                                                       required pattern="${product_name_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--                                ------------------------------------------- description (text)--------------------------------------%>
+                                <%----------------------------------------------------- description (text)-----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="description" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_description}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="description.name"/>
+                                        ${description_name_label}
                                         <c:if test="${!empty invalid_description}">
-                                            <fmt:message key="incorrect.it.enter"/>
+                                            ${incorrect_it_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -179,29 +211,23 @@
                                             <div class="input-group mb-3">
                                                 <textarea class="form-control" name="description"
                                                           id="description"
-                                                          placeholder="<fmt:message key="description.pattern"/>"
-
+                                                          placeholder="${description_name_placeholder}"
                                                           required
-                                                          pattern="^[A-Za-zА-Яа-я0-9_ //.;,//(//)]+$">
-                                                     <c:if test="${!empty description}">
-                                                         ${description}
-                                                     </c:if>
-                                                </textarea>
+                                                ><c:if test="${!empty description}">${description}</c:if></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--                    ------------------------------------------- price dec(10,2)--------------------------------------%>
+                                <%----------------------------------------------------- price dec(10,2)--------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="price" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_price}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="price.name"/>
+                                        ${price_name_label}
                                         <c:if test="${!empty invalid_price}">
-                                            <fmt:message key="incorrect.she.enter"/>
+                                            ${incorrect_she_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -211,26 +237,25 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="price"
                                                        id="price"
-                                                       placeholder="<fmt:message key="price.pattern"/>"
+                                                       placeholder=${price_placeholder}
                                                         <c:if test="${!empty price}">
                                                             value="${price}"
                                                         </c:if>
-                                                       required pattern="^((\d{1,5}\.\d{0,2})|(\d{1,5}))$"/>
+                                                       required pattern="${price_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--                                ------------------------------------------- colour varchar(45)----------------------------------------%>
+                                <%----------------------------------------------------- colour varchar(45)-----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="colour" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_colour}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="colour.name"/>
+                                        ${colour_name_label}
                                         <c:if test="${!empty invalid_colour}">
-                                            <fmt:message key="incorrect.he.enter"/>
+                                            ${incorrect_he_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -240,26 +265,25 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="colour"
                                                        id="colour"
-                                                       placeholder="<fmt:message key="colour.pattern"/>"
+                                                       placeholder="${colour_placeholder}"
                                                         <c:if test="${!empty colour}">
                                                             value="${colour}"
                                                         </c:if>
-                                                       required pattern="^[A-Za-zА-Яа-я0-9_ //-]{3,60}$"/>
+                                                       required pattern="${colour_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--                                ------------------------------------------- power int--------------------------------------%>
+                                <%----------------------------------------------------- power int--------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="power" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_power}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="power.name"/>
+                                        ${power_name_label}
                                         <c:if test="${!empty invalid_power}">
-                                            <fmt:message key="incorrect.it.enter"/>
+                                            ${incorrect_it_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -269,26 +293,25 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="power"
                                                        id="power"
-                                                       placeholder="<fmt:message key="power.pattern"/>"
+                                                       placeholder="${power_placeholder}"
                                                         <c:if test="${!empty power}">
                                                             value="${power}"
                                                         </c:if>
-                                                       required pattern="^[0-9]{1,3}$"/>
+                                                       required pattern="${power_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--                                ------------------------------------------- size varchar (45)--------------------------------------%>
+                                <%----------------------------------------------------- size varchar (45)------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="size" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_size}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="size.name"/>
+                                        ${size_name_label}
                                         <c:if test="${!empty invalid_size}">
-                                            <fmt:message key="incorrect.he.enter"/>
+                                            ${incorrect_he_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -298,27 +321,25 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="size"
                                                        id="size"
-                                                       placeholder="<fmt:message key="size.pattern"/>"
+                                                       placeholder="${size_placeholder}"
                                                         <c:if test="${!empty size}">
                                                             value="${size}"
                                                         </c:if>
-                                                       required pattern="^[A-Za-zА-Яа-я0-9_* ]{3,45}$"/>
-                                                <%--                                            TODO * в паттерне?--%>
+                                                       required pattern="${size_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--                                ------------------------------------------- quantity_in_stock int--------------------------------------%>
+                                <%----------------------------------------------------- quantity_in_stock int--------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="quantity" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_quantity}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="quantity.name"/>
+                                        ${quantity_name_label}
                                         <c:if test="${!empty invalid_quantity}">
-                                            <fmt:message key="incorrect.it.enter"/>
+                                            ${incorrect_it_enter_message}
                                         </c:if>
                                     </label>
                                     <div class="cols-sm-10">
@@ -328,24 +349,23 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="quantity"
                                                        id="quantity"
-                                                       placeholder="<fmt:message key="power.pattern"/>"
+                                                       placeholder=${quantity_placeholder}
                                                         <c:if test="${!empty quantity}">
                                                             value="${quantity}"
                                                         </c:if>
-                                                       required pattern="^[0-9]{1,3}$"/>
+                                                       required pattern="${quantity_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <%--                                ------------------------------------------- photo blob--------------------------------------%>
-
+                                <%----------------------------------------------------- photo blob-------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="photo" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_photo}">
                                                 style="color: red"
                                             </c:if>
                                     >
-                                        <fmt:message key="photo.name"/>
+                                        ${photo_name_label}
                                         <c:if test="${!empty invalid_photo}">
                                             <fmt:message key="incorrect.she.enter"/>
                                         </c:if>
@@ -366,30 +386,23 @@
                                                    required
                                                    accept=".jpg, .jpeg"/>
                                             <label for="photo" class="btn btn-primary btn-light"
-                                                   id="photolabel"><fmt:message
-                                                    key="choose.picture"/></label>
+                                                   id="photolabel">${choose_picture_label}</label>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <%------------------------------------------Button--------------------------------------------%>
+                                <%------------------------------------------------------Button-----------------------------------------------%>
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning"
                                             id="butt"
                                             style="background-color: goldenrod; color: white"
-                                            onclick="CheckPicture">
-                                        <fmt:message
-                                                key="add.new.product.button"/></button>
+                                            onclick="CheckPicture()">
+                                        ${add_new_product_button}</button>
                                 </div>
-
 
                                 <%--                        //TODO куда переходить?--%>
 
-
                                 <div class="login-register">
-                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp"><fmt:message
-                                            key="return.main.page"/></a>
+                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp">${return_main_page}</a>
                                 </div>
                             </form>
                         </div>
@@ -420,24 +433,23 @@
 <script>
     const elem = document.getElementById('photo');
     const photolbl = document.getElementById('photolabel')
-    const butt = document.getElementById('butt')
+    const buttAdd = document.getElementById('butt')
 
-    // elem.addEventListener('change', checkPicture);
-    butt.addEventListener('', checkPicture);
+    elem.addEventListener('change', CheckPicture);
+    buttAdd.addEventListener('listener', CheckPicture);
 
     function CheckPicture() {
-        var subname = elem.value.substring(elem.value.lastIndexOf('\\') + 1);
+        let subname = elem.value.substring(elem.value.lastIndexOf('\\') + 1);
         const choice = elem.value;
-        photolbl.style.color = 'red';
-
-        if (choice === null) {
-            photolbl.textContent = 'Nothing to show';
+        if (choice === '') {
             photolbl.style.color = 'red';
+            photolbl.style.borderColor = 'red';
+
         } else {
             photolbl.style.color = 'green';
+            photolbl.style.borderColor = 'green';
             photolbl.textContent = subname;
         }
     }
 </script>
 </body>
-</html>
