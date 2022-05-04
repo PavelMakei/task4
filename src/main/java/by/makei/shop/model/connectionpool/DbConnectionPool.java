@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.BlockingDeque;
@@ -34,7 +33,6 @@ public final class DbConnectionPool {
         }
         checkIfPoolEmpty();
         PoolService.startPoolService( freeDeque, busyDeque, forCheckingDeque);
-
     }
 
     public static DbConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
@@ -52,36 +50,36 @@ public final class DbConnectionPool {
         return instance.get();
     }
 
-    public Connection takeConnection() {
-        ProxyConnection connection = null;
+    public ProxyConnection takeConnection() {
+        ProxyConnection proxyConnection = null;
         try {
             semaphore.acquire();
-            connection = freeDeque.take();
-            connection.setLastThread(Thread.currentThread());
-            busyDeque.put(connection);
+            proxyConnection = freeDeque.take();
+            proxyConnection.setLastThread(Thread.currentThread());
+            busyDeque.put(proxyConnection);
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, "Thread in take connection has been interrupted! :{}", e.getMessage());
             Thread.currentThread().interrupt();
         } finally {
             semaphore.release();
         }
-        return connection;
+        return proxyConnection;
     }
 
-    public boolean returnConnection(Connection connection) {
+    public boolean returnConnection(ProxyConnection connection) {
         boolean result = false;
-        if (!(connection instanceof ProxyConnection)) {
-            logger.log(Level.ERROR, "incorrect connection!");
+        if (connection == null) {
+            logger.log(Level.ERROR, "returnConnection connection is null!");
             return false;
         }
         try {
             getterLock.lock();// method "remove" isn't thread safe
             semaphore.acquire();
             busyDeque.remove(connection);//дешевле создать новый, чем искать дубли в очередях
-            if (((ProxyConnection) connection).isForChecking()) {
-                forCheckingDeque.put((ProxyConnection) connection);
+            if ((connection).isForChecking()) {
+                forCheckingDeque.put(connection);
             } else {
-                freeDeque.put((ProxyConnection) connection);
+                freeDeque.put( connection);
             }
             result = true;
         } catch (InterruptedException e) {
@@ -146,6 +144,7 @@ public final class DbConnectionPool {
         if (freeDeque.isEmpty()) {
             logger.log(Level.FATAL, "Can't create connections");
             throw new RuntimeException("Can't create connections. Stop application");
+            //TODO
         }
     }
 

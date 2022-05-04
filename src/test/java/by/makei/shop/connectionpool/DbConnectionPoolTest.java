@@ -1,6 +1,7 @@
 package by.makei.shop.connectionpool;
 
 import by.makei.shop.model.connectionpool.DbConnectionPool;
+import by.makei.shop.model.connectionpool.ProxyConnection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ class DbConnectionPoolTest {
 
     @Test
     void takeConnectionTest() throws SQLException {
-        Connection connection = dbConnectionPool.takeConnection();
+        ProxyConnection connection = dbConnectionPool.takeConnection();
         assert (connection.isValid(100));
         dbConnectionPool.shutdown();
     }
@@ -27,7 +28,7 @@ class DbConnectionPoolTest {
 
     @Test
     void returnConnection() throws SQLException {
-        Connection connection = dbConnectionPool.takeConnection();
+        ProxyConnection connection = dbConnectionPool.takeConnection();
         assert (dbConnectionPool.returnConnection(connection));
         dbConnectionPool.shutdown();
     }

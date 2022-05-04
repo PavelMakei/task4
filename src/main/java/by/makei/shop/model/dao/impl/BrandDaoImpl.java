@@ -30,17 +30,14 @@ public class BrandDaoImpl implements BrandDao {
             logger.log(Level.ERROR, "findBrandByOneParam incorrect paramName");
             throw new DaoException("findBrandByOneParam incorrect paramName");
         }
-        Connection connection = null;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<Brand> optionalBrand = Optional.empty();
-        String fullQuery = SQL_SELECT_BRAND_BY_VAR_PARAM + "WHERE " + paramName + " = ?";
         try {
-            connection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
-                    connection.prepareStatement(String.format(SQL_SELECT_BRAND_BY_VAR_PARAM, paramName));
-            proxyConnection = (ProxyConnection) connection;
+                    proxyConnection.prepareStatement(String.format(SQL_SELECT_BRAND_BY_VAR_PARAM, paramName));
             preparedStatement.setString(1, paramValue.toLowerCase());
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -48,30 +45,26 @@ public class BrandDaoImpl implements BrandDao {
                 logger.log(Level.INFO, "brand was found by param {} and param value {}", paramName, paramValue);
             }
         } catch (SQLException e) {
-            if (proxyConnection != null) {
-                proxyConnection.setForChecking(true);
-            }
+            proxyConnection.setForChecking(true);
             logger.log(Level.ERROR, "error while findBrandByOneParam");
             throw new DaoException(e);
         } finally {
-            finallyWhileClosing(connection, preparedStatement, resultSet);
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return optionalBrand;
     }
 
     @Override
     public List<Brand> findAll() throws DaoException {
-        Connection connection = null;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<Brand> optionalBrand = Optional.empty();
         List<Brand> resultList = new ArrayList<>();
         try {
-            connection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
-                    connection.prepareStatement(SQL_SELECT_ALL_BRANDS);
-            proxyConnection = (ProxyConnection) connection;
+                    proxyConnection.prepareStatement(SQL_SELECT_ALL_BRANDS);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 optionalBrand = new BrandMapper().mapEntity(resultSet);
@@ -81,13 +74,11 @@ public class BrandDaoImpl implements BrandDao {
                 logger.log(Level.DEBUG, "brand was found by param");
             }
         } catch (SQLException e) {
-            if (proxyConnection != null) {
-                proxyConnection.setForChecking(true);
-            }
+            proxyConnection.setForChecking(true);
             logger.log(Level.ERROR, "error while findAllBrands");
             throw new DaoException(e);
         } finally {
-            finallyWhileClosing(connection, preparedStatement, resultSet);
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return resultList;
     }
@@ -113,20 +104,4 @@ public class BrandDaoImpl implements BrandDao {
         return null;
     }
 
-//    private void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
-//            resultSet) {
-//        try {
-//            if (resultSet != null) {
-//                resultSet.close();
-//            }
-//            if (preparedStatement != null) {
-//                preparedStatement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        } catch (SQLException e) {
-//            logger.log(Level.ERROR, "error while closing. {}", e.getMessage());
-//        }
-//    }
 }

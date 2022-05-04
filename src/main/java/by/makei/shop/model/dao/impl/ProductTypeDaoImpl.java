@@ -30,17 +30,14 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
             logger.log(Level.ERROR, "findBrandByOneParam incorrect paramName");
             throw new DaoException("findTypeByOneParam incorrect paramName");
         }
-        Connection connection = null;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<ProductType> optionalType = Optional.empty();
-        String fullQuery = SQL_SELECT_TYPE_BY_VAR_PARAM + "WHERE " + paramName + " = ?";
         try {
-            connection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
-                    connection.prepareStatement(String.format(SQL_SELECT_TYPE_BY_VAR_PARAM, paramName));
-            proxyConnection = (ProxyConnection) connection;
+                    proxyConnection.prepareStatement(String.format(SQL_SELECT_TYPE_BY_VAR_PARAM, paramName));
             preparedStatement.setString(1, paramValue.toLowerCase());
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -48,51 +45,41 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
                 logger.log(Level.INFO, "product type was found by param {} and param value {}", paramName, paramValue);
             }
         } catch (SQLException e) {
-            if (proxyConnection != null) {
-                proxyConnection.setForChecking(true);
-            }
+            proxyConnection.setForChecking(true);
             logger.log(Level.ERROR, "error while findTypeByOneParam");
             throw new DaoException(e);
         } finally {
-            finallyWhileClosing(connection, preparedStatement, resultSet);
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return optionalType;
     }
 
     @Override
     public List<ProductType> findAll() throws DaoException {
-        Connection connection = null;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<ProductType> optionalType = Optional.empty();
         List<ProductType> resultList = new ArrayList<>();
         try {
-            connection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
-                    connection.prepareStatement(SQL_SELECT_ALL_TYPES);
-            proxyConnection = (ProxyConnection) connection;
+                    proxyConnection.prepareStatement(SQL_SELECT_ALL_TYPES);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 optionalType = new TypeMapper().mapEntity(resultSet);
-                if (optionalType.isPresent()) {
-                    resultList.add(optionalType.get());
-                }
+                optionalType.ifPresent(resultList::add);
                 logger.log(Level.DEBUG, "ProductTypeDao findAllTypes was found");
             }
         } catch (SQLException e) {
-            if (proxyConnection != null) {
                 proxyConnection.setForChecking(true);
-            }
             logger.log(Level.ERROR, "error while findAllBrands");
             throw new DaoException(e);
         } finally {
-            finallyWhileClosing(connection, preparedStatement, resultSet);
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return resultList;
     }
-
-
 
 
     @Override

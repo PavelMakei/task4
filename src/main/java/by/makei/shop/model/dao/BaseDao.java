@@ -1,6 +1,7 @@
 package by.makei.shop.model.dao;
 
 import by.makei.shop.exception.DaoException;
+import by.makei.shop.model.connectionpool.ProxyConnection;
 import by.makei.shop.model.entity.AbstractEntity;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -36,17 +37,17 @@ public interface BaseDao< T extends AbstractEntity> {
             }
         }
     }
-    default void finallyWhileClosing(Connection connection, PreparedStatement preparedStatement, ResultSet
-            resultSet) {
+    default void finallyWhileClosing(ProxyConnection proxyConnection, PreparedStatement preparedStatement, ResultSet...
+            resultSets) {
         try {
-            if (resultSet != null) {
-                resultSet.close();
+            if (resultSets.length > 0 && resultSets[0] != null) {
+                resultSets[0].close();
             }
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
-            if (connection != null) {
-                connection.close();
+            if (proxyConnection != null) {
+                proxyConnection.close();
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Dao error while closing resources. {}", e.getMessage());

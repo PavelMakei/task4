@@ -33,17 +33,14 @@ public class ProductDaoImpl implements ProductDao {
             logger.log(Level.ERROR, "findProductByOneParam incorrect paramName");
             throw new DaoException("findProductByOneParam incorrect paramName");
         }
-        Connection connection = null;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<Product> optionalProduct = Optional.empty();
-        String fullQuery = SQL_SELECT_PRODUCT_BY_VAR_PARAM + "WHERE " + paramName + " = ?";
         try {
-            connection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
-                    connection.prepareStatement(String.format(SQL_SELECT_PRODUCT_BY_VAR_PARAM, paramName));
-            proxyConnection = (ProxyConnection) connection;
+                    proxyConnection.prepareStatement(String.format(SQL_SELECT_PRODUCT_BY_VAR_PARAM, paramName));
             preparedStatement.setString(1, paramValue);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -52,21 +49,17 @@ public class ProductDaoImpl implements ProductDao {
             }
 
         } catch (SQLException e) {
-            if (proxyConnection != null) {
-                proxyConnection.setForChecking(true);
-            }
+            proxyConnection.setForChecking(true);
             logger.log(Level.ERROR, "ProductDao error while findProductByOneParam");
             throw new DaoException(e);
         } finally {
-            finallyWhileClosing(connection, preparedStatement, resultSet);
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return optionalProduct;
     }
 
 
     public boolean create(Product product, int quantity) throws DaoException {
-
-        Connection connection = null;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         InputStream photoStream = null;
@@ -74,9 +67,8 @@ public class ProductDaoImpl implements ProductDao {
         try {
             photoStream = new ByteArrayInputStream(product.getPhoto());
 
-            connection = DbConnectionPool.getInstance().takeConnection();
-            preparedStatement = connection.prepareStatement(SQL_ADD_NEW_PRODUCT);
-            proxyConnection = (ProxyConnection) connection;
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_ADD_NEW_PRODUCT);
             preparedStatement.setInt(1, product.getBrandId());
             preparedStatement.setInt(2, product.getTypeId());
             preparedStatement.setString(3, product.getProductName());
@@ -90,22 +82,15 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.execute();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "ProductDao error while create new product. {}", e.getMessage());
-            if (proxyConnection != null) {
                 proxyConnection.setForChecking(true);
-            }
             throw new DaoException("ProductDao error while create new product", e);
         } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement);
             try {
                 if (photoStream != null) {
                     photoStream.close();
                 }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException | IOException e) {
+            } catch (IOException e) {
                 logger.log(Level.ERROR, "ProductDao error while create new product closing resources. {}", e.getMessage());
             }
         }
