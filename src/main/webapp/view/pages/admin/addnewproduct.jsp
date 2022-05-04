@@ -32,8 +32,9 @@
         function preventBack() {
             window.history.forward();
         }
+
         setTimeout("preventBack()", 0);
-        window.onunload = function() {
+        window.onunload = function () {
             null
         };
         history.pushState(null, null, document.URL);
@@ -56,10 +57,13 @@
                 <div class="col-md-7">
                     <div class="card">
 
-                        <div class="card-header bg-light fw-bold" style="text-align:center; color: black; font-size: large"><fmt:message key="add.new.product"/></div>
+                        <div class="card-header bg-light fw-bold"
+                             style="text-align:center; color: black; font-size: large"><fmt:message
+                                key="add.new.product"/></div>
                         <div class="card-body bg-dark bg-opacity-75">
 
-                            <form class="form-horizontal needs-validation" novalidate method="post" action="${absolutePath}/controller"
+                            <form class="form-horizontal needs-validation" novalidate method="post"
+                                  action="${absolutePath}/controller"
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="add_new_product">
 
@@ -173,13 +177,16 @@
                                     <span class="input-group-sm"><i class="fa fa-user fa"
                                                                     aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="description"
-                                                       id="description"
-                                                       placeholder="<fmt:message key="description.pattern"/>"
-                                                        <c:if test="${!empty description}">
-                                                            value="${description}"
-                                                        </c:if>
-                                                       required pattern="^[A-Za-zА-Яа-я0-9_ //.;,//(//)]+$"/>
+                                                <textarea class="form-control" name="description"
+                                                          id="description"
+                                                          placeholder="<fmt:message key="description.pattern"/>"
+
+                                                          required
+                                                          pattern="^[A-Za-zА-Яа-я0-9_ //.;,//(//)]+$">
+                                                     <c:if test="${!empty description}">
+                                                         ${description}
+                                                     </c:if>
+                                                </textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -344,26 +351,36 @@
                                         </c:if>
                                     </label>
 
-                                        <div class="input-group">
+                                    <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
-                                            <div class="input-group mb-3">
-                                                <input type="file" class="form-control" name="photo"
-                                                       id="photo"
-                                                       size="4194304"
-                                                       required
-                                                       accept=".jpg, .jpeg"/>
-                                            </div>
+                                        <div class="input-group mb-3">
+                                            <%--                                                                                            <input type="file" class="form-control" name="photo"--%>
+                                            <%--                                                                                                   id="photo"--%>
+                                            <%--                                                                                                   size="4194304"--%>
+                                            <%--                                                                                                   required--%>
+                                            <%--                                                                                                   accept=".jpg, .jpeg"/>--%>
+                                            <input type="file" class="visually-hidden" name="photo"
+                                                   id="photo"
+                                                   size="4194304"
+                                                   required
+                                                   accept=".jpg, .jpeg"/>
+                                            <label for="photo" class="btn btn-primary btn-light"
+                                                   id="photolabel"><fmt:message
+                                                    key="choose.picture"/></label>
                                         </div>
-
+                                    </div>
                                 </div>
+
 
                                 <%------------------------------------------Button--------------------------------------------%>
                                 <div class="d-grid gap-1">
-                                <button type="submit" class="btn btn-primary btn-warning "
-                                        style="background-color: goldenrod; color: white">
-                                    <fmt:message
-                                            key="add.new.product.button"/></button>
+                                    <button type="submit" class="btn btn-primary btn-warning"
+                                            id="butt"
+                                            style="background-color: goldenrod; color: white"
+                                            onclick="CheckPicture">
+                                        <fmt:message
+                                                key="add.new.product.button"/></button>
                                 </div>
 
 
@@ -371,7 +388,8 @@
 
 
                                 <div class="login-register">
-                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp"><fmt:message key="return.main.page"/></a>
+                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp"><fmt:message
+                                            key="return.main.page"/></a>
                                 </div>
                             </form>
                         </div>
@@ -380,7 +398,7 @@
             </div>
         </div>
     </div>
-<div class="footer"style="color: white"><ft:footerTag/></div>
+    <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
 <script>
     (function () {
@@ -397,6 +415,29 @@
                 }, false)
             })
     })()
+</script>
+
+<script>
+    const elem = document.getElementById('photo');
+    const photolbl = document.getElementById('photolabel')
+    const butt = document.getElementById('butt')
+
+    // elem.addEventListener('change', checkPicture);
+    butt.addEventListener('', checkPicture);
+
+    function CheckPicture() {
+        var subname = elem.value.substring(elem.value.lastIndexOf('\\') + 1);
+        const choice = elem.value;
+        photolbl.style.color = 'red';
+
+        if (choice === null) {
+            photolbl.textContent = 'Nothing to show';
+            photolbl.style.color = 'red';
+        } else {
+            photolbl.style.color = 'green';
+            photolbl.textContent = subname;
+        }
+    }
 </script>
 </body>
 </html>

@@ -26,17 +26,17 @@
 
 
 <%-----------------Prevent to return to previous page---------------%>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
+<%--    <script>--%>
+<%--        function preventBack() {--%>
+<%--            window.history.forward();--%>
+<%--        }--%>
 
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-        history.pushState(null, null, document.URL);
-    </script>
+<%--        setTimeout("preventBack()", 0);--%>
+<%--        window.onunload = function () {--%>
+<%--            null--%>
+<%--        };--%>
+<%--        history.pushState(null, null, document.URL);--%>
+<%--    </script>--%>
     <%------------------------------------------%>
 
 </head>

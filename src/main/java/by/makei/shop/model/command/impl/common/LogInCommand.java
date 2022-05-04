@@ -10,8 +10,6 @@ import by.makei.shop.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
@@ -37,6 +35,7 @@ public class LogInCommand implements Command {
                 session.setAttribute(USER, user);
                 session.setAttribute(ACCESS_LEVEL, user.getAccessLevel());
                 logger.log(Level.DEBUG,"attributes for user {} were set.", user);
+                router.setRedirectType();//f5 defence
                 router.setCurrentPage(PagePath.MAIN);
                 //TODO переход на main?
             }else {

@@ -18,7 +18,7 @@ import java.util.TimeZone;
 
 class ConnectionFactory {//ограничить доступ извне
     private static final Logger logger = LogManager.getLogger();
-    private static final String FILE_NAME = "sql_config.properties";
+    private static final String FILE_NAME = "sql/sql_config.properties";
     private static final String DB_URL;
     private static final String PROPERTIES_FILE;
     private static final Properties properties = new Properties();
@@ -40,8 +40,8 @@ class ConnectionFactory {//ограничить доступ извне
         try {
             Class.forName(driverClassName);
         } catch (ClassNotFoundException e) {
-            logger.log(Level.FATAL, "SQL driver can't be loaded - {}", driverClassName);
-            throw new RuntimeException("SQL driver class can't be read", e);
+            logger.log(Level.FATAL, "ConnectionFactory SQL driver can't be loaded - {}", driverClassName);
+            throw new RuntimeException("ConnectionFactory SQL driver class can't be read", e);
         }
         setServerTimeZoneProperty();
     }
@@ -52,8 +52,8 @@ class ConnectionFactory {//ограничить доступ извне
         try {
             return DriverManager.getConnection(DB_URL, properties);
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "connection create error", e);
-            throw new DbConnectionPoolException("connection create error", e);
+            logger.log(Level.ERROR, "ConnectionFactory getConnection create error", e);
+            throw new DbConnectionPoolException("ConnectionFactory connection create error", e);
         }
     }
 
@@ -61,7 +61,7 @@ class ConnectionFactory {//ограничить доступ извне
         try (FileInputStream fileInputStream = new FileInputStream(PROPERTIES_FILE)) {
             properties.load(fileInputStream);
         } catch (IOException e) {
-            logger.log(Level.FATAL, "file - {} - can't be read", FILE_NAME);
+            logger.log(Level.FATAL, "ConnectionFactory loadPropertyFromFile file - {} - can't be read", FILE_NAME);
             throw new RuntimeException("SQL config property file can't be read", e);
         }
     }

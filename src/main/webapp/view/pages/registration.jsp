@@ -14,7 +14,6 @@
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
 
-<!DOCTYPE html>
 
 <html>
 <head>

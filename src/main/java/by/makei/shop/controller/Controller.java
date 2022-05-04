@@ -29,7 +29,7 @@ import static by.makei.shop.model.command.AttributeName.ERROR_MESSAGE;
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 25)
 
-//TODO разобраться с аннотациями
+//порог для записи из памяти
 
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
@@ -44,7 +44,6 @@ public class Controller extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.log(Level.DEBUG, "controller {}", request.getMethod());
         processRequest(request, response);
-
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

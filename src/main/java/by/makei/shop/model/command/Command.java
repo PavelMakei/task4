@@ -11,5 +11,5 @@ public interface Command {
 
     Router execute(HttpServletRequest request) throws CommandException;
 
-    default void refresh(){}; //TODO realize
+    default void refresh(){}; //TODO realize?
 }

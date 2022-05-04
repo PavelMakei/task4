@@ -9,6 +9,11 @@ public enum PagePath {
     public static final String REGISTRATION = "view/pages/registration.jsp";
     public static final String ADDNEWPRODUCT = "view/pages/admin/addnewproduct.jsp";
 
+    public static final String GO_TO_ADD_NEW_PRODUCT = "/controller?command=go_to_add_new_product";
+
+
+
+
     public static final String TEMP = "view/pages/temp.jsp";
 
 }

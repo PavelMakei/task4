@@ -34,7 +34,10 @@
 <body>
 
 <c:if test="${sessionScope.access_level == 'GUEST'}">
-    <jsp:forward page="login.jsp"/>
+    <a class="link-light" href="${absolutePath}/controller?command=go_to_login_page">
+            link
+    </a>
+<%--    <jsp:forward page="/controller?command=go_to_login_page"/>--%>
 </c:if>
 <c:if test="${sessionScope.access_level == 'ADMIN' || sessionScope.access_level == 'USER'}">
 
@@ -59,7 +62,7 @@
     </form>
 
     <br>
-    <form action="${absolutePath}/controller" method="post">
+    <form action="${absolutePath}/controller" method="get">
         <table>
             <tbody>
             <tr>

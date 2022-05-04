@@ -47,3 +47,13 @@ body {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
 }
+
+.custom-file-input.selected:lang(en)::after {
+    content: "" !important;
+}
+.custom-file {
+    overflow: hidden;
+}
+.custom-file-input {
+    white-space: nowrap;
+}

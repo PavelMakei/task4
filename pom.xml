@@ -19,11 +19,6 @@
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>jakarta.mvc</groupId>-->
-<!--            <artifactId>jakarta.mvc-api</artifactId>-->
-<!--            <version>2.0.0</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -59,6 +54,11 @@
             <version>8.0.28</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
 
         <!--таги для jsp-->
 

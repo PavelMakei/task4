@@ -57,7 +57,15 @@ public class AddNewProductCommand implements Command {
                 //TODO only for test - place right page!!!
             }
             else{
-                //если невалидно, записываем станрые значения и проблемы в реквест, возвращаемся на страницу добавления продукта
+                //если невалидно, снова получаем данные по брендам и типам, записываем старые значения и проблемы в реквест, возвращаемся на страницу добавления продукта
+                Map<String,Integer> brands;
+                Map<String,Integer> types;
+                brands = adminService.getAllBrandsMap();
+                types = adminService.getAllTypesMap();
+                request.setAttribute(BRANDS_MAP, brands);
+                request.setAttribute(TYPES_MAP, types);
+
+
                 for(Map.Entry<String,String> entry: productDataMap.entrySet()){
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }

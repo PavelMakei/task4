@@ -6,12 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
+
 <head>
     <title>Index</title>
 </head>
 <body>
-<jsp:forward page="/view/pages/login.jsp"/>
-<%--<jsp:forward page="/view/pages/main.jsp"/>--%>
+<%--<jsp:forward page="/view/pages/login.jsp"/>--%>
+<jsp:forward page="/controller?command=go_to_main"/>
 <%--<jsp:forward page="/view/pages/registration.jsp"/>--%>
 </body>
