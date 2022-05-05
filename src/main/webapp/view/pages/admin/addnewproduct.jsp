@@ -13,6 +13,7 @@
 <%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="language_text"/>
+
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
 
@@ -96,7 +97,7 @@
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" novalidate method="post"
-                                  action="${absolutePath}/controller"
+                                  action="${path}/controller"
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="add_new_product">
 
@@ -402,7 +403,7 @@
                                 <%--                        //TODO куда переходить?--%>
 
                                 <div class="login-register">
-                                    <a style="color: goldenrod" href="${absolutePath}/index.jsp">${return_main_page}</a>
+                                    <a style="color: goldenrod" href="${path}/index.jsp">${return_main_page}</a>
                                 </div>
                             </form>
                         </div>

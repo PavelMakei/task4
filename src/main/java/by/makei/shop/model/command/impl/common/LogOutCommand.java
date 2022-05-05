@@ -16,9 +16,8 @@ public class LogOutCommand implements Command {
         Router router = new Router();
         HttpSession session = request.getSession();
         session.invalidate();
-        router.setRedirectType();
         //TODO на каую страницу?
-        //router.setCurrentPage(INDEX);
+        router.setCurrentPage(INDEX);
         return router;
     }
 }

@@ -13,12 +13,12 @@
 <fmt:setBundle basename="language_text"/>
 <c:set var="absolutePath">${pageContext.request.contextPath}</c:set>
 
-<link rel="stylesheet" href="${absolutePath}/css/enter.css">
+<link rel="stylesheet" href="${path}/css/enter.css">
 
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="${absolutePath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 
     <title>Title</title>

@@ -52,7 +52,7 @@
 
                         <div class="card-body bg-dark bg-opacity-75">
                             <form class="form-horizontal needs-validation" novalidate method="post"
-                                  action="${absolutePath}/controller">
+                                  action="${path}/controller">
                                 <input type="hidden" name="command" value="login">
 
                                 <div class="form-group">
@@ -103,7 +103,7 @@
 
 
                                 <div class="login-register">
-                                    <a href="${absolutePath}/index.jsp" style="color: goldenrod"><fmt:message
+                                    <a href="${path}/index.jsp" style="color: goldenrod"><fmt:message
                                             key="return.main.page"/></a>
                                     <%--                                    todo через контроллер?--%>
                                 </div>
