@@ -8,20 +8,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
 import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
-import static by.makei.shop.model.command.PagePath.LOGINATION;
+import static by.makei.shop.model.command.PagePath.REGISTRATION;
 
-public class GoToLogInPage implements Command {
+public class GoToAddNewUser implements Command {
 
-    @Override
     public Router execute(HttpServletRequest request) throws CommandException {
 
         String currentPage = PagePathExtractor.extractPagePath(request);
-        logger.log(Level.DEBUG,"GoToLoginPage currentPage :{}",currentPage);
+        logger.log(Level.DEBUG,"GoToAddNewUserPage currentPage :{}",currentPage);
         request.getSession().setAttribute(CURRENT_PAGE,currentPage);
         Router router = new Router();
         router.setRedirectType();
-        router.setCurrentPage(LOGINATION);
+        router.setCurrentPage(REGISTRATION);
 
         return router;
     }
+
 }

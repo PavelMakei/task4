@@ -35,8 +35,9 @@
 
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="stylesheet" href="${path}/bootstrap/css/bootstrap.min.css">
+    <link href="${path}/css/enter.css" rel="stylesheet">
+
     <script src="${path}/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </head>
@@ -87,7 +88,7 @@
                                 ${log_out}
                         </c:when>
                         <c:otherwise>
-                            <input type="hidden" name="command" value="go_to_login_page">
+                            <input type="hidden" name="command" value="go_to_login">
                             <button class="btn btn-outline-warning rounded-pill"
                                     style="color: black; background-color: white; border-color: orange;border-radius: 100% "
                                     type="submit">

@@ -53,7 +53,7 @@
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
 
-    <title><fmt:message key="registration.user"/></title>
+    <title>${registration_label}</title>
 </head>
 <body>
 

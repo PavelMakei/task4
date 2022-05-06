@@ -25,6 +25,8 @@
 <fmt:message key="password" var="password_label"/>
 <fmt:message key="enter.password" var="password_placeholder"/>
 <fmt:message key="return.main.page" var="return_link_label"/>
+<fmt:message key="sign.in" var="sign_in_label"/>
+<fmt:message key="forgot.password" var="forgot_password_label"/>
 
 <head>
 
@@ -34,11 +36,12 @@
     <link href="${path}/css/enter.css" rel="stylesheet">
     <title>${login_label}</title>
 
-<%-----------------Prevent to return to previous page---------------%>
+    <%-----------------Prevent to return to previous page---------------%>
     <script>
         function preventBack() {
             window.history.forward();
         }
+
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -72,24 +75,31 @@
                             <form class="form-horizontal needs-validation" novalidate method="post"
                                   action="${path}/controller">
                                 <input type="hidden" name="command" value="login">
-<%------------------------------------------------login---------------------------------%>
+                                <%------------------------------------------------login---------------------------------%>
                                 <div class="form-group">
                                     <label for="login" class="cols-sm-2 control-label" style="color: white">
                                         ${login_label}
                                     </label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-users fa"
-                                                                       aria-hidden="true"></i></span>
-                                            <div class="input-group mb-3 ">
-                                                <input type="text" class="form-control"  name="login" id="login"
+                                            <span class="input-group-addon"><i class="fa fa-users fa"
+                                                                               aria-hidden="true"></i></span>
+                                            <div class="input-group ">
+                                                <input type="text" class="form-control" name="login" id="login"
                                                        placeholder="${login_placeholder}"
                                                        required pattern="${login_pattern}"/>
+                                            </div>
+                                            <div class="forgot-password mb-2">
+                                                <a href="${path}/controller?command=!!!!!!!!!!!!!!!!!!!!!!!!!!!!" <%--TODO!!!!--%>
+                                                   style="color: goldenrod">${forgot_password_label}</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-<%------------------------------------------------password--------------------------------%>
+                                <%------------------------------------------------forgot--------------------------------%>
+
+
+                                <%------------------------------------------------password--------------------------------%>
                                 <div class="form-group">
                                     <label for="password" class="cols-sm-2 control-label"
                                            style="color: white">${password_label}</label>
@@ -97,7 +107,7 @@
                                         <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-lock fa-lg"
                                                                            aria-hidden="true"></i></span>
-                                            <div class="input-group mb-3">
+                                            <div class="input-group mb-4">
                                                 <input type="password" class="form-control" name="password"
                                                        id="password"
                                                        placeholder="${password_placeholder}"
@@ -106,7 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-<%------------------------------------------------button------------------------------%>
+                                <%------------------------------------------------button------------------------------%>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary btn-warning"
                                             style="background-color: goldenrod; color: white">
@@ -117,7 +127,8 @@
                                 <%--                        //TODO куда переходить?--%>
 
                                 <div class="login-register">
-                                    <a href="${path}/index.jsp" style="color: goldenrod">${return_link_label}</a>
+                                    <a href="${path}/controller?command=go_to_add_new_user"
+                                       style="color: goldenrod">${sign_in_label}</a>
                                     <%--                                    todo через контроллер?--%>
                                 </div>
                             </form>

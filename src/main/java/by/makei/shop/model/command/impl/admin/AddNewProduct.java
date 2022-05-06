@@ -19,8 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.command.PagePath.ERROR500;
 
-public class AddNewProductCommand implements Command {
+public class AddNewProduct implements Command {
+    private static final String ERROR = "AddNewProductCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -52,7 +54,7 @@ public class AddNewProductCommand implements Command {
             if(parameterValidator.validateProductData(productDataMap,bytesPhoto)) {
                 adminService.addNewProduct(productDataMap, bytesPhoto);
 
-                //TODO переход по редирект и/или на страницу с уведомлением?
+                //TODO переход по редирект и/или на страницу с уведомлением? На index?
                 router.setCurrentPage(PagePath.TEMP);
                 //TODO only for test - place right page!!!
             }
@@ -73,10 +75,9 @@ public class AddNewProductCommand implements Command {
             }
 
         } catch (ServiceException e) {
-            logger.log(Level.ERROR,"error while addNewProductCommand", e.getMessage());
-            //TODO return
-
-            e.printStackTrace();
+            logger.log(Level.ERROR,"GoToAddNewProductCommand command error. {}",e.getMessage());
+            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
+            router.setCurrentPage(ERROR500);
         }
         return router;
     }

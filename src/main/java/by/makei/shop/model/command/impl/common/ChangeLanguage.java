@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Level;
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.MAIN;
 
-public class ChangeLanguageCommand implements Command {
+public class ChangeLanguage implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
@@ -20,7 +20,7 @@ public class ChangeLanguageCommand implements Command {
         String locale = (String) session.getAttribute(LOCALE);
         String currentPage = (String) session.getAttribute(CURRENT_PAGE);
         String contextPath = session.getServletContext().getContextPath();
-        logger.log(Level.INFO, "ChangeLocaleCommand currentLocale = {}, currentPage = {}, contextPath = {}",locale,currentPage,contextPath);
+        logger.log(Level.INFO, "ChangeLocale currentLocale = {}, currentPage = {}, contextPath = {}",locale,currentPage,contextPath);
         String currentUri = contextPath+currentPage;
         if (locale.equals(LOCALE_RU_RU)) {
             session.setAttribute(LOCALE, LOCALE_EN_US);

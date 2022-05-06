@@ -12,8 +12,6 @@ import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import by.makei.shop.util.ResourceManager;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -21,7 +19,7 @@ import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
 
-public class RegistrationCommand implements Command {
+public class Registration implements Command {
     private static final String LOCALE_SPLIT_REGEXP = "_";
 
     @Override
@@ -41,12 +39,10 @@ public class RegistrationCommand implements Command {
         try {
 
         if (parameterValidator.validateUserData(userDataMap)) {
-            // если валидно, то добавляем юзера в БД и переходим в мэин?
-
                 userService.addNewUser(userDataMap);
 
             //TODO переход по редирект и/или на страницу с уведомлением?
-            router.setCurrentPage(PagePath.TEMP);
+            router.setCurrentPage(PagePath.INDEX);
             sendRegistrationEmail(request);
 
             //TODO only for test - place right page!!!
@@ -75,6 +71,8 @@ public class RegistrationCommand implements Command {
         String password  = request.getParameter(PASSWORD);
         String sendEmailTo = request.getParameter(EMAIL);
         StringBuilder mailText = new StringBuilder("");
+
+        //TODO вынести литералы ? Смысл?
         mailText.append(manager.getString("lightingshop.registration.successful"))
                 .append("\n")
                 .append(manager.getString("your.login.is"))

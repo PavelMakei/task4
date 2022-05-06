@@ -32,6 +32,7 @@
 <fmt:message key="size.name" var="size_name_label"/>
 <fmt:message key="quantity.name" var="quantity_name_label"/>
 <fmt:message key="find.products.button" var="find_products_button"/>
+<fmt:message key="selection.by.parameters" var="selection_by_parameters_label"/>
 
 
 <c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>
@@ -44,7 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
-    <title>${login_label}</title>
+    <title>${main_page_label}</title>
 
     <%-----------------Prevent to return to previous page---------------%>
     <script>
@@ -74,7 +75,7 @@
         <div class="position-sticky pt-3">
             <div class="card" style="border-color: goldenrod">
                 <div class="card-header bg-light fw-bold"
-                     style="text-align:center; color: black;">Выбор продукта
+                     style="text-align:center; color: black;">${selection_by_parameters_label}
                 </div>
                 <%--        TODO translate--%>
 
@@ -82,7 +83,7 @@
                     <form class="form-horizontal needs-validation" novalidate method="post"
                           action="${path}/controller"
                           enctype="multipart/form-data">
-                        <input type="hidden" name="command" value="add_new_product">
+                        <input type="hidden" name="command" value="find_product">
 
                         <%----------------------------------------------------------------------------------------------            --%>
                         <%------------------------------------------------------Brands-----------------------------------------------%>
@@ -103,7 +104,7 @@
                                                                     aria-hidden="true"></i></span>
                                     <%--                                    выпадающий список--%>
                                     <div class="input-group mb-3">
-                                        <select class="form-select" name="brand_id" id="brand">
+                                        <select class="form-select" name="brand_id" id="brand" >
                                             <option value=""
                                                     selected>${select_your_brand_option}</option>
                                             <c:forEach var="brandEnter" items="${brands_map}">

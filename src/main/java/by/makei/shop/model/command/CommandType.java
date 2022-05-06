@@ -1,24 +1,26 @@
 package by.makei.shop.model.command;
 
 import by.makei.shop.exception.CommandException;
-import by.makei.shop.model.command.impl.admin.AddNewProductCommand;
+import by.makei.shop.model.command.impl.admin.AddNewProduct;
 import by.makei.shop.model.command.impl.common.*;
 import by.makei.shop.model.command.impl.gotopage.GoToAddNewProduct;
-import by.makei.shop.model.command.impl.gotopage.GoToLogInPage;
+import by.makei.shop.model.command.impl.gotopage.GoToAddNewUser;
+import by.makei.shop.model.command.impl.gotopage.GoToLogin;
 import by.makei.shop.model.command.impl.gotopage.GoToMain;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public enum CommandType {
-    DEFAULT(new DefaultCommand()),
-    LOGIN(new LogInCommand()),
-    LOGOUT(new LogOutCommand()),
-    REGISTRATION(new RegistrationCommand()),
-    ADD_NEW_PRODUCT(new AddNewProductCommand()),
+    DEFAULT(new Default()),
+    LOGIN(new LogIn()),
+    LOGOUT(new LogOut()),
+    REGISTRATION(new Registration()),
+    ADD_NEW_PRODUCT(new AddNewProduct()),
     GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProduct()),
-    CHANGE_LANGUAGE(new ChangeLanguageCommand()),
-    GO_TO_LOGIN_PAGE(new GoToLogInPage()),
+    GO_TO_ADD_NEW_USER(new GoToAddNewUser()),
+    CHANGE_LANGUAGE(new ChangeLanguage()),
+    GO_TO_LOGIN(new GoToLogin()),
     GO_TO_MAIN(new GoToMain());
 
 

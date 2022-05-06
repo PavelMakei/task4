@@ -16,7 +16,7 @@ import java.util.Optional;
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.*;
 
-public class LogInCommand implements Command {
+public class LogIn implements Command {
     private static final String ERROR = "LoginCommand Service exception : ";
 
     @Override
@@ -36,8 +36,8 @@ public class LogInCommand implements Command {
                 session.setAttribute(ACCESS_LEVEL, user.getAccessLevel());
                 logger.log(Level.DEBUG,"attributes for user {} were set.", user);
                 router.setRedirectType();//f5 defence
-                router.setCurrentPage(PagePath.MAIN);
-                //TODO переход на main?
+                router.setCurrentPage(INDEX);
+
             }else {
                 logger.log(Level.INFO,"user wasn't found.");
                 request.setAttribute(INVALID_LOGIN_OR_PASSWORD_MESSAGE, INVALID_LOGIN_OR_PASSWORD_MESSAGE);
