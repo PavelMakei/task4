@@ -46,6 +46,7 @@ public enum AttributeName {
     public static final String INVALID_POWER = "invalid_power";
     public static final String INVALID_SIZE = "invalid_size";
     public static final String INVALID_QUANTITY = "invalid_quantity";
+    public static final String INVALID_QUANTITY_IN_STOCK = "invalid_quantity_in_stock";
     public static final String INVALID_PHOTO = "invalid_photo";
     public static final String BRAND_NAME = "brand_name";
     public static final String TYPE_NAME = "type_name";
@@ -55,11 +56,17 @@ public enum AttributeName {
     public static final String CURRENT_PAGE = "current_page";
     public static final String LOCALE_EN_US = "en_US";
     public static final String LOCALE_RU_RU = "ru_RU";
-
-
-
-
-
+    public static final String PRODUCTS_LIST = "products_list";
+    public static final String PRODUCTS_QUANTITY_MAP = "products_quantity_map";
+    public static final String QUANTITY_IN_STOCK = "quantity_in_stock";
+    public static final String SEARCH_BRAND_ID = "search_brand_id";
+    public static final String SEARCH_TYPE_ID = "search_type_id";
+    public static final String SEARCH_MIN_PRICE = "search_min_price";
+    public static final String SEARCH_MAX_PRICE = "search_max_price";
+    public static final String SEARCH_MIN_POWER = "search_min_power";
+    public static final String SEARCH_MAX_POWER = "search_max_power";
+    public static final String SEARCH_PAGE = "search_page";
+    public static final String TOTAL_PAGE = "total_page";
 
 
 }

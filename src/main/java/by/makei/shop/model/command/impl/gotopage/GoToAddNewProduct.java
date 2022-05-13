@@ -4,7 +4,7 @@ import by.makei.shop.exception.CommandException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
-import by.makei.shop.model.service.impl.AdminServiceImpl;
+import by.makei.shop.model.service.impl.ProductServiceImpl;
 import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -22,16 +22,16 @@ public class GoToAddNewProduct implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        Map<String,Integer> brands;
-        Map<String,Integer> types;
+        Map<String,String> brands;
+        Map<String,String> types;
         Router router = new Router();
-        AdminServiceImpl adminService = new AdminServiceImpl();
+        ProductServiceImpl productService = new ProductServiceImpl();
         HttpSession session = request.getSession();
         String currentPage = PagePathExtractor.extractPagePath(request);
         session.setAttribute(CURRENT_PAGE,currentPage);
         try {
-            brands = adminService.getAllBrandsMap();
-            types = adminService.getAllTypesMap();
+            brands = productService.getAllBrandsMap();
+            types = productService.getAllTypesMap();
 
             request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(TYPES_MAP, types);

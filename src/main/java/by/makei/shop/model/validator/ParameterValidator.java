@@ -10,5 +10,7 @@ public interface ParameterValidator {
 
     boolean validateProductData(Map<String, String> productData, byte[] photoJpg) throws ServiceException;
 
-    boolean validateJpg(byte[] photo);
+    boolean validateJpg(byte[] photo, int... widthAndHeight);
+
+    boolean validateAndCorrectSearchProductParam(Map<String,String> searchProductData);
 }

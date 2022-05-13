@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,11 +30,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.validator.DefaultSearchParam.*;
 
 public class ParameterValidatorImpl implements ParameterValidator {
     private static final Logger logger = LogManager.getLogger();
     private static final ParameterValidatorImpl instance = new ParameterValidatorImpl();
     private static final int MAX_FILE_VALUE = 4194304;
+
 
     private ParameterValidatorImpl() {
     }
@@ -118,13 +121,12 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateJpg(byte[] photo) {
+    public boolean validateJpg(byte[] photo, int... widthAndHeight) {
         InputStream targetStream = new ByteArrayInputStream(photo);
         if (photo.length > MAX_FILE_VALUE) {
             logger.log(Level.INFO, "ParameterValidator validateJpg file too big, allowed length is 4194304, but {}", photo.length);
             return false;
         }
-
         boolean canRead = false;
         try (ImageInputStream iis = ImageIO.createImageInputStream(targetStream)) {
             Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("jpg");
@@ -137,11 +139,82 @@ public class ParameterValidatorImpl implements ParameterValidator {
                 logger.log(Level.INFO, "photo file.jpg validated true");
                 break;
             }
+            if (widthAndHeight.length == 0) {
+                return canRead;
+            }
+            BufferedImage bis = ImageIO.read(new ByteArrayInputStream(photo));
+            int w = bis.getWidth();
+            int h = bis.getHeight();
+            if (w != widthAndHeight[0] || h != widthAndHeight[1]) {
+                canRead = false;
+            }
+
         } catch (IOException exp) {
             logger.log(Level.INFO, "photo file.jpg can't be recognised");
             //it's normal work of validator
         }
         return canRead;
+    }
+
+    @Override
+    public boolean validateAndCorrectSearchProductParam(Map<String, String> searchProductParam) {
+        boolean isCorrect = true;
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+
+        for (Map.Entry<String, String> entry : searchProductParam.entrySet()) {
+            switch (entry.getKey()) {
+                case SEARCH_BRAND_ID -> {
+                    String brandId = entry.getValue();
+                    if (!validator.isIntValid(brandId)) {
+                        entry.setValue(DEFAULT_BRAND_ID);
+                        isCorrect= false;
+                    }
+                }
+                case SEARCH_TYPE_ID -> {
+                    String typeId = entry.getValue();
+                    if (!validator.isIntValid(typeId)) {
+                        entry.setValue(DEFAULT_TYPE_ID);
+                        isCorrect= false;
+                    }
+                }
+                case SEARCH_MIN_PRICE -> {
+                    String minPrice = entry.getValue();
+                    if (!validator.isIntValid(minPrice)) {
+                        entry.setValue(DEFAULT_MIN_PRICE);
+                        isCorrect= false;
+                    }
+                }
+                case SEARCH_MAX_PRICE -> {
+                    String maxPrice = entry.getValue();
+                    if (!validator.isIntValid(maxPrice)) {
+                        entry.setValue(DEFAULT_MAX_PRICE);
+                        isCorrect= false;
+                    }
+                }
+                case SEARCH_MIN_POWER -> {
+                    String minPower = entry.getValue();
+                    if (!validator.isIntValid(minPower)) {
+                        entry.setValue(DEFAULT_MIN_POWER);
+                        isCorrect= false;
+                    }
+                }
+                case SEARCH_MAX_POWER -> {
+                    String maxPower = entry.getValue();
+                    if (!validator.isIntValid(maxPower)) {
+                        entry.setValue(DEFAULT_MAX_POWER);
+                        isCorrect= false;
+                    }
+                }
+                case SEARCH_PAGE -> {
+                    String searchPage = entry.getValue();
+                    if (!validator.isIntValid(searchPage)) {
+                        entry.setValue(DEFAULT_PAGE);
+                        isCorrect= false;
+                    }
+                }
+            }
+        }
+        return isCorrect;
     }
 
     @Override
@@ -222,9 +295,9 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             isCorrect = false;
                         }
                     }
-                    case QUANTITY -> {
+                    case QUANTITY_IN_STOCK -> {
                         if (!validator.isIntValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_QUANTITY, INVALID_QUANTITY);
+                            invalidParameters.put(INVALID_QUANTITY_IN_STOCK, INVALID_QUANTITY_IN_STOCK);
                             isCorrect = false;
                         }
                     }

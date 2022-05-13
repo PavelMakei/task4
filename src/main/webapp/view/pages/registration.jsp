@@ -89,7 +89,11 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="first_name"
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_first_name}">
+                                                     is-invalid
+                                                 </c:if>
+                                                        " name="first_name"
                                                        id="first_name"
                                                         <c:if test="${!empty first_name}">
                                                             value="${first_name}"
@@ -117,7 +121,11 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="last_name" id="last_name"
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_last_name}">
+                                                     is-invalid
+                                                 </c:if>
+                                                        " name="last_name" id="last_name"
                                                        placeholder="${name_placeholder}"
                                                         <c:if test="${!empty last_name}">
                                                             value="${last_name}"
@@ -148,7 +156,11 @@
                                     <span class="input-group-addon"><i class="fa fa-users fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="login" id="login"
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_login ||!empty busy_login}">
+                                                     is-invalid
+                                                 </c:if>
+                                                        " name="login" id="login"
                                                        placeholder="${login_placeholder}"
                                                         <c:if test="${!empty login}">
                                                             value="${login}"
@@ -178,7 +190,11 @@
                                                 <span class="input-group-addon"><i class="fa fa-envelope fa"
                                                                                    aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="email" class="form-control" name="email" id="email"
+                                                <input type="email" class="form-control
+                                                 <c:if test="${!empty invalid_email ||!empty busy_email}">
+                                                     is-invalid
+                                                 </c:if>
+                                                " name="email" id="email"
                                                        placeholder="example@mail.com"
                                                         <c:if test="${!empty email}">
                                                             value="${email}"
@@ -191,14 +207,26 @@
                                 </div>
 <%--                                ---------------------------password-------------------------------%>
                                 <div class="form-group" style="color: white">
-                                    <label for="password" class="cols-sm-2 control-label">${password_label}
+                                    <label for="password" class="cols-sm-2 control-label"
+                                            <c:if test="${!empty invalid_password}">
+                                                style="color: red"
+                                            </c:if>
+                                    >
+                                        ${password_label}
+                                        <c:if test="${!empty invalid_password}">
+                                            ${incorrect_he_message}
+                                        </c:if>
                                     </label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-lock fa-lg"
                                                                                aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="password" class="form-control" name="password"
+                                                <input type="password" class="form-control
+                                                 <c:if test="${!empty invalid_password}">
+                                                     is-invalid
+                                                 </c:if>
+                                                       " name="password"
                                                        id="password"
                                                        placeholder="${password_placeholder}"
                                                        required pattern="${password_pattern}"/>
@@ -226,7 +254,11 @@
                                             <span class="input-group-addon"><i class="fa fa-lock fa-lg"
                                                                                aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="tel" class="form-control" name="phone" id="phone"
+                                                <input type="tel" class="form-control
+                                                 <c:if test="${!empty invalid_phone ||!empty busy_phone}">
+                                                     is-invalid
+                                                 </c:if>
+                                                       " name="phone" id="phone"
                                                        placeholder="(025,029,044)1234567"
                                                         <c:if test="${!empty phone}">
                                                             value="${phone}"

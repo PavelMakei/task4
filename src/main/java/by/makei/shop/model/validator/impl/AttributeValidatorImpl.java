@@ -12,7 +12,7 @@ public class AttributeValidatorImpl implements AttributeValidator {
     public static final String DECIMAL_STRING_PATTERN = "^((\\d{1,5}\\.\\d{0,2})|(\\d{1,5}))$";
     public static final String INTEGER_STRING_PATTERN = "^((\\d{1,5}))$";
     public static final String PRODUCT_NAME_PATTERN = "^[A-Za-zА-Яа-я\\d_,\\.,;:\\- ]{3,60}$";
-    public static final String DESCRIPTION_PATTERN = "^[A-Za-zА-Яа-я\\d_ \\.;,\\(\\)]+$";
+    public static final String DESCRIPTION_PATTERN = "^[A-Za-zА-Яа-я\\d_ -\\.;,\\(\\)]+$";
     public static final String COLOUR_PATTERN = "^[A-Za-zА-Яа-я\\d\\-_ ]{3,60}$";
     public static final String SIZE_PATTERN = "^[A-Za-zА-Яа-я\\d_* ]{3,45}$";
 

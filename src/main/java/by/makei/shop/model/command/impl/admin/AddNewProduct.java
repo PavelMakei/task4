@@ -5,8 +5,8 @@ import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.PagePath;
 import by.makei.shop.model.command.Router;
-import by.makei.shop.model.service.AdminService;
-import by.makei.shop.model.service.impl.AdminServiceImpl;
+import by.makei.shop.model.service.ProductService;
+import by.makei.shop.model.service.impl.ProductServiceImpl;
 import by.makei.shop.model.validator.ParameterValidator;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import jakarta.servlet.ServletException;
@@ -27,7 +27,7 @@ public class AddNewProduct implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
-        AdminService adminService = new AdminServiceImpl();
+        ProductService productService = new ProductServiceImpl();
         Router router = new Router();
 
         Map<String, String> productDataMap = new HashMap();
@@ -39,7 +39,7 @@ public class AddNewProduct implements Command {
         productDataMap.put(COLOUR, request.getParameter(COLOUR));
         productDataMap.put(POWER, request.getParameter(POWER));
         productDataMap.put(SIZE, request.getParameter(SIZE));
-        productDataMap.put(QUANTITY, request.getParameter(QUANTITY));
+        productDataMap.put(QUANTITY_IN_STOCK, request.getParameter(QUANTITY_IN_STOCK));
 
         byte[] bytesPhoto;
         try (
@@ -52,21 +52,19 @@ public class AddNewProduct implements Command {
 
         try {
             if(parameterValidator.validateProductData(productDataMap,bytesPhoto)) {
-                adminService.addNewProduct(productDataMap, bytesPhoto);
-
-                //TODO переход по редирект и/или на страницу с уведомлением? На index?
-                router.setCurrentPage(PagePath.TEMP);
-                //TODO only for test - place right page!!!
+                productService.addNewProduct(productDataMap, bytesPhoto);
+                router.setRedirectType();
+                router.setCurrentPage(PagePath.INDEX);
+                //TODO куда идти?
             }
             else{
                 //если невалидно, снова получаем данные по брендам и типам, записываем старые значения и проблемы в реквест, возвращаемся на страницу добавления продукта
-                Map<String,Integer> brands;
-                Map<String,Integer> types;
-                brands = adminService.getAllBrandsMap();
-                types = adminService.getAllTypesMap();
+                Map<String,String> brands;
+                Map<String,String> types;
+                brands = productService.getAllBrandsMap();
+                types = productService.getAllTypesMap();
                 request.setAttribute(BRANDS_MAP, brands);
                 request.setAttribute(TYPES_MAP, types);
-
 
                 for(Map.Entry<String,String> entry: productDataMap.entrySet()){
                     request.setAttribute(entry.getKey(), entry.getValue());

@@ -24,6 +24,8 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
     private static final String SQL_SELECT_ALL_TYPES = """
             SELECT id, type_name FROM lightingshop.types""";
 
+
+
     @Override
     public Optional<ProductType> findEntityByOneParam(String paramName, String paramValue) throws DaoException {
         if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
@@ -73,7 +75,7 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
             }
         } catch (SQLException e) {
                 proxyConnection.setForChecking(true);
-            logger.log(Level.ERROR, "error while findAllBrands");
+            logger.log(Level.ERROR, "error while findAllTypes");
             throw new DaoException(e);
         } finally {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);

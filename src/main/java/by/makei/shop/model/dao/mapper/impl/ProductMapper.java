@@ -2,8 +2,9 @@ package by.makei.shop.model.dao.mapper.impl;
 
 import by.makei.shop.model.dao.mapper.Mapper;
 import by.makei.shop.model.entity.Product;
+import by.makei.shop.util.ImageConverter;
 import org.apache.logging.log4j.Level;
-
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -26,7 +27,14 @@ public class ProductMapper implements Mapper<Product> {
             product.setColour(resultSet.getString(COLOUR));
             product.setPower(resultSet.getInt(POWER));
             product.setSize(resultSet.getString(SIZE));
-            product.setPhoto(resultSet.getBytes(PHOTO));
+
+            Blob blobPhoto = resultSet.getBlob(PHOTO);
+            if (blobPhoto != null) {
+                byte[] imageContent = blobPhoto.getBytes(1, (int) blobPhoto.length());
+                String encodeBase64 = ImageConverter.imageToString(imageContent);
+                //TODO scale image???
+                product.setPhotoString(encodeBase64);
+            }
 
             optionalProduct = Optional.of(product);
         } catch (SQLException e) {
@@ -35,4 +43,8 @@ public class ProductMapper implements Mapper<Product> {
         }
         return optionalProduct;
     }
+
+
+
+
 }

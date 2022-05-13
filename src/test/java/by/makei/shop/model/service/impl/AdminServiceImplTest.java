@@ -7,19 +7,19 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AdminServiceImplTest {
+class ProductServiceImplTest {
 
     @Test
     void getAllBrandsMapTest() throws ServiceException {
-        AdminServiceImpl adminService = new AdminServiceImpl();
-        Map<String, Integer> brands = adminService.getAllBrandsMap();
+        ProductServiceImpl productService = new ProductServiceImpl();
+        Map<String, String> brands = productService.getAllBrandsMap();
         assertFalse(brands.isEmpty());
     }
 
     @Test
     void getAllTypesMapTest() throws ServiceException {
-        AdminServiceImpl adminService = new AdminServiceImpl();
-        Map<String, Integer> types = adminService.getAllTypesMap();
+        ProductServiceImpl productService = new ProductServiceImpl();
+        Map<String, String> types = productService.getAllTypesMap();
         assertFalse(types.isEmpty());
     }
 }

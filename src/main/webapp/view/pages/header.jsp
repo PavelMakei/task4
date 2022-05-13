@@ -42,7 +42,7 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-black bg-opacity-75">
+<nav class="navbar navbar-expand navbar-light bg-black bg-opacity-75">
     <div class="container-fluid">
         <a class="navbar-brand" style="color: goldenrod" href="${path}/index.jsp">Lighting shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -60,21 +60,7 @@
 <%--                ----------TODO add role--%>
                 <%@include file="adminproductmenu.jspx"%>
 <%--                ---------------%>
-<%--                <li class="nav-item">--%>
-<%--                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Отключенная</a>--%>
-<%--                </li>--%>
             </ul>
-
-<%--            <form class="d-flex">--%>
-<%--                <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">--%>
-<%--                <button class="btn btn-outline-warning" style="color: white; border-color: orange; " type="submit">--%>
-<%--                    Поиск--%>
-<%--                </button>--%>
-<%--            </form>--%>
-
-
-
-
 
             <form class="d-flex" method="get" action="${path}/controller">
 

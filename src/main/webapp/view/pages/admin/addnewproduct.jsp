@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: Pavel_Makei
@@ -46,7 +45,7 @@
 <fmt:message key="return.main.page" var="return_main_page"/>
 
 <c:set var="product_name_pattern">^[A-Za-zА-Яа-я\d_,\.,;:\- ]{3,60}$</c:set>
-<c:set var="description_name_pattern">^[A-Za-zА-Яа-я\d_ /.;,/(/)-]+}$</c:set>
+<c:set var="description_name_pattern">^[A-Za-zА-Яа-я\d_ -/.;,/(/)-]+}$</c:set>
 <c:set var="colour_pattern">^[A-Za-zА-Яа-я\d_ //-]{3,60}$</c:set>
 <c:set var="size_pattern">^[A-Za-zА-Яа-я\d_* ]{3,45}$</c:set>
 <c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>
@@ -68,6 +67,7 @@
         function preventBack() {
             window.history.forward();
         }
+
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -119,11 +119,15 @@
                                                                     aria-hidden="true"></i></span>
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
-                                                <select class="form-select" name="brand_id" id="brand" required>
+                                                <select class="form-select
+                                                 <c:if test="${!empty invalid_brand_id}">
+                                                     is-invalid
+                                                 </c:if>
+                                                " name="brand_id" id="brand" required>
                                                     <option value="" disabled
                                                             selected>${select_your_brand_option}</option>
                                                     <c:forEach var="brandEnter" items="${brands_map}">
-                                                        <option value=${brandEnter.value}>${brandEnter.key}</option>
+                                                        <option value=${brandEnter.key}>${brandEnter.value}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -150,11 +154,15 @@
 
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
-                                                <select class="form-select" id="type_id" name="type_id" required>
+                                                <select class="form-select
+                                                <c:if test="${!empty invalid_type_id}">
+                                                     is-invalid
+                                                </c:if>
+                                                " id="type_id" name="type_id" required>
                                                     <option value="" disabled
                                                             selected>${select_your_type_option}</option>
                                                     <c:forEach var="typeEnter" items="${types_map}">
-                                                        <option value=${typeEnter.value}>${typeEnter.key}</option>
+                                                        <option value=${typeEnter.key}>${typeEnter.value}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -182,7 +190,11 @@
                                     <span class="input-group-sm"><i class="fa fa-user fa"
                                                                     aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="product_name"
+                                                <input type="text" class="form-control
+                                                       <c:if test="${!empty invalid_product_name}">
+                                                            is-invalid
+                                                       </c:if>
+                                                       " name="product_name"
                                                        id="product_name"
                                                        placeholder="${product_name_placeholder}"
                                                         <c:if test="${!empty product_name}">
@@ -210,10 +222,15 @@
                                     <span class="input-group-sm"><i class="fa fa-user fa"
                                                                     aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <textarea class="form-control" name="description"
+                                                <textarea class="form-control
+                                                 <c:if test="${!empty invalid_description}">
+                                                     is-invalid
+                                                 </c:if>
+                                                          " name="description"
                                                           id="description"
                                                           placeholder="${description_name_placeholder}"
                                                           required
+
                                                 ><c:if test="${!empty description}">${description}</c:if></textarea>
                                             </div>
                                         </div>
@@ -236,12 +253,16 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="price"
+                                                <input type="text" class="form-control
+                                                <c:if test="${!empty invalid_price}">
+                                                     is-invalid
+                                                 </c:if>
+                                                        " name="price"
                                                        id="price"
                                                        placeholder=${price_placeholder}
-                                                        <c:if test="${!empty price}">
-                                                            value="${price}"
-                                                        </c:if>
+                                                       <c:if test="${!empty price}">
+                                                               value="${price}"
+                                                </c:if>
                                                        required pattern="${price_pattern}"/>
                                             </div>
                                         </div>
@@ -264,7 +285,11 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="colour"
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_colour}">
+                                                     is-invalid
+                                                 </c:if>
+                                                       " name="colour"
                                                        id="colour"
                                                        placeholder="${colour_placeholder}"
                                                         <c:if test="${!empty colour}">
@@ -292,7 +317,11 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="power"
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_power}">
+                                                     is-invalid
+                                                 </c:if>
+                                                       " name="power"
                                                        id="power"
                                                        placeholder="${power_placeholder}"
                                                         <c:if test="${!empty power}">
@@ -320,7 +349,11 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="size"
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_size}">
+                                                     is-invalid
+                                                 </c:if>
+                                                       " name="size"
                                                        id="size"
                                                        placeholder="${size_placeholder}"
                                                         <c:if test="${!empty size}">
@@ -333,13 +366,13 @@
                                 </div>
                                 <%----------------------------------------------------- quantity_in_stock int--------------------------------%>
                                 <div class="form-group" style="color: white">
-                                    <label for="quantity" class="cols-sm-2 control-label"
+                                    <label for="quantity_in_stock" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_quantity}">
                                                 style="color: red"
                                             </c:if>
                                     >
                                         ${quantity_name_label}
-                                        <c:if test="${!empty invalid_quantity}">
+                                        <c:if test="${!empty invalid_quantity_in_stock}">
                                             ${incorrect_it_enter_message}
                                         </c:if>
                                     </label>
@@ -348,11 +381,15 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" name="quantity"
-                                                       id="quantity"
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_quantity_in_stock}">
+                                                     is-invalid
+                                                 </c:if>
+                                                        " name="quantity_in_stock"
+                                                       id="quantity_in_stock"
                                                        placeholder=${quantity_placeholder}
-                                                        <c:if test="${!empty quantity}">
-                                                            value="${quantity}"
+                                                       <c:if test="${!empty quantity_in_stock}">
+                                                               value="${quantity_in_stock}"
                                                         </c:if>
                                                        required pattern="${quantity_pattern}"/>
                                             </div>

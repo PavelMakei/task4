@@ -3,6 +3,7 @@ package by.makei.shop.model.entity;
 import java.util.Arrays;
 
 public class Product extends AbstractEntity{
+
     private int id;
     private int brandId;
     private int typeId;
@@ -12,12 +13,13 @@ public class Product extends AbstractEntity{
     private String colour;
     private int power;
     private String size;
-    private byte[] photo;
-//    private int quantity_in_stock;
+
+    private String photoString; // correct format for sending image to jsp
+
 
    public Product(){}
 
-    public Product(int id, int brandId, int typeId, String productName, String description, double price, String colour, int power, String size, byte[] photo) {
+    public Product(int id, int brandId, int typeId, String productName, String description, double price, String colour, int power, String size, String photoString) {
         this.id = id;
         this.brandId = brandId;
         this.typeId = typeId;
@@ -27,10 +29,10 @@ public class Product extends AbstractEntity{
         this.colour = colour;
         this.power = power;
         this.size = size;
-        this.photo = photo;
+        this.photoString = photoString;
     }
 
-    public Product(int brandId, int typeId, String productName, String description, double price, String colour, int power, String size, byte[] photo) {
+    public Product(int brandId, int typeId, String productName, String description, double price, String colour, int power, String size, String photoString) {
         this.brandId = brandId;
         this.typeId = typeId;
         this.productName = productName;
@@ -39,7 +41,7 @@ public class Product extends AbstractEntity{
         this.colour = colour;
         this.power = power;
         this.size = size;
-        this.photo = photo;
+        this.photoString = photoString;
     }
 
     public int getId() {
@@ -114,12 +116,12 @@ public class Product extends AbstractEntity{
         this.size = size;
     }
 
-    public byte[] getPhoto() {
-        return photo;
+    public String getPhotoString() {
+        return photoString;
     }
 
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
+    public void setPhotoString(String photoString) {
+        this.photoString = photoString;
     }
 
     @Override
@@ -138,7 +140,7 @@ public class Product extends AbstractEntity{
         if (description != null ? !description.equals(product.description) : product.description != null) return false;
         if (colour != null ? !colour.equals(product.colour) : product.colour != null) return false;
         if (size != null ? !size.equals(product.size) : product.size != null) return false;
-        return Arrays.equals(photo, product.photo);
+        return photoString != null ? photoString.equals(product.photoString) : product.photoString == null;
     }
 
     @Override
@@ -155,7 +157,7 @@ public class Product extends AbstractEntity{
         result = 31 * result + (colour != null ? colour.hashCode() : 0);
         result = 31 * result + power;
         result = 31 * result + (size != null ? size.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(photo);
+        result = 31 * result + (photoString != null ? photoString.hashCode() : 0);
         return result;
     }
 
