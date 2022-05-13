@@ -7,9 +7,14 @@ import by.makei.shop.model.command.impl.gotopage.GoToAddNewProduct;
 import by.makei.shop.model.command.impl.gotopage.GoToAddNewUser;
 import by.makei.shop.model.command.impl.gotopage.GoToLogin;
 import by.makei.shop.model.command.impl.gotopage.GoToMain;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Map;
+
+import static by.makei.shop.model.command.AttributeName.COMMAND;
 
 public enum CommandType {
     DEFAULT(new Default()),
@@ -36,13 +41,16 @@ public enum CommandType {
         return command;
     }
 
-    public static Command defineCommand(String commandName) throws CommandException {
+    public static Command defineCommand(HttpServletRequest request) throws CommandException {
+        Map<String,String[]> parameterMap = request.getParameterMap();
+
+        String[] commandName = parameterMap.get(COMMAND);
         if (commandName == null ) {
             logger.log(Level.INFO, "command is null");
             return CommandType.DEFAULT.getCommand();
         }
         try {
-            return CommandType.valueOf(commandName.toUpperCase()).getCommand();
+            return CommandType.valueOf(commandName[0].toUpperCase()).getCommand();
         } catch (IllegalArgumentException e) {
             logger.log(Level.ERROR, "incorrect or empty command name. {}", e.getMessage());
            throw new CommandException(e.getMessage());

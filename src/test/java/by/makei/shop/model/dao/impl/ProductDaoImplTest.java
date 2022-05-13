@@ -36,19 +36,29 @@ class ProductDaoImplTest {
 
     @Test
     void findBySearchCorrectParamShouldReturnNotEmptyMap() throws DaoException {
-        Map<Product,String> productsMap = productDao.findBySearchParam(
-                CORRECT_BRAND_ID,CORRECT_TYPE_ID,MIN_PRICE,MAX_PRICE,MIN_POWER,MAX_POWER);
-        assert (productsMap.size()>1);
-    }
-    @Test
-    void findBySearchIncorrectParamShouldReturnNotEmptyMap() throws DaoException {
-        Map<Product,String> productsMap = productDao.findBySearchParam(
-                INCORRECT_BRAND_ID,INCORRECT_TYPE_ID,MIN_PRICE,MAX_PRICE,MIN_POWER,MAX_POWER);
-        assert (productsMap.size()>1);
+        Map<Product, String> productsMap = productDao.findBySearchParam(
+                CORRECT_BRAND_ID, CORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER);
+        assert (productsMap.size() > 1);
     }
 
+    @Test
+    void findBySearchIncorrectParamShouldReturnNotEmptyMap() throws DaoException {
+        Map<Product, String> productsMap = productDao.findBySearchParam(
+                INCORRECT_BRAND_ID, INCORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER);
+        assert (productsMap.size() > 1);
+    }
+
+    @Test
+    void countBySearchCorrectParamShouldReturnNotZero() throws DaoException {
+        int expected = productDao.countBySearchParam(
+                CORRECT_BRAND_ID, CORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER);
+        assert (expected > 1);
+    }
+
+
     @AfterAll
-    static void teardown(){
+    static void teardown() {
         DbConnectionPool.getInstance().shutdown();
     }
 }
+

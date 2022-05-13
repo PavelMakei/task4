@@ -16,10 +16,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static by.makei.shop.model.command.AttributeName.ID;
 import static by.makei.shop.model.command.AttributeName.QUANTITY_IN_STOCK;
 
 public class ProductDaoImpl implements ProductDao {
     private static final String FIND_ANY = "%";
+    private static final String TOTAL = "total";
     private static final String SQL_ADD_NEW_PRODUCT = """
             INSERT INTO lightingshop.products (brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock)
             values (?,?,?,?,?,?,?,?,?,?)""";
@@ -33,6 +35,14 @@ public class ProductDaoImpl implements ProductDao {
 
     private static final String SQL_SELECT_PRODUCTS_BY_PARAMS = """
             SELECT id, brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock FROM lightingshop.products
+            WHERE brand_id LIKE ?
+            AND type_id LIKE ?
+            AND price BETWEEN ? AND ?
+            AND power BETWEEN ? AND ?
+            """;
+
+    private static final String SQL_COUNT_PRODUCTS_BY_PARAMS = """
+            SELECT COUNT(id) AS total FROM lightingshop.products
             WHERE brand_id LIKE ?
             AND type_id LIKE ?
             AND price BETWEEN ? AND ?
@@ -196,16 +206,56 @@ public class ProductDaoImpl implements ProductDao {
                 if (optionalProduct.isPresent()) {
                     resultMap.put(optionalProduct.get(), resultSet.getString(QUANTITY_IN_STOCK));
                 }
-                logger.log(Level.DEBUG, "ProductDao findBeSearchParam product was found");
+                logger.log(Level.DEBUG, "ProductDao findBySearchParam product was found");
             }
         } catch (SQLException e) {
             proxyConnection.setForChecking(true);
-            logger.log(Level.ERROR, "error while findBeSearchParam");
+            logger.log(Level.ERROR, "error while findBySearchParam");
             throw new DaoException(e);
         } finally {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return resultMap;
+    }
+
+    @Override
+    public int countBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int result = 0;
+
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_COUNT_PRODUCTS_BY_PARAMS);
+            if (brandId == 0) {
+                preparedStatement.setString(1, FIND_ANY);
+            } else {
+                preparedStatement.setInt(1, brandId);
+            }
+            if (typeId == 0) {
+                preparedStatement.setString(2, FIND_ANY);
+            } else {
+                preparedStatement.setInt(2, typeId);
+            }
+            preparedStatement.setInt(3, minPrice);
+            preparedStatement.setInt(4, maxPrice);
+            preparedStatement.setInt(5, minPower);
+            preparedStatement.setInt(6, maxPower);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                result = resultSet.getInt(TOTAL);
+            }
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error while countBySearchParam");
+            throw new DaoException(e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+        }
+        return result;
+
     }
 
 

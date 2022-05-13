@@ -62,21 +62,21 @@
 <%--                ---------------%>
             </ul>
 
-            <form class="d-flex" method="get" action="${path}/controller">
+            <form class="d-flex" method="get" action="${path}/controller" style="margin-right: 8px;">
 
 
                     <c:choose>
                         <c:when test="${access_level eq 'ADMIN' or access_level eq 'USER'}">
                         <input type="hidden" name="command" value="logout">
-                        <button class="btn btn-outline-warning rounded-pill"
-                                style="color: black; background-color: white; border-color: orange;border-radius: 100% "
+                        <button class="btn btn-outline-warning"
+                                style="color: black; background-color: white; border-width: 2px; border-color: goldenrod;border-radius: 5% "
                                 type="submit">
                                 ${log_out}
                         </c:when>
                         <c:otherwise>
                             <input type="hidden" name="command" value="go_to_login">
-                            <button class="btn btn-outline-warning rounded-pill"
-                                    style="color: black; background-color: white; border-color: orange;border-radius: 100% "
+                            <button class="btn btn-outline-warning "
+                                    style="color: black; background-color: white; border-width: 2px; border-color: goldenrod;border-radius: 5% "
                                     type="submit">
                                     ${log_in}
                         </c:otherwise>
@@ -90,7 +90,7 @@
 
             <form class="d-flex" method="get" action="${path}/controller">
                 <input type="hidden" name="command" value="change_language">
-                <button class="btn btn-outline-warning" style="color: white; border-color: orange" type="submit">
+                <button class="btn btn-outline-warning" style="color: white; border-color: goldenrod; border-radius: 5%; border-width: 2px" type="submit">
                     <c:choose>
                         <c:when test="${locale eq 'ru_RU'}">English</c:when>
                         <c:when test="${locale eq 'en_US'}">Русский</c:when>

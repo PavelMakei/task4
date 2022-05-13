@@ -21,9 +21,6 @@ import static by.makei.shop.model.command.AttributeName.*;
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
     public static UserServiceImpl instance;
-////////////////////////////////
-    UserDao userDao;
-//////////////////////////////////
     private UserServiceImpl() {
     }
 
@@ -41,7 +38,7 @@ public class UserServiceImpl implements UserService {
             logger.log(Level.INFO, "user -{}- or password wasn't found", login);
             return Optional.empty();
         }
-        userDao = new UserDaoImpl();
+        UserDao userDao = new UserDaoImpl();
         String hashPassword = PasswordEncoder.getHashedPassword(password);
         try {
             return userDao.findUserByLoginAndPassword(login, hashPassword);

@@ -47,10 +47,8 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String commandName = request.getParameter(COMMAND);
-        logger.log(Level.DEBUG, "controller get command : {}", commandName);
         try {
-            Command command = CommandType.defineCommand(commandName);
+            Command command = CommandType.defineCommand(request);
             Router router = command.execute(request);
             switch (router.getCurrentType()) {
                 case FORWARD -> {

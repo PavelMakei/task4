@@ -81,7 +81,7 @@
             <th scope="col" class="col-lg-3" style="padding-left: 0px;padding-top: 0px">
                 <nav id="sidebarMenu" class="col-11 d-md-block sidebar">
                     <div class="position-sticky pt-3">
-                        <div class="card" style="border-color: goldenrod">
+                        <div class="card" style="border-color: orange">
                             <div class="card-header bg-light fw-bold"
                                  style="text-align:center; color: black;">${selection_by_parameters_label}
                             </div>
@@ -298,7 +298,7 @@
                     <c:set var="current_quantity" value="${entry.value}"/>
 
                     <table class="product-card table table-bordered"
-                           style="background-color: white; border-color: goldenrod">
+                           style="background-color: white; border-color: orange">
                         <tbody>
                         <tr style="border-right-width: 2px;border-left-width: 2px;border-top-width: 2px;border-bottom-width: 2px;">
                             <th scope="image" class="col-3" style="background-color: white; height: 200px">
