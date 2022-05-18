@@ -39,6 +39,9 @@ public class ProductDaoImpl implements ProductDao {
             AND type_id LIKE ?
             AND price BETWEEN ? AND ?
             AND power BETWEEN ? AND ?
+            AND product_name LIKE '%s'
+            ORDER BY %s
+            LIMIT ?,?
             """;
 
     private static final String SQL_COUNT_PRODUCTS_BY_PARAMS = """
@@ -47,6 +50,7 @@ public class ProductDaoImpl implements ProductDao {
             AND type_id LIKE ?
             AND price BETWEEN ? AND ?
             AND power BETWEEN ? AND ?
+            AND product_name LIKE '%s'
             """;
 
 
@@ -176,16 +180,28 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Map<Product, String> findBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower) throws DaoException {
+    public Map<Product, String> findBySearchParam(int brandId, int typeId, int minPrice, int maxPrice,
+                                                  int minPower, int maxPower, int searchFrom, int searchTo,
+                                                  String searchWord, String orderQuery) throws DaoException {
+
+//        if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
+//            logger.log(Level.ERROR, "findProductByOneParam incorrect paramName");
+//            throw new DaoException("findProductByOneParam incorrect paramName");
+//        }
+
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<Product> optionalProduct = Optional.empty();
-        Map<Product, String> resultMap = new HashMap<>();
+        Map<Product, String> resultMap = new LinkedHashMap<>();
 
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
-            preparedStatement = proxyConnection.prepareStatement(SQL_SELECT_PRODUCTS_BY_PARAMS);
+
+//            preparedStatement = proxyConnection.prepareStatement(SQL_SELECT_PRODUCTS_BY_PARAMS);
+
+            preparedStatement =
+                    proxyConnection.prepareStatement(String.format(SQL_SELECT_PRODUCTS_BY_PARAMS, FIND_ANY+searchWord+FIND_ANY, orderQuery));
             if (brandId == 0) {
                 preparedStatement.setString(1, FIND_ANY);
             } else {
@@ -200,6 +216,9 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(4, maxPrice);
             preparedStatement.setInt(5, minPower);
             preparedStatement.setInt(6, maxPower);
+//            preparedStatement.setString(7, orderQuery);
+            preparedStatement.setInt(7, searchFrom);
+            preparedStatement.setInt(8, searchTo);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 optionalProduct = new ProductMapper().mapEntity(resultSet);
@@ -219,7 +238,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public int countBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower) throws DaoException {
+    public int countBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower, String searchWord) throws DaoException {
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -227,7 +246,8 @@ public class ProductDaoImpl implements ProductDao {
 
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
-            preparedStatement = proxyConnection.prepareStatement(SQL_COUNT_PRODUCTS_BY_PARAMS);
+            preparedStatement =
+                    proxyConnection.prepareStatement(String.format(SQL_COUNT_PRODUCTS_BY_PARAMS, FIND_ANY+searchWord+FIND_ANY));
             if (brandId == 0) {
                 preparedStatement.setString(1, FIND_ANY);
             } else {
@@ -255,9 +275,7 @@ public class ProductDaoImpl implements ProductDao {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return result;
-
     }
-
 
     //TODO дописать методы
     @Override

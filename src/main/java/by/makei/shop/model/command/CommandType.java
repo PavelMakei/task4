@@ -26,7 +26,8 @@ public enum CommandType {
     GO_TO_ADD_NEW_USER(new GoToAddNewUser()),
     CHANGE_LANGUAGE(new ChangeLanguage()),
     GO_TO_LOGIN(new GoToLogin()),
-    GO_TO_MAIN(new GoToMain());
+    GO_TO_MAIN(new GoToMain()),
+    SHOW_PRODUCT(new ShowProduct());
 
 
     private static final Logger logger = LogManager.getLogger();

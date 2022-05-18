@@ -212,6 +212,13 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         isCorrect= false;
                     }
                 }
+                case PAGE_BUTTON -> {
+                    String pageButton = entry.getValue();
+                    if(!validator.isPageButtonValid(pageButton)){
+                        entry.setValue(DEFAULT_PAGE_BUTTON);
+                    }
+                    isCorrect= false;
+                }
             }
         }
         return isCorrect;

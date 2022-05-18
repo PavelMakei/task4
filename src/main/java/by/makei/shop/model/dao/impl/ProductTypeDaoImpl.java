@@ -40,7 +40,7 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
                     proxyConnection.prepareStatement(String.format(SQL_SELECT_TYPE_BY_VAR_PARAM, paramName));
-            preparedStatement.setString(1, paramValue.toLowerCase());
+            preparedStatement.setString(1, paramValue);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 optionalType = new TypeMapper().mapEntity(resultSet);

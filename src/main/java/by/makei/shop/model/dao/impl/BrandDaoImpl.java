@@ -38,7 +38,7 @@ public class BrandDaoImpl implements BrandDao {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
                     proxyConnection.prepareStatement(String.format(SQL_SELECT_BRAND_BY_VAR_PARAM, paramName));
-            preparedStatement.setString(1, paramValue.toLowerCase());
+            preparedStatement.setString(1, paramValue);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 optionalBrand = new BrandMapper().mapEntity(resultSet);

@@ -25,6 +25,8 @@ public interface AttributeValidator {
 
     boolean isSizeValid(String size);
 
+    boolean isPageButtonValid(String pageButton);
+
 
     //TODO add methods??
 }

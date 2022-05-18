@@ -2,6 +2,8 @@ package by.makei.shop.model.validator.impl;
 
 import by.makei.shop.model.validator.AttributeValidator;
 
+import static by.makei.shop.model.command.AttributeName.*;
+
 public class AttributeValidatorImpl implements AttributeValidator {
     private static final AttributeValidatorImpl instance = new AttributeValidatorImpl();
     public static final String NAME_PATTERN = "^[A-Za-zА-Яа-я]{3,20}$";
@@ -76,6 +78,11 @@ public class AttributeValidatorImpl implements AttributeValidator {
     @Override
     public boolean isSizeValid(String size) {
         return (size != null && size.matches(SIZE_PATTERN));
+    }
+
+    @Override
+    public boolean isPageButtonValid(String pageButton) {
+        return (pageButton != null && (pageButton.matches(NEXT_PAGE)||pageButton.matches(PREVIOUS_PAGE)||pageButton.matches(SEARCH_PAGE)));
     }
 
 

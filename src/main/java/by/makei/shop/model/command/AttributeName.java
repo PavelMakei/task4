@@ -67,6 +67,23 @@ public enum AttributeName {
     public static final String SEARCH_MAX_POWER = "search_max_power";
     public static final String SEARCH_PAGE = "search_page";
     public static final String TOTAL_PAGE = "total_page";
+    public static final String TOTAL_PRODUCT_FOUND = "total_product_found";
+    public static final String PAGE_BUTTON = "page_button";
+    public static final String NEXT_PAGE = "next_page";
+    public static final String PREVIOUS_PAGE = "previous_page";
+    public static final String PRODUCT = "product";
+    public static final String SEARCH_WORD = "search_word";
+    public static final String ORDER_BY_PRICE_DN = "order_by_price_dn";
+    public static final String ORDER_BY_PRICE_UP = "order_by_price_up";
+    public static final String ORDER_BY_POWER_UP = "order_by_power_up";
+    public static final String ORDER_BY_POWER_DN = "order_by_power_dn";
+    public static final String ORDER_BY_NAME_DN = "order_by_name_dn";
+    public static final String ORDER_BY_NAME_UP = "order_by_name_up";
+    public static final String ORDER_ARRAY = "order_array";
+    public static final String ORDER_BY = "order_by";
+
+
+
 
 
 }

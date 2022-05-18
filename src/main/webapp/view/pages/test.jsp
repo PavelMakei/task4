@@ -18,12 +18,12 @@
 <c:set var="test_text" value="Эта жОсткая жесть нужна только для проверки. Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить.Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить. Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить.Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить.Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить.Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить.Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить.Это определение короткое, поэтому никаких лишних абзацев или чего-либо еще. Хотя, если разобраться, то ещё что-томожно добавить." />
 
 
-<fmt:message key="brands_id" var="brands_id_label"/>
+<fmt:message key="brands.name" var="brands_id_label"/>
 <fmt:message key="incorrect.he.enter" var="incorrect_he_enter_message"/>
 <fmt:message key="incorrect.she.enter" var="incorrect_she_enter_message"/>
 <fmt:message key="incorrect.it.enter" var="incorrect_it_enter_message"/>
 <fmt:message key="select.your.brand" var="select_your_brand_option"/>
-<fmt:message key="types_id" var="types_id_label"/>
+<fmt:message key="types.name" var="types_id_label"/>
 <fmt:message key="select.your.productType" var="select_your_type_option"/>
 <fmt:message key="product.name" var="product_name_label"/>
 <fmt:message key="description.name" var="description_name_label"/>

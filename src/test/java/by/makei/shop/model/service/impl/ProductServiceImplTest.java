@@ -22,4 +22,6 @@ class ProductServiceImplTest {
         Map<String, String> types = productService.getAllTypesMap();
         assertFalse(types.isEmpty());
     }
+
+
 }

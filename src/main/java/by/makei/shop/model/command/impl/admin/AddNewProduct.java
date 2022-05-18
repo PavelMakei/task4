@@ -55,7 +55,6 @@ public class AddNewProduct implements Command {
                 productService.addNewProduct(productDataMap, bytesPhoto);
                 router.setRedirectType();
                 router.setCurrentPage(PagePath.INDEX);
-                //TODO куда идти?
             }
             else{
                 //если невалидно, снова получаем данные по брендам и типам, записываем старые значения и проблемы в реквест, возвращаемся на страницу добавления продукта
@@ -65,6 +64,7 @@ public class AddNewProduct implements Command {
                 types = productService.getAllTypesMap();
                 request.setAttribute(BRANDS_MAP, brands);
                 request.setAttribute(TYPES_MAP, types);
+
 
                 for(Map.Entry<String,String> entry: productDataMap.entrySet()){
                     request.setAttribute(entry.getKey(), entry.getValue());
