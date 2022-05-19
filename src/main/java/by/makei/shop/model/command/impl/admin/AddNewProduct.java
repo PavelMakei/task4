@@ -60,8 +60,8 @@ public class AddNewProduct implements Command {
                 //если невалидно, снова получаем данные по брендам и типам, записываем старые значения и проблемы в реквест, возвращаемся на страницу добавления продукта
                 Map<String,String> brands;
                 Map<String,String> types;
-                brands = productService.getAllBrandsMap();
-                types = productService.getAllTypesMap();
+                brands = productService.findAllBrandsMap();
+                types = productService.findAllTypesMap();
                 request.setAttribute(BRANDS_MAP, brands);
                 request.setAttribute(TYPES_MAP, types);
 

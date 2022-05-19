@@ -65,6 +65,7 @@ public enum AttributeName {
     public static final String SEARCH_MAX_PRICE = "search_max_price";
     public static final String SEARCH_MIN_POWER = "search_min_power";
     public static final String SEARCH_MAX_POWER = "search_max_power";
+    public static final String SEARCH_IN_STOCK = "search_in_stock";
     public static final String SEARCH_PAGE = "search_page";
     public static final String TOTAL_PAGE = "total_page";
     public static final String TOTAL_PRODUCT_FOUND = "total_product_found";

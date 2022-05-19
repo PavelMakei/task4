@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.validator.DefaultSearchParam.*;
@@ -157,7 +158,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateAndCorrectSearchProductParam(Map<String, String> searchProductParam) {
+    public boolean validateAndCorrectSearchProductParam(Map<String, String> searchProductParam, Map<String,String> orderByParamQuery) {
         boolean isCorrect = true;
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
 
@@ -167,57 +168,67 @@ public class ParameterValidatorImpl implements ParameterValidator {
                     String brandId = entry.getValue();
                     if (!validator.isIntValid(brandId)) {
                         entry.setValue(DEFAULT_BRAND_ID);
-                        isCorrect= false;
+                        isCorrect = false;
                     }
                 }
                 case SEARCH_TYPE_ID -> {
                     String typeId = entry.getValue();
                     if (!validator.isIntValid(typeId)) {
                         entry.setValue(DEFAULT_TYPE_ID);
-                        isCorrect= false;
+                        isCorrect = false;
                     }
                 }
                 case SEARCH_MIN_PRICE -> {
                     String minPrice = entry.getValue();
                     if (!validator.isIntValid(minPrice)) {
                         entry.setValue(DEFAULT_MIN_PRICE);
-                        isCorrect= false;
+                        isCorrect = false;
                     }
                 }
                 case SEARCH_MAX_PRICE -> {
                     String maxPrice = entry.getValue();
                     if (!validator.isIntValid(maxPrice)) {
                         entry.setValue(DEFAULT_MAX_PRICE);
-                        isCorrect= false;
+                        isCorrect = false;
                     }
                 }
                 case SEARCH_MIN_POWER -> {
                     String minPower = entry.getValue();
                     if (!validator.isIntValid(minPower)) {
                         entry.setValue(DEFAULT_MIN_POWER);
-                        isCorrect= false;
+                        isCorrect = false;
                     }
                 }
                 case SEARCH_MAX_POWER -> {
                     String maxPower = entry.getValue();
                     if (!validator.isIntValid(maxPower)) {
                         entry.setValue(DEFAULT_MAX_POWER);
-                        isCorrect= false;
+                        isCorrect = false;
                     }
                 }
                 case SEARCH_PAGE -> {
                     String searchPage = entry.getValue();
                     if (!validator.isIntValid(searchPage)) {
                         entry.setValue(DEFAULT_PAGE);
-                        isCorrect= false;
+                        isCorrect = false;
                     }
                 }
                 case PAGE_BUTTON -> {
                     String pageButton = entry.getValue();
-                    if(!validator.isPageButtonValid(pageButton)){
+                    if (!validator.isPageButtonValid(pageButton)) {
                         entry.setValue(DEFAULT_PAGE_BUTTON);
                     }
-                    isCorrect= false;
+                    isCorrect = false;
+                }case ORDER_BY -> {
+                    String orderBy = entry.getValue();
+                    if(orderBy == null || !Stream.of(orderByParamQuery).anyMatch(entry2 -> entry2.containsKey(orderBy))){
+                        entry.setValue(DEFAULT_ORDER_BY);
+                    }
+                }
+                case SEARCH_IN_STOCK -> {
+                    if (!validator.isZeroOneValid(entry.getValue())) {
+                        entry.setValue(DEFAULT_IN_STOCK);
+                    }
                 }
             }
         }

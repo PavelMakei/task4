@@ -17,6 +17,7 @@ public class AttributeValidatorImpl implements AttributeValidator {
     public static final String DESCRIPTION_PATTERN = "^[A-Za-zА-Яа-я\\d_ -\\.;,\\(\\)]+$";
     public static final String COLOUR_PATTERN = "^[A-Za-zА-Яа-я\\d\\-_ ]{3,60}$";
     public static final String SIZE_PATTERN = "^[A-Za-zА-Яа-я\\d_* ]{3,45}$";
+    public static final String ZERO_ONE_PATTERN = "^[01]$";
 
 
     private AttributeValidatorImpl(){}
@@ -83,6 +84,11 @@ public class AttributeValidatorImpl implements AttributeValidator {
     @Override
     public boolean isPageButtonValid(String pageButton) {
         return (pageButton != null && (pageButton.matches(NEXT_PAGE)||pageButton.matches(PREVIOUS_PAGE)||pageButton.matches(SEARCH_PAGE)));
+    }
+
+    @Override
+    public boolean isZeroOneValid(String zeroOne) {
+        return (zeroOne != null && zeroOne.matches(ZERO_ONE_PATTERN));
     }
 
 

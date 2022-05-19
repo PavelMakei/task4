@@ -12,14 +12,14 @@ class ProductServiceImplTest {
     @Test
     void getAllBrandsMapTest() throws ServiceException {
         ProductServiceImpl productService = new ProductServiceImpl();
-        Map<String, String> brands = productService.getAllBrandsMap();
+        Map<String, String> brands = productService.findAllBrandsMap();
         assertFalse(brands.isEmpty());
     }
 
     @Test
     void getAllTypesMapTest() throws ServiceException {
         ProductServiceImpl productService = new ProductServiceImpl();
-        Map<String, String> types = productService.getAllTypesMap();
+        Map<String, String> types = productService.findAllTypesMap();
         assertFalse(types.isEmpty());
     }
 

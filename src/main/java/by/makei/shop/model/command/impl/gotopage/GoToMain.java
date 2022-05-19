@@ -54,7 +54,9 @@ public class GoToMain implements Command {
         searchAttr.put(SEARCH_MAX_POWER, DEFAULT_MAX_POWER);
         searchAttr.put(SEARCH_PAGE, DEFAULT_PAGE);
         searchAttr.put(PAGE_BUTTON, DEFAULT_PAGE_BUTTON);
-        searchAttr.put(ORDER_BY, orderByParamQuery.entrySet().iterator().next().getKey());
+        searchAttr.put(ORDER_BY, DEFAULT_ORDER_BY);
+        searchAttr.put(SEARCH_IN_STOCK, DEFAULT_IN_STOCK);
+
 
         Map<String, String[]> parametersMap = request.getParameterMap();
         for (Map.Entry<String, String[]> entry : parametersMap.entrySet()) {
@@ -65,10 +67,9 @@ public class GoToMain implements Command {
 //загрузить продукты
             productQuantityMap = productService.findProductsByParam(searchAttr, orderByParamQuery);
             request.setAttribute(PRODUCTS_QUANTITY_MAP, productQuantityMap);
-            brands = productService.getAllBrandsMap();
-            types = productService.getAllTypesMap();
+            brands = productService.findAllBrandsMap();
+            types = productService.findAllTypesMap();
             //todo get order by
-            request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(TYPES_MAP, types);
             request.setAttribute(ORDER_ARRAY, new LinkedList<String>(orderByParamQuery.keySet()));

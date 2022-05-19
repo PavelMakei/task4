@@ -30,6 +30,8 @@ class ProductDaoImplTest {
     static final int SEARCH_TO = 4;
     static final String WORD = "";
     static final String ORDER_QUERY  = "price ASC";
+    static final int IN_STOCK = 1;
+    static final int ALL_STOCK = 1;
 
 
 
@@ -44,21 +46,21 @@ class ProductDaoImplTest {
     @Test
     void findBySearchCorrectParamShouldReturnNotEmptyMap() throws DaoException {
         Map<Product, String> productsMap = productDao.findBySearchParam(
-                CORRECT_BRAND_ID, CORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER, SEARCH_FROM, SEARCH_TO, WORD, ORDER_QUERY);
+                CORRECT_BRAND_ID, CORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER, SEARCH_FROM, SEARCH_TO, WORD, ORDER_QUERY, IN_STOCK);
         assert (productsMap.size() > 1);
     }
 
     @Test
     void findBySearchIncorrectParamShouldReturnNotEmptyMap() throws DaoException {
         Map<Product, String> productsMap = productDao.findBySearchParam(
-                INCORRECT_BRAND_ID, INCORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER,SEARCH_FROM, SEARCH_TO, WORD, ORDER_QUERY);
+                INCORRECT_BRAND_ID, INCORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER,SEARCH_FROM, SEARCH_TO, WORD, ORDER_QUERY, IN_STOCK);
         assert (productsMap.size() > 1);
     }
 
     @Test
     void countBySearchCorrectParamShouldReturnNotZero() throws DaoException {
         int expected = productDao.countBySearchParam(
-                CORRECT_BRAND_ID, CORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER, WORD);
+                CORRECT_BRAND_ID, CORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER, WORD, IN_STOCK);
         assert (expected > 1);
     }
 

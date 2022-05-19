@@ -11,6 +11,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    border-color: #bbb302;
+    lighting-color: #dba51f;
 }
 .wrapper {
     display: flex;
@@ -52,14 +54,24 @@ body {
 }
 
 .form-control:focus {
-    border-color: #bbb302;
+    border-color: #ffaf14;
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgba(255, 175, 20, 0.5);
 }
 
 .form-select:focus {
-    border-color: #bbb302;
+    border-color: #ffaf14;
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgba(255, 175, 20, 0.5);
 }
+.form-check-input:checked{
+    border-color: #ffaf14;
+    background-color: #ffaf14;
+}
+.form-check-input:focus{
+    border-color: #ffaf14;
+    background-color: #ffaf14;
+    box-shadow: 0 0 0 0.15rem rgba(255, 175, 20, 0.25);
 
+
+}

@@ -12,5 +12,5 @@ public interface ParameterValidator {
 
     boolean validateJpg(byte[] photo, int... widthAndHeight);
 
-    boolean validateAndCorrectSearchProductParam(Map<String,String> searchProductData);
+    boolean validateAndCorrectSearchProductParam(Map<String,String> searchProductData, Map<String,String> orderByParamQuery);
 }

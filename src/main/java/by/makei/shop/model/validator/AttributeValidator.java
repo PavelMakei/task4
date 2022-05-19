@@ -27,6 +27,8 @@ public interface AttributeValidator {
 
     boolean isPageButtonValid(String pageButton);
 
+    boolean isZeroOneValid(String zeroOne);
+
 
     //TODO add methods??
 }

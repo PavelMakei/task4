@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 
 import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.validator.DefaultSearchParam.DEFAULT_ORDER_BY;
 import static by.makei.shop.model.validator.DefaultSearchParam.PRODUCTS_ON_PAGE;
 
 public class ProductServiceImpl implements ProductService {
@@ -63,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String, String> getAllBrandsMap() throws ServiceException {
+    public Map<String, String> findAllBrandsMap() throws ServiceException {
         BaseDao<Brand> brandDao = new BrandDaoImpl();
         Map<String, String> brandsMap = new TreeMap<>();
         try {
@@ -83,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String, String> getAllTypesMap() throws ServiceException {
+    public Map<String, String> findAllTypesMap() throws ServiceException {
         BaseDao<ProductType> productTypeDao = new ProductTypeDaoImpl();
         Map<String, String> typesMap = new TreeMap<>();
         try {
@@ -103,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProductList() throws ServiceException {
+    public List<Product> findAllProductList() throws ServiceException {
         BaseDao<Product> productTypeDao = new ProductDaoImpl();
         List<Product> productList = new ArrayList<>();
         try {
@@ -116,7 +117,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<Product, String> getAllProductMap() throws ServiceException {
+    public Map<Product, String> findAllProductMap() throws ServiceException {
         ProductDao productTypeDao = new ProductDaoImpl();
         Map<Product, String> productQuantityMap;
         try {
@@ -133,7 +134,7 @@ public class ProductServiceImpl implements ProductService {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         ProductDao productDao = new ProductDaoImpl();
         Map<Product, String> productQuantityMap = new HashMap<>();
-        if (parameterValidator.validateAndCorrectSearchProductParam(searchParamMap)) {
+        if (parameterValidator.validateAndCorrectSearchProductParam(searchParamMap, orderByParamQuery)) {
             logger.log(Level.INFO, "ProductService incorrect data in search param map. Corrected.");
         }
 
@@ -145,11 +146,13 @@ public class ProductServiceImpl implements ProductService {
         int maxPower = 0;
         int searchPage = 0;
         int searchPageIncrement = 0;
-        String searchWord ="";
-        String orderBy="";
-        String orderQuery="";
+        String searchWord = "";
+        String orderBy = "";
+        String orderQuery = "";
+        int inStock = 0;
         int totalProductsFound = 0;
         int totalPages = 0;
+
 
         for (Map.Entry<String, String> entry : searchParamMap.entrySet()) {
             switch (entry.getKey()) {
@@ -179,6 +182,7 @@ public class ProductServiceImpl implements ProductService {
                 }
                 case ORDER_BY -> {
                     orderBy = entry.getValue();
+                    orderQuery = orderByParamQuery.get(orderBy);
                 }
                 case PAGE_BUTTON -> {
                     if (entry.getValue().equals(NEXT_PAGE)) {
@@ -186,6 +190,9 @@ public class ProductServiceImpl implements ProductService {
                     } else if (entry.getValue().equals(PREVIOUS_PAGE)) {
                         searchPageIncrement = -1;
                     }
+                }
+                case SEARCH_IN_STOCK -> {
+                    inStock = Integer.parseInt(entry.getValue());
                 }
             }
         }
@@ -195,12 +202,7 @@ public class ProductServiceImpl implements ProductService {
         if (minPower > maxPower) {
             minPower = maxPower;
         }
-        String finalOrderBy = orderBy;
-        if(!Stream.of(orderByParamQuery).anyMatch(entry -> entry.containsKey(finalOrderBy))){
-            orderQuery = orderByParamQuery.entrySet().iterator().next().getValue();
-        }else{
-            orderQuery = orderByParamQuery.get(orderBy);
-        }
+
         //пересчитать текущую search_page
         searchPage += searchPageIncrement;
         if (searchPage < 1) {
@@ -208,7 +210,7 @@ public class ProductServiceImpl implements ProductService {
         }
         try {
             //отправить запрос в ДАО на количество удовлетворяющих записей
-            totalProductsFound = productDao.countBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchWord);
+            totalProductsFound = productDao.countBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchWord, inStock);
             if (totalProductsFound > 0) {
                 totalPages = totalProductsFound / PRODUCTS_ON_PAGE;
                 if ((totalProductsFound % PRODUCTS_ON_PAGE) > 0) {
@@ -223,7 +225,7 @@ public class ProductServiceImpl implements ProductService {
             //TODO + 1?
             int searchTo = searchPage * PRODUCTS_ON_PAGE;
             int searchFrom = searchTo - PRODUCTS_ON_PAGE;
-            productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchTo, searchWord, orderQuery);
+            productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchTo, searchWord, orderQuery, inStock);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService error while findProductsByParam. {}", e.getMessage());
             throw new ServiceException(e);

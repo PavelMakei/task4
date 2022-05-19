@@ -30,8 +30,8 @@ public class GoToAddNewProduct implements Command {
         String currentPage = PagePathExtractor.extractPagePath(request);
         session.setAttribute(CURRENT_PAGE,currentPage);
         try {
-            brands = productService.getAllBrandsMap();
-            types = productService.getAllTypesMap();
+            brands = productService.findAllBrandsMap();
+            types = productService.findAllTypesMap();
 
             request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(TYPES_MAP, types);

@@ -356,11 +356,11 @@
                                         </div>
 
 
-
                                         <%--------------------------------------------Exists in stock----------------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="search_brand_id" class="cols-sm-2 control-label">
-<%--          TODO name !!!!!              --%>                       Показывать только в наличии
+                                                <%--          TODO name !!!!!              --%> Показывать только в
+                                                наличии
                                             </label>
                                             <div class="cols-sm-10 ">
                                                 <div class="input-group">
@@ -368,26 +368,36 @@
                                                                     aria-hidden="true"></i></span>
                                                     <div class="input-group mb-3">
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input inputFilter" type="radio"
-                                                                   name="search_in_stock" id="search_in_stock1" value="1"
+                                                            <input class="form-check-input inputFilter"
+                                                                   type="radio"
+                                                                   name="search_in_stock" id="search_in_stock1"
+                                                                   value="1"
+                                                            <c:if test="${search_in_stock == '1'}">
+                                                                   checked
+                                                            </c:if>
 
                                                             >
                                                             <label class="form-check-label" for="search_in_stock1">
-<%--          TODO name !!!!!              --%>                       Да
+                                                                <%--          TODO name !!!!!              --%> Да
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input inputFilter" type="radio"
-                                                                   name="search_in_stock" id="search_in_stock2" value="0">
+                                                                   name="search_in_stock" id="search_in_stock2"
+                                                                   value="0"
+                                                            <c:if test="${search_in_stock == '0'}">
+                                                                   checked
+                                                            </c:if>
+
+                                                            >
                                                             <label class="form-check-label" for="search_in_stock2">
-<%--          TODO name !!!!!              --%>                       Нет
-                                                                </label>
+                                                                <%--          TODO name !!!!!              --%> Нет
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
 
 
                                         <%------------------------------------------------------Button-----------------------------------------------%>
@@ -406,7 +416,7 @@
                         </div>
                     </nav>
                 </th>
-<%-----------------------------------------------------main part----------------------------------------------------%>
+                <%-----------------------------------------------------main part----------------------------------------------------%>
 
                 <th scope="col" class="col-lg-9" style="padding-top:16px">
                     <%--                -------------Table of products-----------%>
@@ -626,19 +636,23 @@
     function copyForm() {
         let elems = document.getElementsByClassName("inputFilter")
         for (let i in elems) {
-            if((elems[i].className == 'form-check-input inputFilter') && (!elems[i].hasAttribute('checked'))){
-                window.alert(elems[i].className + " : " + elems[i].value);
-            }
-
+            if (!(elems[i].className === 'form-check-input inputFilter') || (elems[i].checked)) {
                 let inputElement = document.createElement("input");
                 inputElement.type = "hidden"
                 inputElement.name = elems[i].name
                 inputElement.value = elems[i].value
                 document.getElementById("goPages").appendChild(inputElement);
+            }
         }
         return true;
     }
 </script>
+<%--<script>--%>
+<%--    function inStock1(){--%>
+<%--        document.getElementById('search_in_stock1').setAttribute('checked','')--%>
+<%--        document.getElementById('search_in_stock2').removeAttribute('checked')--%>
+<%--    }--%>
+<%--</script>--%>
 
 </body>
 </html>

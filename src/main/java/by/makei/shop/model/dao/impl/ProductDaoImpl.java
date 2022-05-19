@@ -40,6 +40,7 @@ public class ProductDaoImpl implements ProductDao {
             AND price BETWEEN ? AND ?
             AND power BETWEEN ? AND ?
             AND product_name LIKE '%s'
+            AND quantity_in_stock >=?
             ORDER BY %s
             LIMIT ?,?
             """;
@@ -51,6 +52,7 @@ public class ProductDaoImpl implements ProductDao {
             AND price BETWEEN ? AND ?
             AND power BETWEEN ? AND ?
             AND product_name LIKE '%s'
+            AND quantity_in_stock >=?
             """;
 
 
@@ -182,7 +184,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Map<Product, String> findBySearchParam(int brandId, int typeId, int minPrice, int maxPrice,
                                                   int minPower, int maxPower, int searchFrom, int searchTo,
-                                                  String searchWord, String orderQuery) throws DaoException {
+                                                  String searchWord, String orderQuery, int inStock) throws DaoException {
 
 //        if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
 //            logger.log(Level.ERROR, "findProductByOneParam incorrect paramName");
@@ -216,9 +218,9 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(4, maxPrice);
             preparedStatement.setInt(5, minPower);
             preparedStatement.setInt(6, maxPower);
-//            preparedStatement.setString(7, orderQuery);
-            preparedStatement.setInt(7, searchFrom);
-            preparedStatement.setInt(8, searchTo);
+            preparedStatement.setInt(7, inStock);
+            preparedStatement.setInt(8, searchFrom);
+            preparedStatement.setInt(9, searchTo);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 optionalProduct = new ProductMapper().mapEntity(resultSet);
@@ -238,7 +240,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public int countBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower, String searchWord) throws DaoException {
+    public int countBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower, String searchWord, int inStock) throws DaoException {
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -262,6 +264,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(4, maxPrice);
             preparedStatement.setInt(5, minPower);
             preparedStatement.setInt(6, maxPower);
+            preparedStatement.setInt(7, inStock);
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {

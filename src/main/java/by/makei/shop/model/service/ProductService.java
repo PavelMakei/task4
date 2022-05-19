@@ -1,6 +1,5 @@
 package by.makei.shop.model.service;
 
-import by.makei.shop.exception.DaoException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.entity.Brand;
 import by.makei.shop.model.entity.Product;
@@ -13,13 +12,13 @@ public interface ProductService {
 
     boolean addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException;
 
-    Map<String, String> getAllBrandsMap() throws ServiceException;
+    Map<String, String> findAllBrandsMap() throws ServiceException;
 
-    Map<String, String> getAllTypesMap() throws ServiceException;
+    Map<String, String> findAllTypesMap() throws ServiceException;
 
-    List<Product> getAllProductList() throws ServiceException;
+    List<Product> findAllProductList() throws ServiceException;
 
-    Map<Product,String> getAllProductMap() throws ServiceException;
+    Map<Product,String> findAllProductMap() throws ServiceException;
 
     Map<Product, String> findProductsByParam(Map<String,String> searchParamMap, Map<String, String> orderByParamQuery) throws ServiceException;
 
