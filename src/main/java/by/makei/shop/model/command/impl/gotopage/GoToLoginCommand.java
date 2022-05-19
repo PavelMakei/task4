@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Level;
 import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
 import static by.makei.shop.model.command.PagePath.LOGINATION;
 
-public class GoToLogin implements Command {
+public class GoToLoginCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

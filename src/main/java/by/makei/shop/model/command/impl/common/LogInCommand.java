@@ -16,7 +16,7 @@ import java.util.Optional;
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.*;
 
-public class LogIn implements Command {
+public class LogInCommand implements Command {
     private static final String ERROR = "LoginCommand Service exception : ";
 
     @Override

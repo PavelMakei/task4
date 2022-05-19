@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
 
-public class Registration implements Command {
+public class RegistrationCommand implements Command {
     private static final String LOCALE_SPLIT_REGEXP = "_";
 
     @Override

@@ -17,7 +17,7 @@ import static by.makei.shop.model.command.PagePath.ADDNEWPRODUCT;
 import static by.makei.shop.model.command.PagePath.ERROR500;
 
 
-public class GoToAddNewProduct implements Command {
+public class GoToAddNewProductCommand implements Command {
     private static final String ERROR = "GoToAddNewProductCommand Service exception : ";
 
     @Override

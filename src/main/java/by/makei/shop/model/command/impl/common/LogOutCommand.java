@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpSession;
 
 import static by.makei.shop.model.command.PagePath.INDEX;
 
-public class LogOut implements Command {
+public class LogOutCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) {

@@ -5,7 +5,7 @@ import by.makei.shop.model.command.Router;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
-public class Default implements Command {
+public class DefaultCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) {

@@ -20,7 +20,7 @@ import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.*;
 import static by.makei.shop.model.validator.DefaultSearchParam.*;
 
-public class GoToMain implements Command {
+public class GoToMainCommand implements Command {
     private static final String ERROR = "GotoMain Service exception : ";
     private static final String DESC = "DESC";
     private static final Map<String, String> orderByParamQuery = new LinkedHashMap();
@@ -57,7 +57,6 @@ public class GoToMain implements Command {
         searchAttr.put(ORDER_BY, DEFAULT_ORDER_BY);
         searchAttr.put(SEARCH_IN_STOCK, DEFAULT_IN_STOCK);
 
-
         Map<String, String[]> parametersMap = request.getParameterMap();
         for (Map.Entry<String, String[]> entry : parametersMap.entrySet()) {
             searchAttr.put(entry.getKey(), entry.getValue()[0]);
@@ -69,7 +68,6 @@ public class GoToMain implements Command {
             request.setAttribute(PRODUCTS_QUANTITY_MAP, productQuantityMap);
             brands = productService.findAllBrandsMap();
             types = productService.findAllTypesMap();
-            //todo get order by
             request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(TYPES_MAP, types);
             request.setAttribute(ORDER_ARRAY, new LinkedList<String>(orderByParamQuery.keySet()));

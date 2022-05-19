@@ -1,7 +1,6 @@
 package by.makei.shop.model.command.impl.common;
 
 import by.makei.shop.exception.CommandException;
-import by.makei.shop.exception.DaoException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
@@ -10,8 +9,6 @@ import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.entity.ProductType;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.model.validator.AttributeValidator;
-import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
@@ -19,7 +16,7 @@ import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.SHOWPRODUCT;
 
-public class ShowProduct implements Command {
+public class ShowProductCommand implements Command {
     private static final String ERROR = "ShowProductCommand Service exception : ";
 
     @Override

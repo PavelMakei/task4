@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Level;
 import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
 import static by.makei.shop.model.command.PagePath.REGISTRATION;
 
-public class GoToAddNewUser implements Command {
+public class GoToAddNewUserCommand implements Command {
 
     public Router execute(HttpServletRequest request) throws CommandException {
 

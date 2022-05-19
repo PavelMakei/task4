@@ -21,7 +21,7 @@ import java.util.Map;
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
 
-public class AddNewProduct implements Command {
+public class AddNewProductCommand implements Command {
     private static final String ERROR = "AddNewProductCommand Service exception : ";
 
     @Override

@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Level;
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.MAIN;
 
-public class ChangeLanguage implements Command {
+public class ChangeLanguageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();

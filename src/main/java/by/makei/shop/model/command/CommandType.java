@@ -1,12 +1,12 @@
 package by.makei.shop.model.command;
 
 import by.makei.shop.exception.CommandException;
-import by.makei.shop.model.command.impl.admin.AddNewProduct;
+import by.makei.shop.model.command.impl.admin.AddNewProductCommand;
 import by.makei.shop.model.command.impl.common.*;
-import by.makei.shop.model.command.impl.gotopage.GoToAddNewProduct;
-import by.makei.shop.model.command.impl.gotopage.GoToAddNewUser;
-import by.makei.shop.model.command.impl.gotopage.GoToLogin;
-import by.makei.shop.model.command.impl.gotopage.GoToMain;
+import by.makei.shop.model.command.impl.gotopage.GoToAddNewProductCommand;
+import by.makei.shop.model.command.impl.gotopage.GoToAddNewUserCommand;
+import by.makei.shop.model.command.impl.gotopage.GoToLoginCommand;
+import by.makei.shop.model.command.impl.gotopage.GoToMainCommand;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -17,17 +17,17 @@ import java.util.Map;
 import static by.makei.shop.model.command.AttributeName.COMMAND;
 
 public enum CommandType {
-    DEFAULT(new Default()),
-    LOGIN(new LogIn()),
-    LOGOUT(new LogOut()),
-    REGISTRATION(new Registration()),
-    ADD_NEW_PRODUCT(new AddNewProduct()),
-    GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProduct()),
-    GO_TO_ADD_NEW_USER(new GoToAddNewUser()),
-    CHANGE_LANGUAGE(new ChangeLanguage()),
-    GO_TO_LOGIN(new GoToLogin()),
-    GO_TO_MAIN(new GoToMain()),
-    SHOW_PRODUCT(new ShowProduct());
+    DEFAULT(new DefaultCommand()),
+    LOGIN(new LogInCommand()),
+    LOGOUT(new LogOutCommand()),
+    REGISTRATION(new RegistrationCommand()),
+    ADD_NEW_PRODUCT(new AddNewProductCommand()),
+    GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProductCommand()),
+    GO_TO_ADD_NEW_USER(new GoToAddNewUserCommand()),
+    CHANGE_LANGUAGE(new ChangeLanguageCommand()),
+    GO_TO_LOGIN(new GoToLoginCommand()),
+    GO_TO_MAIN(new GoToMainCommand()),
+    SHOW_PRODUCT(new ShowProductCommand());
 
 
     private static final Logger logger = LogManager.getLogger();
