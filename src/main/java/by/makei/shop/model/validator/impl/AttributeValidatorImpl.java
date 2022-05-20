@@ -1,23 +1,25 @@
 package by.makei.shop.model.validator.impl;
 
 import by.makei.shop.model.validator.AttributeValidator;
+import by.makei.shop.model.validator.ValidatorPattern;
 
 import static by.makei.shop.model.command.AttributeName.*;
 
 public class AttributeValidatorImpl implements AttributeValidator {
     private static final AttributeValidatorImpl instance = new AttributeValidatorImpl();
-    public static final String NAME_PATTERN = "^[A-Za-zА-Яа-я]{3,20}$";
-    public static final String LOGIN_PATTERN = "^[A-Za-zА-Яа-я\\d_]{4,16}$";
-    public static final String PASSWORD_PATTERN = "^[A-Za-zА-Яа-я\\d_!@#,\\.]{6,16}$";
-    public static final String EMAIL_PATTERN = "^[^[\\d\\.]][A-Za-z\\.\\d]{1,30}@[a-z]{2,10}\\.([a-z]{2,4}|[a-z]{2,4}\\.[a-z]{2,4})$";
-    public static final String PHONE_PATTERN = "^\\((025|029|044)\\)\\d{7}$";
-    public static final String DECIMAL_STRING_PATTERN = "^((\\d{1,5}\\.\\d{0,2})|(\\d{1,5}))$";
-    public static final String INTEGER_STRING_PATTERN = "^((\\d{1,5}))$";
-    public static final String PRODUCT_NAME_PATTERN = "^[A-Za-zА-Яа-я\\d_,\\.,;:\\- ]{3,60}$";
-    public static final String DESCRIPTION_PATTERN = "^[A-Za-zА-Яа-я\\d_ -\\.;,\\(\\)]+$";
-    public static final String COLOUR_PATTERN = "^[A-Za-zА-Яа-я\\d\\-_ ]{3,60}$";
-    public static final String SIZE_PATTERN = "^[A-Za-zА-Яа-я\\d_* ]{3,45}$";
-    public static final String ZERO_ONE_PATTERN = "^[01]$";
+    private static final ValidatorPattern validatorPattern = ValidatorPattern.getInstance();
+//    public static final String NAME_PATTERN = "^[A-Za-zА-ЯЁа-яё]{3,20}$";
+//    public static final String LOGIN_PATTERN = "^[A-Za-zА-ЯЁа-яё\\d_]{4,16}$";
+//    public static final String PASSWORD_PATTERN = "^[A-Za-zА-ЯЁа-яё\\d_!@#,\\.]{6,16}$";
+//    public static final String EMAIL_PATTERN = "^[^[\\d\\.]][A-Za-z\\.\\d]{1,30}@[a-z]{2,10}\\.([a-z]{2,4}|[a-z]{2,4}\\.[a-z]{2,4})$";
+//    public static final String PHONE_PATTERN = "^\\((025|029|044)\\)\\d{7}$";
+//    public static final String DECIMAL_STRING_PATTERN = "^((\\d{1,5}\\.\\d{0,2})|(\\d{1,5}))$";
+//    public static final String INTEGER_STRING_PATTERN = "^((\\d{1,5}))$";
+//    public static final String PRODUCT_NAME_PATTERN = "^[A-Za-zА-ЯЁа-яё\\d_,\\.,;:\\- ]{3,60}$";
+//    public static final String DESCRIPTION_PATTERN = "^[A-Za-zА-ЯЁа-яё\\d_ -\\.;,\\(\\)]+$";
+//    public static final String COLOUR_PATTERN = "^[A-Za-zА-ЯЁа-яё\\d\\-_ ]{3,60}$";
+//    public static final String SIZE_PATTERN = "^[A-Za-zА-ЯЁа-яё\\d_* ]{3,45}$";
+//    public static final String ZERO_ONE_PATTERN = "^[01]$";
 
 
     private AttributeValidatorImpl(){}
@@ -28,57 +30,61 @@ public class AttributeValidatorImpl implements AttributeValidator {
 
     @Override
     public boolean isNameValid(String name) {
-        return (name != null && name.matches(NAME_PATTERN));
+        return (name != null && name.matches(validatorPattern.getNamePattern()));
     }
 
     @Override
     public boolean isLoginValid(String login) {
-        return (login != null && login.matches(LOGIN_PATTERN));
+        return (login != null && login.matches(validatorPattern.getLoginPattern()));
     }
 
     @Override
     public boolean isPasswordValid(String password) {
-        return (password != null && password.matches(PASSWORD_PATTERN));
+        return (password != null && password.matches(validatorPattern.getPasswordPattern()));
     }
 
     @Override
     public boolean isEmailValid(String email) {
-        return (email != null && email.matches(EMAIL_PATTERN));
+        return (email != null && email.matches(validatorPattern.getEmailPattern()));
     }
 
     @Override
     public boolean isPhoneValid(String phone) {
-        return (phone != null && phone.matches(PHONE_PATTERN));
+        return (phone != null && phone.matches(validatorPattern.getPhonePattern()));
     }
 
     @Override
     public boolean isDecimalValid(String decimalStr) {
-        return (decimalStr != null && decimalStr.matches(DECIMAL_STRING_PATTERN));
+        return (decimalStr != null && decimalStr.matches(validatorPattern.getDecimalStringPattern()));
     }
 
     @Override
-    public boolean isIntValid(String idValue) {
-        return (idValue != null && idValue.matches(INTEGER_STRING_PATTERN));
+    public boolean isInt3Valid(String idValue) {
+        return (idValue != null && idValue.matches(validatorPattern.getInteger3StringPattern()));
+    }
+    @Override
+    public boolean isInt5Valid(String idValue) {
+        return (idValue != null && idValue.matches(validatorPattern.getInteger5StringPattern()));
     }
 
     @Override
     public boolean isProductNameValid(String productName) {
-        return (productName != null && productName.matches(PRODUCT_NAME_PATTERN));
+        return (productName != null && productName.matches(validatorPattern.getProductNamePattern()));
     }
 
     @Override
     public boolean isDescriptionValid(String description) {
-        return (description != null && description.matches(DESCRIPTION_PATTERN));
+        return (description != null && description.matches(validatorPattern.getDescriptionPattern()));
     }
 
     @Override
     public boolean isColourValid(String colour) {
-        return (colour != null && colour.matches(COLOUR_PATTERN));
+        return (colour != null && colour.matches(validatorPattern.getColourPattern()));
     }
 
     @Override
     public boolean isSizeValid(String size) {
-        return (size != null && size.matches(SIZE_PATTERN));
+        return (size != null && size.matches(validatorPattern.getSizePattern()));
     }
 
     @Override
@@ -88,7 +94,7 @@ public class AttributeValidatorImpl implements AttributeValidator {
 
     @Override
     public boolean isZeroOneValid(String zeroOne) {
-        return (zeroOne != null && zeroOne.matches(ZERO_ONE_PATTERN));
+        return (zeroOne != null && zeroOne.matches(validatorPattern.getZeroOnePattern()));
     }
 
 

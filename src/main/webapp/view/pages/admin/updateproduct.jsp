@@ -1,11 +1,10 @@
 <%--
   Created by IntelliJ IDEA.
   User: Pavel_Makei
-  Date: 19.04.2022
-  Time: 10:29
+  Date: 19.05.2022
+  Time: 22:58
   To change this template use File | Settings | File Templates.
 --%>
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -44,7 +43,6 @@
 <fmt:message key="add.new.product.button" var="add_new_product_button"/>
 <fmt:message key="return.main.page" var="return_main_page"/>
 
-
 <c:set var="product_name_pattern">${validator_pattern.productNamePattern}</c:set>
 <c:set var="description_name_pattern">${validator_pattern.descriptionPattern}</c:set>
 <c:set var="colour_pattern">${validator_pattern.colourPattern}</c:set>
@@ -52,14 +50,6 @@
 <c:set var="price_pattern">${validator_pattern.decimalStringPattern}</c:set>
 <c:set var="power_pattern">${validator_pattern.integer3StringPattern}</c:set>
 <c:set var="quantity_pattern">${validator_pattern.integer3StringPattern}</c:set>
-
-<%--<c:set var="product_name_pattern">^[A-Za-zА-ЯЁа-яё\d_,\.,;:\- ]{3,60}$</c:set>--%>
-<%--<c:set var="description_name_pattern">^[A-Za-zА-ЯЁа-яё\d_ -/.;,/(/)-]+}$</c:set>--%>
-<%--<c:set var="colour_pattern">^[A-Za-zА-ЯЁа-яё\d_ //-]{3,60}$</c:set>--%>
-<%--<c:set var="size_pattern">^[A-Za-zА-ЯЁа-яё\d_* ]{3,45}$</c:set>--%>
-<%--<c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>--%>
-<%--<c:set var="power_pattern">^[\d]{1,3}$</c:set>--%>
-<%--<c:set var="quantity_pattern">^[\d]{1,3}$</c:set>--%>
 
 
 <head>
@@ -105,7 +95,7 @@
                     <div class="card">
 
                         <div class="card-header bg-light fw-bold"
-                             style="text-align:center; color: black; font-size: large">${head_label}</div>
+                             style="text-align:center; color: black; font-size: large"><fmt:message key="${message}"/></div>
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" novalidate method="post"
@@ -127,25 +117,43 @@
                                     </label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
-                                    <span class="input-group-sm"><i class="user-select-auto"
-                                                                    aria-hidden="true"></i></span>
+                                      <span class="input-group-sm"><i class="user-select-auto"
+                                                                      aria-hidden="true"></i></span>
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
-                                                <select class="form-select
-                                                 <c:if test="${!empty invalid_brand_id}">
-                                                     is-invalid
-                                                 </c:if>
-                                                " name="brand_id" id="brand" required>
-                                                    <option value="" disabled
-                                                            selected>${select_your_brand_option}</option>
+                                                <select class="form-select inputFilter" name="search_brand_id"
+                                                        id="search_brand_id">
+
+                                                    <c:if test="${!empty search_brand_id && (search_brand_id != '0')}">
+                                                        <option
+                                                                value="">
+                                                                ${any_brand_option}
+                                                        </option>
+                                                        <option
+                                                                value="${search_brand_id}"
+                                                                selected>${brands_map[search_brand_id]}
+                                                        </option>
+
+                                                    </c:if>
+
+                                                    <c:if test="${empty search_brand_id || (search_brand_id == '0')}">
+                                                        <option
+                                                                value=""
+                                                                selected>${any_brand_option}
+                                                        </option>
+                                                    </c:if>
+
                                                     <c:forEach var="brandEnter" items="${brands_map}">
-                                                        <option value=${brandEnter.key}>${brandEnter.value}</option>
+                                                        <c:if test="${brandEnter.key ne search_brand_id}">
+                                                            <option value=${brandEnter.key}>${brandEnter.value}</option>
+                                                        </c:if>
                                                     </c:forEach>
                                                 </select>
                                             </div>
                                             <%--                               конец     выпадающий список--%>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                                 <%------------------------------------------------------Types------------------------------------------------%>
                                 <div class="form-group" style="color: white">
@@ -402,7 +410,7 @@
                                                        placeholder=${quantity_placeholder}
                                                        <c:if test="${!empty quantity_in_stock}">
                                                                value="${quantity_in_stock}"
-                                                        </c:if>
+                                                </c:if>
                                                        required pattern="${quantity_pattern}"/>
                                             </div>
                                         </div>
@@ -503,3 +511,4 @@
     }
 </script>
 </body>
+

@@ -12,4 +12,6 @@ public interface ProductDao extends BaseDao<Product>{
                                            String searchWord, String orderQuery, int inStock) throws DaoException;
 
     int countBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower, String searchWord, int inStock) throws DaoException;
+
+    Map<Product, String> findMapProductQuantityById(String id, String id1) throws DaoException;
 }

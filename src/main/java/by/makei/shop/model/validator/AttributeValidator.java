@@ -14,7 +14,9 @@ public interface AttributeValidator {
 
     boolean isDecimalValid(String decimalStr);
 
-    boolean isIntValid(String intString);
+    boolean isInt3Valid(String idValue);
+
+    boolean isInt5Valid(String idValue);
 
     boolean isProductNameValid(String productName);
 

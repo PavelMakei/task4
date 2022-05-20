@@ -74,7 +74,7 @@ public class ProductDaoImpl implements ProductDao {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 optionalProduct = new ProductMapper().mapEntity(resultSet);
-                logger.log(Level.INFO, "product was found by param {} and param value {}", paramName, paramValue);
+                logger.log(Level.DEBUG, "product was found by param {} and param value {}", paramName, paramValue);
             }
 
         } catch (SQLException e) {
@@ -185,12 +185,6 @@ public class ProductDaoImpl implements ProductDao {
     public Map<Product, String> findBySearchParam(int brandId, int typeId, int minPrice, int maxPrice,
                                                   int minPower, int maxPower, int searchFrom, int searchTo,
                                                   String searchWord, String orderQuery, int inStock) throws DaoException {
-
-//        if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
-//            logger.log(Level.ERROR, "findProductByOneParam incorrect paramName");
-//            throw new DaoException("findProductByOneParam incorrect paramName");
-//        }
-
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -199,9 +193,6 @@ public class ProductDaoImpl implements ProductDao {
 
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
-
-//            preparedStatement = proxyConnection.prepareStatement(SQL_SELECT_PRODUCTS_BY_PARAMS);
-
             preparedStatement =
                     proxyConnection.prepareStatement(String.format(SQL_SELECT_PRODUCTS_BY_PARAMS, FIND_ANY+searchWord+FIND_ANY, orderQuery));
             if (brandId == 0) {
@@ -278,6 +269,41 @@ public class ProductDaoImpl implements ProductDao {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return result;
+    }
+
+    @Override
+    public Map<Product, String> findMapProductQuantityById(String paramName, String paramValue ) throws DaoException {
+
+        if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
+            logger.log(Level.ERROR, "findMapProductQuantityByIdincorrect paramName");
+            throw new DaoException("findMapProductQuantityById incorrect paramName");
+        }
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Optional<Product> optionalProduct = Optional.empty();
+        Map<Product,String> productQuantity = new HashMap<>();
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement =
+                    proxyConnection.prepareStatement(String.format(SQL_SELECT_PRODUCT_BY_VAR_PARAM, paramName));
+            preparedStatement.setString(1, paramValue);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                optionalProduct = new ProductMapper().mapEntity(resultSet);
+                if (optionalProduct.isPresent()) {
+                    productQuantity.put(optionalProduct.get(), resultSet.getString(QUANTITY_IN_STOCK));
+                }
+                logger.log(Level.DEBUG, "product was found by param {} and param value {}", paramName, paramValue);
+            }
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "ProductDao error while findMapProductQuantityById");
+            throw new DaoException(e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+        }
+        return productQuantity;
     }
 
     //TODO дописать методы

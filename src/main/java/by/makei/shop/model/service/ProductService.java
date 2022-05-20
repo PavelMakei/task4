@@ -24,6 +24,8 @@ public interface ProductService {
 
     Product findProductById(String id) throws ServiceException;
 
+    Map<Product, String> findMapProductQuantityById(String id) throws ServiceException;
+
     Brand findBrandById(String id) throws ServiceException;
 
     ProductType findProductTypeById(String id)throws ServiceException;

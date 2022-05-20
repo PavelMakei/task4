@@ -29,11 +29,10 @@
 
 
 <head>
-    <link rel="icon" href="${pageContext.request.contextPath}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon"${pageContext.request.contextPath}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="${pageContext.request.contextPath}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
 
-    <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="${path}/bootstrap/css/bootstrap.min.css">
     <link href="${path}/css/enter.css" rel="stylesheet">

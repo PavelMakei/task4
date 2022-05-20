@@ -3,10 +3,7 @@ package by.makei.shop.model.command;
 import by.makei.shop.exception.CommandException;
 import by.makei.shop.model.command.impl.admin.AddNewProductCommand;
 import by.makei.shop.model.command.impl.common.*;
-import by.makei.shop.model.command.impl.gotopage.GoToAddNewProductCommand;
-import by.makei.shop.model.command.impl.gotopage.GoToAddNewUserCommand;
-import by.makei.shop.model.command.impl.gotopage.GoToLoginCommand;
-import by.makei.shop.model.command.impl.gotopage.GoToMainCommand;
+import by.makei.shop.model.command.impl.gotopage.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +24,8 @@ public enum CommandType {
     CHANGE_LANGUAGE(new ChangeLanguageCommand()),
     GO_TO_LOGIN(new GoToLoginCommand()),
     GO_TO_MAIN(new GoToMainCommand()),
-    SHOW_PRODUCT(new ShowProductCommand());
+    SHOW_PRODUCT(new ShowProductCommand()),
+    GO_UPDATE_PRODUCT(new GoToUpdateProductCommand());
 
 
     private static final Logger logger = LogManager.getLogger();

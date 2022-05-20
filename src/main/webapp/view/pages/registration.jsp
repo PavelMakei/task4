@@ -13,11 +13,18 @@
 <fmt:setBundle basename="language_text"/>
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
-<c:set var="name_pattern" value="^[A-Za-zА-Яа-я]{3,20}$"/>
-<c:set var="login_pattern" value="^[A-Za-zА-Яа-я0-9_]{4,16}$"/>
-<c:set var="email_pattern" value= "^[^[\d\.]][A-Za-z\.\d]{1,30}@[a-z]{2,10}\.([a-z]{2,4}|[a-z]{2,4}\.[a-z]{2,4})$"/>
-<c:set var="password_pattern" value="^[A-Za-zА-Яа-я0-9_!@#,\.]{6,16}$"/>
-<c:set var="phone_pattern" value="^\((025|029|044)\)\d{7}$"/>
+<%--<c:set var="name_pattern" value="^[A-Za-zА-ЯЁа-яё]{3,20}$"/>--%>
+<%--<c:set var="login_pattern" value="^[A-Za-zА-ЯЁа-яё0-9_]{4,16}$"/>--%>
+<%--<c:set var="email_pattern" value= "^[^[\d\.]][A-Za-z\.\d]{1,30}@[a-z]{2,10}\.([a-z]{2,4}|[a-z]{2,4}\.[a-z]{2,4})$"/>--%>
+<%--<c:set var="password_pattern" value="^[A-Za-zА-ЯЁа-яё0-9_!@#,\.]{6,16}$"/>--%>
+<%--<c:set var="phone_pattern" value="^\((025|029|044)\)\d{7}$"/>--%>
+
+<c:set var="name_pattern">${validator_pattern.namePattern}</c:set>
+<c:set var="login_pattern">${validator_pattern.loginPattern}</c:set>
+<c:set var="email_pattern">${validator_pattern.emailPattern}</c:set>
+<c:set var="password_pattern">${validator_pattern.passwordPattern}</c:set>
+<c:set var="phone_pattern">${validator_pattern.phonePattern}</c:set>
+
 
 
 <fmt:message key="registration.user" var="registration_label"/>
@@ -50,6 +57,9 @@
         </script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
 

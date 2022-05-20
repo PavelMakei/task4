@@ -166,49 +166,49 @@ public class ParameterValidatorImpl implements ParameterValidator {
             switch (entry.getKey()) {
                 case SEARCH_BRAND_ID -> {
                     String brandId = entry.getValue();
-                    if (!validator.isIntValid(brandId)) {
+                    if (!validator.isInt5Valid(brandId)) {
                         entry.setValue(DEFAULT_BRAND_ID);
                         isCorrect = false;
                     }
                 }
                 case SEARCH_TYPE_ID -> {
                     String typeId = entry.getValue();
-                    if (!validator.isIntValid(typeId)) {
+                    if (!validator.isInt5Valid(typeId)) {
                         entry.setValue(DEFAULT_TYPE_ID);
                         isCorrect = false;
                     }
                 }
                 case SEARCH_MIN_PRICE -> {
                     String minPrice = entry.getValue();
-                    if (!validator.isIntValid(minPrice)) {
+                    if (!validator.isInt5Valid(minPrice)) {
                         entry.setValue(DEFAULT_MIN_PRICE);
                         isCorrect = false;
                     }
                 }
                 case SEARCH_MAX_PRICE -> {
                     String maxPrice = entry.getValue();
-                    if (!validator.isIntValid(maxPrice)) {
+                    if (!validator.isInt5Valid(maxPrice)) {
                         entry.setValue(DEFAULT_MAX_PRICE);
                         isCorrect = false;
                     }
                 }
                 case SEARCH_MIN_POWER -> {
                     String minPower = entry.getValue();
-                    if (!validator.isIntValid(minPower)) {
+                    if (!validator.isInt3Valid(minPower)) {
                         entry.setValue(DEFAULT_MIN_POWER);
                         isCorrect = false;
                     }
                 }
                 case SEARCH_MAX_POWER -> {
                     String maxPower = entry.getValue();
-                    if (!validator.isIntValid(maxPower)) {
+                    if (!validator.isInt3Valid(maxPower)) {
                         entry.setValue(DEFAULT_MAX_POWER);
                         isCorrect = false;
                     }
                 }
                 case SEARCH_PAGE -> {
                     String searchPage = entry.getValue();
-                    if (!validator.isIntValid(searchPage)) {
+                    if (!validator.isInt5Valid(searchPage)) {
                         entry.setValue(DEFAULT_PAGE);
                         isCorrect = false;
                     }
@@ -248,7 +248,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                 String key = entry.getKey();
                 switch (key) {
                     case BRAND_ID -> {
-                        if (!validator.isIntValid(entry.getValue())) {
+                        if (!validator.isInt5Valid(entry.getValue())) {
                             invalidParameters.put(INVALID_BRAND_ID, INVALID_BRAND_ID);
                             isCorrect = false;
                         } else {
@@ -260,7 +260,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         }
                     }
                     case TYPE_ID -> {
-                        if (!validator.isIntValid(entry.getValue())) {
+                        if (!validator.isInt5Valid(entry.getValue())) {
                             invalidParameters.put(INVALID_TYPE_ID, INVALID_TYPE_ID);
                             isCorrect = false;
                         } else {
@@ -302,7 +302,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         }
                     }
                     case POWER -> {
-                        if (!validator.isIntValid(entry.getValue())) {
+                        if (!validator.isInt3Valid(entry.getValue())) {
                             invalidParameters.put(INVALID_POWER, INVALID_POWER);
                             isCorrect = false;
                         }
@@ -314,7 +314,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         }
                     }
                     case QUANTITY_IN_STOCK -> {
-                        if (!validator.isIntValid(entry.getValue())) {
+                        if (!validator.isInt3Valid(entry.getValue())) {
                             invalidParameters.put(INVALID_QUANTITY_IN_STOCK, INVALID_QUANTITY_IN_STOCK);
                             isCorrect = false;
                         }

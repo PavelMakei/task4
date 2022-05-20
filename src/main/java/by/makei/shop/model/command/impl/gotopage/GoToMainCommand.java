@@ -6,6 +6,7 @@ import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
+import by.makei.shop.model.validator.ValidatorPattern;
 import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,7 +22,7 @@ import static by.makei.shop.model.command.PagePath.*;
 import static by.makei.shop.model.validator.DefaultSearchParam.*;
 
 public class GoToMainCommand implements Command {
-    private static final String ERROR = "GotoMain Service exception : ";
+    private static final String ERROR = "GotoMainCommand Service exception : ";
     private static final String DESC = "DESC";
     private static final Map<String, String> orderByParamQuery = new LinkedHashMap();
 
@@ -68,6 +69,7 @@ public class GoToMainCommand implements Command {
             request.setAttribute(PRODUCTS_QUANTITY_MAP, productQuantityMap);
             brands = productService.findAllBrandsMap();
             types = productService.findAllTypesMap();
+            request.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
             request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(TYPES_MAP, types);
             request.setAttribute(ORDER_ARRAY, new LinkedList<String>(orderByParamQuery.keySet()));

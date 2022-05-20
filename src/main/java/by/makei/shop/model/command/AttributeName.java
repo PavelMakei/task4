@@ -82,6 +82,8 @@ public enum AttributeName {
     public static final String ORDER_BY_NAME_UP = "order_by_name_up";
     public static final String ORDER_ARRAY = "order_array";
     public static final String ORDER_BY = "order_by";
+    public static final String VALIDATOR_PATTERN = "validator_pattern";
+
 
 
 

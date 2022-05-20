@@ -21,11 +21,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.validator.DefaultSearchParam.DEFAULT_ORDER_BY;
 import static by.makei.shop.model.validator.DefaultSearchParam.PRODUCTS_ON_PAGE;
 
 public class ProductServiceImpl implements ProductService {
@@ -149,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         String searchWord = "";
         String orderBy = "";
         String orderQuery = "";
-        int inStock = 0;
+        int in_stock = 0;
         int totalProductsFound = 0;
         int totalPages = 0;
 
@@ -192,7 +190,7 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }
                 case SEARCH_IN_STOCK -> {
-                    inStock = Integer.parseInt(entry.getValue());
+                    in_stock = Integer.parseInt(entry.getValue());
                 }
             }
         }
@@ -210,7 +208,7 @@ public class ProductServiceImpl implements ProductService {
         }
         try {
             //отправить запрос в ДАО на количество удовлетворяющих записей
-            totalProductsFound = productDao.countBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchWord, inStock);
+            totalProductsFound = productDao.countBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchWord, in_stock);
             if (totalProductsFound > 0) {
                 totalPages = totalProductsFound / PRODUCTS_ON_PAGE;
                 if ((totalProductsFound % PRODUCTS_ON_PAGE) > 0) {
@@ -225,7 +223,7 @@ public class ProductServiceImpl implements ProductService {
             //TODO + 1?
             int searchTo = searchPage * PRODUCTS_ON_PAGE;
             int searchFrom = searchTo - PRODUCTS_ON_PAGE;
-            productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchTo, searchWord, orderQuery, inStock);
+            productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchTo, searchWord, orderQuery, in_stock);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService error while findProductsByParam. {}", e.getMessage());
             throw new ServiceException(e);
@@ -240,7 +238,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findProductById(String id) throws ServiceException {
         AttributeValidator attributeValidator = AttributeValidatorImpl.getInstance();
-        if (!attributeValidator.isIntValid(id)) {
+        if (!attributeValidator.isInt5Valid(id)) {
             logger.log(Level.ERROR, "ProductService error while findProductById incorrect id :{}", id);
             throw new ServiceException("ProductService findProductById incorrect id :" + id);
         }
@@ -258,6 +256,27 @@ public class ProductServiceImpl implements ProductService {
         }
         return optionalProduct.get();
 
+    }
+    @Override
+    public Map<Product, String> findMapProductQuantityById(String id) throws ServiceException {
+        AttributeValidator attributeValidator = AttributeValidatorImpl.getInstance();
+        if (!attributeValidator.isInt5Valid(id)) {
+            logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById incorrect id :{}", id);
+            throw new ServiceException("ProductService findMapProductQuantityById incorrect id :" + id);
+        }
+        Map<Product, String> productQuantityMap = new HashMap<>();
+        ProductDao dao = new ProductDaoImpl();
+        try {
+            productQuantityMap = dao.findMapProductQuantityById(ID, id);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "ProductService exception while findMapProductQuantityById. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
+        if (productQuantityMap.isEmpty()) {
+            logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById.  id :{}", id);
+            throw new ServiceException("ProductService findMapProductQuantityById Product was not found by id :" + id);
+        }
+        return productQuantityMap;
     }
 
     @Override

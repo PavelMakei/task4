@@ -14,6 +14,8 @@
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="language_text"/>
 
+
+<fmt:message key="main.page.label" var="main_page_label"/>
 <fmt:message key="brands.name" var="brands_id_label"/>
 <fmt:message key="incorrect.he.enter" var="incorrect_he_enter_message"/>
 <fmt:message key="incorrect.she.enter" var="incorrect_she_enter_message"/>
@@ -42,20 +44,33 @@
 <fmt:message key="more.hint" var="more_hint"/>
 <fmt:message key="product.name.placeholder" var="product_name_placeholder"/>
 <fmt:message key="search.word" var="search_word_label"/>
-
 <fmt:message key="order.by" var="order_by_label"/>
+<fmt:message key="show.in.stock" var="only_in_stock_label"/>
+<fmt:message key="yes" var="yes_radio_label"/>
+<fmt:message key="no" var="no_radio_label"/>
+<fmt:message key="change.product.button" var="change_product_button"/>
 
+<%--<c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>--%>
+<%--<c:set var="power_pattern">^[\d]{1,3}$</c:set>--%>
+<%--<c:set var="quantity_pattern">^([1-9]|(10))$</c:set>--%>
+<%--<c:set var="product_name_pattern">^[A-Za-zА-ЯЁа-яё\d_,\.,;:\- ]{3,60}$</c:set>--%>
 
-<c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>
-<c:set var="power_pattern">^[\d]{1,3}$</c:set>
-<c:set var="quantity_pattern">^([1-9]|(10))$</c:set>
-<c:set var="product_name_pattern">^[A-Za-zА-Яа-я\d_,\.,;:\- ]{3,60}$</c:set>
-<c:set var="zero">0</c:set>
+<c:set var="price_pattern">${validator_pattern.decimalStringPattern}</c:set>
+<c:set var="power_pattern">${validator_pattern.integer3StringPattern}</c:set>
+<c:set var="quantity_pattern">${validator_pattern.quantityToByPattern}</c:set>
+<c:set var="product_name_pattern">${validator_pattern.productNamePattern}</c:set>
+
+<c:set var="search_all">0</c:set>
+<c:set var="search_only_in_stock">1</c:set>
+
 
 <head>
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
     <title>${main_page_label}</title>
@@ -307,6 +322,7 @@
                                                                name="search_word"
                                                                id="search_word"
                                                                maxlength="25"
+                                                               pattern="${product_name_pattern}"
                                                         <c:if test="${!empty search_word}">
                                                                value="${search_word}"
                                                         </c:if>
@@ -355,12 +371,10 @@
                                             </div>
                                         </div>
 
-
                                         <%--------------------------------------------Exists in stock----------------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="search_brand_id" class="cols-sm-2 control-label">
-                                                <%--          TODO name !!!!!              --%> Показывать только в
-                                                наличии
+                                                ${only_in_stock_label}
                                             </label>
                                             <div class="cols-sm-10 ">
                                                 <div class="input-group">
@@ -372,26 +386,26 @@
                                                                    type="radio"
                                                                    name="search_in_stock" id="search_in_stock1"
                                                                    value="1"
-                                                            <c:if test="${search_in_stock == '1'}">
+                                                            <c:if test="${search_in_stock == search_only_in_stock}">
                                                                    checked
                                                             </c:if>
 
                                                             >
                                                             <label class="form-check-label" for="search_in_stock1">
-                                                                <%--          TODO name !!!!!              --%> Да
+                                                                ${yes_radio_label}
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input inputFilter" type="radio"
                                                                    name="search_in_stock" id="search_in_stock2"
                                                                    value="0"
-                                                            <c:if test="${search_in_stock == '0'}">
+                                                            <c:if test="${search_in_stock == search_all}">
                                                                    checked
                                                             </c:if>
 
                                                             >
                                                             <label class="form-check-label" for="search_in_stock2">
-                                                                <%--          TODO name !!!!!              --%> Нет
+                                                                ${no_radio_label}
                                                             </label>
                                                         </div>
                                                     </div>
@@ -422,6 +436,7 @@
                     <%--                -------------Table of products-----------%>
                     <c:if test="${!empty products_quantity_map}">
 
+
                         <c:forEach var="entry" items="${products_quantity_map}">
                             <c:set var="current_product" value="${entry.key}"/>
                             <c:set var="current_quantity" value="${entry.value}"/>
@@ -430,6 +445,7 @@
                                    style="background-color: white; border-color: orange">
                                 <tbody>
                                 <tr style=" border-width: 2px">
+<%--                                    --------------------------image part-----------------------%>
                                     <th scope="image" class="col-3" style="background-color: white; height: 200px">
                                         <div class="card border-0 d-block">
                                             <c:if test="${empty current_product.photoString}">
@@ -441,15 +457,13 @@
                                                      alt="img"
                                                      class="img-fluid mx-auto ">
                                             </c:if>
-                                                <%--                                            <a href="${path}controller?command=show_product&id=${current_product.id}" class="stretched-link" target="_blank"></a>--%>
-
                                             <a href="javascript:void(0);"
                                                title="${more_hint}"
                                                class="stretched-link"
                                                onClick=window.open("${path}controller?command=show_product&id=${current_product.id}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");></a>
                                         </div>
-
                                     </th>
+<%--                                    --------------------------description part------------------%>
                                     <th scope="data" class="col-7">
                                         <table class="product-data table-borderless">
                                             <tbody>
@@ -515,8 +529,20 @@
                                             </tbody>
                                         </table>
                                     </th>
+<%--                                    ---------------------------buy part----------------------%>
                                     <th scope="data" class="col-2 bg-dark opacity-75">
                                         <div class="mb-3" style="height: 120px;">
+                                            <c:if test="${access_level eq 'ADMIN'}">
+
+                                                <form class="go-to-change_product form-horizontal">
+                                                    <div class="d-grid gap-1">
+                                                        <button class="btn btn-primary"  onclick="window.open('${path}controller?command=go_update_product&id=${current_product.id}')">
+
+                                                    ${change_product_button}
+                                                    </button>
+                                                    </div>
+                                                </form>
+                                            </c:if>
                                         </div>
                                         <div class="row align-items-end">
 
@@ -559,7 +585,7 @@
                                 </tbody>
                             </table>
                         </c:forEach>
-                        <form id="goPages" onsubmit="copyForm()">
+                        <form id="goPages" onsubmit="copyForm()" action="${path}/controller">
                             <input type="hidden" name="command" value="go_to_main">
                             <input type="hidden" name="search_page" value=${search_page}>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="color: white">
