@@ -51,7 +51,7 @@ public class AddNewProductCommand implements Command {
         }
 
         try {
-            if(parameterValidator.validateProductData(productDataMap,bytesPhoto)) {
+            if(parameterValidator.validateProductData(productDataMap) & parameterValidator.validatePhoto(productDataMap, bytesPhoto)) {
                 productService.addNewProduct(productDataMap, bytesPhoto);
                 router.setRedirectType();
                 router.setCurrentPage(PagePath.INDEX);
@@ -64,7 +64,6 @@ public class AddNewProductCommand implements Command {
                 types = productService.findAllTypesMap();
                 request.setAttribute(BRANDS_MAP, brands);
                 request.setAttribute(TYPES_MAP, types);
-
 
                 for(Map.Entry<String,String> entry: productDataMap.entrySet()){
                     request.setAttribute(entry.getKey(), entry.getValue());

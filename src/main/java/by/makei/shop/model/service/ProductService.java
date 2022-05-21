@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface ProductService {
 
-    boolean addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException;
+    void addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException;
 
     Map<String, String> findAllBrandsMap() throws ServiceException;
 
@@ -30,4 +30,5 @@ public interface ProductService {
 
     ProductType findProductTypeById(String id)throws ServiceException;
 
+    boolean updatePhoto(String id, byte[] bytesPhoto) throws ServiceException;
 }

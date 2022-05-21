@@ -30,8 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public boolean addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException {
-        boolean result = true;
+    public void addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException {
         Product product = new Product();
         ProductDaoImpl productDao = new ProductDaoImpl();
 
@@ -53,12 +52,6 @@ public class ProductServiceImpl implements ProductService {
             logger.log(Level.ERROR, "ProductService error while addNewProduct. {}", e.getMessage());
             throw new ServiceException("ProductService error while addNewProduct.", e);
         }
-        //проверить и записать в резалт
-
-//TODO заготовка! Заполнить!
-
-
-        return result;
     }
 
     @Override
@@ -257,6 +250,7 @@ public class ProductServiceImpl implements ProductService {
         return optionalProduct.get();
 
     }
+
     @Override
     public Map<Product, String> findMapProductQuantityById(String id) throws ServiceException {
         AttributeValidator attributeValidator = AttributeValidatorImpl.getInstance();
@@ -311,6 +305,20 @@ public class ProductServiceImpl implements ProductService {
             throw new ServiceException("ProductService findProductTypeById ProductType was not found by id :" + id);
         }
         return optionalProductType.get();
+    }
+
+    @Override
+    public boolean updatePhoto(String id, byte[] bytesPhoto) throws ServiceException {
+        ProductDaoImpl productDao = new ProductDaoImpl();
+        boolean isUpdated = false;
+        try {
+            isUpdated = productDao.updatePhoto(Integer.parseInt(id), bytesPhoto);
+        } catch (
+                DaoException e) {
+            logger.log(Level.ERROR, "ProductService error while updatePhoto. {}", e.getMessage());
+            throw new ServiceException("ProductService error while updatePhoto.", e);
+        }
+        return isUpdated;
     }
 
 

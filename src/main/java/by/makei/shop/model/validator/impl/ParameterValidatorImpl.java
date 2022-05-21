@@ -236,7 +236,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateProductData(Map<String, String> productData, byte[] photoJpg) throws ServiceException {
+    public boolean validateProductData(Map<String, String> productData) throws ServiceException {
         boolean isCorrect = true;
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
@@ -319,19 +319,33 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             isCorrect = false;
                         }
                     }
+                    case ID -> {
+                        if (!validator.isInt5Valid(entry.getValue())) {
+                            invalidParameters.put(INVALID_ID, INVALID_ID);
+                            isCorrect = false;
+                        }
+                    }
                 }
             }
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ParameterValidator error while validateProductData {}", e.getMessage());
             throw new ServiceException("ParameterValidator error while validateProductData", e);
+            //incorrect work of application. It's not a problem of incorrect input to validation data
             //TODO Создать новый validator exception?
         }
 
+        productData.putAll(invalidParameters);
+        return isCorrect;
+    }
+
+    @Override
+    public boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) {
+        boolean isCorrect = true;
+        Map<String, String> invalidParameters = new HashMap<>();
         if (!validateJpg(photoJpg)) {
             invalidParameters.put(INVALID_PHOTO, INVALID_PHOTO);
             isCorrect = false;
         }
-
         productData.putAll(invalidParameters);
         return isCorrect;
     }

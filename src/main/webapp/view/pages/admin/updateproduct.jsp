@@ -15,7 +15,7 @@
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
 
-<fmt:message key="add.new.product" var="head_label"/>
+<fmt:message key="update.product" var="head_label"/>
 <fmt:message key="brands.name" var="brands_id_label"/>
 <fmt:message key="incorrect.he.enter" var="incorrect_he_enter_message"/>
 <fmt:message key="incorrect.she.enter" var="incorrect_she_enter_message"/>
@@ -40,8 +40,11 @@
 <fmt:message key="quantity.name" var="quantity_name_label"/>
 <fmt:message key="photo.name" var="photo_name_label"/>
 <fmt:message key="choose.picture" var="choose_picture_label"/>
-<fmt:message key="add.new.product.button" var="add_new_product_button"/>
-<fmt:message key="return.main.page" var="return_main_page"/>
+<fmt:message key="update.photo" var="update_photo_button"/>
+<fmt:message key="update.data" var="update_date_button"/>
+<fmt:message key="close.window" var="close_button"/>
+
+
 
 <c:set var="product_name_pattern">${validator_pattern.productNamePattern}</c:set>
 <c:set var="description_name_pattern">${validator_pattern.descriptionPattern}</c:set>
@@ -54,9 +57,9 @@
 
 <head>
     <title>${head_label}</title>
-    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
 
@@ -85,32 +88,150 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="header">
-        <%@include file="../header.jsp" %>
-    </div> <!-- end of header -->
+    <%--    <div class="header">--%>
+    <%--        <%@include file="../header.jsp" %>--%>
+    <%--    </div> <!-- end of header -->--%>
     <div class="content">
-        <div class="container">
+        <div class="container" style="max-width: none">
             <div class="row justify-content-center">
+<%-----------------------------------------Photo part---------------------------------------                --%>
+                <div class="col-md-5">
+                    <div class="card" style="border-color: goldenrod">
+                        <div class="card-header bg-light fw-bold"
+                             style="text-align:center; color: black; font-size: large">ID: ${product.id}
+                            <c:if test="${!empty photo_update_message}" >
+                            <fmt:message key="${photo_update_message}"/>
+                            </c:if>
+
+                        </div>
+                        <div class="card-header bg-light fw-bold"
+                             style="text-align:center; color: black; font-size: large"></div>
+                        <div class="card-body bg-dark bg-opacity-75">
+                            <form class="form-horizontal needs-validation1" novalidate method="post"
+                                  action="${path}/controller"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="command" value="update_photo">
+                                <input type="hidden" name="id" value="${product.id}">
+
+                            <div class="card border-0 d-block">
+                                <c:if test="${empty product.photoString}">
+                                    <img src="${path}/images/nophoto.jpg" class="img-fluid mx-auto d-block"
+                                         alt="img">
+                                </c:if>
+                                <c:if test="${!empty product.photoString}">
+                                    <img src="data:image/jpeg;base64,${product.photoString}"
+                                         alt="img"
+                                         class="img-fluid mx-auto ">
+                                </c:if>
+                            </div>
+                            <%----------------------------------------------------- photo blob input-------------------------------------------%>
+                            <div class="form-group" style="color: white">
+                                <label for="photo" class="cols-sm-2 control-label"
+                                        <c:if test="${!empty invalid_photo}">
+                                            style="color: red"
+                                        </c:if>
+                                >
+                                    ${photo_name_label}
+                                    <c:if test="${!empty invalid_photo}">
+                                        <fmt:message key="incorrect.she.enter"/>
+                                    </c:if>
+                                </label>
+
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa"
+                                                                       aria-hidden="true"></i></span>
+                                    <div class="input-group mb-3">
+                                        <input type="file" class="visually-hidden" name="photo"
+                                               id="photo"
+                                               size="4194304"
+                                               required
+                                               accept=".jpg, .jpeg"/>
+                                        <label for="photo" class="btn btn-primary btn-light border-warning"
+                                               id="photolabel">${choose_picture_label}</label>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button type="submit" class="btn btn-warning col-6"
+                                            id="butt_photo"
+                                            style="color: white"
+                                            onclick="CheckPicture()">
+                                        ${update_photo_button}</button>
+                                    <button type="button" class="btn btn-primary col-6"
+                                            id="close_window"
+                                            onclick="window.close()">
+                                        ${close_button}</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+<%------------------------------------------Data part------------------------------------------------------%>
                 <div class="col-md-7">
-                    <div class="card">
+                    <div class="card" style="border-color: goldenrod">
 
                         <div class="card-header bg-light fw-bold"
-                             style="text-align:center; color: black; font-size: large"><fmt:message key="${message}"/></div>
+                             style="text-align:center; color: black; font-size: large">ID: ${product.id}
+                            <c:if test="${!empty data_update_message}" >
+                                <fmt:message key="${data_update_message}"/>
+                            </c:if>
+
+                        </div>
+                        <div class="card-header bg-light fw-bold"
+                             style="text-align:center; color: black; font-size: large"></div>
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" novalidate method="post"
                                   action="${path}/controller"
                                   enctype="multipart/form-data">
-                                <input type="hidden" name="command" value="add_new_product">
+                                <input type="hidden" name="command" value="update_product_data">
+                                <input type="hidden" name="id" value="${product.id}">
+                                <%------------------------------------------------------ProductName------------------------------------------%>
+                                <div class="form-group" style="color: white">
+                                    <label for="product_name" class="cols-sm-2 control-label"
+                                            <c:if test="${!empty invalid_product_name || !empty busy_product_name }">
+                                                style="color: red"
+                                            </c:if>
+                                    >
+                                        ${product_name_label}
+                                        <c:if test="${!empty invalid_product_name}">
+                                            ${incorrect_it_enter_message}
+                                        </c:if>
+                                    </label>
+                                    <div class="cols-sm-10">
+                                        <div class="input-group">
+                                    <span class="input-group-sm"><i class="fa fa-user fa"
+                                                                    aria-hidden="true"></i></span>
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control
+                                                       <c:if test="${!empty invalid_product_name}">
+                                                            is-invalid
+                                                       </c:if>
+                                                       " name="product_name"
+                                                       id="product_name"
+                                                       placeholder="${product_name_placeholder}"
+                                                        <c:if test="${!empty product_name}">
+                                                            value="${product_name}"
+                                                        </c:if>
+                                                        <c:if test="${empty product_name}">
+                                                            value="${product.productName}"
+                                                        </c:if>
+                                                       required pattern="${product_name_pattern}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <%------------------------------------------------------Brands-----------------------------------------------%>
                                 <div class="form-group" style="color: white">
-                                    <label for="brand" class="cols-sm-2 control-label"
+                                    <label for="brand_id" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_brand_id}">
                                                 style="color: red"
                                             </c:if>
                                     >
                                         ${brands_id_label}
+
                                         <c:if test="${!empty invalid_brand_id}">
                                             ${incorrect_he_enter_message}
                                         </c:if>
@@ -121,30 +242,15 @@
                                                                       aria-hidden="true"></i></span>
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
-                                                <select class="form-select inputFilter" name="search_brand_id"
-                                                        id="search_brand_id">
-
-                                                    <c:if test="${!empty search_brand_id && (search_brand_id != '0')}">
-                                                        <option
-                                                                value="">
-                                                                ${any_brand_option}
-                                                        </option>
-                                                        <option
-                                                                value="${search_brand_id}"
-                                                                selected>${brands_map[search_brand_id]}
-                                                        </option>
-
-                                                    </c:if>
-
-                                                    <c:if test="${empty search_brand_id || (search_brand_id == '0')}">
-                                                        <option
-                                                                value=""
-                                                                selected>${any_brand_option}
-                                                        </option>
-                                                    </c:if>
-
+                                                <select class="form-select inputFilter" name="brand_id"
+                                                        id="brand_id">
+                                                    <option
+                                                            value="${product.brandId}"
+                                                            <c:set var="selected_brand_id">${product.brandId}</c:set>
+                                                            selected>${brands_map[selected_brand_id]}
+                                                    </option>
                                                     <c:forEach var="brandEnter" items="${brands_map}">
-                                                        <c:if test="${brandEnter.key ne search_brand_id}">
+                                                        <c:if test="${brandEnter.key ne product.brandId}">
                                                             <option value=${brandEnter.key}>${brandEnter.value}</option>
                                                         </c:if>
                                                     </c:forEach>
@@ -153,7 +259,6 @@
                                             <%--                               конец     выпадающий список--%>
                                         </div>
                                     </div>
-                                </div>
                                 </div>
                                 <%------------------------------------------------------Types------------------------------------------------%>
                                 <div class="form-group" style="color: white">
@@ -174,15 +279,17 @@
 
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
-                                                <select class="form-select
-                                                <c:if test="${!empty invalid_type_id}">
-                                                     is-invalid
-                                                </c:if>
-                                                " id="type_id" name="type_id" required>
-                                                    <option value="" disabled
-                                                            selected>${select_your_type_option}</option>
+                                                <select class="form-select inputFilter" name="brand_id"
+                                                        id="type_id">
+                                                    <option
+                                                            value="${product.typeId}"
+                                                            <c:set var="selected_type_id">${product.typeId}</c:set>
+                                                            selected>${types_map[selected_type_id]}
+                                                    </option>
                                                     <c:forEach var="typeEnter" items="${types_map}">
-                                                        <option value=${typeEnter.key}>${typeEnter.value}</option>
+                                                        <c:if test="${typeEnter.key ne product.typeId}">
+                                                            <option value=${typeEnter.key}>${typeEnter.value}</option>
+                                                        </c:if>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -190,41 +297,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%------------------------------------------------------ProductName------------------------------------------%>
-                                <div class="form-group" style="color: white">
-                                    <label for="product_name" class="cols-sm-2 control-label"
-                                            <c:if test="${!empty invalid_product_name || !empty busy_product_name }">
-                                                style="color: red"
-                                            </c:if>
-                                    >
-                                        ${product_name_label}
-                                        <c:if test="${!empty invalid_product_name}">
-                                            ${incorrect_it_enter_message}
-                                        </c:if>
-                                        <c:if test="${!empty busy_product_name}">
-                                            ${exists_choose_other_message}
-                                        </c:if>
-                                    </label>
-                                    <div class="cols-sm-10">
-                                        <div class="input-group">
-                                    <span class="input-group-sm"><i class="fa fa-user fa"
-                                                                    aria-hidden="true"></i></span>
-                                            <div class="input-group mb-3">
-                                                <input type="text" class="form-control
-                                                       <c:if test="${!empty invalid_product_name}">
-                                                            is-invalid
-                                                       </c:if>
-                                                       " name="product_name"
-                                                       id="product_name"
-                                                       placeholder="${product_name_placeholder}"
-                                                        <c:if test="${!empty product_name}">
-                                                            value="${product_name}"
-                                                        </c:if>
-                                                       required pattern="${product_name_pattern}"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <%----------------------------------------------------- description (text)-----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="description" class="cols-sm-2 control-label"
@@ -250,8 +323,13 @@
                                                           id="description"
                                                           placeholder="${description_name_placeholder}"
                                                           required
-
-                                                ><c:if test="${!empty description}">${description}</c:if></textarea>
+                                                        <c:if test="${!empty description}">
+                                                            <c:set var="description_value">${description}</c:set>
+                                                        </c:if>
+                                                        <c:if test="${empty description}">
+                                                            <c:set var="description_value">${product.description}</c:set>
+                                                        </c:if>
+                                                >${description_value}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -283,6 +361,9 @@
                                                        <c:if test="${!empty price}">
                                                                value="${price}"
                                                 </c:if>
+                                                        <c:if test="${empty price}">
+                                                            value="${product.price}"
+                                                        </c:if>
                                                        required pattern="${price_pattern}"/>
                                             </div>
                                         </div>
@@ -314,6 +395,9 @@
                                                        placeholder="${colour_placeholder}"
                                                         <c:if test="${!empty colour}">
                                                             value="${colour}"
+                                                        </c:if>
+                                                        <c:if test="${empty colour}">
+                                                            value="${product.colour}"
                                                         </c:if>
                                                        required pattern="${colour_pattern}"/>
                                             </div>
@@ -347,6 +431,9 @@
                                                         <c:if test="${!empty power}">
                                                             value="${power}"
                                                         </c:if>
+                                                        <c:if test="${empty power}">
+                                                            value="${product.power}"
+                                                        </c:if>
                                                        required pattern="${power_pattern}"/>
                                             </div>
                                         </div>
@@ -378,6 +465,9 @@
                                                        placeholder="${size_placeholder}"
                                                         <c:if test="${!empty size}">
                                                             value="${size}"
+                                                        </c:if>
+                                                        <c:if test="${empty size}">
+                                                            value="${product.size}"
                                                         </c:if>
                                                        required pattern="${size_pattern}"/>
                                             </div>
@@ -411,56 +501,22 @@
                                                        <c:if test="${!empty quantity_in_stock}">
                                                                value="${quantity_in_stock}"
                                                 </c:if>
+                                                        <c:if test="${empty quantity_in_stock}">
+                                                            value="${quantity}"
+                                                        </c:if>
                                                        required pattern="${quantity_pattern}"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <%----------------------------------------------------- photo blob-------------------------------------------%>
-                                <div class="form-group" style="color: white">
-                                    <label for="photo" class="cols-sm-2 control-label"
-                                            <c:if test="${!empty invalid_photo}">
-                                                style="color: red"
-                                            </c:if>
-                                    >
-                                        ${photo_name_label}
-                                        <c:if test="${!empty invalid_photo}">
-                                            <fmt:message key="incorrect.she.enter"/>
-                                        </c:if>
-                                    </label>
 
-                                    <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-user fa"
-                                                                       aria-hidden="true"></i></span>
-                                        <div class="input-group mb-3">
-                                            <%--                                                                                            <input type="file" class="form-control" name="photo"--%>
-                                            <%--                                                                                                   id="photo"--%>
-                                            <%--                                                                                                   size="4194304"--%>
-                                            <%--                                                                                                   required--%>
-                                            <%--                                                                                                   accept=".jpg, .jpeg"/>--%>
-                                            <input type="file" class="visually-hidden" name="photo"
-                                                   id="photo"
-                                                   size="4194304"
-                                                   required
-                                                   accept=".jpg, .jpeg"/>
-                                            <label for="photo" class="btn btn-primary btn-light"
-                                                   id="photolabel">${choose_picture_label}</label>
-                                        </div>
-                                    </div>
-                                </div>
                                 <%------------------------------------------------------Button-----------------------------------------------%>
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning"
-                                            id="butt"
-                                            style="background-color: goldenrod; color: white"
-                                            onclick="CheckPicture()">
-                                        ${add_new_product_button}</button>
-                                </div>
-
-                                <%--                        //TODO куда переходить?--%>
-
-                                <div class="login-register">
-                                    <a style="color: goldenrod" href="${path}/index.jsp">${return_main_page}</a>
+                                            id="butt_data"
+                                            style="color: white"
+                                            >
+                                        ${update_date_button}</button>
                                 </div>
                             </form>
                         </div>
@@ -468,47 +524,64 @@
                 </div>
             </div>
         </div>
+        <div class="container text-center">
+            <div class="footer" style="color: white"><ft:footerTag/></div>
+        </div>
     </div>
-    <div class="footer" style="color: white"><ft:footerTag/></div>
-</div>
-<script>
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
-</script>
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+        <script>
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation1')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        </script>
 
-<script>
-    const elem = document.getElementById('photo');
-    const photolbl = document.getElementById('photolabel')
-    const buttAdd = document.getElementById('butt')
+    <script>
+        const elem = document.getElementById('photo');
+        const photolbl = document.getElementById('photolabel')
+        const buttAdd = document.getElementById('butt_photo')
 
-    elem.addEventListener('change', CheckPicture);
-    buttAdd.addEventListener('listener', CheckPicture);
+        elem.addEventListener('change', CheckPicture);
+        buttAdd.addEventListener('listener', CheckPicture);
 
-    function CheckPicture() {
-        let subname = elem.value.substring(elem.value.lastIndexOf('\\') + 1);
-        const choice = elem.value;
-        if (choice === '') {
-            photolbl.style.color = 'red';
-            photolbl.style.borderColor = 'red';
+        function CheckPicture() {
+            let subname = elem.value.substring(elem.value.lastIndexOf('\\') + 1);
+            const choice = elem.value;
+            if (choice === '') {
+                photolbl.style.color = 'red';
+                photolbl.style.borderColor = 'red';
 
-        } else {
-            photolbl.style.color = 'green';
-            photolbl.style.borderColor = 'green';
-            photolbl.textContent = subname;
+            } else {
+                photolbl.style.color = 'green';
+                photolbl.style.borderColor = 'green';
+                photolbl.textContent = subname;
+            }
         }
-    }
-</script>
+    </script>
 </body>
 

@@ -20,10 +20,9 @@ public class GoToLoginCommand implements Command {
         String currentPage = PagePathExtractor.extractPagePath(request);
         logger.log(Level.DEBUG,"GoToLogination currentPage :{}",currentPage);
         request.getSession().setAttribute(CURRENT_PAGE,currentPage);
-        request.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
         Router router = new Router();
-        router.setRedirectType();
         router.setCurrentPage(LOGINATION);
+        router.setRedirectType();
         return router;
     }
 }

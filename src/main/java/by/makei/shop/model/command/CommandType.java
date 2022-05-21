@@ -2,6 +2,7 @@ package by.makei.shop.model.command;
 
 import by.makei.shop.exception.CommandException;
 import by.makei.shop.model.command.impl.admin.AddNewProductCommand;
+import by.makei.shop.model.command.impl.admin.UpdatePhotoCommand;
 import by.makei.shop.model.command.impl.common.*;
 import by.makei.shop.model.command.impl.gotopage.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,8 +26,8 @@ public enum CommandType {
     GO_TO_LOGIN(new GoToLoginCommand()),
     GO_TO_MAIN(new GoToMainCommand()),
     SHOW_PRODUCT(new ShowProductCommand()),
-    GO_UPDATE_PRODUCT(new GoToUpdateProductCommand());
-
+    GO_UPDATE_PRODUCT(new GoToUpdateProductCommand()),
+    UPDATE_PHOTO(new UpdatePhotoCommand());
 
     private static final Logger logger = LogManager.getLogger();
 

@@ -7,6 +7,7 @@ import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.service.impl.UserServiceImpl;
+import by.makei.shop.model.validator.ValidatorPattern;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
@@ -42,6 +43,7 @@ public class LogInCommand implements Command {
                 logger.log(Level.INFO,"user wasn't found.");
                 request.setAttribute(INVALID_LOGIN_OR_PASSWORD_MESSAGE, INVALID_LOGIN_OR_PASSWORD_MESSAGE);
                 router.setCurrentPage(PagePath.LOGINATION);
+//                request.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
             }
 
         } catch (ServiceException e) {

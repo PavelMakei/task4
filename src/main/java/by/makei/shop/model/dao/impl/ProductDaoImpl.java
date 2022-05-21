@@ -26,6 +26,12 @@ public class ProductDaoImpl implements ProductDao {
             INSERT INTO lightingshop.products (brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock)
             values (?,?,?,?,?,?,?,?,?,?)""";
 
+    private static final String SQL_UPDATE_PHOTO = """
+            UPDATE lightingshop.products
+            SET photo =?
+            WHERE id =?
+            """;
+
     private static final String SQL_SELECT_PRODUCT_BY_VAR_PARAM = """
             SELECT id, brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock
             FROM lightingshop.products WHERE %s = ?""";
@@ -194,7 +200,7 @@ public class ProductDaoImpl implements ProductDao {
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
-                    proxyConnection.prepareStatement(String.format(SQL_SELECT_PRODUCTS_BY_PARAMS, FIND_ANY+searchWord+FIND_ANY, orderQuery));
+                    proxyConnection.prepareStatement(String.format(SQL_SELECT_PRODUCTS_BY_PARAMS, FIND_ANY + searchWord + FIND_ANY, orderQuery));
             if (brandId == 0) {
                 preparedStatement.setString(1, FIND_ANY);
             } else {
@@ -240,7 +246,7 @@ public class ProductDaoImpl implements ProductDao {
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
-                    proxyConnection.prepareStatement(String.format(SQL_COUNT_PRODUCTS_BY_PARAMS, FIND_ANY+searchWord+FIND_ANY));
+                    proxyConnection.prepareStatement(String.format(SQL_COUNT_PRODUCTS_BY_PARAMS, FIND_ANY + searchWord + FIND_ANY));
             if (brandId == 0) {
                 preparedStatement.setString(1, FIND_ANY);
             } else {
@@ -272,7 +278,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Map<Product, String> findMapProductQuantityById(String paramName, String paramValue ) throws DaoException {
+    public Map<Product, String> findMapProductQuantityById(String paramName, String paramValue) throws DaoException {
 
         if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
             logger.log(Level.ERROR, "findMapProductQuantityByIdincorrect paramName");
@@ -282,7 +288,7 @@ public class ProductDaoImpl implements ProductDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<Product> optionalProduct = Optional.empty();
-        Map<Product,String> productQuantity = new HashMap<>();
+        Map<Product, String> productQuantity = new HashMap<>();
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =
@@ -304,6 +310,37 @@ public class ProductDaoImpl implements ProductDao {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return productQuantity;
+    }
+
+    @Override
+    public boolean updatePhoto(int id, byte[] bytesPhoto) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        InputStream photoStream = null;
+        int result = 0;
+
+        try {
+            photoStream = new ByteArrayInputStream(bytesPhoto);
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_UPDATE_PHOTO);
+            preparedStatement.setBlob(1, photoStream);
+            preparedStatement.setInt(2, id);
+            result = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "ProductDao error while updatePhoto. {}", e.getMessage());
+            proxyConnection.setForChecking(true);
+            throw new DaoException("ProductDao error while updatePhoto", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement);
+            try {
+                if (photoStream != null) {
+                    photoStream.close();
+                }
+            } catch (IOException e) {
+                logger.log(Level.ERROR, "ProductDao error while updatePhoto closing resources. {}", e.getMessage());
+            }
+        }
+        return result > 0;
     }
 
     //TODO дописать методы

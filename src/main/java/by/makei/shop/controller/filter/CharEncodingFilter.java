@@ -20,10 +20,11 @@ public class CharEncodingFilter implements Filter {
             ServletRequest request,
             ServletResponse response,
             FilterChain next) throws IOException, ServletException {
-        logger.log(Level.INFO, "CharEncodingFilter started");
+        logger.log(Level.DEBUG, "CharEncodingFilter started");
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         next.doFilter(request, response);
+    logger.log(Level.DEBUG, "CharEncodingFilter on out");
     }
 }

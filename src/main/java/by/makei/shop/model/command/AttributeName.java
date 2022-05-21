@@ -46,6 +46,7 @@ public enum AttributeName {
     public static final String INVALID_POWER = "invalid_power";
     public static final String INVALID_SIZE = "invalid_size";
     public static final String INVALID_QUANTITY = "invalid_quantity";
+    public static final String INVALID_ID = "invalid_id";
     public static final String INVALID_QUANTITY_IN_STOCK = "invalid_quantity_in_stock";
     public static final String INVALID_PHOTO = "invalid_photo";
     public static final String BRAND_NAME = "brand_name";

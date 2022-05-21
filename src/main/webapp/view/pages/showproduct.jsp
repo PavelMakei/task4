@@ -21,7 +21,7 @@
 <fmt:message key="size.name" var="size_name_label"/>
 <fmt:message key="brands.name" var="brands_id_label"/>
 <fmt:message key="types.name" var="types_id_label"/>
-<fmt:message key="close.hint" var="close_hint"/>
+<fmt:message key="close.window" var="close_hint"/>
 
 <html>
 

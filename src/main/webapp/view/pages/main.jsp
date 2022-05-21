@@ -48,7 +48,7 @@
 <fmt:message key="show.in.stock" var="only_in_stock_label"/>
 <fmt:message key="yes" var="yes_radio_label"/>
 <fmt:message key="no" var="no_radio_label"/>
-<fmt:message key="change.product.button" var="change_product_button"/>
+<fmt:message key="update.product" var="change_product_button"/>
 
 <%--<c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>--%>
 <%--<c:set var="power_pattern">^[\d]{1,3}$</c:set>--%>
@@ -450,12 +450,14 @@
                                         <div class="card border-0 d-block">
                                             <c:if test="${empty current_product.photoString}">
                                                 <img src="${path}/images/nophoto.jpg" class="img-fluid mx-auto d-block"
-                                                     alt="img">
+                                                     alt="img"
+                                                >
                                             </c:if>
                                             <c:if test="${!empty current_product.photoString}">
                                                 <img src="data:image/jpeg;base64,${current_product.photoString}"
                                                      alt="img"
-                                                     class="img-fluid mx-auto ">
+                                                     class="img-fluid mx-auto"
+                                                     style="max-height: 250px">
                                             </c:if>
                                             <a href="javascript:void(0);"
                                                title="${more_hint}"

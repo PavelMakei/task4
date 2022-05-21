@@ -39,7 +39,6 @@ public class GoToUpdateProductCommand implements Command {
             //TODO add MESSAGE
             request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(TYPES_MAP, types);
-            request.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
             router.setCurrentPage(UPDATEPRODUCT);
 
         } catch (ServiceException e) {

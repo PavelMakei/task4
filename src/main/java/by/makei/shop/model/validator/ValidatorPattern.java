@@ -4,6 +4,8 @@ public class ValidatorPattern {
     private static final ValidatorPattern instance = new ValidatorPattern();
     private ValidatorPattern(){}
 
+    public static final String TEST_STRING = "test string";
+
     private final String loginPattern = "^[A-Za-zА-ЯЁа-яё\\d_]{4,16}$";
     private final String namePattern = "^[A-Za-zА-ЯЁа-яё]{3,20}$";
     private final String passwordPattern = "^[A-Za-zА-ЯЁа-яё\\d_!@#,\\.]{6,16}$";
