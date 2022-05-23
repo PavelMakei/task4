@@ -28,11 +28,16 @@ import static by.makei.shop.model.validator.DefaultSearchParam.PRODUCTS_ON_PAGE;
 
 public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger();
+    private static final ProductServiceImpl instance = new ProductServiceImpl();
+
+    private ProductServiceImpl(){}
+
+    public static ProductServiceImpl getInstance(){ return instance;}
 
     @Override
     public void addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException {
         Product product = new Product();
-        ProductDaoImpl productDao = new ProductDaoImpl();
+        ProductDaoImpl productDao = ProductDaoImpl.getInstance();
 
         product.setBrandId(Integer.parseInt(productData.get(BRAND_ID)));
         product.setTypeId(Integer.parseInt(productData.get(TYPE_ID)));
@@ -56,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Map<String, String> findAllBrandsMap() throws ServiceException {
-        BaseDao<Brand> brandDao = new BrandDaoImpl();
+        BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
         Map<String, String> brandsMap = new TreeMap<>();
         try {
             List<Brand> brandsList = brandDao.findAll();
@@ -76,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Map<String, String> findAllTypesMap() throws ServiceException {
-        BaseDao<ProductType> productTypeDao = new ProductTypeDaoImpl();
+        BaseDao<ProductType> productTypeDao = ProductTypeDaoImpl.getInstance();;
         Map<String, String> typesMap = new TreeMap<>();
         try {
             List<ProductType> productTypeList = productTypeDao.findAll();
@@ -96,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAllProductList() throws ServiceException {
-        BaseDao<Product> productTypeDao = new ProductDaoImpl();
+        BaseDao<Product> productTypeDao = ProductDaoImpl.getInstance();
         List<Product> productList = new ArrayList<>();
         try {
             productList = productTypeDao.findAll();
@@ -109,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Map<Product, String> findAllProductMap() throws ServiceException {
-        ProductDao productTypeDao = new ProductDaoImpl();
+        ProductDao productTypeDao = ProductDaoImpl.getInstance();
         Map<Product, String> productQuantityMap;
         try {
             productQuantityMap = productTypeDao.findAllMap();
@@ -123,7 +128,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Map<Product, String> findProductsByParam(Map<String, String> searchParamMap, Map<String, String> orderByParamQuery) throws ServiceException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
-        ProductDao productDao = new ProductDaoImpl();
+        ProductDao productDao = ProductDaoImpl.getInstance();
         Map<Product, String> productQuantityMap = new HashMap<>();
         if (parameterValidator.validateAndCorrectSearchProductParam(searchParamMap, orderByParamQuery)) {
             logger.log(Level.INFO, "ProductService incorrect data in search param map. Corrected.");
@@ -236,7 +241,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ServiceException("ProductService findProductById incorrect id :" + id);
         }
         Optional<Product> optionalProduct;
-        BaseDao<Product> dao = new ProductDaoImpl();
+        BaseDao<Product> dao = ProductDaoImpl.getInstance();
         try {
             optionalProduct = dao.findEntityByOneParam(ID, id);
         } catch (DaoException e) {
@@ -259,7 +264,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ServiceException("ProductService findMapProductQuantityById incorrect id :" + id);
         }
         Map<Product, String> productQuantityMap = new HashMap<>();
-        ProductDao dao = new ProductDaoImpl();
+        ProductDao dao = ProductDaoImpl.getInstance();
         try {
             productQuantityMap = dao.findMapProductQuantityById(ID, id);
         } catch (DaoException e) {
@@ -276,7 +281,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Brand findBrandById(String id) throws ServiceException {
         Optional<Brand> optionalBrand;
-        BaseDao<Brand> dao = new BrandDaoImpl();
+        BaseDao<Brand> dao = BrandDaoImpl.getInstance();
         try {
             optionalBrand = dao.findEntityByOneParam(ID, id);
         } catch (DaoException e) {
@@ -293,7 +298,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductType findProductTypeById(String id) throws ServiceException {
         Optional<ProductType> optionalProductType;
-        BaseDao<ProductType> dao = new ProductTypeDaoImpl();
+        BaseDao<ProductType> dao = ProductTypeDaoImpl.getInstance();;
         try {
             optionalProductType = dao.findEntityByOneParam(ID, id);
         } catch (DaoException e) {
@@ -309,14 +314,26 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean updatePhoto(String id, byte[] bytesPhoto) throws ServiceException {
-        ProductDaoImpl productDao = new ProductDaoImpl();
+        ProductDao productDao = ProductDaoImpl.getInstance();
         boolean isUpdated = false;
         try {
             isUpdated = productDao.updatePhoto(Integer.parseInt(id), bytesPhoto);
-        } catch (
-                DaoException e) {
+        } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService error while updatePhoto. {}", e.getMessage());
             throw new ServiceException("ProductService error while updatePhoto.", e);
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean updateProductData(Map<String, String> productDataMap) throws ServiceException {
+        boolean isUpdated = false;
+        ProductDao productDao = ProductDaoImpl.getInstance();
+        try{
+            isUpdated = productDao.updateProductData(productDataMap);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "ProductService error while updateProductData. {}", e.getMessage());
+            throw new ServiceException("ProductService error while updateProductData.", e);
         }
         return isUpdated;
     }

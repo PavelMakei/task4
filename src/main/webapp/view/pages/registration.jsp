@@ -293,14 +293,8 @@
 <%--                                ---------------------------button---------------------------------%>
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning "
-                                            style="background-color: goldenrod; color: white">
+                                            style="color: white">
                                         ${register_button}</button>
-                                </div>
-
-                                <%--                        //TODO куда переходить?--%>
-
-                                <div class="login-register">
-                                    <a style="color: goldenrod" href="${path}/index.jsp">${return_main_page}</a>
                                 </div>
                             </form>
                         </div>

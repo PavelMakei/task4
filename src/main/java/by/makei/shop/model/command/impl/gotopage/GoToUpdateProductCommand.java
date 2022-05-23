@@ -7,7 +7,7 @@ import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.model.validator.ValidatorPattern;
+import by.makei.shop.util.MessageReinstall;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
@@ -25,7 +25,7 @@ public class GoToUpdateProductCommand implements Command {
 
         String productId = request.getParameter(ID);
         logger.log(Level.DEBUG, "GoToUpdateProductCommand get product id :{}", productId);
-        ProductService productService = new ProductServiceImpl();
+        ProductService productService = ProductServiceImpl.getInstance();
         Map<Product, String> productQuantity = new HashMap<>();
         Map<String, String> brands;
         Map<String, String> types;
@@ -37,9 +37,12 @@ public class GoToUpdateProductCommand implements Command {
             request.setAttribute(PRODUCT, productQuantity.keySet().toArray()[0]);
             request.setAttribute(QUANTITY, productQuantity.values().toArray()[0]);
             //TODO add MESSAGE
+            MessageReinstall.extractAndSetMessage(PHOTO_MESSAGE,request);
+            MessageReinstall.extractAndSetMessage(DATA_MESSAGE,request);
+
             request.setAttribute(BRANDS_MAP, brands);
             request.setAttribute(TYPES_MAP, types);
-            router.setCurrentPage(UPDATEPRODUCT);
+            router.setCurrentPage(UPDATE_PRODUCT);
 
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToUpdateProductCommand. {}", e.getMessage());

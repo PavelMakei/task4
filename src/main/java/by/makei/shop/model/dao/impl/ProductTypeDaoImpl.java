@@ -6,6 +6,7 @@ import by.makei.shop.model.connectionpool.ProxyConnection;
 import by.makei.shop.model.dao.ProductTypeDao;
 import by.makei.shop.model.dao.mapper.impl.TypeMapper;
 import by.makei.shop.model.entity.ProductType;
+import by.makei.shop.model.service.impl.ProductServiceImpl;
 import org.apache.logging.log4j.Level;
 
 import java.sql.Connection;
@@ -17,14 +18,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductTypeDaoImpl implements ProductTypeDao {
-
+    private static final ProductTypeDaoImpl instance = new ProductTypeDaoImpl();
     private static final String SQL_SELECT_TYPE_BY_VAR_PARAM = """
             SELECT id, type_name FROM lightingshop.types WHERE %s = ?""";
-
     private static final String SQL_SELECT_ALL_TYPES = """
             SELECT id, type_name FROM lightingshop.types""";
 
+    private ProductTypeDaoImpl (){}
 
+    public static ProductTypeDaoImpl getInstance(){return instance;}
 
     @Override
     public Optional<ProductType> findEntityByOneParam(String paramName, String paramValue) throws DaoException {

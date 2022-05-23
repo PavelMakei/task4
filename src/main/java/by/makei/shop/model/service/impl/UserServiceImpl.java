@@ -2,6 +2,7 @@ package by.makei.shop.model.service.impl;
 
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.exception.ServiceException;
+import by.makei.shop.model.dao.BaseDao;
 import by.makei.shop.model.dao.UserDao;
 import by.makei.shop.model.dao.impl.UserDaoImpl;
 import by.makei.shop.model.entity.User;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
             logger.log(Level.INFO, "user -{}- or password wasn't found", login);
             return Optional.empty();
         }
-        UserDao userDao = new UserDaoImpl();
+        UserDao userDao = UserDaoImpl.getInstance();
         String hashPassword = PasswordEncoder.getHashedPassword(password);
         try {
             return userDao.findUserByLoginAndPassword(login, hashPassword);
@@ -48,6 +50,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public boolean addNewUser(Map<String, String> userData) throws ServiceException {
         User user = new User();
         String hashPassword;
@@ -60,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
         hashPassword = PasswordEncoder.getHashedPassword(userData.get(PASSWORD));
 
-        UserDaoImpl userDao = new UserDaoImpl();
+        UserDaoImpl userDao = UserDaoImpl.getInstance();;
         try {
             userDao.create(user, hashPassword);
         } catch (DaoException e) {
@@ -68,6 +71,30 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(e);
         }
         return true;
+    }
+
+    @Override
+    public List<User> findAllUser() throws ServiceException {
+        List<User> userList;
+        BaseDao<User> userDao = UserDaoImpl.getInstance();
+        try {
+            userList = userDao.findAll();
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while findAllUser in UserService. {}",e.getMessage());
+            throw new ServiceException(e);
+        }
+        return userList;
+    }
+
+    @Override
+    public boolean updateAccessLevel(Map<String, String> userDataMap) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            return userDao.updateAccessLevel(userDataMap);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while updateAccessLevel in UserService. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
     }
 
 

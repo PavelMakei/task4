@@ -16,29 +16,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import static by.makei.shop.model.command.AttributeName.ID;
-import static by.makei.shop.model.command.AttributeName.QUANTITY_IN_STOCK;
+import static by.makei.shop.model.command.AttributeName.*;
 
 public class ProductDaoImpl implements ProductDao {
+    private static final ProductDaoImpl instance = new ProductDaoImpl();
     private static final String FIND_ANY = "%";
     private static final String TOTAL = "total";
     private static final String SQL_ADD_NEW_PRODUCT = """
             INSERT INTO lightingshop.products (brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock)
             values (?,?,?,?,?,?,?,?,?,?)""";
-
     private static final String SQL_UPDATE_PHOTO = """
             UPDATE lightingshop.products
             SET photo =?
             WHERE id =?
             """;
-
+    private static final String SQL_UPDATE_PRODUCT_DATA = """
+            UPDATE lightingshop.products
+            SET brand_id =?, type_id =?, product_name =?, description =?, price =?, colour =?, power =?, size =?, quantity_in_stock =?
+            WHERE id =?
+            """;
     private static final String SQL_SELECT_PRODUCT_BY_VAR_PARAM = """
             SELECT id, brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock
             FROM lightingshop.products WHERE %s = ?""";
-
     private static final String SQL_SELECT_ALL_PRODUCTS = """
             SELECT id, brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock FROM lightingshop.products""";
-
     private static final String SQL_SELECT_PRODUCTS_BY_PARAMS = """
             SELECT id, brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock FROM lightingshop.products
             WHERE brand_id LIKE ?
@@ -50,7 +51,6 @@ public class ProductDaoImpl implements ProductDao {
             ORDER BY %s
             LIMIT ?,?
             """;
-
     private static final String SQL_COUNT_PRODUCTS_BY_PARAMS = """
             SELECT COUNT(id) AS total FROM lightingshop.products
             WHERE brand_id LIKE ?
@@ -61,6 +61,11 @@ public class ProductDaoImpl implements ProductDao {
             AND quantity_in_stock >=?
             """;
 
+    private ProductDaoImpl(){}
+
+    public static ProductDaoImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public Optional<Product> findEntityByOneParam(String paramName, String paramValue) throws DaoException {
@@ -341,6 +346,37 @@ public class ProductDaoImpl implements ProductDao {
             }
         }
         return result > 0;
+    }
+
+    @Override
+    public boolean updateProductData(Map<String, String> productDataMap) throws DaoException {
+        int result = 0;
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        InputStream photoStream = null;
+
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_UPDATE_PRODUCT_DATA);
+            preparedStatement.setInt(1, Integer.parseInt(productDataMap.get(BRAND_ID)));
+            preparedStatement.setInt(2, Integer.parseInt(productDataMap.get(TYPE_ID)));
+            preparedStatement.setString(3, productDataMap.get(PRODUCT_NAME));
+            preparedStatement.setString(4, productDataMap.get(DESCRIPTION));
+            preparedStatement.setDouble(5, Double.parseDouble(productDataMap.get(PRICE)));
+            preparedStatement.setString(6, productDataMap.get(COLOUR));
+            preparedStatement.setInt(7, Integer.parseInt(productDataMap.get(POWER)));
+            preparedStatement.setString(8, productDataMap.get(SIZE));
+            preparedStatement.setInt(9, Integer.parseInt(productDataMap.get(QUANTITY_IN_STOCK)));
+            preparedStatement.setInt(10, Integer.parseInt(productDataMap.get(ID)));
+            result = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+        proxyConnection.setForChecking(true);
+        logger.log(Level.ERROR, "error while updateProductData");
+        throw new DaoException(e);
+    } finally {
+        finallyWhileClosing(proxyConnection, preparedStatement);
+    }
+        return result>0;
     }
 
     //TODO дописать методы

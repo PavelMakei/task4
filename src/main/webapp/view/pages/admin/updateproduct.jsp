@@ -43,6 +43,8 @@
 <fmt:message key="update.photo" var="update_photo_button"/>
 <fmt:message key="update.data" var="update_date_button"/>
 <fmt:message key="close.window" var="close_button"/>
+<fmt:message key="photo.of.product" var="photo_of_product_label"/>
+<fmt:message key="data.of.product" var="data_of_product_label"/>
 
 
 
@@ -53,6 +55,20 @@
 <c:set var="price_pattern">${validator_pattern.decimalStringPattern}</c:set>
 <c:set var="power_pattern">${validator_pattern.integer3StringPattern}</c:set>
 <c:set var="quantity_pattern">${validator_pattern.integer3StringPattern}</c:set>
+
+<c:if test="${!empty product}">
+    <c:set var="local_product_id">${product.id}</c:set>
+    <c:set var="local_brand_id">${product.brandId}</c:set>
+    <c:set var="local_type_id">${product.typeId}</c:set>
+    <c:set var="local_photo_string">${product.photoString}</c:set>
+</c:if>
+<c:if test="${empty product}">
+    <c:set var="local_product_id">${id}</c:set>
+    <c:set var="local_brand_id">${brand_id}</c:set>
+    <c:set var="local_type_id">${type_id}</c:set>
+    <c:set var="local_photo_string">${photo_string}</c:set>
+</c:if>
+
 
 
 <head>
@@ -98,11 +114,14 @@
                 <div class="col-md-5">
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
-                             style="text-align:center; color: black; font-size: large">ID: ${product.id}
-                            <c:if test="${!empty photo_update_message}" >
-                            <fmt:message key="${photo_update_message}"/>
+                             style="text-align:center; color: black; font-size: large">
+                            <c:if test="${!empty photo_message}">
+                                <p style="color: goldenrod">
+                                    <fmt:message key="${photo_message}"></fmt:message>
+                                </p>
                             </c:if>
-
+                            ${photo_of_product_label}
+                            ${local_product_id}
                         </div>
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large"></div>
@@ -111,15 +130,15 @@
                                   action="${path}/controller"
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="update_photo">
-                                <input type="hidden" name="id" value="${product.id}">
+                                <input type="hidden" name="id" value="${local_product_id}">
 
                             <div class="card border-0 d-block">
-                                <c:if test="${empty product.photoString}">
+                                <c:if test="${empty local_photo_string}">
                                     <img src="${path}/images/nophoto.jpg" class="img-fluid mx-auto d-block"
                                          alt="img">
                                 </c:if>
-                                <c:if test="${!empty product.photoString}">
-                                    <img src="data:image/jpeg;base64,${product.photoString}"
+                                <c:if test="${!empty local_photo_string}">
+                                    <img src="data:image/jpeg;base64,${local_photo_string}"
                                          alt="img"
                                          class="img-fluid mx-auto ">
                                 </c:if>
@@ -127,12 +146,12 @@
                             <%----------------------------------------------------- photo blob input-------------------------------------------%>
                             <div class="form-group" style="color: white">
                                 <label for="photo" class="cols-sm-2 control-label"
-                                        <c:if test="${!empty invalid_photo}">
+                                        <c:if test="${(!empty photo_message) && (photo_message == 'update.fail') }">
                                             style="color: red"
                                         </c:if>
                                 >
                                     ${photo_name_label}
-                                    <c:if test="${!empty invalid_photo}">
+                                    <c:if test="${(!empty photo_message) && (photo_message == 'update.fail') }">
                                         <fmt:message key="incorrect.she.enter"/>
                                     </c:if>
                                 </label>
@@ -172,11 +191,14 @@
                     <div class="card" style="border-color: goldenrod">
 
                         <div class="card-header bg-light fw-bold"
-                             style="text-align:center; color: black; font-size: large">ID: ${product.id}
-                            <c:if test="${!empty data_update_message}" >
-                                <fmt:message key="${data_update_message}"/>
+                             style="text-align:center; color: black; font-size: large">
+                            <c:if test="${!empty data_message}">
+                                <p style="color: goldenrod">
+                                    <fmt:message key="${data_message}"></fmt:message>
+                                </p>
                             </c:if>
-
+                            ${data_of_product_label}
+                            ${local_product_id}
                         </div>
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large"></div>
@@ -186,7 +208,8 @@
                                   action="${path}/controller"
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="update_product_data">
-                                <input type="hidden" name="id" value="${product.id}">
+                                <input type="hidden" name="id" value="${local_product_id}">
+                                <input type="hidden" name="photo_string" value="${local_photo_string}">
                                 <%------------------------------------------------------ProductName------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="product_name" class="cols-sm-2 control-label"
@@ -198,6 +221,10 @@
                                         <c:if test="${!empty invalid_product_name}">
                                             ${incorrect_it_enter_message}
                                         </c:if>
+
+                                            <c:if test="${!empty busy_product_name}">
+                                                ${exists_choose_other_message}
+                                            </c:if>
                                     </label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
@@ -245,12 +272,12 @@
                                                 <select class="form-select inputFilter" name="brand_id"
                                                         id="brand_id">
                                                     <option
-                                                            value="${product.brandId}"
-                                                            <c:set var="selected_brand_id">${product.brandId}</c:set>
+                                                            value="${local_brand_id}"
+                                                            <c:set var="selected_brand_id">${local_brand_id}</c:set>
                                                             selected>${brands_map[selected_brand_id]}
                                                     </option>
                                                     <c:forEach var="brandEnter" items="${brands_map}">
-                                                        <c:if test="${brandEnter.key ne product.brandId}">
+                                                        <c:if test="${brandEnter.key ne local_brand_id}">
                                                             <option value=${brandEnter.key}>${brandEnter.value}</option>
                                                         </c:if>
                                                     </c:forEach>
@@ -279,15 +306,15 @@
 
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
-                                                <select class="form-select inputFilter" name="brand_id"
+                                                <select class="form-select inputFilter" name="type_id"
                                                         id="type_id">
                                                     <option
-                                                            value="${product.typeId}"
-                                                            <c:set var="selected_type_id">${product.typeId}</c:set>
+                                                            value="${local_type_id}"
+                                                            <c:set var="selected_type_id">${local_type_id}</c:set>
                                                             selected>${types_map[selected_type_id]}
                                                     </option>
                                                     <c:forEach var="typeEnter" items="${types_map}">
-                                                        <c:if test="${typeEnter.key ne product.typeId}">
+                                                        <c:if test="${typeEnter.key ne local_type_id}">
                                                             <option value=${typeEnter.key}>${typeEnter.value}</option>
                                                         </c:if>
                                                     </c:forEach>
@@ -524,10 +551,13 @@
                 </div>
             </div>
         </div>
+    </div>
         <div class="container text-center">
             <div class="footer" style="color: white"><ft:footerTag/></div>
         </div>
-    </div>
+</div>
+
+
     <script>
         (function () {
             'use strict'

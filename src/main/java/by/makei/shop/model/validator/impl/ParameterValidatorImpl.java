@@ -7,10 +7,7 @@ import by.makei.shop.model.dao.impl.BrandDaoImpl;
 import by.makei.shop.model.dao.impl.ProductDaoImpl;
 import by.makei.shop.model.dao.impl.ProductTypeDaoImpl;
 import by.makei.shop.model.dao.impl.UserDaoImpl;
-import by.makei.shop.model.entity.Brand;
-import by.makei.shop.model.entity.Product;
-import by.makei.shop.model.entity.ProductType;
-import by.makei.shop.model.entity.User;
+import by.makei.shop.model.entity.*;
 import by.makei.shop.model.validator.AttributeValidator;
 import by.makei.shop.model.validator.ParameterValidator;
 import org.apache.logging.log4j.Level;
@@ -24,10 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static by.makei.shop.model.command.AttributeName.*;
@@ -50,7 +44,9 @@ public class ParameterValidatorImpl implements ParameterValidator {
     public boolean validateUserData(Map<String, String> userData) throws ServiceException {
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        UserDaoImpl userDao = new UserDaoImpl();
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
+        ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
+        accessLevelList.remove(AccessLevel.GUEST);
         boolean isCorrect = true;
         try {
 
@@ -111,6 +107,16 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             isCorrect = false;
                         }
                     }
+                    case ID ->{
+                        if(!validator.isInt5Valid(entry.getValue())){
+                            isCorrect = false;
+                        }
+                    }
+                    case ACCESS_LEVEL -> {
+                        if(accessLevelList.contains(entry.getValue())){
+                            isCorrect = false;
+                        }
+                    }
                 }
             }
         } catch (DaoException e) {
@@ -158,7 +164,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateAndCorrectSearchProductParam(Map<String, String> searchProductParam, Map<String,String> orderByParamQuery) {
+    public boolean validateAndCorrectSearchProductParam(Map<String, String> searchProductParam, Map<String, String> orderByParamQuery) {
         boolean isCorrect = true;
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
 
@@ -219,9 +225,10 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         entry.setValue(DEFAULT_PAGE_BUTTON);
                     }
                     isCorrect = false;
-                }case ORDER_BY -> {
+                }
+                case ORDER_BY -> {
                     String orderBy = entry.getValue();
-                    if(orderBy == null || !Stream.of(orderByParamQuery).anyMatch(entry2 -> entry2.containsKey(orderBy))){
+                    if (orderBy == null || !Stream.of(orderByParamQuery).anyMatch(entry2 -> entry2.containsKey(orderBy))) {
                         entry.setValue(DEFAULT_ORDER_BY);
                     }
                 }
@@ -240,9 +247,9 @@ public class ParameterValidatorImpl implements ParameterValidator {
         boolean isCorrect = true;
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        BaseDao<Product> productDao = new ProductDaoImpl();
-        BaseDao<Brand> brandDao = new BrandDaoImpl();
-        ProductTypeDaoImpl productTypeDao = new ProductTypeDaoImpl();
+        BaseDao<Product> productDao = ProductDaoImpl.getInstance();
+        BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
+        ProductTypeDaoImpl productTypeDao = ProductTypeDaoImpl.getInstance();;
         try {
             for (Map.Entry<String, String> entry : productData.entrySet()) {
                 String key = entry.getKey();
@@ -275,12 +282,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         if (!validator.isProductNameValid(entry.getValue())) {
                             invalidParameters.put(INVALID_PRODUCT_NAME, INVALID_PRODUCT_NAME);
                             isCorrect = false;
-                        } else {
-                            Optional<Product> optionalProduct = productDao.findEntityByOneParam(PRODUCT_NAME, entry.getValue());
-                            if (optionalProduct.isPresent()) {
-                                invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
-                                isCorrect = false;
-                            }
                         }
                     }
                     case DESCRIPTION -> {
@@ -334,6 +335,41 @@ public class ParameterValidatorImpl implements ParameterValidator {
             //TODO Создать новый validator exception?
         }
 
+        productData.putAll(invalidParameters);
+        return isCorrect;
+    }
+
+    @Override
+    public boolean ifProductNameExistsInDb(Map<String, String> productData) throws ServiceException {
+        boolean isCorrect = true;
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        BaseDao<Product> productDao = ProductDaoImpl.getInstance();
+        try {
+            for (Map.Entry<String, String> entry : productData.entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(PRODUCT_NAME)) {
+                    if (!validator.isProductNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PRODUCT_NAME, INVALID_PRODUCT_NAME);
+                        isCorrect = false;
+                    } else {
+                        Optional<Product> optionalProduct = productDao.findEntityByOneParam(PRODUCT_NAME, entry.getValue());
+                        if (optionalProduct.isPresent()) {
+                            Product product = optionalProduct.get();
+                            if (productData.get(ID) != null && (product.getId() != (Integer.parseInt(productData.get(ID))))) {
+                                invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "ParameterValidator error while validateProductData {}", e.getMessage());
+            throw new ServiceException("ParameterValidator error while validateProductData", e);
+            //incorrect work of application. It's not a problem of incorrect input to validation data
+            //TODO Создать новый validator exception?
+        }
         productData.putAll(invalidParameters);
         return isCorrect;
     }

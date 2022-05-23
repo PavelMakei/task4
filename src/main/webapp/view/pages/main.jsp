@@ -420,7 +420,7 @@
                                                     name="page_button"
                                                     value="search_button"
                                                     id="butt"
-                                                    style="background-color: goldenrod; color: white"
+                                                    style=" color: white"
                                             >
                                                 ${find_products_button}</button>
                                         </div>
@@ -540,7 +540,7 @@
                                                     <div class="d-grid gap-1">
                                                         <button class="btn btn-primary"  onclick="window.open('${path}controller?command=go_update_product&id=${current_product.id}')">
 
-                                                    ${change_product_button}
+                                                    ${change_product_button} id:${current_product.id}
                                                     </button>
                                                     </div>
                                                 </form>
@@ -575,7 +575,7 @@
                                                                 disabled
                                                             </c:if>
                                                             id="buttBuy1"
-                                                            style="background-color: goldenrod; color: white"
+                                                            style="color: white"
                                                             onclick="CheckBuy()">
                                                             ${buy_button}
                                                     </button>

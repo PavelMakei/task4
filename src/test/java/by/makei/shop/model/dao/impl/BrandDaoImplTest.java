@@ -15,7 +15,7 @@ class BrandDaoImplTest {
 Logger logger = LogManager.getLogger();
     @Test
     void findAllBrandsTest() throws DaoException {
-        BrandDaoImpl brandDao = new BrandDaoImpl();
+        BrandDaoImpl brandDao = BrandDaoImpl.getInstance();
         List<Brand> brands = brandDao.findAll();
         assertTrue(brands.size() > 0);
     }

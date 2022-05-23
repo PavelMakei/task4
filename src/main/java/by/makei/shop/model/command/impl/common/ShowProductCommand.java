@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Level;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
-import static by.makei.shop.model.command.PagePath.SHOWPRODUCT;
+import static by.makei.shop.model.command.PagePath.SHOW_PRODUCT;
 
 public class ShowProductCommand implements Command {
     private static final String ERROR = "ShowProductCommand Service exception : ";
@@ -26,7 +26,7 @@ public class ShowProductCommand implements Command {
         ProductType productType;
         Brand brand;
         String id = request.getParameter(ID);
-        ProductService productService = new ProductServiceImpl();
+        ProductService productService = ProductServiceImpl.getInstance();
 
         try {
             product = productService.findProductById(id);
@@ -36,7 +36,7 @@ public class ShowProductCommand implements Command {
             request.setAttribute(PRODUCT, product);
             request.setAttribute(BRAND_NAME, brand.getBrandName());
             request.setAttribute(TYPE_NAME, productType.getTypeName());
-            router.setCurrentPage(SHOWPRODUCT);
+            router.setCurrentPage(SHOW_PRODUCT);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "ShowProductCommand command error. {}", e.getMessage());
             request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());

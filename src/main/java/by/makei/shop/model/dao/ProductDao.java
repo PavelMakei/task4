@@ -17,4 +17,5 @@ public interface ProductDao extends BaseDao<Product>{
 
     boolean updatePhoto(int id, byte[] bytesPhoto) throws DaoException;
 
+    boolean updateProductData(Map<String, String> productDataMap) throws DaoException;
 }

@@ -60,6 +60,7 @@ public enum AttributeName {
     public static final String PRODUCTS_LIST = "products_list";
     public static final String PRODUCTS_QUANTITY_MAP = "products_quantity_map";
     public static final String QUANTITY_IN_STOCK = "quantity_in_stock";
+    public static final String PHOTO_STRING = "photo_string";
     public static final String SEARCH_BRAND_ID = "search_brand_id";
     public static final String SEARCH_TYPE_ID = "search_type_id";
     public static final String SEARCH_MIN_PRICE = "search_min_price";
@@ -84,9 +85,11 @@ public enum AttributeName {
     public static final String ORDER_ARRAY = "order_array";
     public static final String ORDER_BY = "order_by";
     public static final String VALIDATOR_PATTERN = "validator_pattern";
-
-
-
+    public static final String MESSAGE = "message";
+    public static final String PHOTO_MESSAGE = "photo_message";
+    public static final String DATA_MESSAGE = "data_message";
+    public static final String USER_LIST = "user_list";
+    public static final String ACCESS_LEVEL_LIST = "access_level_list";
 
 
 

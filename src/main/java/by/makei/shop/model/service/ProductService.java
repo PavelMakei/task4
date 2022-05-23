@@ -31,4 +31,6 @@ public interface ProductService {
     ProductType findProductTypeById(String id)throws ServiceException;
 
     boolean updatePhoto(String id, byte[] bytesPhoto) throws ServiceException;
+
+    boolean updateProductData(Map<String, String> productDataMap) throws ServiceException;
 }

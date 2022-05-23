@@ -72,6 +72,9 @@ body {
     border-color: #ffaf14;
     background-color: #ffaf14;
     box-shadow: 0 0 0 0.15rem rgba(255, 175, 20, 0.25);
-
-
+}
+.btn-warning {
+    color: #000;
+    background-color: goldenrod;
+    border-color: #ffc107;
 }

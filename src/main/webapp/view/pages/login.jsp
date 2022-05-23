@@ -124,7 +124,7 @@
                                 <%------------------------------------------------button------------------------------%>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary btn-warning"
-                                            style="background-color: goldenrod; color: white">
+                                            style="color: white">
                                         <fmt:message
                                                 key="enter.button"/></button>
                                 </div>

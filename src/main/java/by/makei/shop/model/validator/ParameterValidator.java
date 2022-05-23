@@ -14,5 +14,7 @@ public interface ParameterValidator {
 
     boolean validateAndCorrectSearchProductParam(Map<String,String> searchProductData, Map<String,String> orderByParamQuery);
 
+    boolean ifProductNameExistsInDb(Map<String, String> productData) throws ServiceException;
+
     boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) throws ServiceException;
 }

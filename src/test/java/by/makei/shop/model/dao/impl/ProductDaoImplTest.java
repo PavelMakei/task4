@@ -40,7 +40,7 @@ class ProductDaoImplTest {
 
     @BeforeAll
     static void init() {
-        productDao = new ProductDaoImpl();
+        productDao = ProductDaoImpl.getInstance();
     }
 
     @Test

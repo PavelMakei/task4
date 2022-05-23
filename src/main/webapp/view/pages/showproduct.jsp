@@ -121,17 +121,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <%--                            <form class="form-horizontal" novalidate method="post"--%>
-                            <%--                                  action="${path}/controller">--%>
-                            <%--                                <input type="hidden" name="command" value="login">--%>
-                            <%--                                &lt;%&ndash;----------------------------------------------button----------------------------&ndash;%&gt;--%>
-                            <%--                                <div class="d-grid gap-2">--%>
-                            <%--                                    <button type="submit" class="btn btn-primary btn-warning"--%>
-                            <%--                                            style="background-color: goldenrod; color: white">--%>
-                            <%--                                        <fmt:message--%>
-                            <%--                                                key="enter.button"/></button>--%>
-                            <%--                                </div>--%>
                             </form>
                         </div>
                     </div>

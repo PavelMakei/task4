@@ -17,12 +17,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class BrandDaoImpl implements BrandDao {
-
+    private static final BrandDaoImpl instance = new BrandDaoImpl();
     private static final String SQL_SELECT_BRAND_BY_VAR_PARAM = """
             SELECT id, brand_name FROM lightingshop.brands WHERE %s = ?""";
-
     private static final String SQL_SELECT_ALL_BRANDS = """
             SELECT id, brand_name FROM lightingshop.brands""";
+
+    private BrandDaoImpl(){}
+
+    public static BrandDaoImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public Optional<Brand> findEntityByOneParam(String paramName, String paramValue) throws DaoException {

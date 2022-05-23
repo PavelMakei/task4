@@ -1,0 +1,151 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Pavel_Makei
+  Date: 22.05.2022
+  Time: 22:12
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
+<fmt:setLocale value="${locale}" scope="session"/>
+<fmt:setBundle basename="language_text"/>
+
+<c:set var="path">${pageContext.request.contextPath}</c:set>
+
+<fmt:message key="first.name" var="first_name"/>
+<fmt:message key="last.name" var="last_name"/>
+<fmt:message key="login" var="login"/>
+<fmt:message key="mobile.phone" var="mobile_phone"/>
+<fmt:message key="access.level" var="access_level"/>
+<fmt:message key="registration.date" var="registration_date"/>
+<fmt:message key="money.amount" var="money_amount"/>
+<fmt:message key="users" var="users_lable"/>
+<c:set var="email">email</c:set>
+<c:set var="url_part1">${path}controller?command=change_access_level&id=</c:set>
+<c:set var="url_part2">&access_level=</c:set>
+
+
+<head>
+    <title>${users_lable}</title>
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href=${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${path}/css/enter.css">
+
+
+    <%-----------------Prevent to return to previous page---------------%>
+    <%--    <script>--%>
+    <%--        function preventBack() {--%>
+    <%--            window.history.forward();--%>
+    <%--        }--%>
+
+    <%--        setTimeout("preventBack()", 0);--%>
+    <%--        window.onunload = function () {--%>
+    <%--            null--%>
+    <%--        };--%>
+    <%--        history.pushState(null, null, document.URL);--%>
+    <%--    </script>--%>
+    <%--    &lt;%&ndash;--------------------------------------&ndash;%&gt;--%>
+
+    <%--    <script>--%>
+    <%--        history.forward();--%>
+    <%--    </script>--%>
+
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <%@include file="../header.jsp" %>
+    </div> <!-- end of header -->
+    <div class="content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card" style="border-color: goldenrod">
+                        <div class="card-header bg-light fw-bold"
+                             style="text-align:center; color: black; font-size: large">
+                            ${users_lable}
+                            <c:if test="${!empty message}">
+                                <p style="color: goldenrod">
+                                    <fmt:message key="${message}"></fmt:message>
+                                </p>
+                            </c:if>
+                            ${head_label}
+                        </div>
+                        <div class="card-body bg-dark bg-opacity-75">
+                            <%------------------------------------------------------Users-----------------------------------------------%>
+                            <div class="form-group bg-white" style="color: white">
+                                <table class="table table-responsive table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">id</th>
+                                        <th scope="col">${first_name}</th>
+                                        <th scope="col">${last_name}</th>
+                                        <th scope="col">${login}</th>
+                                        <th scope="col">${email}</th>
+                                        <th scope="col">${mobile_phone}</th>
+                                        <th scope="col">${registration_date}</th>
+                                        <th scope="col">${money_amount}</th>
+                                        <th scope="col">${access_level}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="user" items="${user_list}">
+                                        <tr
+                                                <c:if test="${user.accessLevel eq 'ADMIN'}">
+                                                    class="table-warning"
+                                                </c:if>
+                                                <c:if test="${user.accessLevel eq 'USER'}">
+                                                    class="table-success"
+                                                </c:if>
+                                                <c:if test="${user.accessLevel eq 'BLOCKED'}">
+                                                    class="table-danger"
+                                                </c:if>
+                                        >
+                                            <th scope="row">${user.id}</th>
+                                            <td>${user.firstName}</td>
+                                            <td>${user.lastName}</td>
+                                            <td>${user.login}</td>
+                                            <td>${user.email}</td>
+                                            <td>${user.phone}</td>
+                                            <td>${user.date}</td>
+                                            <td>${user.amount}</td>
+                                            <td>
+                                                <select
+                                                        id="access_level" name="access_level" required
+                                                        onchange="this.options[this.selectedIndex].value && (window.location
+                                                                = '${url_part1}'+this.options[this.selectedIndex].id
+                                                                +'${url_part2}'+this.options[this.selectedIndex].value);">
+                                                    <option
+                                                            id="${user.id}"
+                                                            value="${user.accessLevel}"
+                                                            selected>${user.accessLevel}
+                                                    </option>
+                                                    <c:forEach var="access_level_elem"
+                                                               items="${access_level_list}">
+                                                        <c:if test="${user.accessLevel ne access_level_elem}">
+                                                            <option value="${access_level_elem}"
+                                                                    id="${user.id}"
+                                                            >${access_level_elem}</option>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="color: white"><ft:footerTag/></div>
+</div>
+
+</body>

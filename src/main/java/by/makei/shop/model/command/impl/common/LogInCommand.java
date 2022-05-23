@@ -43,7 +43,6 @@ public class LogInCommand implements Command {
                 logger.log(Level.INFO,"user wasn't found.");
                 request.setAttribute(INVALID_LOGIN_OR_PASSWORD_MESSAGE, INVALID_LOGIN_OR_PASSWORD_MESSAGE);
                 router.setCurrentPage(PagePath.LOGINATION);
-//                request.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
             }
 
         } catch (ServiceException e) {

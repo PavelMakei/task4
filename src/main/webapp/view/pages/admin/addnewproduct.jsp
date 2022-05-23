@@ -75,22 +75,22 @@
 
 
     <%-----------------Prevent to return to previous page---------------%>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
+<%--    <script>--%>
+<%--        function preventBack() {--%>
+<%--            window.history.forward();--%>
+<%--        }--%>
 
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-        history.pushState(null, null, document.URL);
-    </script>
-    <%------------------------------------------%>
+<%--        setTimeout("preventBack()", 0);--%>
+<%--        window.onunload = function () {--%>
+<%--            null--%>
+<%--        };--%>
+<%--        history.pushState(null, null, document.URL);--%>
+<%--    </script>--%>
+<%--    &lt;%&ndash;--------------------------------------&ndash;%&gt;--%>
 
-    <script>
-        history.forward();
-    </script>
+<%--    <script>--%>
+<%--        history.forward();--%>
+<%--    </script>--%>
 
 </head>
 <body>
@@ -102,10 +102,17 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-7">
-                    <div class="card">
+                    <div class="card" style="border-color: goldenrod">
 
                         <div class="card-header bg-light fw-bold"
-                             style="text-align:center; color: black; font-size: large">${head_label}</div>
+                             style="text-align:center; color: black; font-size: large">
+                            <c:if test="${!empty message}">
+                          <p style="color: goldenrod">
+                              <fmt:message key="${message}"></fmt:message>
+                          </p>
+                            </c:if>
+                            ${head_label}
+                        </div>
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" novalidate method="post"
@@ -442,18 +449,13 @@
                                 </div>
                                 <%------------------------------------------------------Button-----------------------------------------------%>
                                 <div class="d-grid gap-1">
-                                    <button type="submit" class="btn btn-primary btn-warning"
+                                    <button type="submit" class="btn btn-warning"
                                             id="butt"
-                                            style="background-color: goldenrod; color: white"
+                                            style=" color: white"
                                             onclick="CheckPicture()">
                                         ${add_new_product_button}</button>
                                 </div>
 
-                                <%--                        //TODO куда переходить?--%>
-
-                                <div class="login-register">
-                                    <a style="color: goldenrod" href="${path}/index.jsp">${return_main_page}</a>
-                                </div>
                             </form>
                         </div>
                     </div>
