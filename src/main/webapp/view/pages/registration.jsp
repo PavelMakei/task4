@@ -13,18 +13,11 @@
 <fmt:setBundle basename="language_text"/>
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
-<%--<c:set var="name_pattern" value="^[A-Za-zА-ЯЁа-яё]{3,20}$"/>--%>
-<%--<c:set var="login_pattern" value="^[A-Za-zА-ЯЁа-яё0-9_]{4,16}$"/>--%>
-<%--<c:set var="email_pattern" value= "^[^[\d\.]][A-Za-z\.\d]{1,30}@[a-z]{2,10}\.([a-z]{2,4}|[a-z]{2,4}\.[a-z]{2,4})$"/>--%>
-<%--<c:set var="password_pattern" value="^[A-Za-zА-ЯЁа-яё0-9_!@#,\.]{6,16}$"/>--%>
-<%--<c:set var="phone_pattern" value="^\((025|029|044)\)\d{7}$"/>--%>
-
 <c:set var="name_pattern">${validator_pattern.namePattern}</c:set>
 <c:set var="login_pattern">${validator_pattern.loginPattern}</c:set>
 <c:set var="email_pattern">${validator_pattern.emailPattern}</c:set>
 <c:set var="password_pattern">${validator_pattern.passwordPattern}</c:set>
 <c:set var="phone_pattern">${validator_pattern.phonePattern}</c:set>
-
 
 
 <fmt:message key="registration.user" var="registration_label"/>
@@ -44,22 +37,27 @@
 <fmt:message key="accept.rules" var="accept_rules_label"/>
 <fmt:message key="register" var="register_button"/>
 <fmt:message key="return.main.page" var="return_main_page"/>
+<fmt:message key="activation.code" var="activation_code_label"/>
+<fmt:message key="get.activation.code" var="get_activation_code_button"/>
 
+<c:set var="url_part1">/controller?command=send_activation_code&email=</c:set>
+<html>
 <head>
-        <script>
-            function preventBack() {
-                window.history.forward();
-            }
-            setTimeout("preventBack()", 0);
-            window.onunload = function() {
-                null
-            };
-        </script>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout("preventBack()", 0);
+        window.onunload = function () {
+            null
+        };
+    </script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
 
@@ -76,13 +74,21 @@
             <div class="row justify-content-center">
                 <div class="col-md-7">
                     <div class="card">
-                        <div class="card-header bg-light fw-bold" style="text-align:center;">${registration_label}</div>
+                        <div class="card-header bg-light fw-bold" style="text-align:center;"
+                        >
+                            <c:if test="${!empty message}">
+                                <p style="color: goldenrod">
+                                    <fmt:message key="${message}"></fmt:message>
+                                </p>
+                            </c:if>
+                            ${registration_label}
+                        </div>
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" method="post"
                                   action="${path}/controller" novalidate>
-                                <input type="hidden" name="command" value="registration">
-<%--                                ---------------------------first name-----------------------------%>
+                                <input id="command_to_send" type="hidden" name="command" value="registration">
+                                <%--                                ---------------------------first name-----------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="first_name" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_first_name}">
@@ -114,7 +120,7 @@
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------last name------------------------------%>
+                                <%--                                ---------------------------last name------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="last_name" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_last_name}">
@@ -145,7 +151,7 @@
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------login----------------------------------%>
+                                <%--                                ---------------------------login----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="login" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_login ||!empty busy_login }">
@@ -180,7 +186,7 @@
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------email----------------------------------%>
+                                <%--                                ---------------------------email----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="email" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_email ||!empty busy_email }">
@@ -215,7 +221,7 @@
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------password-------------------------------%>
+                                <%--                                ---------------------------password-------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="password" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_password}">
@@ -239,12 +245,16 @@
                                                        " name="password"
                                                        id="password"
                                                        placeholder="${password_placeholder}"
-                                                       required pattern="${password_pattern}"/>
+                                                       required pattern="${password_pattern}"
+                                                        <c:if test="${!empty password}">
+                                                            value="${password}"
+                                                        </c:if>
+                                                />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------phone----------------------------------%>
+                                <%--                                ---------------------------phone----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="phone" class="cols-sm-2 control-label"
                                             <c:if test="${!empty invalid_phone ||!empty busy_phone }">
@@ -278,19 +288,57 @@
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------check box------------------------------%>
+                                <%--                                ---------------------------activation code----------------------------------%>
+                                <div class="form-group" style="color: white">
+                                    <label for="activation_code" class="cols-sm-2 control-label"
+                                            <c:if test="${!empty invalid_activation_code}">
+                                                style="color: red"
+                                            </c:if>
+                                    >
+                                        ${activation_code_label}
+                                        <c:if test="${!empty invalid_activation_code}">
+                                            ${incorrect_he_message}
+                                        </c:if>
+                                    </label>
+                                    <div class="cols-sm-10">
+                                        <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope fa"
+                                                                                   aria-hidden="true"></i></span>
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control
+                                                 <c:if test="${!empty invalid_activation_code}">
+                                                     is-invalid
+                                                 </c:if>
+                                                " name="activation_code" id="activation_code"
+                                                       required
+                                                       minlength="10"
+                                                       maxlength="10"
+                                                />
+                                                <button class="btn btn-warning" style="color: white" type="submit"
+                                                        onclick="document.getElementById('command_to_send').value ='send_activation_code';
+                                                                   document.getElementById('activation_code').removeAttribute('required');
+                                                                   document.getElementById('accept_check').removeAttribute('required')"
+                                                >
+                                                    ${get_activation_code_button}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <%--                                ---------------------------check box------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <div class="input-group mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2"
+                                            <input class="form-check-input no-validate" type="checkbox" value="" id="accept_check"
                                                    required>
-                                            <label class="form-check-label" for="invalidCheck2">
+                                            <label class="form-check-label" for="accept_check">
                                                 ${accept_rules_label}
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------button---------------------------------%>
+                                <%--                                ---------------------------button---------------------------------%>
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning "
                                             style="color: white">

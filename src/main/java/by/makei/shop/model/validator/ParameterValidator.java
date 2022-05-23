@@ -1,6 +1,7 @@
 package by.makei.shop.model.validator;
 
 import by.makei.shop.exception.ServiceException;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.Map;
 
@@ -9,6 +10,8 @@ public interface ParameterValidator {
     boolean validateUserData(Map<String, String> userData) throws ServiceException;
 
     boolean validateProductData(Map<String, String> productData) throws ServiceException;
+
+    boolean validateActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session);
 
     boolean validateJpg(byte[] photo, int... widthAndHeight);
 

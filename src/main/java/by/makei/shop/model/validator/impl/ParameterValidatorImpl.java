@@ -10,6 +10,7 @@ import by.makei.shop.model.dao.impl.UserDaoImpl;
 import by.makei.shop.model.entity.*;
 import by.makei.shop.model.validator.AttributeValidator;
 import by.makei.shop.model.validator.ParameterValidator;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -107,13 +108,13 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             isCorrect = false;
                         }
                     }
-                    case ID ->{
-                        if(!validator.isInt5Valid(entry.getValue())){
+                    case ID -> {
+                        if (!validator.isInt5Valid(entry.getValue())) {
                             isCorrect = false;
                         }
                     }
                     case ACCESS_LEVEL -> {
-                        if(accessLevelList.contains(entry.getValue())){
+                        if (accessLevelList.contains(entry.getValue())) {
                             isCorrect = false;
                         }
                     }
@@ -125,6 +126,37 @@ public class ParameterValidatorImpl implements ParameterValidator {
         }
         userData.putAll(invalidParameters);
         return isCorrect;
+    }
+
+    @Override
+    public boolean validateActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session) {
+        boolean isCodeCorrect = false;
+        boolean isEmailCorrect = false;
+        Map<String, String> invalidParameters = new HashMap<>();
+        Enumeration<String> sessionAttr = session.getAttributeNames();
+        while (sessionAttr.hasMoreElements()) {
+            String attr = sessionAttr.nextElement();
+            switch (attr) {
+                case SESS_ACTIVATION_CODE -> {
+                    String savedCode = session.getAttribute(SESS_ACTIVATION_CODE).toString();
+                    if (userData.get(ACTIVATION_CODE).equals(savedCode)) {
+                        isCodeCorrect = true;
+                    } else {
+                        invalidParameters.put(INVALID_ACTIVATION_CODE, INVALID_ACTIVATION_CODE);
+                    }
+                }
+                case SESS_EMAIL -> {
+                    String savedEmail = session.getAttribute(SESS_EMAIL).toString();
+                    if (userData.get(EMAIL).equals(savedEmail)) {
+                        isEmailCorrect = true;
+                    } else {
+                        invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
+                    }
+                }
+            }
+        }
+        userData.putAll(invalidParameters);
+        return isCodeCorrect & isEmailCorrect;
     }
 
     @Override
@@ -249,7 +281,8 @@ public class ParameterValidatorImpl implements ParameterValidator {
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
         BaseDao<Product> productDao = ProductDaoImpl.getInstance();
         BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
-        ProductTypeDaoImpl productTypeDao = ProductTypeDaoImpl.getInstance();;
+        ProductTypeDaoImpl productTypeDao = ProductTypeDaoImpl.getInstance();
+        ;
         try {
             for (Map.Entry<String, String> entry : productData.entrySet()) {
                 String key = entry.getKey();

@@ -94,6 +94,7 @@
                                                        placeholder="${login_placeholder}"
                                                        required pattern="${login_pattern}"/>
                                             </div>
+                                <%------------------------------------------------forgot--------------------------------%>
                                             <div class="forgot-password mb-2">
                                                 <a href="${path}/controller?command=!!!!!!!!!!!!!!!!!!!!!!!!!!!!" <%--TODO!!!!--%>
                                                    style="color: goldenrod">${forgot_password_label}</a>
@@ -101,7 +102,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%------------------------------------------------forgot--------------------------------%>
+
 
 
                                 <%------------------------------------------------password--------------------------------%>

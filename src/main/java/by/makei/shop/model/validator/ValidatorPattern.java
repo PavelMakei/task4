@@ -9,7 +9,7 @@ public class ValidatorPattern {
     private final String loginPattern = "^[A-Za-zА-ЯЁа-яё\\d_]{4,16}$";
     private final String namePattern = "^[A-Za-zА-ЯЁа-яё]{3,20}$";
     private final String passwordPattern = "^[A-Za-zА-ЯЁа-яё\\d_!@#,\\.]{6,16}$";
-    private final String emailPattern = "^[^[\\d\\.]][A-Za-z\\.\\d]{1,30}@[a-z]{2,10}\\.([a-z]{2,4}|[a-z]{2,4}\\.[a-z]{2,4})$";
+    private final String emailPattern = "^(?![_.-])((?![_.-][_.-])[a-zA-Z\\d_.-]){0,63}[a-zA-Z\\d]@((?!-)((?!--)[a-zA-Z\\d-]){0,63}[a-zA-Z\\d]\\.){1,2}([a-zA-Z]{2,14}\\.)?[a-zA-Z]{2,14}$";
     private final String phonePattern = "^\\((025|029|044)\\)\\d{7}$";
     private final String decimalStringPattern = "^((\\d{1,5}\\.\\d{0,2})|(\\d{1,5}))$";
     private final String integer5StringPattern = "^((\\d{1,5}))$";

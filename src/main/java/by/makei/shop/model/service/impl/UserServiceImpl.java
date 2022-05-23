@@ -23,6 +23,7 @@ import static by.makei.shop.model.command.AttributeName.*;
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
     public static UserServiceImpl instance;
+
     private UserServiceImpl() {
     }
 
@@ -45,13 +46,13 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.findUserByLoginAndPassword(login, hashPassword);
         } catch (DaoException e) {
-            logger.log(Level.ERROR, "error while signIn in UserService. {}",e.getMessage());
+            logger.log(Level.ERROR, "error while signIn in UserService. {}", e.getMessage());
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public boolean addNewUser(Map<String, String> userData) throws ServiceException {
+    public boolean createUser(Map<String, String> userData) throws ServiceException {
         User user = new User();
         String hashPassword;
 
@@ -63,11 +64,12 @@ public class UserServiceImpl implements UserService {
 
         hashPassword = PasswordEncoder.getHashedPassword(userData.get(PASSWORD));
 
-        UserDaoImpl userDao = UserDaoImpl.getInstance();;
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
+        ;
         try {
             userDao.create(user, hashPassword);
         } catch (DaoException e) {
-            logger.log(Level.ERROR, "error while addNewUser in UserService. {}",e.getMessage());
+            logger.log(Level.ERROR, "error while addNewUser in UserService. {}", e.getMessage());
             throw new ServiceException(e);
         }
         return true;
@@ -80,7 +82,7 @@ public class UserServiceImpl implements UserService {
         try {
             userList = userDao.findAll();
         } catch (DaoException e) {
-            logger.log(Level.ERROR, "error while findAllUser in UserService. {}",e.getMessage());
+            logger.log(Level.ERROR, "error while findAllUser in UserService. {}", e.getMessage());
             throw new ServiceException(e);
         }
         return userList;
@@ -95,6 +97,19 @@ public class UserServiceImpl implements UserService {
             logger.log(Level.ERROR, "error while updateAccessLevel in UserService. {}", e.getMessage());
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) throws ServiceException {
+        Optional<User> optionalUser = Optional.empty();
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            optionalUser = userDao.findEntityByOneParam(EMAIL,email);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while findUserByEmail in UserService. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
+        return optionalUser;
     }
 
 

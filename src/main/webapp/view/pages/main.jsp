@@ -68,9 +68,10 @@
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon"
+    ${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
     <title>${main_page_label}</title>
@@ -87,6 +88,7 @@
         };
         history.pushState(null, null, document.URL);
     </script>
+
     <%------------------------------------------%>
 
 </head>
@@ -445,7 +447,7 @@
                                    style="background-color: white; border-color: orange">
                                 <tbody>
                                 <tr style=" border-width: 2px">
-<%--                                    --------------------------image part-----------------------%>
+                                        <%--                                    --------------------------image part-----------------------%>
                                     <th scope="image" class="col-3" style="background-color: white; height: 200px">
                                         <div class="card border-0 d-block">
                                             <c:if test="${empty current_product.photoString}">
@@ -465,7 +467,7 @@
                                                onClick=window.open("${path}controller?command=show_product&id=${current_product.id}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");></a>
                                         </div>
                                     </th>
-<%--                                    --------------------------description part------------------%>
+                                        <%--                                    --------------------------description part------------------%>
                                     <th scope="data" class="col-7">
                                         <table class="product-data table-borderless">
                                             <tbody>
@@ -531,17 +533,18 @@
                                             </tbody>
                                         </table>
                                     </th>
-<%--                                    ---------------------------buy part----------------------%>
+                                        <%--                                    ---------------------------buy part----------------------%>
                                     <th scope="data" class="col-2 bg-dark opacity-75">
                                         <div class="mb-3" style="height: 120px;">
                                             <c:if test="${access_level eq 'ADMIN'}">
 
                                                 <form class="go-to-change_product form-horizontal">
                                                     <div class="d-grid gap-1">
-                                                        <button class="btn btn-primary"  onclick="window.open('${path}controller?command=go_update_product&id=${current_product.id}')">
+                                                        <button class="btn btn-primary"
+                                                                onclick="window.open('${path}controller?command=go_update_product&id=${current_product.id}')">
 
-                                                    ${change_product_button} id:${current_product.id}
-                                                    </button>
+                                                                ${change_product_button} id:${current_product.id}
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </c:if>

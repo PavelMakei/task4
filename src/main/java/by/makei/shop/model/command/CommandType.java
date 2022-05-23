@@ -32,7 +32,8 @@ public enum CommandType {
     UPDATE_PRODUCT_DATA(new UpdateProductDataCommand()),
     UPDATE_PHOTO(new UpdatePhotoCommand()),
     CHANGE_ACCESS_LEVEL(new ChangeAccessLevelCommand()),
-    GO_TO_MANAGE_USER(new GoToManageUserCommand());
+    GO_TO_MANAGE_USER(new GoToManageUserCommand()),
+    SEND_ACTIVATION_CODE(new SendActivationCode());
 
     private static final Logger logger = LogManager.getLogger();
 

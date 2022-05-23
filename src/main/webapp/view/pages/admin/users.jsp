@@ -26,7 +26,7 @@
 <c:set var="url_part1">${path}controller?command=change_access_level&id=</c:set>
 <c:set var="url_part2">&access_level=</c:set>
 
-
+<html>
 <head>
     <title>${users_lable}</title>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
@@ -50,9 +50,6 @@
     <%--    </script>--%>
     <%--    &lt;%&ndash;--------------------------------------&ndash;%&gt;--%>
 
-    <%--    <script>--%>
-    <%--        history.forward();--%>
-    <%--    </script>--%>
 
 </head>
 <body>
@@ -149,3 +146,4 @@
 </div>
 
 </body>
+</html>

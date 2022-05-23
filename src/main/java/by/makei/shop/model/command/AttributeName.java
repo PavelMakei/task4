@@ -12,6 +12,10 @@ public enum AttributeName {
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
     public static final String EMAIL = "email";
+    public static final String SESS_EMAIL = "sess_email";
+    public static final String SESS_ACTIVATION_CODE = "sess_activation_code";
+    public static final String ACTIVATION_CODE = "activation_code";
+    public static final String INVALID_ACTIVATION_CODE = "invalid_activation_code";
     public static final String PHONE = "phone";
     public static final String INVALID_FIRST_NAME = "invalid_first_name";
     public static final String INVALID_LAST_NAME = "invalid_last_name";

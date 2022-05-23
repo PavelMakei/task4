@@ -26,8 +26,6 @@
 <fmt:message key="log.out" var="log_out"/>
 
 
-
-
 <head>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
@@ -63,7 +61,6 @@
 
             <form class="d-flex" method="get" action="${path}/controller" style="margin-right: 8px;">
 
-
                     <c:choose>
                         <c:when test="${access_level eq 'ADMIN' or access_level eq 'USER'}">
                         <input type="hidden" name="command" value="logout">
@@ -81,12 +78,9 @@
                         </c:otherwise>
                     </c:choose>
 
-
-
                 </button>
             </form>
             <%----------------------------------------Language--------------------------------%>
-
             <form class="d-flex" method="get" action="${path}/controller">
                 <input type="hidden" name="command" value="change_language">
                 <button class="btn btn-outline-warning" style="color: white; border-color: goldenrod; border-radius: 5%; border-width: 2px" type="submit">
@@ -96,7 +90,6 @@
                     </c:choose>
                 </button>
             </form>
-
         </div>
     </div>
 </nav>

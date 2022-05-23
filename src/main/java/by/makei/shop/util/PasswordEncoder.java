@@ -49,7 +49,7 @@ public static String getHashedPassword(String password){
     return result;
 }
 
-    private static String bytesToHex(byte[] hash) {
+    static String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder(2 * hash.length);
         for (byte h : hash) {
             String hex = Integer.toHexString(0xff & h);

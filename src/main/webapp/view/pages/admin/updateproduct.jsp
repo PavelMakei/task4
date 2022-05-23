@@ -47,7 +47,6 @@
 <fmt:message key="data.of.product" var="data_of_product_label"/>
 
 
-
 <c:set var="product_name_pattern">${validator_pattern.productNamePattern}</c:set>
 <c:set var="description_name_pattern">${validator_pattern.descriptionPattern}</c:set>
 <c:set var="colour_pattern">${validator_pattern.colourPattern}</c:set>
@@ -69,8 +68,6 @@
     <c:set var="local_photo_string">${photo_string}</c:set>
 </c:if>
 
-
-
 <head>
     <title>${head_label}</title>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
@@ -78,10 +75,6 @@
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
-
-    <%--    TODO Check if Admin?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
-    <%--    TODO Not ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
-
 
     <%-----------------Prevent to return to previous page---------------%>
     <script>
@@ -97,9 +90,6 @@
     </script>
     <%------------------------------------------%>
 
-    <script>
-        history.forward();
-    </script>
 
 </head>
 <body>
@@ -110,7 +100,7 @@
     <div class="content">
         <div class="container" style="max-width: none">
             <div class="row justify-content-center">
-<%-----------------------------------------Photo part---------------------------------------                --%>
+                <%-----------------------------------------Photo part---------------------------------------                --%>
                 <div class="col-md-5">
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
@@ -132,44 +122,44 @@
                                 <input type="hidden" name="command" value="update_photo">
                                 <input type="hidden" name="id" value="${local_product_id}">
 
-                            <div class="card border-0 d-block">
-                                <c:if test="${empty local_photo_string}">
-                                    <img src="${path}/images/nophoto.jpg" class="img-fluid mx-auto d-block"
-                                         alt="img">
-                                </c:if>
-                                <c:if test="${!empty local_photo_string}">
-                                    <img src="data:image/jpeg;base64,${local_photo_string}"
-                                         alt="img"
-                                         class="img-fluid mx-auto ">
-                                </c:if>
-                            </div>
-                            <%----------------------------------------------------- photo blob input-------------------------------------------%>
-                            <div class="form-group" style="color: white">
-                                <label for="photo" class="cols-sm-2 control-label"
-                                        <c:if test="${(!empty photo_message) && (photo_message == 'update.fail') }">
-                                            style="color: red"
-                                        </c:if>
-                                >
-                                    ${photo_name_label}
-                                    <c:if test="${(!empty photo_message) && (photo_message == 'update.fail') }">
-                                        <fmt:message key="incorrect.she.enter"/>
+                                <div class="card border-0 d-block">
+                                    <c:if test="${empty local_photo_string}">
+                                        <img src="${path}/images/nophoto.jpg" class="img-fluid mx-auto d-block"
+                                             alt="img">
                                     </c:if>
-                                </label>
+                                    <c:if test="${!empty local_photo_string}">
+                                        <img src="data:image/jpeg;base64,${local_photo_string}"
+                                             alt="img"
+                                             class="img-fluid mx-auto ">
+                                    </c:if>
+                                </div>
+                                <%----------------------------------------------------- photo blob input-------------------------------------------%>
+                                <div class="form-group" style="color: white">
+                                    <label for="photo" class="cols-sm-2 control-label"
+                                            <c:if test="${(!empty photo_message) && (photo_message == 'update.fail') }">
+                                                style="color: red"
+                                            </c:if>
+                                    >
+                                        ${photo_name_label}
+                                        <c:if test="${(!empty photo_message) && (photo_message == 'update.fail') }">
+                                            <fmt:message key="incorrect.she.enter"/>
+                                        </c:if>
+                                    </label>
 
-                                <div class="input-group">
+                                    <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
-                                    <div class="input-group mb-3">
-                                        <input type="file" class="visually-hidden" name="photo"
-                                               id="photo"
-                                               size="4194304"
-                                               required
-                                               accept=".jpg, .jpeg"/>
-                                        <label for="photo" class="btn btn-primary btn-light border-warning"
-                                               id="photolabel">${choose_picture_label}</label>
+                                        <div class="input-group mb-3">
+                                            <input type="file" class="visually-hidden" name="photo"
+                                                   id="photo"
+                                                   size="4194304"
+                                                   required
+                                                   accept=".jpg, .jpeg"/>
+                                            <label for="photo" class="btn btn-primary btn-light border-warning"
+                                                   id="photolabel">${choose_picture_label}</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                     <button type="submit" class="btn btn-warning col-6"
                                             id="butt_photo"
@@ -186,10 +176,9 @@
 
                     </div>
                 </div>
-<%------------------------------------------Data part------------------------------------------------------%>
+                <%------------------------------------------Data part------------------------------------------------------%>
                 <div class="col-md-7">
                     <div class="card" style="border-color: goldenrod">
-
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
                             <c:if test="${!empty data_message}">
@@ -203,7 +192,6 @@
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large"></div>
                         <div class="card-body bg-dark bg-opacity-75">
-
                             <form class="form-horizontal needs-validation" novalidate method="post"
                                   action="${path}/controller"
                                   enctype="multipart/form-data">
@@ -222,9 +210,9 @@
                                             ${incorrect_it_enter_message}
                                         </c:if>
 
-                                            <c:if test="${!empty busy_product_name}">
-                                                ${exists_choose_other_message}
-                                            </c:if>
+                                        <c:if test="${!empty busy_product_name}">
+                                            ${exists_choose_other_message}
+                                        </c:if>
                                     </label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
@@ -249,7 +237,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <%------------------------------------------------------Brands-----------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="brand_id" class="cols-sm-2 control-label"
@@ -258,7 +245,6 @@
                                             </c:if>
                                     >
                                         ${brands_id_label}
-
                                         <c:if test="${!empty invalid_brand_id}">
                                             ${incorrect_he_enter_message}
                                         </c:if>
@@ -303,7 +289,6 @@
                                         <div class="input-group">
                                     <span class="input-group-sm"><i class="user-select-auto"
                                                                     aria-hidden="true"></i></span>
-
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
                                                 <select class="form-select inputFilter" name="type_id"
@@ -324,7 +309,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <%----------------------------------------------------- description (text)-----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="description" class="cols-sm-2 control-label"
@@ -536,13 +520,12 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <%------------------------------------------------------Button-----------------------------------------------%>
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning"
                                             id="butt_data"
                                             style="color: white"
-                                            >
+                                    >
                                         ${update_date_button}</button>
                                 </div>
                             </form>
@@ -552,66 +535,65 @@
             </div>
         </div>
     </div>
-        <div class="container text-center">
-            <div class="footer" style="color: white"><ft:footerTag/></div>
-        </div>
+    <div class="container text-center">
+        <div class="footer" style="color: white"><ft:footerTag/></div>
+    </div>
 </div>
 
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation1')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 
-    <script>
-        (function () {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>
-        <script>
-            (function () {
-                'use strict'
-                var forms = document.querySelectorAll('.needs-validation1')
-                Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
-                                event.stopPropagation()
-                            }
-                            form.classList.add('was-validated')
-                        }, false)
-                    })
-            })()
-        </script>
+<script>
+    const elem = document.getElementById('photo');
+    const photolbl = document.getElementById('photolabel')
+    const buttAdd = document.getElementById('butt_photo')
 
-    <script>
-        const elem = document.getElementById('photo');
-        const photolbl = document.getElementById('photolabel')
-        const buttAdd = document.getElementById('butt_photo')
+    elem.addEventListener('change', CheckPicture);
+    buttAdd.addEventListener('listener', CheckPicture);
 
-        elem.addEventListener('change', CheckPicture);
-        buttAdd.addEventListener('listener', CheckPicture);
+    function CheckPicture() {
+        let subname = elem.value.substring(elem.value.lastIndexOf('\\') + 1);
+        const choice = elem.value;
+        if (choice === '') {
+            photolbl.style.color = 'red';
+            photolbl.style.borderColor = 'red';
 
-        function CheckPicture() {
-            let subname = elem.value.substring(elem.value.lastIndexOf('\\') + 1);
-            const choice = elem.value;
-            if (choice === '') {
-                photolbl.style.color = 'red';
-                photolbl.style.borderColor = 'red';
-
-            } else {
-                photolbl.style.color = 'green';
-                photolbl.style.borderColor = 'green';
-                photolbl.textContent = subname;
-            }
+        } else {
+            photolbl.style.color = 'green';
+            photolbl.style.borderColor = 'green';
+            photolbl.textContent = subname;
         }
-    </script>
+    }
+</script>
 </body>
 

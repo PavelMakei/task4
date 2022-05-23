@@ -53,14 +53,6 @@
 <c:set var="power_pattern">${validator_pattern.integer3StringPattern}</c:set>
 <c:set var="quantity_pattern">${validator_pattern.integer3StringPattern}</c:set>
 
-<%--<c:set var="product_name_pattern">^[A-Za-zА-ЯЁа-яё\d_,\.,;:\- ]{3,60}$</c:set>--%>
-<%--<c:set var="description_name_pattern">^[A-Za-zА-ЯЁа-яё\d_ -/.;,/(/)-]+}$</c:set>--%>
-<%--<c:set var="colour_pattern">^[A-Za-zА-ЯЁа-яё\d_ //-]{3,60}$</c:set>--%>
-<%--<c:set var="size_pattern">^[A-Za-zА-ЯЁа-яё\d_* ]{3,45}$</c:set>--%>
-<%--<c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>--%>
-<%--<c:set var="power_pattern">^[\d]{1,3}$</c:set>--%>
-<%--<c:set var="quantity_pattern">^[\d]{1,3}$</c:set>--%>
-
 
 <head>
     <title>${head_label}</title>
@@ -70,40 +62,32 @@
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
 
-    <%--    TODO Check if Admin?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
-    <%--    TODO Not ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
-
 
     <%-----------------Prevent to return to previous page---------------%>
-<%--    <script>--%>
-<%--        function preventBack() {--%>
-<%--            window.history.forward();--%>
-<%--        }--%>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
 
-<%--        setTimeout("preventBack()", 0);--%>
-<%--        window.onunload = function () {--%>
-<%--            null--%>
-<%--        };--%>
-<%--        history.pushState(null, null, document.URL);--%>
-<%--    </script>--%>
-<%--    &lt;%&ndash;--------------------------------------&ndash;%&gt;--%>
-
-<%--    <script>--%>
-<%--        history.forward();--%>
-<%--    </script>--%>
+        setTimeout("preventBack()", 0);
+        window.onunload = function () {
+            null
+        };
+        history.pushState(null, null, document.URL);
+    </script>
+    <%------------------------------------------%>
 
 </head>
 <body>
 <div class="wrapper">
     <div class="header">
         <%@include file="../header.jsp" %>
-    </div> <!-- end of header -->
+    </div>
     <div class="content">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-7">
                     <div class="card" style="border-color: goldenrod">
-
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
                             <c:if test="${!empty message}">
@@ -114,12 +98,10 @@
                             ${head_label}
                         </div>
                         <div class="card-body bg-dark bg-opacity-75">
-
                             <form class="form-horizontal needs-validation" novalidate method="post"
                                   action="${path}/controller"
                                   enctype="multipart/form-data">
                                 <input type="hidden" name="command" value="add_new_product">
-
                                 <%------------------------------------------------------Brands-----------------------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="brand" class="cols-sm-2 control-label"
@@ -249,7 +231,6 @@
                                                           id="description"
                                                           placeholder="${description_name_placeholder}"
                                                           required
-
                                                 ><c:if test="${!empty description}">${description}</c:if></textarea>
                                             </div>
                                         </div>
@@ -427,16 +408,10 @@
                                             <fmt:message key="incorrect.she.enter"/>
                                         </c:if>
                                     </label>
-
                                     <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                         <div class="input-group mb-3">
-                                            <%--                                                                                            <input type="file" class="form-control" name="photo"--%>
-                                            <%--                                                                                                   id="photo"--%>
-                                            <%--                                                                                                   size="4194304"--%>
-                                            <%--                                                                                                   required--%>
-                                            <%--                                                                                                   accept=".jpg, .jpeg"/>--%>
                                             <input type="file" class="visually-hidden" name="photo"
                                                    id="photo"
                                                    size="4194304"
@@ -455,7 +430,6 @@
                                             onclick="CheckPicture()">
                                         ${add_new_product_button}</button>
                                 </div>
-
                             </form>
                         </div>
                     </div>
