@@ -33,7 +33,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
     private static final ParameterValidatorImpl instance = new ParameterValidatorImpl();
     private static final int MAX_FILE_VALUE = 4194304;
 
-
     private ParameterValidatorImpl() {
     }
 
@@ -42,30 +41,77 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateUserData(Map<String, String> userData) throws ServiceException {
+    public boolean validateUserData(Map<String, String> userData){
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        UserDaoImpl userDao = UserDaoImpl.getInstance();
         ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
         accessLevelList.remove(AccessLevel.GUEST);
         boolean isCorrect = true;
-        try {
+        for (Map.Entry<String, String> entry : userData.entrySet()) {
+            String key = entry.getKey();
+            switch (key) {
+                case FIRST_NAME -> {
+                    if (!validator.isNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
+                        isCorrect = false;
+                    }
+                }
+                case LAST_NAME -> {
+                    if (!validator.isNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
+                        isCorrect = false;
+                    }
+                }
+                case LOGIN -> {
+                    if (!validator.isLoginValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
+                        isCorrect = false;
+                    }
+                }
+                case EMAIL -> {
+                    if (!validator.isEmailValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
+                        isCorrect = false;
+                    }
+                }
+                case PHONE -> {
+                    if (!validator.isPhoneValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
+                        isCorrect = false;
+                    }
+                }
+                case PASSWORD -> {
+                    if (!validator.isPasswordValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
+                        isCorrect = false;
+                    }
+                }
+                case ID -> {
+                    if (!validator.isInt5Valid(entry.getValue())) {
+                        isCorrect = false;
+                    }
+                }
+                case ACCESS_LEVEL -> {
+                    if (accessLevelList.contains(entry.getValue())) {
+                        isCorrect = false;
+                    }
+                }
+            }
+        }
+        userData.putAll(invalidParameters);
+        return isCorrect;
+    }
 
+    @Override
+    public boolean ifEmailLoginPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException {
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
+        boolean isCorrect = true;
+        try {
             for (Map.Entry<String, String> entry : userData.entrySet()) {
                 String key = entry.getKey();
                 switch (key) {
-                    case FIRST_NAME -> {
-                        if (!validator.isNameValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
-                            isCorrect = false;
-                        }
-                    }
-                    case LAST_NAME -> {
-                        if (!validator.isNameValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
-                            isCorrect = false;
-                        }
-                    }
                     case LOGIN -> {
                         if (!validator.isLoginValid(entry.getValue())) {
                             invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
@@ -102,27 +148,10 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             }
                         }
                     }
-                    case PASSWORD -> {
-                        if (!validator.isPasswordValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
-                            isCorrect = false;
-                        }
-                    }
-                    case ID -> {
-                        if (!validator.isInt5Valid(entry.getValue())) {
-                            isCorrect = false;
-                        }
-                    }
-                    case ACCESS_LEVEL -> {
-                        if (accessLevelList.contains(entry.getValue())) {
-                            isCorrect = false;
-                        }
-                    }
                 }
             }
         } catch (DaoException e) {
             throw new ServiceException(e);
-            //TODO переделать метод с передачей проверки наличия в базу в отдельные сервисы? Бросать отдельный (validator?)эесепшен?
         }
         userData.putAll(invalidParameters);
         return isCorrect;
@@ -373,7 +402,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean ifProductNameExistsInDb(Map<String, String> productData) throws ServiceException {
+    public boolean ifProductNameCorrectAndNotExistsInDb(Map<String, String> productData) throws ServiceException {
         boolean isCorrect = true;
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();

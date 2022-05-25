@@ -22,15 +22,16 @@
 <fmt:message key="registration.date" var="registration_date"/>
 <fmt:message key="money.amount" var="money_amount"/>
 <fmt:message key="users" var="users_lable"/>
+
 <c:set var="email">email</c:set>
-<c:set var="url_part1">${path}controller?command=change_access_level&id=</c:set>
+<c:set var="url_part1">${path}controller?command=update_access_level&id=</c:set>
 <c:set var="url_part2">&access_level=</c:set>
 
 <html>
 <head>
     <title>${users_lable}</title>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href=${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
@@ -90,26 +91,26 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="user" items="${user_list}">
+                                    <c:forEach var="user_elem" items="${user_list}">
                                         <tr
-                                                <c:if test="${user.accessLevel eq 'ADMIN'}">
+                                                <c:if test="${user_elem.accessLevel eq 'ADMIN'}">
                                                     class="table-warning"
                                                 </c:if>
-                                                <c:if test="${user.accessLevel eq 'USER'}">
+                                                <c:if test="${user_elem.accessLevel eq 'USER'}">
                                                     class="table-success"
                                                 </c:if>
-                                                <c:if test="${user.accessLevel eq 'BLOCKED'}">
+                                                <c:if test="${user_elem.accessLevel eq 'BLOCKED'}">
                                                     class="table-danger"
                                                 </c:if>
                                         >
-                                            <th scope="row">${user.id}</th>
-                                            <td>${user.firstName}</td>
-                                            <td>${user.lastName}</td>
-                                            <td>${user.login}</td>
-                                            <td>${user.email}</td>
-                                            <td>${user.phone}</td>
-                                            <td>${user.date}</td>
-                                            <td>${user.amount}</td>
+                                            <th scope="row">${user_elem.id}</th>
+                                            <td>${user_elem.firstName}</td>
+                                            <td>${user_elem.lastName}</td>
+                                            <td>${user_elem.login}</td>
+                                            <td>${user_elem.email}</td>
+                                            <td>${user_elem.phone}</td>
+                                            <td>${user_elem.date}</td>
+                                            <td>${user_elem.amount}</td>
                                             <td>
                                                 <select
                                                         id="access_level" name="access_level" required
@@ -117,15 +118,15 @@
                                                                 = '${url_part1}'+this.options[this.selectedIndex].id
                                                                 +'${url_part2}'+this.options[this.selectedIndex].value);">
                                                     <option
-                                                            id="${user.id}"
-                                                            value="${user.accessLevel}"
-                                                            selected>${user.accessLevel}
+                                                            id="${user_elem.id}"
+                                                            value="${user_elem.accessLevel}"
+                                                            selected>${user_elem.accessLevel}
                                                     </option>
                                                     <c:forEach var="access_level_elem"
                                                                items="${access_level_list}">
-                                                        <c:if test="${user.accessLevel ne access_level_elem}">
+                                                        <c:if test="${user_elem.accessLevel ne access_level_elem}">
                                                             <option value="${access_level_elem}"
-                                                                    id="${user.id}"
+                                                                    id="${user_elem.id}"
                                                             >${access_level_elem}</option>
                                                         </c:if>
                                                     </c:forEach>

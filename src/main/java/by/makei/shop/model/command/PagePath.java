@@ -7,6 +7,7 @@ public enum PagePath {
     public static final String MAIN = "view/pages/main.jsp";
     public static final String ERROR500 = "view/error/error500.jsp";
     public static final String REGISTRATION = "view/pages/registration.jsp";
+    public static final String PASSWORD_RECOVERY = "view/pages/user/passwordrecovery.jsp";
     public static final String ADD_NEW_PRODUCT = "view/pages/admin/addnewproduct.jsp";
     public static final String UPDATE_PRODUCT = "view/pages/admin/updateproduct.jsp";
     public static final String SHOW_PRODUCT = "view/pages/showproduct.jsp";

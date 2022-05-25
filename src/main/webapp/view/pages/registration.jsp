@@ -40,7 +40,6 @@
 <fmt:message key="activation.code" var="activation_code_label"/>
 <fmt:message key="get.activation.code" var="get_activation_code_button"/>
 
-<c:set var="url_part1">/controller?command=send_activation_code&email=</c:set>
 <html>
 <head>
     <script>
@@ -315,7 +314,7 @@
                                                        maxlength="10"
                                                 />
                                                 <button class="btn btn-warning" style="color: white" type="submit"
-                                                        onclick="document.getElementById('command_to_send').value ='send_activation_code';
+                                                        onclick="document.getElementById('command_to_send').value ='registration_send_activation_code';
                                                                    document.getElementById('activation_code').removeAttribute('required');
                                                                    document.getElementById('accept_check').removeAttribute('required')"
                                                 >

@@ -18,4 +18,5 @@ public interface UserService {
 
     Optional<User>findUserByEmail(String email) throws ServiceException;
 
+    boolean updatePassword(Map<String, String> userDataMap) throws ServiceException;
 }

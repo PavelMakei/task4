@@ -43,6 +43,11 @@ public class UserDaoImpl implements UserDao {
             SET access_level =?
             WHERE id =?
             """;
+    public static final String SQL_UPDATE_PASSWORD_BY_EMAIL = """
+            UPDATE lightingshop.users
+            SET password =?
+            WHERE email =?
+            """;
 
     private UserDaoImpl() {
     }
@@ -122,6 +127,28 @@ public class UserDaoImpl implements UserDao {
             finallyWhileClosing(proxyConnection, preparedStatement);
         }
         return result>0;
+    }
+
+    @Override
+    public boolean updatePassword(String email, String hashPassword) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        proxyConnection = DbConnectionPool.getInstance().takeConnection();
+        int result = 0;
+        try {
+            preparedStatement =
+                    proxyConnection.prepareStatement(SQL_UPDATE_PASSWORD_BY_EMAIL);
+            preparedStatement.setString(1, hashPassword);
+            preparedStatement.setString(2, email);
+            result = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+        proxyConnection.setForChecking(true);
+        logger.log(Level.ERROR, "error in updatePassword");
+        throw new DaoException("UserDao error while updatePassword", e);
+    } finally {
+        finallyWhileClosing(proxyConnection, preparedStatement);
+    }
+        return result >0;
     }
 
     @Override

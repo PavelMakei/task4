@@ -4,6 +4,7 @@ import by.makei.shop.exception.CommandException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
+import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.service.impl.UserServiceImpl;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
@@ -17,8 +18,8 @@ import java.util.Map;
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
 
-public class ChangeAccessLevelCommand implements Command {
-    private static final String ERROR = "ChangeAccessLevelCommand Service exception : ";
+public class UpdateAccessLevelCommand implements Command {
+    private static final String ERROR = "UpdateAccessLevelCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -36,17 +37,22 @@ public class ChangeAccessLevelCommand implements Command {
             if (parameterValidator.validateUserData(userDataMap)){
                 userService.updateAccessLevel(userDataMap);
                 router.setRedirectType();
-                //TODO add message?
-                //TODO если пришел фолс из ДАО, что делаем?
                  router.setCurrentPage(currentPage);
+                 //current user?
+                User currentUser = (User)session.getAttribute(USER);
+                int id = Integer.parseInt(userDataMap.get(ID));
+                if(currentUser.getId() == id ){
+                    currentUser.setId(id);
+                    session.setAttribute(ACCESS_LEVEL, request.getParameter(ACCESS_LEVEL));
+                }
             } else {
-            logger.log(Level.ERROR, "ChangeAccessLevelCommand incorrect id or access level");
+            logger.log(Level.ERROR, "UpdateAccessLevelCommand incorrect id or access level");
             router.setCurrentPage(ERROR500);
-                request.setAttribute(ERROR_MESSAGE,"ChangeAccessLevelCommand incorrect id or access level" );
+                request.setAttribute(ERROR_MESSAGE,"UpdateAccessLevelCommand incorrect id or access level" );
         }
     } catch (
     ServiceException e) {
-        logger.log(Level.ERROR, "ChangeAccessLevelCommand. {}", e.getMessage());
+        logger.log(Level.ERROR, "UpdateAccessLevelCommand. {}", e.getMessage());
         request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
         router.setCurrentPage(ERROR500);
     }

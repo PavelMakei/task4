@@ -69,8 +69,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon"
-    ${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href=${path}/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">

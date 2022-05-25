@@ -62,7 +62,7 @@
             <form class="d-flex" method="get" action="${path}/controller" style="margin-right: 8px;">
 
                     <c:choose>
-                        <c:when test="${access_level eq 'ADMIN' or access_level eq 'USER'}">
+                        <c:when test="${sessionScope.access_level eq 'ADMIN' or access_level eq 'USER'}">
                         <input type="hidden" name="command" value="logout">
                         <button class="btn btn-outline-warning"
                                 style="color: black; background-color: white; border-width: 2px; border-color: goldenrod;border-radius: 5% "

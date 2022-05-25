@@ -28,7 +28,6 @@ public class UpdateProductDataCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         ProductService productService = ProductServiceImpl.getInstance();
-        Map<Product, String> productQuantity = new HashMap<>();
         Router router = new Router();
         Map<String, String> productDataMap = new HashMap();
         productDataMap.put(BRAND_ID, request.getParameter(BRAND_ID));
@@ -45,7 +44,7 @@ public class UpdateProductDataCommand implements Command {
 
         try {
             if (parameterValidator.validateProductData(productDataMap)
-            & parameterValidator.ifProductNameExistsInDb(productDataMap)) {
+            && parameterValidator.ifProductNameCorrectAndNotExistsInDb(productDataMap)) {
                 productService.updateProductData(productDataMap);
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_DATA_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));

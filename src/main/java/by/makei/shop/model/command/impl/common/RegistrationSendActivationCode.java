@@ -4,24 +4,22 @@ import by.makei.shop.exception.CommandException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
-import by.makei.shop.model.service.UserService;
-import by.makei.shop.model.service.impl.UserServiceImpl;
-import by.makei.shop.model.service.mail.MailService;
+import by.makei.shop.model.service.mail.MailSender;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import by.makei.shop.util.CodeGenerator;
-import by.makei.shop.util.ResourceManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.REGISTRATION;
 
-public class SendActivationCode implements Command {
-    private static final String LOCALE_SPLIT_REGEXP = "_";
+public class RegistrationSendActivationCode implements Command {
+    private static final String ERROR = "RegistrationSendActivationCode Service exception : ";
     private static final String CODE_SENT = "activation.code.sent";
     private static final String INCORRECT_EMAIL = "incorrect.email";
 
@@ -29,7 +27,6 @@ public class SendActivationCode implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
-        UserService userService = UserServiceImpl.getInstance();
         HttpSession session = request.getSession();
         Map<String, String> userDataMap = new HashMap();
         userDataMap.put(FIRST_NAME, request.getParameter(FIRST_NAME));
@@ -40,14 +37,13 @@ public class SendActivationCode implements Command {
         userDataMap.put(PASSWORD, request.getParameter(PASSWORD));
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
         String activationCode;
-
-
         try {
-            if (parameterValidator.validateUserData(userDataMap)) {
+            if (parameterValidator.validateUserData(userDataMap)
+                & parameterValidator.ifEmailLoginPhoneCorrectAndNotExistsInDb(userDataMap)) {
                 activationCode = CodeGenerator.generateCode();
                 session.setAttribute(SESS_EMAIL, userDataMap.get(EMAIL));
                 session.setAttribute(SESS_ACTIVATION_CODE, activationCode);
-                sendCodeByEmail(request, activationCode);
+                MailSender.sendActivationCodeByEmail(request, activationCode);
                 request.setAttribute(MESSAGE, CODE_SENT);
                 router.setCurrentPage(REGISTRATION);
                 for(Map.Entry<String,String> entry: userDataMap.entrySet()){
@@ -61,38 +57,11 @@ public class SendActivationCode implements Command {
                 router.setCurrentPage(REGISTRATION);
             }
         } catch (ServiceException e){
-
-            //TODO
+            logger.log(Level.ERROR, "RegistrationSendActivationCode command error. {}", e.getMessage());
+            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
+            router.setCurrentPage(ERROR500);
         }
-
-        //проверить мыло 1
-            //записать мыло в сессию
-            //сгенерить код
-            //выслать код
-            //вставить сообщение
-            //вернуться на страницу
-
-
         return router;
     }
 
-        private void sendCodeByEmail(HttpServletRequest request, String activationCode) {
-            ResourceManager manager = ResourceManager.INSTANCE;
-            String locale = request.getSession().getAttribute(LOCALE).toString();
-            String[] languageAndCountry = locale.split(LOCALE_SPLIT_REGEXP);
-            manager.changeResource(new Locale(languageAndCountry[0],languageAndCountry[1]));
-            String sendEmailTo = request.getParameter(EMAIL);
-            StringBuilder mailText = new StringBuilder("");
-
-            mailText.append(manager.getString("lightingshop.activation.code"))
-                    .append("\n")
-                    .append(manager.getString("your.activation.code.is"))
-                    .append(" :")
-                    .append(activationCode);
-
-            String mailSubject = manager.getString("lightingshop.activation.code");
-
-            MailService mailService = new MailService();
-            mailService.sendEmail(sendEmailTo,mailSubject,mailText.toString());
-        }
 }

@@ -54,7 +54,7 @@ public class AddNewProductCommand implements Command {
         try {
             if(parameterValidator.validateProductData(productDataMap)
                & parameterValidator.validatePhoto(productDataMap, bytesPhoto)
-               & parameterValidator.ifProductNameExistsInDb(productDataMap))
+               & parameterValidator.ifProductNameCorrectAndNotExistsInDb(productDataMap))
             {
                 productService.addNewProduct(productDataMap, bytesPhoto);
                 router.setRedirectType();

@@ -2,11 +2,13 @@ package by.makei.shop.model.command;
 
 import by.makei.shop.exception.CommandException;
 import by.makei.shop.model.command.impl.admin.AddNewProductCommand;
-import by.makei.shop.model.command.impl.admin.ChangeAccessLevelCommand;
+import by.makei.shop.model.command.impl.admin.UpdateAccessLevelCommand;
 import by.makei.shop.model.command.impl.admin.UpdatePhotoCommand;
 import by.makei.shop.model.command.impl.admin.UpdateProductDataCommand;
 import by.makei.shop.model.command.impl.common.*;
 import by.makei.shop.model.command.impl.gotopage.*;
+import by.makei.shop.model.command.impl.user.UpdatePasswordCommand;
+import by.makei.shop.model.command.impl.user.RecoverySendActivationCode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -31,9 +33,11 @@ public enum CommandType {
     GO_UPDATE_PRODUCT(new GoToUpdateProductCommand()),
     UPDATE_PRODUCT_DATA(new UpdateProductDataCommand()),
     UPDATE_PHOTO(new UpdatePhotoCommand()),
-    CHANGE_ACCESS_LEVEL(new ChangeAccessLevelCommand()),
+    UPDATE_ACCESS_LEVEL(new UpdateAccessLevelCommand()),
     GO_TO_MANAGE_USER(new GoToManageUserCommand()),
-    SEND_ACTIVATION_CODE(new SendActivationCode());
+    REGISTRATION_SEND_ACTIVATION_CODE(new RegistrationSendActivationCode()),
+    RECOVERY_SEND_ACTIVATION_CODE(new RecoverySendActivationCode()),
+    UPDATE_PASSWORD(new UpdatePasswordCommand());
 
     private static final Logger logger = LogManager.getLogger();
 

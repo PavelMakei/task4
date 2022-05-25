@@ -112,5 +112,21 @@ public class UserServiceImpl implements UserService {
         return optionalUser;
     }
 
+    @Override
+    public boolean updatePassword(Map<String, String> userDataMap) throws ServiceException {
+        boolean isCorrect = false;
+        UserDao userDao = UserDaoImpl.getInstance();
+        String email = userDataMap.get(EMAIL);
+        String password = userDataMap.get(PASSWORD);
+        String hashPassword = PasswordEncoder.getHashedPassword(password);
+        try{
+            isCorrect = userDao.updatePassword(email, hashPassword);
+        } catch (DaoException e) {
+        logger.log(Level.ERROR, "error while updatePassword in UserService. {}", e.getMessage());
+        throw new ServiceException(e);
+    }
+        return isCorrect;
+    }
+
 
 }

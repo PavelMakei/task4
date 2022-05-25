@@ -11,13 +11,15 @@ public interface ParameterValidator {
 
     boolean validateProductData(Map<String, String> productData) throws ServiceException;
 
+    boolean ifEmailLoginPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
+
     boolean validateActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session);
 
     boolean validateJpg(byte[] photo, int... widthAndHeight);
 
     boolean validateAndCorrectSearchProductParam(Map<String,String> searchProductData, Map<String,String> orderByParamQuery);
 
-    boolean ifProductNameExistsInDb(Map<String, String> productData) throws ServiceException;
+    boolean ifProductNameCorrectAndNotExistsInDb(Map<String, String> productData) throws ServiceException;
 
     boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) throws ServiceException;
 }
