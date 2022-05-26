@@ -38,25 +38,28 @@ public class RegistrationSendActivationCode implements Command {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
         String activationCode;
         try {
-            if (parameterValidator.validateUserData(userDataMap)
-                & parameterValidator.ifEmailLoginPhoneCorrectAndNotExistsInDb(userDataMap)) {
+            if (parameterValidator.validateAndMarkUserData(userDataMap)
+                & parameterValidator.validateAndMarkIfLoginCorrectAndNotExistsInDb(userDataMap)
+                & parameterValidator.validateAndMarkIfPhoneCorrectAndNotExistsInDb(userDataMap)
+                & parameterValidator.validateAndMarkIfEmailCorrectAndNotExistsInDb(userDataMap)
+            ) {
                 activationCode = CodeGenerator.generateCode();
                 session.setAttribute(SESS_EMAIL, userDataMap.get(EMAIL));
                 session.setAttribute(SESS_ACTIVATION_CODE, activationCode);
                 MailSender.sendActivationCodeByEmail(request, activationCode);
                 request.setAttribute(MESSAGE, CODE_SENT);
                 router.setCurrentPage(REGISTRATION);
-                for(Map.Entry<String,String> entry: userDataMap.entrySet()){
+                for (Map.Entry<String, String> entry : userDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
-            }else{
-                for(Map.Entry<String,String> entry: userDataMap.entrySet()){
+            } else {
+                for (Map.Entry<String, String> entry : userDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
                 request.setAttribute(MESSAGE, INCORRECT_EMAIL);
                 router.setCurrentPage(REGISTRATION);
             }
-        } catch (ServiceException e){
+        } catch (ServiceException e) {
             logger.log(Level.ERROR, "RegistrationSendActivationCode command error. {}", e.getMessage());
             request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
             router.setCurrentPage(ERROR500);

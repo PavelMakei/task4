@@ -7,13 +7,17 @@ import java.util.Map;
 
 public interface ParameterValidator {
 
-    boolean validateUserData(Map<String, String> userData) throws ServiceException;
+    boolean validateAndMarkUserData(Map<String, String> userData) throws ServiceException;
 
-    boolean validateProductData(Map<String, String> productData) throws ServiceException;
+    boolean validateAndMarkProductData(Map<String, String> productData) throws ServiceException;
 
-    boolean ifEmailLoginPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
+    boolean validateAndMarkIfPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
 
-    boolean validateActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session);
+    boolean validateAndMarkIfEmailCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
+
+    boolean validateAndMarkIfLoginCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
+
+    boolean validateAndMarkActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session);
 
     boolean validateJpg(byte[] photo, int... widthAndHeight);
 

@@ -35,7 +35,7 @@
 <fmt:message key="password.placeholder" var="password_placeholder"/>
 <fmt:message key="mobile.phone" var="phone_label"/>
 <fmt:message key="accept.rules" var="accept_rules_label"/>
-<fmt:message key="register" var="register_button"/>
+<fmt:message key="register" var="update_button"/>
 <fmt:message key="return.main.page" var="return_main_page"/>
 <fmt:message key="activation.code" var="activation_code_label"/>
 <fmt:message key="get.activation.code" var="get_activation_code_button"/>
@@ -341,7 +341,7 @@
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning "
                                             style="color: white">
-                                        ${register_button}</button>
+                                        ${update_button}</button>
                                 </div>
                             </form>
                         </div>

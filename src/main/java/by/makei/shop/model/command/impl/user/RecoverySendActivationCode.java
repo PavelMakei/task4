@@ -36,7 +36,7 @@ public class RecoverySendActivationCode implements Command {
         UserService userService = UserServiceImpl.getInstance();
         String activationCode;
         try {
-            if (parameterValidator.validateUserData(userDataMap)
+            if (parameterValidator.validateAndMarkUserData(userDataMap)
                 && userService.findUserByEmail(userDataMap.get(EMAIL)).isPresent()) {
                 activationCode = CodeGenerator.generateCode();
                 session.setAttribute(SESS_EMAIL, userDataMap.get(EMAIL));

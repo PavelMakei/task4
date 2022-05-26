@@ -34,7 +34,7 @@ public class UpdateAccessLevelCommand implements Command {
 
 
         try {
-            if (parameterValidator.validateUserData(userDataMap)){
+            if (parameterValidator.validateAndMarkUserData(userDataMap)){
                 userService.updateAccessLevel(userDataMap);
                 router.setRedirectType();
                  router.setCurrentPage(currentPage);

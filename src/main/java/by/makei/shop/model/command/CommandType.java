@@ -9,6 +9,7 @@ import by.makei.shop.model.command.impl.common.*;
 import by.makei.shop.model.command.impl.gotopage.*;
 import by.makei.shop.model.command.impl.user.UpdatePasswordCommand;
 import by.makei.shop.model.command.impl.user.RecoverySendActivationCode;
+import by.makei.shop.model.command.impl.user.UpdateProfileCommand;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +38,8 @@ public enum CommandType {
     GO_TO_MANAGE_USER(new GoToManageUserCommand()),
     REGISTRATION_SEND_ACTIVATION_CODE(new RegistrationSendActivationCode()),
     RECOVERY_SEND_ACTIVATION_CODE(new RecoverySendActivationCode()),
-    UPDATE_PASSWORD(new UpdatePasswordCommand());
+    UPDATE_PASSWORD(new UpdatePasswordCommand()),
+    UPDATE_PROFILE(new UpdateProfileCommand());
 
     private static final Logger logger = LogManager.getLogger();
 

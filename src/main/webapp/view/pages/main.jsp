@@ -640,6 +640,11 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
+<c:if test="${!empty message}">
+    <script>
+        window.alert('<fmt:message key="${message}"/>');
+    </script>
+</c:if>
 
 <script>
     (function () {

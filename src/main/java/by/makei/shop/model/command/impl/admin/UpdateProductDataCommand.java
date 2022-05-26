@@ -5,7 +5,6 @@ import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.PagePath;
 import by.makei.shop.model.command.Router;
-import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
 import by.makei.shop.model.validator.ParameterValidator;
@@ -43,7 +42,7 @@ public class UpdateProductDataCommand implements Command {
         productDataMap.put(PHOTO_STRING, request.getParameter(PHOTO_STRING));
 
         try {
-            if (parameterValidator.validateProductData(productDataMap)
+            if (parameterValidator.validateAndMarkProductData(productDataMap)
             && parameterValidator.ifProductNameCorrectAndNotExistsInDb(productDataMap)) {
                 productService.updateProductData(productDataMap);
                 router.setRedirectType();

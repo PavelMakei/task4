@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static by.makei.shop.model.command.AttributeName.ACCESS_LEVEL;
-import static by.makei.shop.model.command.AttributeName.ID;
+import static by.makei.shop.model.command.AttributeName.*;
 
 public class UserDaoImpl implements UserDao {
     private static UserDaoImpl instance = new UserDaoImpl();
@@ -47,6 +46,11 @@ public class UserDaoImpl implements UserDao {
             UPDATE lightingshop.users
             SET password =?
             WHERE email =?
+            """;
+    public static final String SQL_UPDATE_PROFILE = """
+            UPDATE lightingshop.users
+            SET first_name =?, last_name =?, login =?, email =?, phone =?
+            WHERE id =?
             """;
 
     private UserDaoImpl() {
@@ -126,7 +130,7 @@ public class UserDaoImpl implements UserDao {
         } finally {
             finallyWhileClosing(proxyConnection, preparedStatement);
         }
-        return result>0;
+        return result == 1;
     }
 
     @Override
@@ -142,13 +146,39 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(2, email);
             result = preparedStatement.executeUpdate();
         } catch (SQLException e) {
-        proxyConnection.setForChecking(true);
-        logger.log(Level.ERROR, "error in updatePassword");
-        throw new DaoException("UserDao error while updatePassword", e);
-    } finally {
-        finallyWhileClosing(proxyConnection, preparedStatement);
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error in updatePassword");
+            throw new DaoException("UserDao error while updatePassword", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement);
+        }
+        return result == 1;
     }
-        return result >0;
+
+    @Override
+    public boolean updateProfile(Map<String, String> userDataMap) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        proxyConnection = DbConnectionPool.getInstance().takeConnection();
+        int result = 0;
+        try {
+            preparedStatement =
+                    proxyConnection.prepareStatement(SQL_UPDATE_PROFILE);
+            preparedStatement.setString(1, userDataMap.get(FIRST_NAME));
+            preparedStatement.setString(2, userDataMap.get(LAST_NAME));
+            preparedStatement.setString(3, userDataMap.get(LOGIN));
+            preparedStatement.setString(4, userDataMap.get(EMAIL));
+            preparedStatement.setString(5, userDataMap.get(PHONE));
+            preparedStatement.setInt(6, Integer.parseInt(userDataMap.get(ID)));
+            result = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error in updateProfile");
+            throw new DaoException("UserDao error while updateProfile", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement);
+        }
+        return result == 1;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateUserData(Map<String, String> userData){
+    public boolean validateAndMarkUserData(Map<String, String> userData) {
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
         ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
@@ -103,7 +103,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean ifEmailLoginPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException {
+    public boolean validateAndMarkIfPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException {
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
         UserDaoImpl userDao = UserDaoImpl.getInstance();
@@ -111,41 +111,15 @@ public class ParameterValidatorImpl implements ParameterValidator {
         try {
             for (Map.Entry<String, String> entry : userData.entrySet()) {
                 String key = entry.getKey();
-                switch (key) {
-                    case LOGIN -> {
-                        if (!validator.isLoginValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
+                if (key.equals(PHONE)) {
+                    if (!validator.isPhoneValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
+                        isCorrect = false;
+                    } else {
+                        Optional<User> optionalUser = userDao.findEntityByOneParam(PHONE, entry.getValue());
+                        if (optionalUser.isPresent()) {
+                            invalidParameters.put(BUSY_PHONE, BUSY_PHONE);
                             isCorrect = false;
-                        } else {
-                            Optional<User> optionalUser = userDao.findEntityByOneParam(LOGIN, entry.getValue());
-                            if (optionalUser.isPresent()) {
-                                invalidParameters.put(BUSY_LOGIN, BUSY_LOGIN);
-                                isCorrect = false;
-                            }
-                        }
-                    }
-                    case EMAIL -> {
-                        if (!validator.isEmailValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
-                            isCorrect = false;
-                        } else {
-                            Optional<User> optionalUser = userDao.findEntityByOneParam(EMAIL, entry.getValue());
-                            if (optionalUser.isPresent()) {
-                                invalidParameters.put(BUSY_EMAIL, BUSY_EMAIL);
-                                isCorrect = false;
-                            }
-                        }
-                    }
-                    case PHONE -> {
-                        if (!validator.isPhoneValid(entry.getValue())) {
-                            invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
-                            isCorrect = false;
-                        } else {
-                            Optional<User> optionalUser = userDao.findEntityByOneParam(PHONE, entry.getValue());
-                            if (optionalUser.isPresent()) {
-                                invalidParameters.put(BUSY_PHONE, BUSY_PHONE);
-                                isCorrect = false;
-                            }
                         }
                     }
                 }
@@ -158,7 +132,66 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session) {
+    public boolean validateAndMarkIfEmailCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException {
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
+        boolean isCorrect = true;
+        try {
+            for (Map.Entry<String, String> entry : userData.entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(EMAIL)) {
+                    if (!validator.isEmailValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
+                        isCorrect = false;
+                    } else {
+                        Optional<User> optionalUser = userDao.findEntityByOneParam(EMAIL, entry.getValue());
+                        if (optionalUser.isPresent()) {
+                            invalidParameters.put(BUSY_EMAIL, BUSY_EMAIL);
+                            isCorrect = false;
+                        }
+                    }
+                }
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        userData.putAll(invalidParameters);
+        return isCorrect;
+    }
+
+    @Override
+    public boolean validateAndMarkIfLoginCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException {
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
+        boolean isCorrect = true;
+        try {
+            for (Map.Entry<String, String> entry : userData.entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(LOGIN)) {
+                    if (!validator.isLoginValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
+                        isCorrect = false;
+                    } else {
+                        Optional<User> optionalUser = userDao.findEntityByOneParam(LOGIN, entry.getValue());
+                        if (optionalUser.isPresent()) {
+                            invalidParameters.put(BUSY_LOGIN, BUSY_LOGIN);
+                            isCorrect = false;
+                        }
+                    }
+                }
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        userData.putAll(invalidParameters);
+        return isCorrect;
+    }
+
+
+    @Override
+    public boolean validateAndMarkActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session) {
         boolean isCodeCorrect = false;
         boolean isEmailCorrect = false;
         Map<String, String> invalidParameters = new HashMap<>();
@@ -304,7 +337,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateProductData(Map<String, String> productData) throws ServiceException {
+    public boolean validateAndMarkProductData(Map<String, String> productData) throws ServiceException {
         boolean isCorrect = true;
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();

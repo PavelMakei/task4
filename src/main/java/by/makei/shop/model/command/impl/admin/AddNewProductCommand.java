@@ -52,7 +52,7 @@ public class AddNewProductCommand implements Command {
         }
 
         try {
-            if(parameterValidator.validateProductData(productDataMap)
+            if(parameterValidator.validateAndMarkProductData(productDataMap)
                & parameterValidator.validatePhoto(productDataMap, bytesPhoto)
                & parameterValidator.ifProductNameCorrectAndNotExistsInDb(productDataMap))
             {

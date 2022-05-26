@@ -61,7 +61,6 @@ public enum AttributeName {
     public static final String CURRENT_PAGE = "current_page";
     public static final String LOCALE_EN_US = "en_US";
     public static final String LOCALE_RU_RU = "ru_RU";
-    public static final String PRODUCTS_LIST = "products_list";
     public static final String PRODUCTS_QUANTITY_MAP = "products_quantity_map";
     public static final String QUANTITY_IN_STOCK = "quantity_in_stock";
     public static final String PHOTO_STRING = "photo_string";

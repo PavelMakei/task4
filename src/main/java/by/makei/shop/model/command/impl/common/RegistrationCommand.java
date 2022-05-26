@@ -7,7 +7,6 @@ import by.makei.shop.model.command.PagePath;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.impl.UserServiceImpl;
-import by.makei.shop.model.service.mail.MailSender;
 import by.makei.shop.model.service.mail.MailService;
 import by.makei.shop.model.validator.ParameterValidator;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
@@ -49,9 +48,11 @@ public class RegistrationCommand implements Command {
         userDataMap.put(PASSWORD, request.getParameter(PASSWORD));
         userDataMap.put(ACTIVATION_CODE, request.getParameter(ACTIVATION_CODE));
         try {
-            if (parameterValidator.validateUserData(userDataMap)
-                && parameterValidator.ifEmailLoginPhoneCorrectAndNotExistsInDb(userDataMap)
-                && parameterValidator.validateActivationCodeAndSavedEmail(userDataMap, session)) {
+            if (parameterValidator.validateAndMarkUserData(userDataMap)
+                && parameterValidator.validateAndMarkIfLoginCorrectAndNotExistsInDb(userDataMap)
+                && parameterValidator.validateAndMarkIfPhoneCorrectAndNotExistsInDb(userDataMap)
+                && parameterValidator.validateAndMarkIfEmailCorrectAndNotExistsInDb(userDataMap)
+                && parameterValidator.validateAndMarkActivationCodeAndSavedEmail(userDataMap, session)) {
                 userService.createUser(userDataMap);
                 Optional<User> optionalUser = userService.findUserByEmail(userDataMap.get(EMAIL));
                 if (optionalUser.isPresent()) {

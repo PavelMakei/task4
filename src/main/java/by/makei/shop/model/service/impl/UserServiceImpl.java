@@ -128,5 +128,30 @@ public class UserServiceImpl implements UserService {
         return isCorrect;
     }
 
+    @Override
+    public boolean updateProfile(Map<String, String> userDataMap) throws ServiceException {
+        boolean isCorrect = false;
+        UserDao userDao = UserDaoImpl.getInstance();
+
+        try{
+            isCorrect = userDao.updateProfile(userDataMap);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while updateProfile in UserService. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
+        return isCorrect;
+    }
+
+    @Override
+    public Optional<User> findUserByOneParam(String paramName, String paramValue) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            return userDao.findEntityByOneParam(paramName, paramValue);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while findUserByOneParam in UserService. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
+
 
 }

@@ -16,4 +16,6 @@ public interface UserDao extends BaseDao<User>{
     boolean updateAccessLevel(Map<String, String> userDataMap) throws DaoException;
 
     boolean updatePassword(String email, String hashPassword) throws DaoException;
+
+    boolean updateProfile(Map<String, String> userDataMap) throws DaoException;
 }
