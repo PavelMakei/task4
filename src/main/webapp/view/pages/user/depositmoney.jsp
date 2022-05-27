@@ -20,7 +20,6 @@
 <c:set var="amount_to_deposit_pattern">${validator_pattern.decimalStringPattern}</c:set>
 
 
-
 <fmt:message key="incorrect.he.enter" var="incorrect_he_message"/>
 <fmt:message key="incorrect.she.enter" var="incorrect_she_message"/>
 <fmt:message key="incorrect.it.enter" var="incorrect_it_message"/>
@@ -46,6 +45,7 @@
         function preventBack() {
             window.history.forward();
         }
+
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -86,7 +86,7 @@
                             <form class="form-horizontal needs-validation" method="post"
                                   action="${path}/controller" novalidate>
                                 <input id="command_to_send" type="hidden" name="command" value="deposit_money">
-<%--                                ---------------------------Current balance-----------------------------%>
+                                <%--                                ---------------------------Current balance-----------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="current_balance" class="cols-sm-2 control-label">
                                         ${current_money_amount_label}
@@ -101,7 +101,7 @@
                                                        class="form-control"
                                                        value="${user.amount}"
                                                        disabled
-                                                       />
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                     <span class="input-group-addon"><i class="fa fa-user fa"
                                                                        aria-hidden="true"></i></span>
                                             <div class="input-group mb-3">
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control
                                                  <c:if test="${!empty invalid_card_number}">
                                                      is-invalid
@@ -234,7 +234,7 @@
                                                         <c:if test="${!empty card_holder}">
                                                             value="${card_holder}"
                                                         </c:if>
-                                                        onchange="let str = this.value; this.value = str.toUpperCase();"
+                                                       onchange="let str = this.value; this.value = str.toUpperCase();"
                                                        required pattern="${card_holder_pattern}"/>
                                             </div>
                                         </div>
@@ -271,7 +271,7 @@
                                         </div>
                                     </div>
                                 </div>
-<%--                                ---------------------------button----------------------------------%>
+                                <%--                                ---------------------------button----------------------------------%>
 
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning "
@@ -304,8 +304,6 @@
             })
     })()
 </script>
-
-
 
 </body>
 </html>
