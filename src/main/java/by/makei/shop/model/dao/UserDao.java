@@ -3,6 +3,7 @@ package by.makei.shop.model.dao;
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.model.entity.User;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,4 +19,7 @@ public interface UserDao extends BaseDao<User>{
     boolean updatePassword(String email, String hashPassword) throws DaoException;
 
     boolean updateProfile(Map<String, String> userDataMap) throws DaoException;
+
+    boolean updateMoneyAmount(int currentUserId, BigDecimal resultAmount) throws DaoException;
+
 }

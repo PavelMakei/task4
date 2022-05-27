@@ -93,6 +93,17 @@ public enum AttributeName {
     public static final String DATA_MESSAGE = "data_message";
     public static final String USER_LIST = "user_list";
     public static final String ACCESS_LEVEL_LIST = "access_level_list";
+    public static final String AMOUNT_TO_DEPOSIT = "amount_to_deposit";
+    public static final String CARD_NUMBER = "card_number";
+    public static final String CARD_EXP_DATE = "card_exp_date";
+    public static final String CARD_HOLDER = "card_holder";
+    public static final String CARD_CVC = "card_cvc";
+    public static final String INVALID_AMOUNT_TO_DEPOSIT = "invalid_amount_to_deposit";
+    public static final String INVALID_CARD_NUMBER = "invalid_card_number";
+    public static final String INVALID_CARD_EXP_DATE = "invalid_card_exp_date";
+    public static final String INVALID_CARD_HOLDER = "invalid_card_holder";
+    public static final String INVALID_CARD_CVC = "invalid_card_cvc";
+
 
 
 

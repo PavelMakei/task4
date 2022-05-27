@@ -9,11 +9,11 @@ public enum PagePath {
     public static final String REGISTRATION = "view/pages/registration.jsp";
     public static final String PASSWORD_RECOVERY = "view/pages/user/passwordrecovery.jsp";
     public static final String UPDATE_PROFILE = "view/pages/user/updateprofile.jsp";
+    public static final String DEPOSIT_MONEY = "view/pages/user/depositmoney.jsp";
     public static final String ADD_NEW_PRODUCT = "view/pages/admin/addnewproduct.jsp";
     public static final String UPDATE_PRODUCT = "view/pages/admin/updateproduct.jsp";
     public static final String SHOW_PRODUCT = "view/pages/showproduct.jsp";
     public static final String USERS = "view/pages/admin/users.jsp";
-
 
     public static final String GO_TO_ADD_NEW_PRODUCT = "/controller?command=go_to_add_new_product";
     public static final String GO_TO_UPDATE_PRODUCT = "/controller?command=go_update_product";

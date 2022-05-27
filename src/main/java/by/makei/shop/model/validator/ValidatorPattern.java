@@ -20,6 +20,10 @@ public class ValidatorPattern {
     private final String sizePattern = "^[A-Za-zА-ЯЁа-яё\\d_* ]{3,45}$";
     private final String zeroOnePattern = "^[01]$";
     private final String quantityToByPattern = "^([1-9]|(10))$";
+    private final String cardNumberPattern = "^([\\d]{16})$";
+    private final String cardExpDatePattern = "^(1[0-2]|0[1-9])\\/(20[0-9]{2})$";
+    private final String cardHolderPattern = "^([A-Z]+ [A-Z]+)$";
+
 
     public static ValidatorPattern getInstance() {
         return instance;
@@ -77,5 +81,17 @@ public class ValidatorPattern {
 
     public String getQuantityToByPattern() {
         return quantityToByPattern;
+    }
+
+    public String getCardNumberPattern() {
+        return cardNumberPattern;
+    }
+
+    public String getCardExpDatePattern() {
+        return cardExpDatePattern;
+    }
+
+    public String getCardHolderPattern() {
+        return cardHolderPattern;
     }
 }

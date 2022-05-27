@@ -65,7 +65,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-7">
-                    <div class="card">
+                    <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light" style="text-align:center; color: black; font-size: large">
                             ${login_page_welcome}</div>
 

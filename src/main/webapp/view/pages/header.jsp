@@ -24,6 +24,8 @@
 <fmt:message key="about.label" var="about_label"/>
 <fmt:message key="log.in" var="log_in"/>
 <fmt:message key="log.out" var="log_out"/>
+<fmt:message key="profile.update" var="update_profile_label"/>
+<fmt:message key="deposit.money.label" var="deposit_money_label"/>
 
 
 <head>
@@ -54,8 +56,9 @@
                 <li class="nav-item">
                     <a class="nav-link" style="color: white" href="#">${about_label}</a>
                 </li>
-<%--                ----------TODO add role--%>
-                <%@include file="adminproductmenu.jspx"%>
+<%--                ----------TODO add role!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
+                <%@include file="admin/adminproductmenu.jspx"%>
+                <%@include file="user/usermenu.jspx"%>
 <%--                ---------------%>
             </ul>
 

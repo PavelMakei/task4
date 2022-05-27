@@ -1,0 +1,27 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: Pavel_Makei
+  Date: 26.05.2022
+  Time: 11:58
+  To change this template use File | Settings | File Templates.
+-->
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
+            Меню пользователя
+<!--            TODO!!!!!!!!!!!!!!!!!!-->
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="${path}/controller?command=go_to_update_profile">${update_profile_label}</a></li>
+            <li>
+                <hr class="dropdown-divider"/>
+            </li>
+            <li><a class="dropdown-item" href="${path}/controller?command=go_to_deposit_money">${deposit_money_label}</a></li>
+            <li>
+                <hr class="dropdown-divider"/>
+            </li>
+            <li><a class="dropdown-item" href="#">Что-то еще здесь</a></li>
+        </ul>
+    </li>
+</ul>

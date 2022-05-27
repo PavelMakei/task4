@@ -7,6 +7,7 @@ import by.makei.shop.model.command.impl.admin.UpdatePhotoCommand;
 import by.makei.shop.model.command.impl.admin.UpdateProductDataCommand;
 import by.makei.shop.model.command.impl.common.*;
 import by.makei.shop.model.command.impl.gotopage.*;
+import by.makei.shop.model.command.impl.user.DepositMoneyCommand;
 import by.makei.shop.model.command.impl.user.UpdatePasswordCommand;
 import by.makei.shop.model.command.impl.user.RecoverySendActivationCode;
 import by.makei.shop.model.command.impl.user.UpdateProfileCommand;
@@ -36,9 +37,12 @@ public enum CommandType {
     UPDATE_PHOTO(new UpdatePhotoCommand()),
     UPDATE_ACCESS_LEVEL(new UpdateAccessLevelCommand()),
     GO_TO_MANAGE_USER(new GoToManageUserCommand()),
-    REGISTRATION_SEND_ACTIVATION_CODE(new RegistrationSendActivationCode()),
+    GO_TO_UPDATE_PROFILE(new GoToUpdateProfileCommand()),
+    REGISTRATION_SEND_ACTIVATION_CODE(new RegistrationSendActivationCodeCommand()),
     RECOVERY_SEND_ACTIVATION_CODE(new RecoverySendActivationCode()),
     UPDATE_PASSWORD(new UpdatePasswordCommand()),
+    DEPOSIT_MONEY(new DepositMoneyCommand()),
+    GO_TO_DEPOSIT_MONEY(new GoToDepositMoneyCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 
     private static final Logger logger = LogManager.getLogger();

@@ -3,7 +3,7 @@ package by.makei.shop.model.service;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.entity.User;
 
-import javax.swing.text.html.Option;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,4 +24,7 @@ public interface UserService {
     boolean updateProfile(Map<String, String> userDataMap) throws ServiceException;
 
     Optional<User> findUserByOneParam(String paramName, String paramValue) throws ServiceException;
+
+
+    boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws ServiceException;
 }

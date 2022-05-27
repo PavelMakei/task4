@@ -60,7 +60,7 @@ public class UpdatePasswordCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "UpdatePasswordCommand command error. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
+            request.setAttribute(ERROR_MESSAGE, ERROR + e);
             router.setCurrentPage(ERROR500);
 //            TODO !!!!!!!!!!!!!!!!!!!!!!!!!!
         }

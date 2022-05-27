@@ -72,8 +72,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-7">
-                    <div class="card">
-                        <div class="card-header bg-light fw-bold" style="text-align:center;"
+                    <div class="card" style="border-color: goldenrod">
+                        <div class="card-header bg-light fw-bold" style="text-align:center; color: black;"
                         >
                             <c:if test="${!empty message}">
                                 <p style="color: goldenrod">

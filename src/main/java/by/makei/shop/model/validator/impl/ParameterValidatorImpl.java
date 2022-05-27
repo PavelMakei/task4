@@ -480,4 +480,49 @@ public class ParameterValidatorImpl implements ParameterValidator {
         productData.putAll(invalidParameters);
         return isCorrect;
     }
+
+    @Override
+    public boolean validateAndMarkDepositData(Map<String, String> depositDataMap) {
+        boolean isCorrect = true;
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        for (Map.Entry<String, String> entry : depositDataMap.entrySet()) {
+            switch (entry.getKey()) {
+                case CARD_NUMBER -> {
+                    if (!validator.isCardNumberValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_NUMBER, INVALID_CARD_NUMBER);
+                        isCorrect = false;
+                    }
+                }
+                case CARD_CVC -> {
+                    if (!validator.isInt3Valid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_CVC, INVALID_CARD_CVC);
+                        isCorrect = false;
+                    }
+                }
+                case CARD_EXP_DATE ->{
+                    if (!validator.isCardExpDateValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_EXP_DATE, INVALID_CARD_EXP_DATE);
+                        isCorrect = false;
+                    }
+                }
+                case CARD_HOLDER ->{
+                    if (!validator.isCardHolderValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_HOLDER, INVALID_CARD_HOLDER);
+                        isCorrect = false;
+                    }
+
+                }
+                case AMOUNT_TO_DEPOSIT ->{
+                    if (!validator.isDecimalValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_AMOUNT_TO_DEPOSIT, INVALID_AMOUNT_TO_DEPOSIT);
+                        isCorrect = false;
+                    }
+                }
+            }
+        }
+        depositDataMap.putAll(invalidParameters);
+
+        return isCorrect;
+    }
 }

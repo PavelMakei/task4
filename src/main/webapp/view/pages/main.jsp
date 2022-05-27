@@ -104,7 +104,7 @@
                 <th scope="col" class="col-lg-3" style="padding-left: 0px;padding-top: 0px">
                     <nav id="sidebarMenu" class="col-11 d-md-block sidebar">
                         <div class="position-sticky pt-3">
-                            <div class="card" style="border-color: orange">
+                            <div class="card" style="border-color: goldenrod">
                                 <div class="card-header bg-light fw-bold"
                                      style="text-align:center; color: black;">${selection_by_parameters_label}
                                 </div>

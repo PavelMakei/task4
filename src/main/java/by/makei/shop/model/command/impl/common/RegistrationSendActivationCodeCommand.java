@@ -18,8 +18,8 @@ import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.REGISTRATION;
 
-public class RegistrationSendActivationCode implements Command {
-    private static final String ERROR = "RegistrationSendActivationCode Service exception : ";
+public class RegistrationSendActivationCodeCommand implements Command {
+    private static final String ERROR = "RegistrationSendActivationCodeCommand Service exception : ";
     private static final String CODE_SENT = "activation.code.sent";
     private static final String INCORRECT_EMAIL = "incorrect.email";
 
@@ -60,7 +60,7 @@ public class RegistrationSendActivationCode implements Command {
                 router.setCurrentPage(REGISTRATION);
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "RegistrationSendActivationCode command error. {}", e.getMessage());
+            logger.log(Level.ERROR, "RegistrationSendActivationCodeCommand command error. {}", e.getMessage());
             request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
             router.setCurrentPage(ERROR500);
         }

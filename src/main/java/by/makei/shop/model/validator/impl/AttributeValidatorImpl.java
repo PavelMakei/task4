@@ -97,5 +97,20 @@ public class AttributeValidatorImpl implements AttributeValidator {
         return (zeroOne != null && zeroOne.matches(validatorPattern.getZeroOnePattern()));
     }
 
+    @Override
+    public boolean isCardNumberValid(String cardNumber) {
+        return (cardNumber != null && cardNumber.matches(validatorPattern.getCardNumberPattern()));
+    }
+
+    @Override
+    public boolean isCardExpDateValid(String cardExpDate) {
+        return (cardExpDate!= null && cardExpDate.matches(validatorPattern.getCardExpDatePattern()));
+    }
+
+    @Override
+    public boolean isCardHolderValid(String cardHolder) {
+        return (cardHolder != null && cardHolder.matches(validatorPattern.getCardHolderPattern()));
+    }
+
 
 }

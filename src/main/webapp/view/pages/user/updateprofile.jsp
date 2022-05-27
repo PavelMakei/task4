@@ -69,7 +69,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-7">
-                    <div class="card">
+                    <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold" style="text-align:center;"
                         >
                             <c:if test="${!empty message}">

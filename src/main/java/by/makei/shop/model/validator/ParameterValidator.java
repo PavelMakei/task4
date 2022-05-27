@@ -26,4 +26,6 @@ public interface ParameterValidator {
     boolean ifProductNameCorrectAndNotExistsInDb(Map<String, String> productData) throws ServiceException;
 
     boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) throws ServiceException;
+
+    boolean validateAndMarkDepositData(Map<String, String> depositDataMap);
 }

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -104,7 +105,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = Optional.empty();
         UserDao userDao = UserDaoImpl.getInstance();
         try {
-            optionalUser = userDao.findEntityByOneParam(EMAIL,email);
+            optionalUser = userDao.findEntityByOneParam(EMAIL, email);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "error while findUserByEmail in UserService. {}", e.getMessage());
             throw new ServiceException(e);
@@ -119,12 +120,12 @@ public class UserServiceImpl implements UserService {
         String email = userDataMap.get(EMAIL);
         String password = userDataMap.get(PASSWORD);
         String hashPassword = PasswordEncoder.getHashedPassword(password);
-        try{
+        try {
             isCorrect = userDao.updatePassword(email, hashPassword);
         } catch (DaoException e) {
-        logger.log(Level.ERROR, "error while updatePassword in UserService. {}", e.getMessage());
-        throw new ServiceException(e);
-    }
+            logger.log(Level.ERROR, "error while updatePassword in UserService. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
         return isCorrect;
     }
 
@@ -133,7 +134,7 @@ public class UserServiceImpl implements UserService {
         boolean isCorrect = false;
         UserDao userDao = UserDaoImpl.getInstance();
 
-        try{
+        try {
             isCorrect = userDao.updateProfile(userDataMap);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "error while updateProfile in UserService. {}", e.getMessage());
@@ -149,6 +150,19 @@ public class UserServiceImpl implements UserService {
             return userDao.findEntityByOneParam(paramName, paramValue);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "error while findUserByOneParam in UserService. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        BigDecimal inputAmount = BigDecimal.valueOf(Double.valueOf(amountToDeposit));
+        BigDecimal resultAmount = currentUserAmount.add(inputAmount);
+        try {
+            return userDao.updateMoneyAmount(currentUserId, resultAmount);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while updateAmount in UserService. {}", e.getMessage());
             throw new ServiceException(e);
         }
     }

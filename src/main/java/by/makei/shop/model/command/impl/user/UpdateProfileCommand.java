@@ -19,7 +19,6 @@ import java.util.Optional;
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.*;
 import static by.makei.shop.model.command.RedirectMessage.*;
-import static by.makei.shop.model.command.RedirectMessage.REDIRECT_ID;
 
 public class UpdateProfileCommand implements Command {
     private static final String ERROR = "UpdateProfileCommand Service exception : ";
@@ -87,6 +86,7 @@ public class UpdateProfileCommand implements Command {
                         return router;
                     }
                 } else {
+                    logger.log(Level.INFO,"UpdateProfileCommand incorrect params was given");
                     for (Map.Entry<String, String> entry : userDataMap.entrySet()) {
                         request.setAttribute(entry.getKey(), entry.getValue());
                         router.setCurrentPage(UPDATE_PROFILE);
@@ -96,7 +96,7 @@ public class UpdateProfileCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "UpdateProfileCommand. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
+            request.setAttribute(ERROR_MESSAGE, ERROR + e);
             router.setCurrentPage(ERROR500);
         }
         return router;

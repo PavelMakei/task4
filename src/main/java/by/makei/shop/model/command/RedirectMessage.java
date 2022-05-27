@@ -10,6 +10,8 @@ public enum RedirectMessage {
     public static final String ADDITION_FAILED  = "addition.fail";
     public static final String UPDATE_SUCCESS  = "update.success";
     public static final String UPDATE_FAIL  = "update.fail";
+    public static final String USER_MONEY_AMOUNT_UPDATED = "user.money.amount.updated";
+    public static final String USER_MONEY_AMOUNT_UPDATING_FAIL = "user.money.amount.updating.fail";
 
 
 }

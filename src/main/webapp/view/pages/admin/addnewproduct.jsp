@@ -56,9 +56,9 @@
 
 <head>
     <title>${head_label}</title>
-    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
 
@@ -91,9 +91,9 @@
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
                             <c:if test="${!empty message}">
-                          <p style="color: goldenrod">
-                              <fmt:message key="${message}"></fmt:message>
-                          </p>
+                                <p style="color: goldenrod">
+                                    <fmt:message key="${message}"></fmt:message>
+                                </p>
                             </c:if>
                             ${head_label}
                         </div>
@@ -125,10 +125,29 @@
                                                      is-invalid
                                                  </c:if>
                                                 " name="brand_id" id="brand" required>
-                                                    <option value="" disabled
-                                                            selected>${select_your_brand_option}</option>
+                                                    <c:if test="${!empty brand_id && (brand_id != '0')}">
+                                                        <option disabled
+                                                                value="">
+                                                                ${select_your_brand_option}
+                                                        </option>
+                                                        <option
+                                                                value="${brand_id}"
+                                                                selected>${brands_map[brand_id]}
+                                                        </option>
+
+                                                    </c:if>
+
+                                                    <c:if test="${empty brand_id || (brand_id == '0')}">
+                                                        <option
+                                                                value=""
+                                                                selected>${select_your_brand_option}
+                                                        </option>
+                                                    </c:if>
+
                                                     <c:forEach var="brandEnter" items="${brands_map}">
-                                                        <option value=${brandEnter.key}>${brandEnter.value}</option>
+                                                        <c:if test="${brandEnter.key ne brand_id}">
+                                                            <option value=${brandEnter.key}>${brandEnter.value}</option>
+                                                        </c:if>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -152,7 +171,6 @@
                                         <div class="input-group">
                                     <span class="input-group-sm"><i class="user-select-auto"
                                                                     aria-hidden="true"></i></span>
-
                                             <%--                                    выпадающий список--%>
                                             <div class="input-group mb-3">
                                                 <select class="form-select
@@ -160,10 +178,26 @@
                                                      is-invalid
                                                 </c:if>
                                                 " id="type_id" name="type_id" required>
-                                                    <option value="" disabled
-                                                            selected>${select_your_type_option}</option>
+                                                    <c:if test="${!empty type_id && (type_id != '0')}">
+                                                        <option disabled
+                                                                value="">
+                                                                ${select_your_type_option}
+                                                        </option>
+                                                        <option
+                                                                value="${type_id}"
+                                                                selected>${types_map[type_id]}
+                                                        </option>
+                                                    </c:if>
+                                                    <c:if test="${empty type_id || (type_id == '0')}">
+                                                        <option
+                                                                value=""
+                                                                selected>${select_your_type_option}
+                                                        </option>
+                                                    </c:if>
                                                     <c:forEach var="typeEnter" items="${types_map}">
-                                                        <option value=${typeEnter.key}>${typeEnter.value}</option>
+                                                        <c:if test="${typeEnter.key ne type_id}">
+                                                            <option value=${typeEnter.key}>${typeEnter.value}</option>
+                                                        </c:if>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -390,7 +424,7 @@
                                                        placeholder=${quantity_placeholder}
                                                        <c:if test="${!empty quantity_in_stock}">
                                                                value="${quantity_in_stock}"
-                                                        </c:if>
+                                                </c:if>
                                                        required pattern="${quantity_pattern}"/>
                                             </div>
                                         </div>
