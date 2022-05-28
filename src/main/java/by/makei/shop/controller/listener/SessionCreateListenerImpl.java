@@ -1,5 +1,6 @@
 package by.makei.shop.controller.listener;
 
+import by.makei.shop.model.entity.Cart;
 import by.makei.shop.model.validator.ValidatorPattern;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +27,7 @@ public class SessionCreateListenerImpl implements HttpSessionListener {
         session.setAttribute(LOCALE, DEFAULT_LOCALE);
         session.setAttribute(CURRENT_PAGE, INDEX);
         session.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
+        session.setAttribute(CART, new Cart());
 
 
         logger.log(Level.INFO, "------>>>session created :" + session.getId());
