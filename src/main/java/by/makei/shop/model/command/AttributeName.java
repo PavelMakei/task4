@@ -103,8 +103,7 @@ public enum AttributeName {
     public static final String INVALID_CARD_EXP_DATE = "invalid_card_exp_date";
     public static final String INVALID_CARD_HOLDER = "invalid_card_holder";
     public static final String INVALID_CARD_CVC = "invalid_card_cvc";
-    public static final String CART = "cart";
-
+    public static final String SESS_CART = "sess_cart";
 
 
 

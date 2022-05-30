@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
 
-@WebFilter(filterName = "CurrentPageSetterFilter")
+//@WebFilter(filterName = "CurrentPageSetterFilter")
 public class CurrentPageSetterFilter implements Filter {
         private static final Logger logger = LogManager.getLogger();
         private static final String CONTROLLER_PART = "/controller?";

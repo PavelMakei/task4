@@ -38,7 +38,7 @@
 <fmt:message key="next.page.button" var="next_page_button"/>
 <fmt:message key="page.number" var="page_number"/>
 <fmt:message key="page.of" var="page_of"/>
-<fmt:message key="buy.button" var="buy_button"/>
+<fmt:message key="add.to.cart.button" var="add_to_cart_button"/>
 <fmt:message key="in.stock" var="in_stock"/>
 <fmt:message key="nothing.found" var="nothing_found"/>
 <fmt:message key="more.hint" var="more_hint"/>
@@ -69,7 +69,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href=${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href=${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
@@ -109,7 +109,7 @@
                                      style="text-align:center; color: black;">${selection_by_parameters_label}
                                 </div>
                                 <div class="card-body bg-dark bg-opacity-75">
-                                    <form class="form-horizontal needs-validation" novalidate method="post"
+                                    <form class="form-horizontal needs-validation" novalidate method="get"
                                           action="${path}/controller"
                                           enctype="multipart/form-data">
                                         <input type="hidden" name="command" value="go_to_main">
@@ -532,7 +532,7 @@
                                             </tbody>
                                         </table>
                                     </th>
-                                        <%--                                    ---------------------------buy part----------------------%>
+                                        <%--                                    ---------------------------Add to cart part----------------------%>
                                     <th scope="data" class="col-2 bg-dark opacity-75">
                                         <div class="mb-3" style="height: 120px;">
                                             <c:if test="${access_level eq 'ADMIN'}">
@@ -553,33 +553,42 @@
                                             <form class="buy form-horizontal needs-validation" novalidate method="post"
                                                   action="${path}/controller"
                                                   enctype="multipart/form-data">
-                                                <input type="hidden" name="command" value="buy">
-                                                <input type="hidden" name="buy_product_id"
+                                                <input type="hidden" name="command" value="add_to_cart">
+                                                <input type="hidden" name="id"
                                                        value="${current_product.id}">
 
                                                 <div class="mb-3">
-                                                    <label for="quantityInput" class="form-label"
+                                                    <label for="quantityInputId${current_product.id}" class="form-label"
                                                            style="color: white">${quantity_name_label}</label>
                                                     <div class="col-6">
-                                                        <input type="number" class="form-control" id="quantityInput"
-                                                               name="buy_quantity" placeholder="${min}-${max}"
+                                                        <input type="number" class="form-control"
+                                                               id="quantityInputId${current_product.id}"
+                                                               name="quantity" placeholder="${min}-${max}"
                                                                required
                                                                min="${min}"
                                                                max="${max}"
                                                         >
-                                                        <input type="hidden" name="product_id"
-                                                               value="${current_product.id}">
                                                     </div>
                                                 </div>
                                                 <div class="d-grid gap-1">
-                                                    <button type="submit" class="btn btn-primary btn-warning"
+                                                    <button type="button" class="btn btn-primary btn-warning"
                                                             <c:if test="${i == 0}">
                                                                 disabled
                                                             </c:if>
                                                             id="buttBuy1"
                                                             style="color: white"
-                                                            onclick="CheckBuy()">
-                                                            ${buy_button}
+
+                                                            onclick="
+                                                                    if (!this.form.checkValidity()) {
+                                                                    this.form.className +=' was-validated';
+                                                                    // window.alert('стоять!!!');
+                                                                    return;
+                                                                    }
+                                                                    let quantityToSend = '&quantity='+document.getElementById('quantityInputId${current_product.id}').value;
+                                                                    let fullPath = '${path}controller?command=add_to_cart&id=${current_product.id}' + quantityToSend;
+                                                                    window.open(fullPath,'ShowCart','width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no');"
+                                                    >
+                                                            ${add_to_cart_button}
                                                     </button>
                                                 </div>
                                             </form>
@@ -680,6 +689,11 @@
             }
         }
         return true;
+    }
+</script>
+<script>
+    function goToCart() {
+        window.alert('this is go to cart function');
     }
 </script>
 <%--<script>--%>

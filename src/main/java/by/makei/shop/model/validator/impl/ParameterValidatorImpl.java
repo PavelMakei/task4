@@ -344,7 +344,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
         BaseDao<Product> productDao = ProductDaoImpl.getInstance();
         BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
         ProductTypeDaoImpl productTypeDao = ProductTypeDaoImpl.getInstance();
-        ;
         try {
             for (Map.Entry<String, String> entry : productData.entrySet()) {
                 String key = entry.getKey();

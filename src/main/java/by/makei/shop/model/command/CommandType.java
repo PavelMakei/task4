@@ -43,6 +43,7 @@ public enum CommandType {
     UPDATE_PASSWORD(new UpdatePasswordCommand()),
     DEPOSIT_MONEY(new DepositMoneyCommand()),
     GO_TO_DEPOSIT_MONEY(new GoToDepositMoneyCommand()),
+    ADD_TO_CART(new AddToCartCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 
     private static final Logger logger = LogManager.getLogger();
@@ -62,14 +63,14 @@ public enum CommandType {
 
         String[] commandName = parameterMap.get(COMMAND);
         if (commandName == null ) {
-            logger.log(Level.INFO, "command is null");
+            logger.log(Level.ERROR, "Command is null");
             return CommandType.DEFAULT.getCommand();
         }
         try {
             return CommandType.valueOf(commandName[0].toUpperCase()).getCommand();
         } catch (IllegalArgumentException e) {
-            logger.log(Level.ERROR, "incorrect or empty command name. {}", e.getMessage());
-           throw new CommandException(e.getMessage());
+            logger.log(Level.ERROR, "Incorrect or empty command name. {}", e.getMessage());
+           throw new CommandException("Incorrect or empty command name.", e);
         }
     }
 }

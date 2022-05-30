@@ -7,7 +7,6 @@ import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.model.validator.ValidatorPattern;
 import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

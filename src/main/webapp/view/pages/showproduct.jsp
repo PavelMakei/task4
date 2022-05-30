@@ -26,7 +26,6 @@
 <html>
 
 <head>
-
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
@@ -115,9 +114,10 @@
                                         <a href="javascript:void(0);"
                                            title="${close_hint}"
                                            class="stretched-link"
-                                           onClick=window.close()></a>
-
-
+                                           onClick=window.close()
+<%--                                        onclick="window.opener.test1()"--%>
+                                        >
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -130,6 +130,11 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
+<script>
+    function closeMe(){
+        window.close();
+    }
+</script>
 
 </body>
 </html>

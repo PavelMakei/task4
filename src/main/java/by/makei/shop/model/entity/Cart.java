@@ -5,39 +5,42 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cart extends AbstractEntity {
-    private Map<Integer, Integer> productIdQuantity;
+    private Map<Product, Integer> productQuantity;
+    private int totalQuantity = 0;
 
     public Cart() {
-        productIdQuantity = new HashMap<>();
+        productQuantity = new HashMap<>();
     }
 
-    public void addProduct(Integer productId, Integer productQuantity) {
-        if (productIdQuantity.containsKey(productId)) {
-            Integer savedQuantity = productIdQuantity.get(productId);
-            productIdQuantity.put(productId, (productQuantity + savedQuantity));
-        } else {
-            productIdQuantity.put(productId, productQuantity);
-        }
+    public void setProductQuantity(Product product, Integer productQuantity) {
+            this.productQuantity.put(product, productQuantity);
+            totalProductRecount();
     }
 
-    public Map<Integer,Integer> getProductQuantity() {
-        return productIdQuantity;
+    public Map<Product,Integer> getProductQuantity() {
+        return productQuantity;
     }
 
     public void clear(){
-        productIdQuantity.clear();
+        productQuantity.clear();
+        totalQuantity = 0;
     }
 
-    public Map<Integer,Integer> removeProduct(Integer productId, Integer productQuantity){
-        Integer savedQuantity = productIdQuantity.get(productId);
-        productIdQuantity.put(productId,(savedQuantity-productQuantity));
-        return productIdQuantity;
+    public Map<Product,Integer> removeProduct(Product product, Integer productQuantity){
+        Integer savedQuantity = this.productQuantity.get(product);
+        this.productQuantity.put(product,(savedQuantity - productQuantity));
+        totalProductRecount();
+        return this.productQuantity;
     }
 
-    public int productCount(){
+    private void totalProductRecount(){
         AtomicInteger count = new AtomicInteger();
-        productIdQuantity.forEach((k,v)-> count.addAndGet(v));
-        return count.get();
+        productQuantity.forEach((k, v)-> count.addAndGet(v));
+        totalQuantity = count.get();
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
     }
 
     @Override
@@ -45,18 +48,18 @@ public class Cart extends AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cart cart = (Cart) o;
-        return productIdQuantity != null ? productIdQuantity.equals(cart.productIdQuantity) : cart.productIdQuantity == null;
+        return productQuantity != null ? productQuantity.equals(cart.productQuantity) : cart.productQuantity == null;
     }
 
     @Override
     public int hashCode() {
-        return productIdQuantity != null ? productIdQuantity.hashCode() : 0;
+        return productQuantity != null ? productQuantity.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Cart{");
-        sb.append("productIdQuantity=").append(productIdQuantity);
+        sb.append("productIdQuantity=").append(productQuantity);
         sb.append('}');
         return sb.toString();
     }
