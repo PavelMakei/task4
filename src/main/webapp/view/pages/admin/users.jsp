@@ -24,7 +24,7 @@
 <fmt:message key="users" var="users_lable"/>
 
 <c:set var="email">email</c:set>
-<c:set var="url_part1">${path}controller?command=update_access_level&id=</c:set>
+<c:set var="url_part1">${path}/controller?command=update_access_level&id=</c:set>
 <c:set var="url_part2">&access_level=</c:set>
 
 <html>

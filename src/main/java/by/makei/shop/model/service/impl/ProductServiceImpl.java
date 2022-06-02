@@ -219,8 +219,8 @@ public class ProductServiceImpl implements ProductService {
                 searchPage = totalPages;
             }
             //TODO + 1?
-            int searchTo = searchPage * PRODUCTS_ON_PAGE;
-            int searchFrom = searchTo - PRODUCTS_ON_PAGE;
+            int searchTo = PRODUCTS_ON_PAGE;
+            int searchFrom = (searchPage - 1) * PRODUCTS_ON_PAGE;
             productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchTo, searchWord, orderQuery, in_stock);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService error while findProductsByParam. {}", e.getMessage());

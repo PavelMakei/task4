@@ -14,19 +14,20 @@
 
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
-<fmt:message key="product.name" var="product_name_lable"/>
-<fmt:message key="price.name" var="price_lable"/>
-<fmt:message key="quantity.name" var="quantity_lable"/>
-<fmt:message key="sum.label" var="sum_lable"/>
-<fmt:message key="total.sum.label" var="total_sum_lable"/>
+<fmt:message key="product.name" var="product_name_label"/>
+<fmt:message key="price.name" var="price_label"/>
+<fmt:message key="quantity.name" var="quantity_label"/>
+<fmt:message key="sum.label" var="sum_label"/>
+<fmt:message key="total.sum.label" var="total_sum_label"/>
 <fmt:message key="buy.button" var="buy_button"/>
 <fmt:message key="continue.shopping" var="continue_shopping_button"/>
 <fmt:message key="go.to.checkout" var="go_to_checkout_button"/>
+<fmt:message key="show.cart.label" var="show_cart_label"/>
 
 
 <html>
 <head>
-    <title>${show_cart_lable}</title>
+    <title>${show_cart_label}</title>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
@@ -55,10 +56,10 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-                            ${show_cart_lable}
-                            <c:if test="${!empty message}">
+                            ${show_cart_label}
+                            <c:if test="${!empty sess_message}">
                                 <p style="color: goldenrod">
-                                    <fmt:message key="${message}"></fmt:message>
+                                    <fmt:message key="${sess_message}"></fmt:message>
                                 </p>
                             </c:if>
                             <%--                            ${head_label}--%>
@@ -71,10 +72,10 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">photo</th>
-                                        <th scope="col">${product_name_lable}</th>
-                                        <th scope="col">${price_lable}</th>
-                                        <th scope="col">${quantity_lable}</th>
-                                        <th scope="col">${sum_lable}</th>
+                                        <th scope="col">${product_name_label}</th>
+                                        <th scope="col">${price_label}</th>
+                                        <th scope="col">${quantity_label}</th>
+                                        <th scope="col">${sum_label}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -114,11 +115,9 @@
                                                     <a href="javascript:void(0);"
                                                        title="Посмотреть продукт!!!"
                                                        class="stretched-link"
-                                                       onClick=window.open("${path}controller?command=show_product&id=${productQuantity.key.id}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");></a>
+                                                       onClick=window.open("${path}/controller?command=show_product&id=${productQuantity.key.id}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");></a>
                                                 </div>
                                             </td>
-
-
 
                                             <td>${productQuantity.key.productName}</td>
                                             <td>${productQuantity.key.price}</td>

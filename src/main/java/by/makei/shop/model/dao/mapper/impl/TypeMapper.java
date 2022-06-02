@@ -22,7 +22,7 @@ public class TypeMapper implements Mapper<ProductType> {
             productType.setTypeName(resultSet.getString(TYPE_NAME));
             optionalProductType = Optional.of(productType);
         } catch (SQLException e) {
-            logger.log(Level.INFO, "brand wasn't mapped in BrandMapper. {}", e.getMessage());
+            logger.log(Level.ERROR, "SQLException brand wasn't mapped in BrandMapper. {}", e.getMessage());
             optionalProductType = Optional.empty();
         }
         return optionalProductType;

@@ -59,6 +59,7 @@ public enum AttributeName {
     public static final String BRANDS_MAP = "brands_map";
     public static final String TYPES_MAP = "types_map";
     public static final String CURRENT_PAGE = "current_page";
+    public static final String CURRENT_CONTEXT_PATH = "current_context_path";
     public static final String LOCALE_EN_US = "en_US";
     public static final String LOCALE_RU_RU = "ru_RU";
     public static final String PRODUCTS_QUANTITY_MAP = "products_quantity_map";
@@ -104,6 +105,7 @@ public enum AttributeName {
     public static final String INVALID_CARD_HOLDER = "invalid_card_holder";
     public static final String INVALID_CARD_CVC = "invalid_card_cvc";
     public static final String SESS_CART = "sess_cart";
+    public static final String SESS_MESSAGE = "sess_message";
 
 
 

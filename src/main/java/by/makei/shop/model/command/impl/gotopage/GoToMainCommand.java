@@ -43,9 +43,7 @@ public class GoToMainCommand implements Command {
         Map<String,String[]> inputParams;
         Router router = new Router();
         ProductService productService = ProductServiceImpl.getInstance();
-        HttpSession session = request.getSession();
-        String currentPage = PagePathExtractor.extractPagePath(request);
-        session.setAttribute(CURRENT_PAGE, currentPage);
+        PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
         inputParams = request.getParameterMap();
         if(inputParams.containsKey(MESSAGE)){
             request.setAttribute(MESSAGE,inputParams.get(MESSAGE)[0]);

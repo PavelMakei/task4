@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
+import static by.makei.shop.model.command.PagePath.USERS;
 
 public class UpdateAccessLevelCommand implements Command {
     private static final String ERROR = "UpdateAccessLevelCommand Service exception : ";
@@ -31,13 +32,16 @@ public class UpdateAccessLevelCommand implements Command {
         userDataMap.put(ACCESS_LEVEL, request.getParameter(ACCESS_LEVEL));
         HttpSession session = request.getSession();
         String currentPage = session.getAttribute(CURRENT_PAGE).toString();
+        String contextPath = session.getAttribute(CURRENT_CONTEXT_PATH).toString();
+
 
 
         try {
             if (parameterValidator.validateAndMarkUserData(userDataMap)){
                 userService.updateAccessLevel(userDataMap);
-                router.setRedirectType();
+//                router.setRedirectType();
                  router.setCurrentPage(currentPage);
+//                 router.setCurrentPage(contextPath + USERS);
                  //current user?
                 User currentUser = (User)session.getAttribute(USER);
                 int id = Integer.parseInt(userDataMap.get(ID));

@@ -14,7 +14,7 @@ public class GoToDepositMoneyCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
 
-        String currentPage = PagePathExtractor.extractPagePath(request);
+        String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
         logger.log(Level.DEBUG,"GoToDepositMoney currentPage :{}",currentPage);
         request.getSession().setAttribute(CURRENT_PAGE,currentPage);
         Router router = new Router();

@@ -31,7 +31,7 @@ public class UserMapper implements Mapper<User> {
 
             optionalUser = Optional.of(user);
         } catch (SQLException e) {
-            logger.log(Level.DEBUG,"user wasn't mapped in UserMapper. {}", e.getMessage());
+            logger.log(Level.ERROR,"SQLException user wasn't mapped in UserMapper. {}", e.getMessage());
             optionalUser = Optional.empty();
         }
         return optionalUser;

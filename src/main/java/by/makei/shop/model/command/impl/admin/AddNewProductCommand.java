@@ -78,7 +78,7 @@ public class AddNewProductCommand implements Command {
 
         } catch (ServiceException e) {
             logger.log(Level.ERROR,"GoToAddNewProductCommand command error. {}",e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
+            request.setAttribute(ERROR_MESSAGE, ERROR + e);
             router.setCurrentPage(ERROR500);
         }
         return router;

@@ -22,7 +22,7 @@ public class BrandMapper implements Mapper<Brand> {
             brand.setBrandName(resultSet.getString(BRAND_NAME));
             optionalBrand = Optional.of(brand);
         } catch (SQLException e) {
-            logger.log(Level.INFO, "brand wasn't mapped in BrandMapper. {}", e.getMessage());
+            logger.log(Level.ERROR, "SQLException brand wasn't mapped in BrandMapper. {}", e.getMessage());
             optionalBrand = Optional.empty();
         }
         return optionalBrand;

@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cart extends AbstractEntity {
+    public static final int MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY = 10;
+    private int maxQuantityOfOneProductToBy = MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY;
     private Map<Product, Integer> productQuantity;
     private int totalQuantity = 0;
 
@@ -41,6 +43,10 @@ public class Cart extends AbstractEntity {
 
     public int getTotalQuantity() {
         return totalQuantity;
+    }
+
+    public int getMaxQuantityOfOneProductToBy() {
+        return maxQuantityOfOneProductToBy;
     }
 
     @Override

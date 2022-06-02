@@ -29,7 +29,7 @@ public class GoToAddNewProductCommand implements Command {
         Router router = new Router();
         ProductService productService = ProductServiceImpl.getInstance();
         HttpSession session = request.getSession();
-        String currentPage = PagePathExtractor.extractPagePath(request);
+        String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
         session.setAttribute(CURRENT_PAGE,currentPage);
         MessageReinstall.extractAndSetMessage(MESSAGE,request);
 

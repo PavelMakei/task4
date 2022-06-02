@@ -463,7 +463,7 @@
                                             <a href="javascript:void(0);"
                                                title="${more_hint}"
                                                class="stretched-link"
-                                               onClick=window.open("${path}controller?command=show_product&id=${current_product.id}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");></a>
+                                               onClick=window.open("${path}/controller?command=show_product&id=${current_product.id}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");></a>
                                         </div>
                                     </th>
                                         <%--                                    --------------------------description part------------------%>
@@ -512,11 +512,11 @@
                                                                 <fmt:parseNumber var="i" integerOnly="true"
                                                                                  type="number"
                                                                                  value="${current_quantity}"/>
-                                                                <c:if test="${i > 10}">
+                                                                <c:if test="${i > sess_cart.maxQuantityOfOneProductToBy}">
                                                                     > 10
-                                                                    <c:set var="max" value="10"/>
+                                                                    <c:set var="max" value="${sess_cart.maxQuantityOfOneProductToBy}"/>
                                                                 </c:if>
-                                                                <c:if test="${i < 10}">
+                                                                <c:if test="${i < sess_cart.maxQuantityOfOneProductToBy}">
                                                                     ${i}
                                                                     <c:set var="max" value="${i}"/>
                                                                 </c:if>
@@ -540,7 +540,7 @@
                                                 <form class="go-to-change_product form-horizontal">
                                                     <div class="d-grid gap-1">
                                                         <button class="btn btn-primary"
-                                                                onclick="window.open('${path}controller?command=go_update_product&id=${current_product.id}')">
+                                                                onclick="window.open('${path}/controller?command=go_update_product&id=${current_product.id}')">
 
                                                                 ${change_product_button} id:${current_product.id}
                                                         </button>
@@ -585,7 +585,7 @@
                                                                     return;
                                                                     }
                                                                     let quantityToSend = '&quantity='+document.getElementById('quantityInputId${current_product.id}').value;
-                                                                    let fullPath = '${path}controller?command=add_to_cart&id=${current_product.id}' + quantityToSend;
+                                                                    let fullPath = '${path}/controller?command=add_to_cart&id=${current_product.id}' + quantityToSend;
                                                                     window.open(fullPath,'ShowCart','width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no');"
                                                     >
                                                             ${add_to_cart_button}

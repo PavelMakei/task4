@@ -30,7 +30,7 @@ public class GoToManageUserCommand implements Command {
         UserService userService = UserServiceImpl.getInstance();
         List<User> userList;
         HttpSession session = request.getSession();
-        String currentPage = PagePathExtractor.extractPagePath(request);
+        String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
         session.setAttribute(CURRENT_PAGE, currentPage);
         ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
         accessLevelList.remove(AccessLevel.GUEST);

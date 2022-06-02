@@ -38,7 +38,7 @@ public class ProductMapper implements Mapper<Product> {
 
             optionalProduct = Optional.of(product);
         } catch (SQLException e) {
-            logger.log(Level.INFO, "product wasn't mapped in ProductMapper. {}", e.getMessage());
+            logger.log(Level.ERROR, "SQLException product wasn't mapped in ProductMapper. {}", e.getMessage());
             optionalProduct = Optional.empty();
         }
         return optionalProduct;
