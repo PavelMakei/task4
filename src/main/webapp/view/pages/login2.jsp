@@ -24,7 +24,13 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href=${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${path}/bootstrap/js/bootstrap.min.js"></script>
+    <link href="${path}/css/enter.css" rel="stylesheet">
+    <title>${main_page_label}</title>
     <title>
         ${title}
     </title>
@@ -49,6 +55,38 @@
                             ><fmt:message key="incorrect.login"/>
                             </div>
                         </c:if>
+
+<%--                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">--%>
+<%--                            Launch demo modal--%>
+<%--                        </button>--%>
+
+
+
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Modal body text goes here.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <script> let myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
+                        myModal.toggle()</script>
+
+
+
 
                         <div class="card-body bg-dark bg-opacity-75">
                             <form class="form-horizontal needs-validation" novalidate method="post"
@@ -113,6 +151,10 @@
                 </div>
             </div>
         </div>
+
+
+
+
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>

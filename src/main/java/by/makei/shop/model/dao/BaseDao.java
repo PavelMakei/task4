@@ -9,9 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+@SuspiciousConnection
 public interface BaseDao< T extends AbstractEntity> {
     Logger logger = LogManager.getLogger();
     String PARAMETER_VALIDATOR_PATTERN = "[a-z_]+";

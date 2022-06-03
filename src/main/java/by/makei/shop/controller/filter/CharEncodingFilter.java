@@ -11,6 +11,8 @@ import java.io.IOException;
 @WebFilter
 public class CharEncodingFilter implements Filter {
     private static final Logger logger = LogManager.getLogger();
+    private static final String DEFAULT_ENCODING = "UTF-8";
+    private static final String DEFAULT_CONTEXT_TYPE = "text/html; charset=UTF-8";
 
     public void init() throws ServletException {
 }
@@ -21,9 +23,9 @@ public class CharEncodingFilter implements Filter {
             ServletResponse response,
             FilterChain next) throws IOException, ServletException {
         logger.log(Level.DEBUG, "CharEncodingFilter started");
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding(DEFAULT_ENCODING);
+        response.setContentType(DEFAULT_CONTEXT_TYPE);
+        response.setCharacterEncoding(DEFAULT_ENCODING);
         next.doFilter(request, response);
     logger.log(Level.DEBUG, "CharEncodingFilter on out");
     }

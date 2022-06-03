@@ -174,7 +174,7 @@ public class ProductServiceImpl implements ProductService {
                     searchPage = Integer.parseInt(entry.getValue());
                 }
                 case SEARCH_WORD -> {
-                    searchWord = SqlUtil.mysql_escape_string(entry.getValue());
+                    searchWord = SqlUtil.makeSafeMysqlString(entry.getValue());
                 }
                 case ORDER_BY -> {
                     orderBy = entry.getValue();

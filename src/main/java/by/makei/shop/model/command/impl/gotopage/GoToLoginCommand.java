@@ -20,7 +20,7 @@ public class GoToLoginCommand implements Command {
         logger.log(Level.DEBUG,"GoToLogination currentPage :{}",currentPage);
         request.getSession().setAttribute(CURRENT_PAGE,currentPage);
         Router router = new Router();
-        String contextPath = request.getSession().getAttribute(CURRENT_CONTEXT_PATH).toString();
+//        String contextPath = request.getSession().getAttribute(CURRENT_CONTEXT_PATH).toString();
         router.setCurrentPage(LOGINATION);
         router.setRedirectType();
         return router;

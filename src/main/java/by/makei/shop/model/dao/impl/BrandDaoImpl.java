@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class BrandDaoImpl implements BrandDao {
     private static final BrandDaoImpl instance = new BrandDaoImpl();
@@ -86,6 +88,18 @@ public class BrandDaoImpl implements BrandDao {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return resultList;
+    }
+
+    //TODO check !!!!!!!!!!!!
+    public <R> R withException(Supplier<R> action, Consumer<Exception> onException) {
+        try {
+            return action.get();
+        } catch (Exception e) {
+            onException.accept(e);
+            throw new DaoException(e);
+        } finally {
+            System.err.println("finally");
+        }
     }
 
 

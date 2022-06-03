@@ -3,7 +3,7 @@ package by.makei.shop.util;
 public class SqlUtil {
     private static final String COMMON_REGEX = "[a-zA-Z0-9_!@#$%^&*()-=+~.;:,\\Q[\\E\\Q]\\E<>{}\\/? ]";
 
-    public static String mysql_escape_string(String str)
+    public static String makeSafeMysqlString(String str)
             {
         if (str == null) {
             return null;
@@ -13,14 +13,14 @@ public class SqlUtil {
             return str;
         }
 
-        String clean_string = str;
-        clean_string = clean_string.replaceAll("\\\\", "\\\\\\\\");
-        clean_string = clean_string.replaceAll("\\n", "\\\\n");
-        clean_string = clean_string.replaceAll("\\r", "\\\\r");
-        clean_string = clean_string.replaceAll("\\t", "\\\\t");
-        clean_string = clean_string.replaceAll("\\00", "\\\\0");
-        clean_string = clean_string.replaceAll("'", "\\\\'");
-        clean_string = clean_string.replaceAll("\\\"", "\\\\\"");
-        return clean_string;
+        String cleanString = str;
+        cleanString = cleanString.replaceAll("\\\\", "\\\\\\\\");
+        cleanString = cleanString.replaceAll("\\n", "\\\\n");
+        cleanString = cleanString.replaceAll("\\r", "\\\\r");
+        cleanString = cleanString.replaceAll("\\t", "\\\\t");
+        cleanString = cleanString.replaceAll("\\00", "\\\\0");
+        cleanString = cleanString.replaceAll("'", "\\\\'");
+        cleanString = cleanString.replaceAll("\\\"", "\\\\\"");
+        return cleanString;
     }
 }
