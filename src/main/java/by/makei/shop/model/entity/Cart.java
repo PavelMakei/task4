@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cart extends AbstractEntity {
+    private static final long serialVersionUID = -8505218436939515801L;
     public static final int MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY = 10;
     private int maxQuantityOfOneProductToBy = MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY;
     private Map<Product, Integer> productQuantity;

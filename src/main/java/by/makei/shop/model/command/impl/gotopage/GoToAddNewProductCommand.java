@@ -36,8 +36,8 @@ public class GoToAddNewProductCommand implements Command {
         try {
             brands = productService.findAllBrandsMap();
             types = productService.findAllTypesMap();
-            request.setAttribute(BRANDS_MAP, brands);
-            request.setAttribute(TYPES_MAP, types);
+//            request.setAttribute(BRANDS_MAP, brands);
+//            request.setAttribute(TYPES_MAP, types);
             router.setCurrentPage(ADD_NEW_PRODUCT);
         } catch (ServiceException e) {
             logger.log(Level.ERROR,"GoToAddNewProductCommand command error. {}",e.getMessage());

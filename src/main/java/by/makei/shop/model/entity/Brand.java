@@ -1,6 +1,9 @@
 package by.makei.shop.model.entity;
 
-public class Brand extends AbstractEntity{
+import java.io.Serializable;
+
+public class Brand extends AbstractEntity {
+    private static final long serialVersionUID = -1205732830733869711L;
     private int id;
     private String brandName;
 

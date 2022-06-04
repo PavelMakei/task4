@@ -651,36 +651,39 @@
 </div>
 <%-----------------------Modal window------------------------------%>
 
-<div class="modal" id="mainModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-muted align-content-center">Lighting shop</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="text-align: center;">
-                <p><strong><fmt:message key="${message}"/></strong></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<%---------------------------end modal window------------------------%>
+<%@include file="parts/modalwindow.jsp" %>
 
 
+<%--<div class="modal" id="mainModal">--%>
+<%--    <div class="modal-dialog">--%>
+<%--        <div class="modal-content">--%>
+<%--            <div class="modal-header">--%>
+<%--                <h5 class="modal-title text-muted align-content-center">Lighting shop</h5>--%>
+<%--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
+<%--            </div>--%>
+<%--            <div class="modal-body" style="text-align: center;">--%>
+<%--                <p><strong><fmt:message key="${message}"/></strong></p>--%>
+<%--            </div>--%>
+<%--            <div class="modal-footer">--%>
+<%--                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
-<c:if test="${!empty message}">
+<%--&lt;%&ndash;-------------------------end modal window----------------------&ndash;%&gt;--%>
 
-        <script>
-        let mainModal = new bootstrap.Modal(document.getElementById('mainModal'), {});
-        mainModal.toggle();
-// autoclose
-        mainModalTimeout = setTimeout(function(){mainModal.hide()},3000);
-        </script>
-</c:if>
+
+
+<%--<c:if test="${!empty message}">--%>
+
+<%--        <script>--%>
+<%--        let mainModal = new bootstrap.Modal(document.getElementById('mainModal'), {});--%>
+<%--        mainModal.toggle();--%>
+<%--// autoclose--%>
+<%--        mainModalTimeout = setTimeout(function(){mainModal.hide()},3000);--%>
+<%--        </script>--%>
+<%--</c:if>--%>
 
 <script>
     (function () {

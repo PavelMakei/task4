@@ -4,7 +4,10 @@ import by.makei.shop.exception.CommandException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.CommandType;
 import by.makei.shop.model.command.Router;
+import by.makei.shop.model.service.ProductService;
+import by.makei.shop.model.service.impl.ProductServiceImpl;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,10 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Map;
 
-
-import static by.makei.shop.model.command.AttributeName.COMMAND;
-import static by.makei.shop.model.command.AttributeName.ERROR_MESSAGE;
+import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.command.AttributeName.TYPES_MAP;
 
 
 @WebServlet(name = "Controller", value = "/controller")
@@ -36,7 +39,7 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.log(Level.DEBUG, "controller " + request.getMethod());
+        logger.log(Level.DEBUG, "controller {}", request.getMethod());
         processRequest(request, response);
     }
 

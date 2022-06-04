@@ -40,8 +40,8 @@ public class GoToUpdateProductCommand implements Command {
             MessageReinstall.extractAndSetMessage(PHOTO_MESSAGE,request);
             MessageReinstall.extractAndSetMessage(DATA_MESSAGE,request);
 
-            request.setAttribute(BRANDS_MAP, brands);
-            request.setAttribute(TYPES_MAP, types);
+//            request.setAttribute(BRANDS_MAP, brands);
+//            request.setAttribute(TYPES_MAP, types);
             router.setCurrentPage(UPDATE_PRODUCT);
 
         } catch (ServiceException e) {

@@ -90,11 +90,11 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-                            <c:if test="${!empty message}">
-                                <p style="color: goldenrod">
-                                    <fmt:message key="${message}"></fmt:message>
-                                </p>
-                            </c:if>
+<%--                            <c:if test="${!empty message}">--%>
+<%--                                <p style="color: goldenrod">--%>
+<%--                                    <fmt:message key="${message}"></fmt:message>--%>
+<%--                                </p>--%>
+<%--                            </c:if>--%>
                             ${head_label}
                         </div>
                         <div class="card-body bg-dark bg-opacity-75">
@@ -473,6 +473,8 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
+<%@include file="../parts/modalwindow.jsp" %>
+
 <script>
     (function () {
         'use strict'

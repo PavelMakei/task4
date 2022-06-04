@@ -3,6 +3,7 @@ package by.makei.shop.model.entity;
 import java.util.Arrays;
 
 public class Product extends AbstractEntity{
+    private static final long serialVersionUID = -630535397616720156L;
 
     private int id;
     private int brandId;

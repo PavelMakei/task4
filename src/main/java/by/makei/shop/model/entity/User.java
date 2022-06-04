@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class User extends AbstractEntity{
+    private static final long serialVersionUID = -3228469065808083964L;
     private int id;
     private String firstName;
     private String lastName;

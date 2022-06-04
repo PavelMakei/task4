@@ -72,8 +72,8 @@ public class GoToMainCommand implements Command {
             request.setAttribute(PRODUCTS_QUANTITY_MAP, productQuantityMap);
             brands = productService.findAllBrandsMap();
             types = productService.findAllTypesMap();
-            request.setAttribute(BRANDS_MAP, brands);
-            request.setAttribute(TYPES_MAP, types);
+//            request.setAttribute(BRANDS_MAP, brands);
+//            request.setAttribute(TYPES_MAP, types);
             request.setAttribute(ORDER_ARRAY, new LinkedList<String>(orderByParamQuery.keySet()));
 
             for (Map.Entry<String, String> entry : searchAttr.entrySet()) {

@@ -3,8 +3,7 @@ package by.makei.shop.model.command;
 public class Router {
     public enum Type {
         FORWARD,
-        REDIRECT,
-        ERROR
+        REDIRECT
     }
 
     private String currentPage = PagePath.INDEX;
