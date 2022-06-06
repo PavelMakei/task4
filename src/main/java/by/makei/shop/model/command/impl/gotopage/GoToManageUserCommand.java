@@ -31,6 +31,7 @@ public class GoToManageUserCommand implements Command {
         List<User> userList;
         HttpSession session = request.getSession();
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
+        logger.log(Level.DEBUG, "GoToManageUserCommand currentPage :{}", currentPage);
         session.setAttribute(CURRENT_PAGE, currentPage);
         ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
         accessLevelList.remove(AccessLevel.GUEST);

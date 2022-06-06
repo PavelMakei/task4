@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
         String searchWord = "";
         String orderBy = "";
         String orderQuery = "";
-        int in_stock = 0;
+        int inStock = 0;
         int totalProductsFound = 0;
         int totalPages = 0;
 
@@ -188,7 +188,7 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }
                 case SEARCH_IN_STOCK -> {
-                    in_stock = Integer.parseInt(entry.getValue());
+                    inStock = Integer.parseInt(entry.getValue());
                 }
             }
         }
@@ -206,7 +206,7 @@ public class ProductServiceImpl implements ProductService {
         }
         try {
             //отправить запрос в ДАО на количество удовлетворяющих записей
-            totalProductsFound = productDao.countBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchWord, in_stock);
+            totalProductsFound = productDao.countBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchWord, inStock);
             if (totalProductsFound > 0) {
                 totalPages = totalProductsFound / PRODUCTS_ON_PAGE;
                 if ((totalProductsFound % PRODUCTS_ON_PAGE) > 0) {
@@ -218,10 +218,10 @@ public class ProductServiceImpl implements ProductService {
             if (searchPage > totalPages) {
                 searchPage = totalPages;
             }
-            //TODO + 1?
-            int searchTo = PRODUCTS_ON_PAGE;
+
+            int searchNextNumberOfProducts = PRODUCTS_ON_PAGE;
             int searchFrom = (searchPage - 1) * PRODUCTS_ON_PAGE;
-            productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchTo, searchWord, orderQuery, in_stock);
+            productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchNextNumberOfProducts, searchWord, orderQuery, inStock);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService error while findProductsByParam. {}", e.getMessage());
             throw new ServiceException(e);

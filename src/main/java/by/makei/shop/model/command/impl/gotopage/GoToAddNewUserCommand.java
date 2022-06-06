@@ -13,14 +13,12 @@ import static by.makei.shop.model.command.PagePath.REGISTRATION;
 public class GoToAddNewUserCommand implements Command {
 
     public Router execute(HttpServletRequest request) throws CommandException {
-
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
-        logger.log(Level.DEBUG,"GoToAddNewUserPage currentPage :{}",currentPage);
-        request.getSession().setAttribute(CURRENT_PAGE,currentPage);
+        logger.log(Level.DEBUG, "GoToAddNewUserPage currentPage :{}", currentPage);
+        request.getSession().setAttribute(CURRENT_PAGE, currentPage);
         Router router = new Router();
         router.setRedirectType();
         router.setCurrentPage(REGISTRATION);
-
         return router;
     }
 

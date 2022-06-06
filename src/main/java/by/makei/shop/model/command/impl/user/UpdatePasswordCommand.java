@@ -16,14 +16,12 @@ import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.AttributeName.ACTIVATION_CODE;
-import static by.makei.shop.model.command.PagePath.ERROR500;
-import static by.makei.shop.model.command.PagePath.PASSWORD_RECOVERY;
+import static by.makei.shop.model.command.PagePath.*;
 
 public class UpdatePasswordCommand implements Command {
     private static final String ERROR = "UpdatePasswordCommand Service exception : ";
     private static final String PASSWORD_UPDATED = "password.updated";
     private static final String PASSWORD_NOT_UPDATED = "password.not.updated";
-
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -47,7 +45,7 @@ public class UpdatePasswordCommand implements Command {
                 //отправить мыло
                 //авторизовать юзера?
                 request.setAttribute(MESSAGE, PASSWORD_UPDATED);
-                router.setCurrentPage(PASSWORD_RECOVERY);
+                router.setCurrentPage(LOGINATION);
 
             }else {
                 logger.log(Level.INFO, "UpdatePasswordCommand incorrect input data");
@@ -62,7 +60,6 @@ public class UpdatePasswordCommand implements Command {
             logger.log(Level.ERROR, "UpdatePasswordCommand command error. {}", e.getMessage());
             request.setAttribute(ERROR_MESSAGE, ERROR + e);
             router.setCurrentPage(ERROR500);
-//            TODO !!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         return router;
         }

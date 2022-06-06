@@ -24,6 +24,9 @@ public class ProxyConnection implements Connection {// нужен доступ �
 
     @Override
     public void close() throws SQLException {
+        if (!this.getAutoCommit()) {
+            this.setAutoCommit(true);
+        }
         DbConnectionPool.getInstance().returnConnection(this);
     }
 

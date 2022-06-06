@@ -24,6 +24,9 @@
     <title>Title</title>
 </head>
 <body>
+<div class="header">
+    <%@include file="header.jsp" %>
+</div> <!-- end of header -->
 <form class="row g-3 needs-validation" novalidate>
     <div class="col-md-4">
         <label for="validationCustom01" class="form-label">Имя</label>

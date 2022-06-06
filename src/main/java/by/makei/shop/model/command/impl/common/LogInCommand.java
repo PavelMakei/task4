@@ -3,11 +3,11 @@ package by.makei.shop.model.command.impl.common;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.PagePath;
+import by.makei.shop.model.command.RedirectMessage;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.service.impl.UserServiceImpl;
-import by.makei.shop.model.validator.ValidatorPattern;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class LogInCommand implements Command {
     private static final String ERROR = "LoginCommand Service exception : ";
@@ -37,11 +38,14 @@ public class LogInCommand implements Command {
                 session.setAttribute(ACCESS_LEVEL, user.getAccessLevel());
                 logger.log(Level.DEBUG,"attributes for user {} were set.", user);
                 router.setRedirectType();//f5 defence
-                router.setCurrentPage(INDEX);
+                router.setRedirectType();
+                router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+USER_WELCOME);
+
+//                router.setCurrentPage(INDEX);
 
             }else {
                 logger.log(Level.INFO,"user wasn't found.");
-                request.setAttribute(INVALID_LOGIN_OR_PASSWORD_MESSAGE, INVALID_LOGIN_OR_PASSWORD_MESSAGE);
+                request.setAttribute(MESSAGE, RedirectMessage.INVALID_LOGIN_OR_PASSWORD);
                 router.setCurrentPage(PagePath.LOGINATION);
             }
 

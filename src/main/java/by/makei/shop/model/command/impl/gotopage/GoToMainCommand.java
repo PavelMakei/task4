@@ -7,9 +7,9 @@ import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
+import by.makei.shop.util.MessageReinstall;
 import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
@@ -18,7 +18,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.model.command.PagePath.ERROR500;
+import static by.makei.shop.model.command.PagePath.MAIN;
 import static by.makei.shop.model.validator.DefaultSearchParam.*;
 
 public class GoToMainCommand implements Command {
@@ -27,9 +28,9 @@ public class GoToMainCommand implements Command {
     private static final Map<String, String> orderByParamQuery = new LinkedHashMap();
 
     static {
-        orderByParamQuery.put(ORDER_BY_PRICE_UP, PRICE );
+        orderByParamQuery.put(ORDER_BY_PRICE_UP, PRICE);
         orderByParamQuery.put(ORDER_BY_PRICE_DN, PRICE + " " + DESC);
-        orderByParamQuery.put(ORDER_BY_POWER_UP, POWER );
+        orderByParamQuery.put(ORDER_BY_POWER_UP, POWER);
         orderByParamQuery.put(ORDER_BY_POWER_DN, POWER + " " + DESC);
         orderByParamQuery.put(ORDER_BY_NAME_UP, PRODUCT_NAME);
         orderByParamQuery.put(ORDER_BY_NAME_DN, PRODUCT_NAME + " " + DESC);
@@ -37,17 +38,11 @@ public class GoToMainCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        Map<String, String> brands;
-        Map<String, String> types;
         Map<Product, String> productQuantityMap;
-        Map<String,String[]> inputParams;
         Router router = new Router();
         ProductService productService = ProductServiceImpl.getInstance();
-        PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
-        inputParams = request.getParameterMap();
-        if(inputParams.containsKey(MESSAGE)){
-            request.setAttribute(MESSAGE,inputParams.get(MESSAGE)[0]);
-        }
+        String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
+        logger.log(Level.DEBUG, "GotoMainCommand currentPage :{}", currentPage);
 
         Map<String, String> searchAttr = new HashMap();
         searchAttr.put(SEARCH_BRAND_ID, DEFAULT_BRAND_ID);
@@ -70,16 +65,12 @@ public class GoToMainCommand implements Command {
 //загрузить продукты
             productQuantityMap = productService.findProductsByParam(searchAttr, orderByParamQuery);
             request.setAttribute(PRODUCTS_QUANTITY_MAP, productQuantityMap);
-            brands = productService.findAllBrandsMap();
-            types = productService.findAllTypesMap();
-//            request.setAttribute(BRANDS_MAP, brands);
-//            request.setAttribute(TYPES_MAP, types);
             request.setAttribute(ORDER_ARRAY, new LinkedList<String>(orderByParamQuery.keySet()));
-
+//загрузить аттрибуты поиска в реквест
             for (Map.Entry<String, String> entry : searchAttr.entrySet()) {
                 request.setAttribute(entry.getKey(), entry.getValue());
             }
-
+//            MessageReinstall.extractAndSetMessage(MESSAGE,request);
             router.setCurrentPage(MAIN);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToMain command error. {}", e.getMessage());

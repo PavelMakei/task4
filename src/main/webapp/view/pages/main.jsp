@@ -69,10 +69,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href=${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href=${path}icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
+
     <title>${main_page_label}</title>
 
     <%-----------------Prevent to return to previous page---------------%>
@@ -571,7 +572,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-grid gap-1">
-                                                    <button type="button" class="btn btn-primary btn-warning"
+                                                    <button type="button" class="btn btn-warning"
                                                             <c:if test="${i == 0}">
                                                                 disabled
                                                             </c:if>

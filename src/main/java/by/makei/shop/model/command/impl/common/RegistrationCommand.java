@@ -22,6 +22,9 @@ import java.util.Optional;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
+import static by.makei.shop.model.command.PagePath.GO_TO_MAIN;
+import static by.makei.shop.model.command.RedirectMessage.REDIRECT_MESSAGE;
+import static by.makei.shop.model.command.RedirectMessage.USER_WELCOME;
 
 public class RegistrationCommand implements Command {
     private static final String LOCALE_SPLIT_REGEXP = "_";
@@ -65,7 +68,8 @@ public class RegistrationCommand implements Command {
                     router.setCurrentPage(ERROR500);
                     return router;
                 }
-                router.setCurrentPage(PagePath.INDEX);
+                router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+USER_WELCOME);
+                router.setRedirectType();
                 sendRegistrationEmail(request);
                 session.removeAttribute(SESS_ACTIVATION_CODE);
                 session.removeAttribute(SESS_EMAIL);

@@ -22,8 +22,8 @@
 
 <fmt:message key="login" var="login_label"/>
 <fmt:message key="enter.login" var="login_placeholder"/>
-<fmt:message key="login.welcome" var="login_page_welcome"/>
-<fmt:message key="incorrect.login" var="incorrect_login_message"/>
+<fmt:message key="login.enter.welcome" var="login_page_welcome"/>
+<%--<fmt:message key="invalid.login" var="incorrect_login_message"/>--%>
 <fmt:message key="password" var="password_label"/>
 <fmt:message key="enter.password" var="password_placeholder"/>
 <fmt:message key="return.main.page" var="return_link_label"/>
@@ -39,6 +39,7 @@
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
+
     <title>${login_label}</title>
 
     <%-----------------Prevent to return to previous page---------------%>
@@ -69,12 +70,12 @@
                         <div class="card-header bg-light" style="text-align:center; color: black; font-size: large">
                             ${login_page_welcome}</div>
 
-                        <c:if test="${!empty invalid_login_or_password_message}">
-                            <div class="bg-dark bg-opacity-75"
-                                 type="text" style="text-align:center;color: red"
-                            >${incorrect_login_message}
-                            </div>
-                        </c:if>
+<%--                        <c:if test="${!empty invalid_login_or_password_message}">--%>
+<%--                            <div class="bg-dark bg-opacity-75"--%>
+<%--                                 type="text" style="text-align:center;color: red"--%>
+<%--                            >${incorrect_login_message}--%>
+<%--                            </div>--%>
+<%--                        </c:if>--%>
 
                         <div class="card-body bg-dark bg-opacity-75">
                             <form class="form-horizontal needs-validation" novalidate method="post"
@@ -96,7 +97,7 @@
                                             </div>
                                 <%------------------------------------------------forgot--------------------------------%>
                                             <div class="forgot-password mb-2">
-                                                <a href="${path}/controller?command=!!!!!!!!!!!!!!!!!!!!!!!!!!!!" <%--TODO!!!!--%>
+                                                <a href="${path}/view/pages/user/passwordrecovery.jsp"
                                                    style="color: goldenrod">${forgot_password_label}</a>
                                             </div>
                                         </div>
@@ -146,6 +147,7 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
+<%@include file="parts/modalwindow.jsp" %>
 <script>
     (function () {
         'use strict'

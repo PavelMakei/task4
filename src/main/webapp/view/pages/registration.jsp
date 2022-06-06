@@ -75,11 +75,11 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold" style="text-align:center; color: black;"
                         >
-                            <c:if test="${!empty message}">
-                                <p style="color: goldenrod">
-                                    <fmt:message key="${message}"></fmt:message>
-                                </p>
-                            </c:if>
+                            <%--                            <c:if test="${!empty message}">--%>
+                            <%--                                <p style="color: goldenrod">--%>
+                            <%--                                    <fmt:message key="${message}"></fmt:message>--%>
+                            <%--                                </p>--%>
+                            <%--                            </c:if>--%>
                             ${registration_label}
                         </div>
                         <div class="card-body bg-dark bg-opacity-75">
@@ -316,8 +316,13 @@
                                                 <button class="btn btn-warning" style="color: white" type="submit"
                                                         onclick="document.getElementById('command_to_send').value ='registration_send_activation_code';
                                                                    document.getElementById('activation_code').removeAttribute('required');
-                                                                   document.getElementById('accept_check').removeAttribute('required')"
+                                                                   document.getElementById('accept_check').removeAttribute('required')
+                                                                   document.getElementById('btn_update_spinner').remove();
+"
                                                 >
+                                                    <span class="spinner-border spinner-border-sm" role="status"
+                                                          aria-hidden="true" id="btn_get_code_spinner"
+                                                          style="visibility: hidden"></span>
                                                     ${get_activation_code_button}
                                                 </button>
                                             </div>
@@ -329,7 +334,8 @@
                                 <div class="form-group" style="color: white">
                                     <div class="input-group mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input no-validate" type="checkbox" value="" id="accept_check"
+                                            <input class="form-check-input no-validate" type="checkbox" value=""
+                                                   id="accept_check"
                                                    required>
                                             <label class="form-check-label" for="accept_check">
                                                 ${accept_rules_label}
@@ -340,8 +346,13 @@
                                 <%--                                ---------------------------button---------------------------------%>
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning "
-                                            style="color: white">
-                                        ${update_button}</button>
+                                            style="color: white"
+                                            onclick=" document.getElementById('btn_get_code_spinner').remove();"
+                                    >
+                                        ${update_button}
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                                              id="btn_update_spinner" style="visibility: hidden"></span>
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -353,6 +364,8 @@
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
 
+<%@include file="parts/modalwindow.jsp" %>
+
 <script>
     (function () {
         'use strict'
@@ -363,6 +376,13 @@
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
+                    } else {
+                        if (document.getElementById('btn_update_spinner')) {
+                            document.getElementById('btn_update_spinner').style.visibility = 'visible';
+                        }
+                        if (document.getElementById('btn_get_code_spinner')) {
+                            document.getElementById('btn_get_code_spinner').style.visibility = 'visible';
+                        }
                     }
                     form.classList.add('was-validated')
                 }, false)

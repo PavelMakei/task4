@@ -46,7 +46,7 @@ public class UpdateProductDataCommand implements Command {
             && parameterValidator.ifProductNameCorrectAndNotExistsInDb(productDataMap)) {
                 productService.updateProductData(productDataMap);
                 router.setRedirectType();
-                router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_DATA_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));
+                router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));
             }else {
                 logger.log(Level.INFO, "UpdateProductDataCommand incorrect data");
                 Map<String,String> brands;
@@ -55,7 +55,7 @@ public class UpdateProductDataCommand implements Command {
                 types = productService.findAllTypesMap();
                 request.setAttribute(BRANDS_MAP, brands);
                 request.setAttribute(TYPES_MAP, types);
-                request.setAttribute(DATA_MESSAGE,UPDATE_FAIL);
+                request.setAttribute(MESSAGE,UPDATE_FAIL);
                 for(Map.Entry<String,String> entry: productDataMap.entrySet()){
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }

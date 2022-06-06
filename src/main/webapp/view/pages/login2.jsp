@@ -37,9 +37,9 @@
 </head>
 <body>
 <div class="wrapper">
-    <%--    <div class="header">--%>
-    <%--        <%@include file="header.jsp" %>--%>
-    <%--    </div> <!-- end of header -->--%>
+        <div class="header">
+            <%@include file="header.jsp" %>
+        </div> <!-- end of header -->
     <div class="content">
         <div class="container">
             <div class="row justify-content-center">
@@ -47,12 +47,12 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light" style="text-align:center; color: black; font-size: large">
                             <fmt:message
-                                    key="login.welcome"/></div>
+                                    key="login.enter.welcome"/></div>
 
                         <c:if test="${!empty invalid_login_or_password_message}">
                             <div class="bg-dark bg-opacity-75"
                                  type="text" style="text-align:center;color: red"
-                            ><fmt:message key="incorrect.login"/>
+                            ><fmt:message key="invalid.login"/>
                             </div>
                         </c:if>
 

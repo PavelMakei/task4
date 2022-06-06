@@ -46,11 +46,11 @@ public class UpdatePhotoCommand implements Command {
             if (parameterValidator.validatePhoto(productDataMap, bytesPhoto)) {
                 productService.updatePhoto(productDataMap.get(ID), bytesPhoto);
                 router.setRedirectType();
-                router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_PHOTO_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));
+                router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));
             }else {
                 logger.log(Level.INFO, "UpdatePhotoCommand incorrect photo");
                 router.setRedirectType();
-                router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_PHOTO_MESSAGE+UPDATE_FAIL+REDIRECT_ID+request.getParameter(ID));
+                router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_MESSAGE+UPDATE_FAIL+REDIRECT_ID+request.getParameter(ID));
             }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToUpdateProductCommand. {}", e.getMessage());

@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.ERROR500;
-import static by.makei.shop.model.command.PagePath.SHOW_CART;
+import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class AddToCartCommand implements Command {
 
@@ -52,9 +52,9 @@ public class AddToCartCommand implements Command {
                     router.setCurrentPage(ERROR500);
                     return router;
                 }
-                for (Map.Entry entry : productQuantityMapFromDB.entrySet()) {
-                    product = (Product) entry.getKey();
-                    quantityInDb = Integer.parseInt((String) entry.getValue());
+                for (Map.Entry<Product, String> entry : productQuantityMapFromDB.entrySet()) {
+                    product = entry.getKey();
+                    quantityInDb = Integer.parseInt(entry.getValue());
                 }
                 if (cart.getProductQuantity().containsKey(product)) {
                     currentQuantity = cart.getProductQuantity().get(product);
@@ -63,24 +63,18 @@ public class AddToCartCommand implements Command {
                 if (currentQuantity > Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY) {
                     logger.log(Level.INFO, "AddToCartCommand asked product quantity more then " + Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY);
                     currentQuantity = Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY;
-                    message = "You can not buy more then " + Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY; //TODO message
+                    message = PRODUCT_MAXIMUM_REACHED;
                 } else if (currentQuantity > quantityInDb) {
                     logger.log(Level.INFO, "AddToCartCommand asked product quantity more then in stock");
                     currentQuantity = quantityInDb;
-                    message = "Maximum of product in stock added to cart"; //TODO message
+                    message = NO_MORE_IN_STOCK;
                 } else {
-                    message = "Product added to cart"; //TODO message
+                    message = PRODUCT_ADDED_TO_CARD;
                 }
                 cart.setProductQuantity(product, currentQuantity);
                 session.setAttribute(SESS_CART, cart);
-                //TODO идём на страницу простмотра ордеров
-//                request.setAttribute(MESSAGE, message);
-                session.setAttribute(SESS_MESSAGE,message);
-                //////////
                 router.setRedirectType();
-                /////////
-
-                router.setCurrentPage(SHOW_CART);
+                router.setCurrentPage(GO_TO_SHOW_CART + REDIRECT_MESSAGE + message);
                 //При покупке открывать отдельное мелкое окно и в него выводить результат операции
                 //выполнение команды в родительском окне по переходу в корзину?
             }

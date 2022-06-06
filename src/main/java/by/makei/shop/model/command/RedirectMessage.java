@@ -12,6 +12,14 @@ public enum RedirectMessage {
     public static final String UPDATE_FAIL  = "update.fail";
     public static final String USER_MONEY_AMOUNT_UPDATED = "user.money.amount.updated";
     public static final String USER_MONEY_AMOUNT_UPDATING_FAIL = "user.money.amount.updating.fail";
+    public static final String INVALID_LOGIN_OR_PASSWORD = "invalid.login";
+    public static final String USER_WELCOME = "user.welcome";
+    public static final String USER_GOODBYE = "user.goodbye";
+    public static final String PRODUCT_MAXIMUM_REACHED = "product.maximum.reached";
+    public static final String PRODUCT_ADDED_TO_CARD = "product.added.to.cart";
+    public static final String NO_MORE_IN_STOCK = "no.more.in.stock";
+
+
 
 
 }

@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.model.command.PagePath.ERROR500;
+import static by.makei.shop.model.command.PagePath.UPDATE_PRODUCT;
 
 public class GoToUpdateProductCommand implements Command {
     private static final String ERROR = "GoToUpdateProductCommand Service exception : ";
@@ -27,21 +28,12 @@ public class GoToUpdateProductCommand implements Command {
         logger.log(Level.DEBUG, "GoToUpdateProductCommand get product id :{}", productId);
         ProductService productService = ProductServiceImpl.getInstance();
         Map<Product, String> productQuantity = new HashMap<>();
-        Map<String, String> brands;
-        Map<String, String> types;
         Router router = new Router();
         try {
             productQuantity = productService.findMapProductQuantityById(productId);
-            brands = productService.findAllBrandsMap();
-            types = productService.findAllTypesMap();
             request.setAttribute(PRODUCT, productQuantity.keySet().toArray()[0]);
             request.setAttribute(QUANTITY, productQuantity.values().toArray()[0]);
-            //TODO add MESSAGE
-            MessageReinstall.extractAndSetMessage(PHOTO_MESSAGE,request);
-            MessageReinstall.extractAndSetMessage(DATA_MESSAGE,request);
-
-//            request.setAttribute(BRANDS_MAP, brands);
-//            request.setAttribute(TYPES_MAP, types);
+            MessageReinstall.extractAndSetMessage(MESSAGE, request);
             router.setCurrentPage(UPDATE_PRODUCT);
 
         } catch (ServiceException e) {

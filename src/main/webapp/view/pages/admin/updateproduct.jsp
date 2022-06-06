@@ -75,6 +75,7 @@
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
+    <script src="${path}/bootstrap/js/bootstrap.min.js"></script>
 
     <%-----------------Prevent to return to previous page---------------%>
     <script>
@@ -105,11 +106,11 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-                            <c:if test="${!empty photo_message}">
-                                <p style="color: goldenrod">
-                                    <fmt:message key="${photo_message}"></fmt:message>
-                                </p>
-                            </c:if>
+<%--                            <c:if test="${!empty photo_message}">--%>
+<%--                                <p style="color: goldenrod">--%>
+<%--                                    <fmt:message key="${photo_message}"></fmt:message>--%>
+<%--                                </p>--%>
+<%--                            </c:if>--%>
                             ${photo_of_product_label}
                             ${local_product_id}
                         </div>
@@ -181,11 +182,11 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-                            <c:if test="${!empty data_message}">
-                                <p style="color: goldenrod">
-                                    <fmt:message key="${data_message}"></fmt:message>
-                                </p>
-                            </c:if>
+<%--                            <c:if test="${!empty data_message}">--%>
+<%--                                <p style="color: goldenrod">--%>
+<%--                                    <fmt:message key="${data_message}"></fmt:message>--%>
+<%--                                </p>--%>
+<%--                            </c:if>--%>
                             ${data_of_product_label}
                             ${local_product_id}
                         </div>
@@ -539,6 +540,7 @@
         <div class="footer" style="color: white"><ft:footerTag/></div>
     </div>
 </div>
+<%@include file="../parts/modalwindow.jsp" %>
 
 <script>
     (function () {

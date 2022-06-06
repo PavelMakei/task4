@@ -7,7 +7,6 @@ import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
-import static by.makei.shop.model.command.AttributeName.CURRENT_CONTEXT_PATH;
 import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
 import static by.makei.shop.model.command.PagePath.LOGINATION;
 
@@ -15,12 +14,10 @@ public class GoToLoginCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
-        logger.log(Level.DEBUG,"GoToLogination currentPage :{}",currentPage);
-        request.getSession().setAttribute(CURRENT_PAGE,currentPage);
+        logger.log(Level.DEBUG, "GoToLogination currentPage :{}", currentPage);
+        request.getSession().setAttribute(CURRENT_PAGE, currentPage);
         Router router = new Router();
-//        String contextPath = request.getSession().getAttribute(CURRENT_CONTEXT_PATH).toString();
         router.setCurrentPage(LOGINATION);
         router.setRedirectType();
         return router;

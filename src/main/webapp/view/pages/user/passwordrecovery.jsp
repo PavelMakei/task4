@@ -23,7 +23,7 @@
 <fmt:message key="get.activation.code" var="get_activation_code_button"/>
 <fmt:message key="enter.new.password" var="password_label"/>
 <fmt:message key="password.placeholder" var="password_placeholder"/>
-<fmt:message key="change.password" var="update_update_button"/>
+<fmt:message key="change.password" var="update_password_button"/>
 
 <html>
 <head>
@@ -60,18 +60,18 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold" style="text-align:center;"
                         >
-                            <c:if test="${!empty message}">
-                                <p style="color: goldenrod">
-                                    <fmt:message key="${message}"></fmt:message>
-                                </p>
-                            </c:if>
+<%--                            <c:if test="${!empty message}">--%>
+<%--                                <p style="color: goldenrod">--%>
+<%--                                    <fmt:message key="${message}"></fmt:message>--%>
+<%--                                </p>--%>
+<%--                            </c:if>--%>
                             ${password_recovery_label}
                         </div>
                         <div class="card-body bg-dark bg-opacity-75">
 
                             <form class="form-horizontal needs-validation" method="post"
                                   action="${path}/controller" novalidate>
-                                <input id="command_to_send" type="hidden" name="command" value="update_update">
+                                <input id="command_to_send" type="hidden" name="command" value="update_password">
                                 <%--                                ---------------------------email----------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="email" class="cols-sm-2 control-label"
@@ -134,8 +134,9 @@
                                                 <button class="btn btn-warning" style="color: white" type="submit"
                                                         onclick="document.getElementById('command_to_send').value ='recovery_send_activation_code';
                                                                    document.getElementById('activation_code').removeAttribute('required');
-                                                                   document.getElementById('password').removeAttribute('required')"
+                                                                   document.getElementById('password').removeAttribute('required');"
                                                 >
+                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="btn_spinner" style="visibility: hidden"></span>
                                                     ${get_activation_code_button}
                                                 </button>
                                             </div>
@@ -179,7 +180,7 @@
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning "
                                             style="color: white">
-                                        ${update_update_button}</button>
+                                        ${update_password_button}</button>
                                 </div>
                             </form>
                         </div>
@@ -190,6 +191,7 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
+<%@include file="../parts/modalwindow.jsp" %>
 
 <script>
     (function () {
@@ -201,6 +203,8 @@
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
+                    }else {
+                        document.getElementById('btn_spinner').style.visibility = 'visible';
                     }
                     form.classList.add('was-validated')
                 }, false)

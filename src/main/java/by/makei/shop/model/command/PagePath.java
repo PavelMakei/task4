@@ -18,6 +18,7 @@ public enum PagePath {
     public static final String GO_TO_ADD_NEW_PRODUCT = "/controller?command=go_to_add_new_product";
     public static final String GO_TO_UPDATE_PRODUCT = "/controller?command=go_update_product";
     public static final String GO_TO_MAIN = "/controller?command=go_to_main";
+    public static final String GO_TO_SHOW_CART = "/controller?command=go_to_show_cart";
 
 
 

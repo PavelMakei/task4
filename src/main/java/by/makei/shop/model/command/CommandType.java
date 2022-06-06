@@ -43,6 +43,7 @@ public enum CommandType {
     UPDATE_PASSWORD(new UpdatePasswordCommand()),
     DEPOSIT_MONEY(new DepositMoneyCommand()),
     GO_TO_DEPOSIT_MONEY(new GoToDepositMoneyCommand()),
+    GO_TO_SHOW_CART(new GoToShowCartCommand()),
     ADD_TO_CART(new AddToCartCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 
