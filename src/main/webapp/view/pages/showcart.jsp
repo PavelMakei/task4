@@ -132,19 +132,43 @@
 
                                     <div class="input-group mb-0">
                                         <button class="btn btn-primary col-4"
-                                                style="margin-left: 1px;">${buy_button}</button>
+                                                style="margin-left: 1px;"
+                                                onclick="
+                                                        if(!window.opener || window.opener.closed) {
+                                                        var url = (window.location !== window.parent.location)
+                                                        ? document.referrer
+                                                        : document.location.href;
+                                                        var domain = url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
+                                                        var protocol = url.split('//')[0];
+                                                        window.open(protocol+'//'+domain+'/controller?command=buy','_blank','location=yes,scrollbars=yes,status=yes,menubar=yes,resizable=yes,fullscreen=yes');}
+                                                        else {window.opener.goToBuy()}
+                                                        window.close();
+                                                        "
+
+                                        >${buy_button}</button>
                                         <button class="btn btn-warning col-4" style="color: white"
                                                 onclick="
                                                     if(!window.opener || window.opener.closed) {
-                                                        var url = (window.location != window.parent.location)
+                                                        var url = (window.location !== window.parent.location)
                                                              ? document.referrer
-                                                               : document.location.href;
+                                                             : document.location.href;
                                                         var domain = url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
                                                         var protocol = url.split('//')[0];
                                                     window.open(protocol+'//'+domain, '_blank', 'location=yes,scrollbars=yes,status=yes,menubar=yes,resizable=yes,fullscreen=yes')}
                                                     window.close()"
                                         >${continue_shopping_button}</button>
-                                        <button class="btn btn-danger col-4">${clear_cart_button}</button>
+                                        <button class="btn btn-danger col-4"
+                                                onclick="
+                                                        if(!window.opener || window.opener.closed) {
+                                                        var url = (window.location !== window.parent.location)
+                                                        ? document.referrer
+                                                        : document.location.href;
+                                                        var domain = url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
+                                                        var protocol = url.split('//')[0];
+                                                        window.open(protocol+'//'+domain+'/controller?command=clear_cart','_blank','location=yes,scrollbars=yes,status=yes,menubar=yes,resizable=yes,fullscreen=yes');}
+                                                        else {window.opener.clearCart()}
+                                                        window.close();
+                                                        ">${clear_cart_button}</button>
 
                                     </div>
                                 </div>

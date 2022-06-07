@@ -7,10 +7,7 @@ import by.makei.shop.model.command.impl.admin.UpdatePhotoCommand;
 import by.makei.shop.model.command.impl.admin.UpdateProductDataCommand;
 import by.makei.shop.model.command.impl.common.*;
 import by.makei.shop.model.command.impl.gotopage.*;
-import by.makei.shop.model.command.impl.user.DepositMoneyCommand;
-import by.makei.shop.model.command.impl.user.UpdatePasswordCommand;
-import by.makei.shop.model.command.impl.user.RecoverySendActivationCode;
-import by.makei.shop.model.command.impl.user.UpdateProfileCommand;
+import by.makei.shop.model.command.impl.user.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -45,6 +42,7 @@ public enum CommandType {
     GO_TO_DEPOSIT_MONEY(new GoToDepositMoneyCommand()),
     GO_TO_SHOW_CART(new GoToShowCartCommand()),
     ADD_TO_CART(new AddToCartCommand()),
+    CLEAR_CART(new ClearCartCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 
     private static final Logger logger = LogManager.getLogger();

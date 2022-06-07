@@ -19,6 +19,7 @@ public enum RedirectMessage {
     public static final String PRODUCT_ADDED_TO_CARD = "product.added.to.cart";
     public static final String NO_MORE_IN_STOCK = "no.more.in.stock";
 
+    public static final String CART_IS_EMPTY = "cart.is.empty";
 
 
 
