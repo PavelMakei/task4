@@ -4,6 +4,7 @@ import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.connectionpool.DbConnectionPool;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
+import by.makei.shop.model.validator.ValidatorPattern;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -14,8 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import static by.makei.shop.model.command.AttributeName.BRANDS_MAP;
-import static by.makei.shop.model.command.AttributeName.TYPES_MAP;
+import static by.makei.shop.model.command.AttributeName.*;
 
 @WebListener
 public class ServletContextListenerImpl implements ServletContextListener {
@@ -36,6 +36,7 @@ public class ServletContextListenerImpl implements ServletContextListener {
             types = productService.findAllTypesMap();
             servletContext.setAttribute(BRANDS_MAP, brands);
             servletContext.setAttribute(TYPES_MAP, types);
+            servletContext.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
 //            throw new ServiceException("TEST REASON");
         } catch (ServiceException e) {
             //continue has no sense. Stop program

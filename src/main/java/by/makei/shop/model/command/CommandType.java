@@ -43,6 +43,8 @@ public enum CommandType {
     GO_TO_SHOW_CART(new GoToShowCartCommand()),
     ADD_TO_CART(new AddToCartCommand()),
     CLEAR_CART(new ClearCartCommand()),
+    GO_TO_CHECKOUT(new GoToCheckoutCommand()),
+    CREATE_ORDER(new CreateOrderCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 
     private static final Logger logger = LogManager.getLogger();

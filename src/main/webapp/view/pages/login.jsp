@@ -29,6 +29,7 @@
 <fmt:message key="return.main.page" var="return_link_label"/>
 <fmt:message key="sign.in" var="sign_in_label"/>
 <fmt:message key="forgot.password" var="forgot_password_label"/>
+<fmt:message key="enter.button" var="enter_button"/>
 
 <head>
 
@@ -127,8 +128,8 @@
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary btn-warning"
                                             style="color: white">
-                                        <fmt:message
-                                                key="enter.button"/></button>
+                                        ${enter_button}
+                                        </button>
                                 </div>
 
                                 <%--                        //TODO куда переходить?--%>

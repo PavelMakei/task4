@@ -69,7 +69,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href=${path}icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${path}icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
@@ -515,7 +515,8 @@
                                                                                  value="${current_quantity}"/>
                                                                 <c:if test="${i > sess_cart.maxQuantityOfOneProductToBy}">
                                                                     > 10
-                                                                    <c:set var="max" value="${sess_cart.maxQuantityOfOneProductToBy}"/>
+                                                                    <c:set var="max"
+                                                                           value="${sess_cart.maxQuantityOfOneProductToBy}"/>
                                                                 </c:if>
                                                                 <c:if test="${i < sess_cart.maxQuantityOfOneProductToBy}">
                                                                     ${i}
@@ -689,29 +690,6 @@
         return true;
     }
 </script>
-<script>
-    function goToCart() {
-        window.alert('this is go to cart function');
-    }
-</script>
-<script>
-    function goToBuy(){
-        window.alert('go to buy')
-    }
-</script>
-<script>
-    function clearCart(){
-        window.location.href = '${path}/controller?command=clear_cart';
-    }
-</script>
-
-<%--<script>--%>
-<%--    function inStock1(){--%>
-<%--        document.getElementById('search_in_stock1').setAttribute('checked','')--%>
-<%--        document.getElementById('search_in_stock2').removeAttribute('checked')--%>
-<%--    }--%>
-<%--</script>--%>
-
 </body>
 </html>
 

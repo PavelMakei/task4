@@ -17,6 +17,7 @@ public enum AttributeName {
     public static final String ACTIVATION_CODE = "activation_code";
     public static final String INVALID_ACTIVATION_CODE = "invalid_activation_code";
     public static final String PHONE = "phone";
+    public static final String ADDRESS = "address";
     public static final String INVALID_FIRST_NAME = "invalid_first_name";
     public static final String INVALID_LAST_NAME = "invalid_last_name";
     public static final String INVALID_LOGIN = "invalid_login";

@@ -71,7 +71,7 @@ public class AddToCartCommand implements Command {
                 } else {
                     message = PRODUCT_ADDED_TO_CARD;
                 }
-                cart.setProductQuantity(product, currentQuantity);
+                cart.putProductQuantity(product, currentQuantity);
                 session.setAttribute(SESS_CART, cart);
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_CART + REDIRECT_MESSAGE + message);

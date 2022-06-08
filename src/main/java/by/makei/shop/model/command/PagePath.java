@@ -15,6 +15,7 @@ public enum PagePath {
     public static final String SHOW_PRODUCT = "/view/pages/showproduct.jsp";
     public static final String USERS = "/view/pages/admin/users.jsp";
     public static final String SHOW_CART = "/view/pages/showcart.jsp";
+    public static final String CHECKOUT = "/view/pages/user/checkout.jsp";
     public static final String GO_TO_ADD_NEW_PRODUCT = "/controller?command=go_to_add_new_product";
     public static final String GO_TO_UPDATE_PRODUCT = "/controller?command=go_update_product";
     public static final String GO_TO_MAIN = "/controller?command=go_to_main";

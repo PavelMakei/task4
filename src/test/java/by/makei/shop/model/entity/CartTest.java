@@ -20,7 +20,7 @@ class CartTest {
         for (int id: ID_ARRAY) {
             product = new Product();
             product.setId(id);
-            cart.setProductQuantity(product, PRODUCT_QUANTITY);
+            cart.putProductQuantity(product, PRODUCT_QUANTITY);
         }
     }
 

@@ -7,18 +7,17 @@ import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
-import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
-import static by.makei.shop.model.command.PagePath.DEPOSIT_MONEY;
+import static by.makei.shop.model.command.PagePath.CHECKOUT;
 
-public class GoToDepositMoneyCommand implements Command {
-
+public class GoToCheckoutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
-        logger.log(Level.DEBUG, "GoToDepositMoney currentPage :{}", currentPage);
+        logger.log(Level.DEBUG, "GoToCheckoutCommand currentPage :{}", currentPage);
         Router router = new Router();
-        router.setCurrentPage(DEPOSIT_MONEY);
+        router.setCurrentPage(CHECKOUT);
         router.setRedirectType();
         return router;
     }
+
 }

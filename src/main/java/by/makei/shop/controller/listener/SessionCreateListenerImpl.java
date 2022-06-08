@@ -26,7 +26,7 @@ public class SessionCreateListenerImpl implements HttpSessionListener {
 
         session.setAttribute(LOCALE, DEFAULT_LOCALE);
         session.setAttribute(CURRENT_PAGE, INDEX);
-        session.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
+//        session.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
         session.setAttribute(SESS_CART, new Cart());
 
 

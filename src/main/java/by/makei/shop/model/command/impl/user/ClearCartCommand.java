@@ -15,7 +15,8 @@ public class ClearCartCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
-        session.setAttribute(SESS_CART, new Cart());
+        Cart cart = (Cart) session.getAttribute(SESS_CART);
+        cart.clear();
         Router router = new Router();
         router.setRedirectType();
         router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+CART_IS_EMPTY);
