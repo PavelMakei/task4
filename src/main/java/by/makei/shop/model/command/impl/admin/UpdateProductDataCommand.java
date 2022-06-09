@@ -43,7 +43,7 @@ public class UpdateProductDataCommand implements Command {
 
         try {
             if (parameterValidator.validateAndMarkProductData(productDataMap)
-            && parameterValidator.ifProductNameCorrectAndNotExistsInDb(productDataMap)) {
+            && parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productDataMap)) {
                 productService.updateProductData(productDataMap);
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));

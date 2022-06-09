@@ -41,68 +41,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
     }
 
     @Override
-    public boolean validateAndMarkUserData(Map<String, String> userData) {
-        Map<String, String> invalidParameters = new HashMap<>();
-        AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
-        accessLevelList.remove(AccessLevel.GUEST);
-        boolean isCorrect = true;
-        for (Map.Entry<String, String> entry : userData.entrySet()) {
-            String key = entry.getKey();
-            switch (key) {
-                case FIRST_NAME -> {
-                    if (!validator.isNameValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
-                        isCorrect = false;
-                    }
-                }
-                case LAST_NAME -> {
-                    if (!validator.isNameValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
-                        isCorrect = false;
-                    }
-                }
-                case LOGIN -> {
-                    if (!validator.isLoginValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
-                        isCorrect = false;
-                    }
-                }
-                case EMAIL -> {
-                    if (!validator.isEmailValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
-                        isCorrect = false;
-                    }
-                }
-                case PHONE -> {
-                    if (!validator.isPhoneValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
-                        isCorrect = false;
-                    }
-                }
-                case PASSWORD -> {
-                    if (!validator.isPasswordValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
-                        isCorrect = false;
-                    }
-                }
-                case ID -> {
-                    if (!validator.isInt5Valid(entry.getValue())) {
-                        isCorrect = false;
-                    }
-                }
-                case ACCESS_LEVEL -> {
-                    if (accessLevelList.contains(entry.getValue())) {
-                        isCorrect = false;
-                    }
-                }
-            }
-        }
-        userData.putAll(invalidParameters);
-        return isCorrect;
-    }
-
-    @Override
     public boolean validateAndMarkIfPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException {
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
@@ -189,6 +127,40 @@ public class ParameterValidatorImpl implements ParameterValidator {
         return isCorrect;
     }
 
+    @Override
+    public boolean validateAndMarkIfProductNameCorrectAndNotExistsInDb(Map<String, String> productData) throws ServiceException {
+        boolean isCorrect = true;
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        BaseDao<Product> productDao = ProductDaoImpl.getInstance();
+        try {
+            for (Map.Entry<String, String> entry : productData.entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(PRODUCT_NAME)) {
+                    if (!validator.isProductNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PRODUCT_NAME, INVALID_PRODUCT_NAME);
+                        isCorrect = false;
+                    } else {
+                        Optional<Product> optionalProduct = productDao.findEntityByOneParam(PRODUCT_NAME, entry.getValue());
+                        if (optionalProduct.isPresent()) {
+                            Product product = optionalProduct.get();
+                            if (productData.get(ID) != null && (product.getId() != (Integer.parseInt(productData.get(ID))))) {
+                                invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
+                                isCorrect = false;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "ParameterValidator error while validateProductData {}", e.getMessage());
+            throw new ServiceException("ParameterValidator error while validateProductData", e);
+            //incorrect work of application. It's not a problem of incorrect input to validation data
+            //TODO Создать новый validator exception?
+        }
+        productData.putAll(invalidParameters);
+        return isCorrect;
+    }
 
     @Override
     public boolean validateAndMarkActivationCodeAndSavedEmail(Map<String, String> userData, HttpSession session) {
@@ -255,6 +227,18 @@ public class ParameterValidatorImpl implements ParameterValidator {
             //it's normal work of validator
         }
         return canRead;
+    }
+
+    @Override
+    public boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) {
+        boolean isCorrect = true;
+        Map<String, String> invalidParameters = new HashMap<>();
+        if (!validateJpg(photoJpg)) {
+            invalidParameters.put(INVALID_PHOTO, INVALID_PHOTO);
+            isCorrect = false;
+        }
+        productData.putAll(invalidParameters);
+        return isCorrect;
     }
 
     @Override
@@ -333,6 +317,68 @@ public class ParameterValidatorImpl implements ParameterValidator {
                 }
             }
         }
+        return isCorrect;
+    }
+
+    @Override
+    public boolean validateAndMarkUserData(Map<String, String> userData) {
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
+        accessLevelList.remove(AccessLevel.GUEST);
+        boolean isCorrect = true;
+        for (Map.Entry<String, String> entry : userData.entrySet()) {
+            String key = entry.getKey();
+            switch (key) {
+                case FIRST_NAME -> {
+                    if (!validator.isNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
+                        isCorrect = false;
+                    }
+                }
+                case LAST_NAME -> {
+                    if (!validator.isNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
+                        isCorrect = false;
+                    }
+                }
+                case LOGIN -> {
+                    if (!validator.isLoginValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
+                        isCorrect = false;
+                    }
+                }
+                case EMAIL -> {
+                    if (!validator.isEmailValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
+                        isCorrect = false;
+                    }
+                }
+                case PHONE -> {
+                    if (!validator.isPhoneValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
+                        isCorrect = false;
+                    }
+                }
+                case PASSWORD -> {
+                    if (!validator.isPasswordValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
+                        isCorrect = false;
+                    }
+                }
+                case ID -> {
+                    if (!validator.isInt5Valid(entry.getValue())) {
+                        isCorrect = false;
+                    }
+                }
+                case ACCESS_LEVEL -> {
+                    if (accessLevelList.contains(entry.getValue())) {
+                        isCorrect = false;
+                    }
+                }
+            }
+        }
+        userData.putAll(invalidParameters);
         return isCorrect;
     }
 
@@ -429,53 +475,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
             //TODO Создать новый validator exception?
         }
 
-        productData.putAll(invalidParameters);
-        return isCorrect;
-    }
-
-    @Override
-    public boolean ifProductNameCorrectAndNotExistsInDb(Map<String, String> productData) throws ServiceException {
-        boolean isCorrect = true;
-        Map<String, String> invalidParameters = new HashMap<>();
-        AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        BaseDao<Product> productDao = ProductDaoImpl.getInstance();
-        try {
-            for (Map.Entry<String, String> entry : productData.entrySet()) {
-                String key = entry.getKey();
-                if (key.equals(PRODUCT_NAME)) {
-                    if (!validator.isProductNameValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_PRODUCT_NAME, INVALID_PRODUCT_NAME);
-                        isCorrect = false;
-                    } else {
-                        Optional<Product> optionalProduct = productDao.findEntityByOneParam(PRODUCT_NAME, entry.getValue());
-                        if (optionalProduct.isPresent()) {
-                            Product product = optionalProduct.get();
-                            if (productData.get(ID) != null && (product.getId() != (Integer.parseInt(productData.get(ID))))) {
-                                invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
-                                isCorrect = false;
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "ParameterValidator error while validateProductData {}", e.getMessage());
-            throw new ServiceException("ParameterValidator error while validateProductData", e);
-            //incorrect work of application. It's not a problem of incorrect input to validation data
-            //TODO Создать новый validator exception?
-        }
-        productData.putAll(invalidParameters);
-        return isCorrect;
-    }
-
-    @Override
-    public boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) {
-        boolean isCorrect = true;
-        Map<String, String> invalidParameters = new HashMap<>();
-        if (!validateJpg(photoJpg)) {
-            invalidParameters.put(INVALID_PHOTO, INVALID_PHOTO);
-            isCorrect = false;
-        }
         productData.putAll(invalidParameters);
         return isCorrect;
     }

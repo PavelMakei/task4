@@ -1,6 +1,7 @@
 package by.makei.shop.model.service;
 
 import by.makei.shop.exception.ServiceException;
+import by.makei.shop.model.entity.Cart;
 import by.makei.shop.model.entity.User;
 
 import java.math.BigDecimal;
@@ -27,4 +28,7 @@ public interface UserService {
 
 
     boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws ServiceException;
+
+    boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap);
+
 }

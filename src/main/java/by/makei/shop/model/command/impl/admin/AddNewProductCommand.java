@@ -54,25 +54,17 @@ public class AddNewProductCommand implements Command {
         try {
             if(parameterValidator.validateAndMarkProductData(productDataMap)
                & parameterValidator.validatePhoto(productDataMap, bytesPhoto)
-               & parameterValidator.ifProductNameCorrectAndNotExistsInDb(productDataMap))
+               & parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productDataMap))
             {
                 productService.addNewProduct(productDataMap, bytesPhoto);
                 router.setRedirectType();
                 router.setCurrentPage(PagePath.GO_TO_ADD_NEW_PRODUCT + REDIRECT_MESSAGE + SUCCESSFULLY_ADDED);
             }
             else{
-                //если невалидно, снова получаем данные по брендам и типам, записываем старые значения и проблемы в реквест, возвращаемся на страницу добавления продукта
-                Map<String,String> brands;
-                Map<String,String> types;
-                brands = productService.findAllBrandsMap();
-                types = productService.findAllTypesMap();
-                request.setAttribute(BRANDS_MAP, brands);
-                request.setAttribute(TYPES_MAP, types);
-                request.setAttribute(MESSAGE,ADDITION_FAILED);
-
                 for(Map.Entry<String,String> entry: productDataMap.entrySet()){
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
+                request.setAttribute(MESSAGE,ADDITION_FAILED);
                 router.setCurrentPage(PagePath.ADD_NEW_PRODUCT);
             }
 

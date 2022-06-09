@@ -5,10 +5,13 @@ import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.dao.BaseDao;
 import by.makei.shop.model.dao.UserDao;
 import by.makei.shop.model.dao.impl.UserDaoImpl;
+import by.makei.shop.model.entity.Cart;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.validator.AttributeValidator;
+import by.makei.shop.model.validator.ParameterValidator;
 import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
+import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import by.makei.shop.util.PasswordEncoder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -165,6 +168,14 @@ public class UserServiceImpl implements UserService {
             logger.log(Level.ERROR, "error while updateAmount in UserService. {}", e.getMessage());
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) {
+        ParameterValidator validator = ParameterValidatorImpl.getInstance();
+        validator.validateAndMarkProductData()
+
+        return ;
     }
 
 

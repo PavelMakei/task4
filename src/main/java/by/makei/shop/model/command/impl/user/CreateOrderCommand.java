@@ -54,16 +54,16 @@ public class CreateOrderCommand implements Command {
         orderDataMap.put(DESCRIPTION, request.getParameter(DESCRIPTION));
         //провалидировать в сервисе
         //провести транзакцию
-//if(userService.createOrder(currentUser, currentCart, orderDataMap)){
-//    router.setRedirectType();
-//    currentCart.clear();    //Очистить корзину
-//    //получить нового пользователя из базы? или изменить амаунт у существующего?
-//    //Посетать нового пользователя?
-////    router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+SUCCESSFULLY_ORDERED);
-//}else{
-//    //некорректные отправить назад
-//
-//}
+if(userService.createOrder(currentUser, currentCart, orderDataMap)){
+    router.setRedirectType();
+    currentCart.clear();    //Очистить корзину
+    //получить нового пользователя из базы? или изменить амаунт у существующего?
+    //Посетать нового пользователя?
+    router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+SUCCESSFULLY_ORDERED);
+}else{
+    //некорректные отправить назад
+
+}
 
         return router;
     }
