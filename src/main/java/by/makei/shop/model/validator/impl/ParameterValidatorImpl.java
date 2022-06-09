@@ -387,7 +387,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
         boolean isCorrect = true;
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        BaseDao<Product> productDao = ProductDaoImpl.getInstance();
         BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
         ProductTypeDaoImpl productTypeDao = ProductTypeDaoImpl.getInstance();
         try {
@@ -522,5 +521,166 @@ public class ParameterValidatorImpl implements ParameterValidator {
         depositDataMap.putAll(invalidParameters);
 
         return isCorrect;
+    }
+
+    public boolean validateAndMarkIncomeData (Map<String, String> incomeDataMap) throws DaoException {
+        Map<String, String> invalidParameters = new HashMap<>();
+        AttributeValidator validator = AttributeValidatorImpl.getInstance();
+        ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
+        accessLevelList.remove(AccessLevel.GUEST);
+        BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
+        ProductTypeDaoImpl productTypeDao = ProductTypeDaoImpl.getInstance();
+        boolean isCorrect = true;
+        for (Map.Entry<String, String> entry :incomeDataMap.entrySet()) {
+            String key = entry.getKey();
+            switch (key) {
+                case FIRST_NAME -> {
+                    if (!validator.isNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
+                        isCorrect = false;
+                    }
+                }
+                case LAST_NAME -> {
+                    if (!validator.isNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
+                        isCorrect = false;
+                    }
+                }
+                case LOGIN -> {
+                    if (!validator.isLoginValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
+                        isCorrect = false;
+                    }
+                }
+                case EMAIL -> {
+                    if (!validator.isEmailValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
+                        isCorrect = false;
+                    }
+                }
+                case PHONE -> {
+                    if (!validator.isPhoneValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
+                        isCorrect = false;
+                    }
+                }
+                case PASSWORD -> {
+                    if (!validator.isPasswordValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
+                        isCorrect = false;
+                    }
+                }
+                case ACCESS_LEVEL -> {
+                    if (accessLevelList.contains(entry.getValue())) {
+                        isCorrect = false;
+                    }
+                }
+                case BRAND_ID -> {
+                    if (!validator.isInt5Valid(entry.getValue())) {
+                        invalidParameters.put(INVALID_BRAND_ID, INVALID_BRAND_ID);
+                        isCorrect = false;
+                    } else {
+                        Optional<Brand> optionalBrand = brandDao.findEntityByOneParam(ID, entry.getValue());
+                        if (optionalBrand.isEmpty()) {
+                            invalidParameters.put(INVALID_BRAND_ID, INVALID_BRAND_ID);
+                            isCorrect = false;
+                        }
+                    }
+                }
+                case TYPE_ID -> {
+                    if (!validator.isInt5Valid(entry.getValue())) {
+                        invalidParameters.put(INVALID_TYPE_ID, INVALID_TYPE_ID);
+                        isCorrect = false;
+                    } else {
+                        Optional<ProductType> optionalType = productTypeDao.findEntityByOneParam(ID, entry.getValue());
+                        if (optionalType.isEmpty()) {
+                            invalidParameters.put(INVALID_TYPE_ID, INVALID_TYPE_ID);
+                            isCorrect = false;
+                        }
+                    }
+                }
+                case PRODUCT_NAME -> {
+                    if (!validator.isProductNameValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PRODUCT_NAME, INVALID_PRODUCT_NAME);
+                        isCorrect = false;
+                    }
+                }
+                case DESCRIPTION -> {
+                    if (!validator.isDescriptionValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_DESCRIPTION, INVALID_DESCRIPTION);
+                        isCorrect = false;
+                    }
+                }
+                case PRICE -> {
+                    if (!validator.isDecimalValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_PRICE, INVALID_PRICE);
+                        isCorrect = false;
+                    }
+                }
+                case COLOUR -> {
+                    if (!validator.isColourValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_COLOUR, INVALID_COLOUR);
+                        isCorrect = false;
+                    }
+                }
+                case POWER -> {
+                    if (!validator.isInt3Valid(entry.getValue())) {
+                        invalidParameters.put(INVALID_POWER, INVALID_POWER);
+                        isCorrect = false;
+                    }
+                }
+                case SIZE -> {
+                    if (!validator.isSizeValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_SIZE, INVALID_SIZE);
+                        isCorrect = false;
+                    }
+                }
+                case QUANTITY_IN_STOCK -> {
+                    if (!validator.isInt3Valid(entry.getValue())) {
+                        invalidParameters.put(INVALID_QUANTITY_IN_STOCK, INVALID_QUANTITY_IN_STOCK);
+                        isCorrect = false;
+                    }
+                }
+                case ID -> {
+                    if (!validator.isInt5Valid(entry.getValue())) {
+                        invalidParameters.put(INVALID_ID, INVALID_ID);
+                        isCorrect = false;
+                    }
+                }
+                case CARD_NUMBER -> {
+                    if (!validator.isCardNumberValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_NUMBER, INVALID_CARD_NUMBER);
+                        isCorrect = false;
+                    }
+                }
+                case CARD_CVC -> {
+                    if (!validator.isInt3Valid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_CVC, INVALID_CARD_CVC);
+                        isCorrect = false;
+                    }
+                }
+                case CARD_EXP_DATE ->{
+                    if (!validator.isCardExpDateValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_EXP_DATE, INVALID_CARD_EXP_DATE);
+                        isCorrect = false;
+                    }
+                }
+                case CARD_HOLDER ->{
+                    if (!validator.isCardHolderValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_CARD_HOLDER, INVALID_CARD_HOLDER);
+                        isCorrect = false;
+                    }
+                }
+                case AMOUNT_TO_DEPOSIT ->{
+                    if (!validator.isDecimalValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_AMOUNT_TO_DEPOSIT, INVALID_AMOUNT_TO_DEPOSIT);
+                        isCorrect = false;
+                    }
+                }
+            }
+        }
+        incomeDataMap.putAll(invalidParameters);
+        return isCorrect;
+
     }
 }
