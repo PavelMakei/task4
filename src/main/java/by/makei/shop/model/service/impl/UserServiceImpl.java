@@ -3,9 +3,12 @@ package by.makei.shop.model.service.impl;
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.dao.BaseDao;
+import by.makei.shop.model.dao.ProductDao;
 import by.makei.shop.model.dao.UserDao;
+import by.makei.shop.model.dao.impl.ProductDaoImpl;
 import by.makei.shop.model.dao.impl.UserDaoImpl;
 import by.makei.shop.model.entity.Cart;
+import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.validator.AttributeValidator;
@@ -23,6 +26,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.model.command.RedirectMessage.ORDERING_FAIL_INCORRECT_DATA;
+import static by.makei.shop.model.command.RedirectMessage.ORDERING_FAIL_NOT_ENOUGH_PRODUCTS;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
@@ -171,11 +176,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) {
+    public boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws ServiceException {
         ParameterValidator validator = ParameterValidatorImpl.getInstance();
-        validator.validateAndMarkProductData()
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            if (!validator.validateAndMarkIncomeData(orderDataMap)) {
+                orderDataMap.put(MESSAGE, ORDERING_FAIL_INCORRECT_DATA);
+                return false;
+            }
+            if (!isSteelEnoughProductInStock(currentCart)) {
+                orderDataMap.put(MESSAGE, ORDERING_FAIL_NOT_ENOUGH_PRODUCTS);
+                return false;
+            }
+            userDao.createOrderTransaction(currentUser, currentCart, orderDataMap);
 
-        return ;
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while create order", e);
+            throw new ServiceException(e);
+        }
+        return true;
+
+    }
+
+    private boolean isSteelEnoughProductInStock(Cart currentCart) throws DaoException {
+        boolean isEnough = true;
+        ProductDao productDao = ProductDaoImpl.getInstance();
+        Map<Product, Integer> productQuantity = currentCart.getProductQuantity();
+        for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
+            Map<Product, String> currentProductQuantity = productDao.findMapProductQuantityById(ID, String.valueOf(entry.getKey().getId()));
+            if (currentProductQuantity.size() == 0) {
+                currentCart.removeProduct(entry.getKey(), entry.getValue());
+                isEnough = false;
+            } else {
+                int difference = entry.getValue() - Integer.parseInt(currentProductQuantity.get(entry.getKey()));
+                if (difference > 0) {
+                    currentCart.removeProduct(entry.getKey(), difference);
+                    isEnough = false;
+                }
+            }
+        }
+        return isEnough;
     }
 
 

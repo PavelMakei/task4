@@ -21,8 +21,8 @@ public class Cart extends AbstractEntity {
         productQuantity = new HashMap<>();
     }
 
-    public void putProductQuantity(@NotNull Product product, @NotNull Integer productQuantity) {
-            this.productQuantity.put(product, productQuantity);
+    public void putProductQuantity(@NotNull Product product, @NotNull Integer quantity) {
+            this.productQuantity.put(product, quantity);
             totalProductRecount();
     }
 
@@ -36,9 +36,13 @@ public class Cart extends AbstractEntity {
         totalCost = BigDecimal.ZERO;
     }
 
-    public Map<Product,Integer> removeProduct(@NotNull Product product, @NotNull Integer productQuantity){
+    public Map<Product,Integer> removeProduct(@NotNull Product product, @NotNull Integer quantity){
         Integer savedQuantity = this.productQuantity.get(product);
-        this.productQuantity.put(product,(savedQuantity - productQuantity));
+        if (savedQuantity-quantity < 1){
+            productQuantity.remove(product);
+        }else {
+            this.productQuantity.put(product, (savedQuantity - quantity));
+        }
         totalProductRecount();
         return this.productQuantity;
     }

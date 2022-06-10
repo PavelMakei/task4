@@ -29,6 +29,6 @@ public interface UserService {
 
     boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws ServiceException;
 
-    boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap);
+    boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws ServiceException;
 
 }

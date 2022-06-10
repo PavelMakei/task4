@@ -523,6 +523,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
         return isCorrect;
     }
 
+    @Override
     public boolean validateAndMarkIncomeData (Map<String, String> incomeDataMap) throws DaoException {
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
@@ -676,6 +677,12 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         invalidParameters.put(INVALID_AMOUNT_TO_DEPOSIT, INVALID_AMOUNT_TO_DEPOSIT);
                         isCorrect = false;
                     }
+                }case ADDRESS -> {
+                    if (!validator.isDescriptionValid(entry.getValue())) {
+                        invalidParameters.put(INVALID_ADDRESS, INVALID_ADDRESS);
+                        isCorrect = false;
+                    }
+
                 }
             }
         }

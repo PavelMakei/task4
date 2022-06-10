@@ -20,6 +20,9 @@ public enum RedirectMessage {
     public static final String NO_MORE_IN_STOCK = "no.more.in.stock";
 
     public static final String CART_IS_EMPTY = "cart.is.empty";
+    public static final String SUCCESSFULLY_ORDERED = "successfully.ordered";
+    public static final String ORDERING_FAIL_INCORRECT_DATA = "ordering.fail.incorrect.data";
+    public static final String ORDERING_FAIL_NOT_ENOUGH_PRODUCTS = "ordering.fail.not.enough.products";
 
 
 

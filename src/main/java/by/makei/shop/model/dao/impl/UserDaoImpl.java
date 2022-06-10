@@ -5,6 +5,8 @@ import by.makei.shop.model.connectionpool.DbConnectionPool;
 import by.makei.shop.model.connectionpool.ProxyConnection;
 import by.makei.shop.model.dao.UserDao;
 import by.makei.shop.model.dao.mapper.impl.UserMapper;
+import by.makei.shop.model.entity.Cart;
+import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.entity.User;
 import org.apache.logging.log4j.Level;
 
@@ -58,6 +60,22 @@ public class UserDaoImpl implements UserDao {
             SET money_amount =?
             WHERE id =?
             """;
+    public static final String SQL_CREATE_ORDER = """
+            INSERT INTO lightingshop.orders (user_id, address, phone, details)
+            VALUES (?,?,?,?)
+            """;
+    public static final String SQL_FIND_LAST_ORDER_ID = """
+            SELECT LAST_INSERT_ID() FROM lightingshop.orders
+            """;
+    public static final String SQL_CHANGE_PRODUCT_QUANTITY = """
+            UPDATE lightingshop.products SET quantity_in_stock = quantity_in_stock -? WHERE id = ?
+            """;
+    public static final String SQL_CREATE_ORDER_PRODUCTS = """
+            INSERT INTO lightingshop.order_products (order_id, product_id, quantity) VALUES (?,?,?)
+            """;
+    public static final String SQL_CHANGE_USER_MONEY = """
+UPDATE lightingshop.users SET money_amount = money_amount - ? WHERE id =?
+""";
 
     private UserDaoImpl() {
     }
@@ -263,6 +281,72 @@ public class UserDaoImpl implements UserDao {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return userList;
+    }
+
+    @Override
+    public boolean createOrderTransaction(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Map<Product, Integer> productQuantity = currentCart.getProductQuantity();
+        int lastOrderId;
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection.setAutoCommit(false);
+            //создать новый Order
+            preparedStatement = proxyConnection.prepareStatement(SQL_CREATE_ORDER);
+            preparedStatement.setInt(1, currentUser.getId());
+            preparedStatement.setString(2, orderDataMap.get(ADDRESS));
+            preparedStatement.setString(3, orderDataMap.get(PHONE));
+            preparedStatement.setString(4, orderDataMap.get(DESCRIPTION));
+            preparedStatement.execute();
+            //получить его id
+            preparedStatement = proxyConnection.prepareStatement(SQL_FIND_LAST_ORDER_ID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            lastOrderId = resultSet.getInt(ID);
+            resultSet.close();// надо здесь закрывать?
+
+            //пробежаться по мапе продуктов
+            for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
+                int productId = entry.getKey().getId();
+                int quantity = entry.getValue();
+                //скорректировть количество товара
+                preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_PRODUCT_QUANTITY);
+                preparedStatement.setInt(1, quantity);
+                preparedStatement.setInt(2, productId);
+                if (preparedStatement.executeUpdate() != 1) {//нужна эта проверка?
+                    throw new SQLException("update product return quantity of updated rows != 1");
+                }
+                //создать промежуточную таблицу
+                preparedStatement = proxyConnection.prepareStatement(SQL_CREATE_ORDER_PRODUCTS);
+                preparedStatement.setInt(1, lastOrderId);
+                preparedStatement.setInt(2, productId);
+                preparedStatement.setInt(3, quantity);
+                preparedStatement.execute();
+                //скорректировать количество денег у узера
+                preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_USER_MONEY);
+                preparedStatement.setBigDecimal(1, currentCart.getTotalCost());
+                preparedStatement.setInt(2, currentUser.getId());
+                if (preparedStatement.executeUpdate() != 1) {//нужна эта проверка?
+                    throw new SQLException("update user money return quantity of updated rows != 1");
+                }
+            }
+            return true;
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "SqlException while createOrderTransaction", e);
+            throw new DaoException("SqlException while createOrderTransaction", e);
+        } finally {
+            try {
+                proxyConnection.rollback();
+            } catch (SQLException e) {
+                logger.log(Level.ERROR, "SqlException while createOrderTransaction rollback", e);
+            } finally {
+                finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+            }
+        }
+
     }
 
     //TODO override methods!!!!!!!!!!!

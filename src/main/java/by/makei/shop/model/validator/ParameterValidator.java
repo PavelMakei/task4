@@ -1,5 +1,6 @@
 package by.makei.shop.model.validator;
 
+import by.makei.shop.exception.DaoException;
 import by.makei.shop.exception.ServiceException;
 import jakarta.servlet.http.HttpSession;
 
@@ -28,4 +29,6 @@ public interface ParameterValidator {
     boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) throws ServiceException;
 
     boolean validateAndMarkDepositData(Map<String, String> depositDataMap);
+
+    boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws DaoException;
 }
