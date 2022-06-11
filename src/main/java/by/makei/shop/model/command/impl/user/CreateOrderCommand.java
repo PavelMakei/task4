@@ -46,11 +46,11 @@ public class CreateOrderCommand implements Command {
             throwNewException("CreateOrderCommand not enough money to make transaction", request, router);
             return router;
         }
-        //принять данные address, description, phone
+        //принять данные address, detail, phone
         Map<String, String> orderDataMap = new HashMap<>();
         orderDataMap.put(PHONE, request.getParameter(PHONE));
         orderDataMap.put(ADDRESS, request.getParameter(ADDRESS));
-        orderDataMap.put(DESCRIPTION, request.getParameter(DESCRIPTION));
+        orderDataMap.put(DETAIL, request.getParameter(DETAIL));
         //провалидировать в сервисе
         //провести транзакцию
         try {

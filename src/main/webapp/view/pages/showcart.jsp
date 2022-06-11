@@ -40,12 +40,11 @@
     <link rel="stylesheet" href="${path}/css/enter.css">
     <script src="${path}/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    ---------------Prevent to return to previous page-------------
+<%--    ---------------Prevent to return to previous page---------------%>
     <script>
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -145,7 +144,6 @@
                                                         else {window.opener.clearCart()}
                                                         window.close();
                                                         ">${clear_cart_button}</button>
-
                                         </div>
                                     </div>
                             </div>

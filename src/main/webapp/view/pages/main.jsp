@@ -422,7 +422,7 @@
                                                     name="page_button"
                                                     value="search_button"
                                                     id="butt"
-                                                    style=" color: white"
+                                                    style="color: white"
                                             >
                                                 ${find_products_button}</button>
                                         </div>

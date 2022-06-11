@@ -298,13 +298,13 @@ UPDATE lightingshop.users SET money_amount = money_amount - ? WHERE id =?
             preparedStatement.setInt(1, currentUser.getId());
             preparedStatement.setString(2, orderDataMap.get(ADDRESS));
             preparedStatement.setString(3, orderDataMap.get(PHONE));
-            preparedStatement.setString(4, orderDataMap.get(DESCRIPTION));
+            preparedStatement.setString(4, orderDataMap.get(DETAIL));
             preparedStatement.execute();
             //получить его id
             preparedStatement = proxyConnection.prepareStatement(SQL_FIND_LAST_ORDER_ID);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            lastOrderId = resultSet.getInt(ID);
+            lastOrderId = resultSet.getInt(1);
             resultSet.close();// надо здесь закрывать?
 
             //пробежаться по мапе продуктов
@@ -332,6 +332,7 @@ UPDATE lightingshop.users SET money_amount = money_amount - ? WHERE id =?
                     throw new SQLException("update user money return quantity of updated rows != 1");
                 }
             }
+            proxyConnection.commit();
             return true;
         } catch (SQLException e) {
             proxyConnection.setForChecking(true);

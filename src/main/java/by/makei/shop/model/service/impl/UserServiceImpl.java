@@ -99,6 +99,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateAccessLevel(Map<String, String> userDataMap) throws ServiceException {
+        ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
+        if (!parameterValidator.validateAndMarkIncomeData(userDataMap)){
+            return false;
+        }
+
         UserDao userDao = UserDaoImpl.getInstance();
         try {
             return userDao.updateAccessLevel(userDataMap);

@@ -7,8 +7,6 @@ import by.makei.shop.model.command.PagePath;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.model.validator.ParameterValidator;
-import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
@@ -19,13 +17,11 @@ import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.GO_TO_UPDATE_PRODUCT;
 import static by.makei.shop.model.command.RedirectMessage.*;
-import static by.makei.shop.model.command.RedirectMessage.REDIRECT_ID;
 
 public class UpdateProductDataCommand implements Command {
     private static final String ERROR = "UpdateProductDataCommand Service exception : ";
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         ProductService productService = ProductServiceImpl.getInstance();
         Router router = new Router();
         Map<String, String> productDataMap = new HashMap();
@@ -42,9 +38,7 @@ public class UpdateProductDataCommand implements Command {
         productDataMap.put(PHOTO_STRING, request.getParameter(PHOTO_STRING));
 
         try {
-            if (parameterValidator.validateAndMarkProductData(productDataMap)
-            && parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productDataMap)) {
-                productService.updateProductData(productDataMap);
+            if (productService.updateProductData(productDataMap)){
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));
             }else {

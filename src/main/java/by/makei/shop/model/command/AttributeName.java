@@ -25,6 +25,7 @@ public enum AttributeName {
     public static final String CURRENT_PAGE = "current_page";
     public static final String DATA_MESSAGE = "data_message";
     public static final String DESCRIPTION = "description";
+    public static final String DETAIL = "detail";
     public static final String EMAIL = "email";
     public static final String ERROR_MESSAGE = "error_message";
     public static final String FIRST_NAME = "first_name";
@@ -39,6 +40,7 @@ public enum AttributeName {
     public static final String INVALID_CARD_NUMBER = "invalid_card_number";
     public static final String INVALID_COLOUR = "invalid_colour";
     public static final String INVALID_DESCRIPTION = "invalid_description";
+    public static final String INVALID_DETAIL = "invalid_detail";
     public static final String INVALID_EMAIL = "invalid_email";
     public static final String INVALID_FIRST_NAME = "invalid_first_name";
     public static final String INVALID_ID = "invalid_id";
@@ -106,6 +108,7 @@ public enum AttributeName {
     public static final String TYPE_NAME = "type_name";
     public static final String TYPES_MAP = "types_map";
     public static final String USER = "user";
+    public static final String USER_ID = "user_id";
     public static final String USER_LIST = "user_list";
     public static final String VALIDATOR_PATTERN = "validator_pattern";
 

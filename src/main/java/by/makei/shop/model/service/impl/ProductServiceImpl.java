@@ -22,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.validator.DefaultSearchParam.PRODUCTS_ON_PAGE;
 
@@ -30,28 +29,38 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger();
     private static final ProductServiceImpl instance = new ProductServiceImpl();
 
-    private ProductServiceImpl(){}
+    private ProductServiceImpl() {
+    }
 
-    public static ProductServiceImpl getInstance(){ return instance;}
+    public static ProductServiceImpl getInstance() {
+        return instance;
+    }
 
     @Override
-    public void addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException {
-        Product product = new Product();
-        ProductDaoImpl productDao = ProductDaoImpl.getInstance();
-
-        product.setBrandId(Integer.parseInt(productData.get(BRAND_ID)));
-        product.setTypeId(Integer.parseInt(productData.get(TYPE_ID)));
-        product.setProductName((productData.get(PRODUCT_NAME)));
-        product.setDescription((productData.get(DESCRIPTION)));
-        product.setPrice(Double.parseDouble(productData.get(PRICE)));
-        product.setColour(productData.get(COLOUR));
-        product.setPower(Integer.parseInt(productData.get(POWER)));
-        product.setSize(productData.get(SIZE));
-
-        int quantityInStock = Integer.parseInt(productData.get(QUANTITY_IN_STOCK));
-
+    public boolean addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException {
+        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         try {
+            if (!parameterValidator.validateAndMarkIncomeData(productData)
+                | !parameterValidator.validatePhoto(productData, photo)
+                | !parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productData)) {
+                return false;
+            }
+
+            Product product = new Product();
+            ProductDaoImpl productDao = ProductDaoImpl.getInstance();
+
+            product.setBrandId(Integer.parseInt(productData.get(BRAND_ID)));
+            product.setTypeId(Integer.parseInt(productData.get(TYPE_ID)));
+            product.setProductName((productData.get(PRODUCT_NAME)));
+            product.setDescription((productData.get(DESCRIPTION)));
+            product.setPrice(Double.parseDouble(productData.get(PRICE)));
+            product.setColour(productData.get(COLOUR));
+            product.setPower(Integer.parseInt(productData.get(POWER)));
+            product.setSize(productData.get(SIZE));
+
+            int quantityInStock = Integer.parseInt(productData.get(QUANTITY_IN_STOCK));
             productDao.create(product, photo, quantityInStock);
+            return true;
         } catch (
                 DaoException e) {
             logger.log(Level.ERROR, "ProductService error while addNewProduct. {}", e.getMessage());
@@ -81,7 +90,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Map<String, String> findAllTypesMap() throws ServiceException {
-        BaseDao<ProductType> productTypeDao = ProductTypeDaoImpl.getInstance();;
+        BaseDao<ProductType> productTypeDao = ProductTypeDaoImpl.getInstance();
+        ;
         Map<String, String> typesMap = new TreeMap<>();
         try {
             List<ProductType> productTypeList = productTypeDao.findAll();
@@ -298,7 +308,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductType findProductTypeById(String id) throws ServiceException {
         Optional<ProductType> optionalProductType;
-        BaseDao<ProductType> dao = ProductTypeDaoImpl.getInstance();;
+        BaseDao<ProductType> dao = ProductTypeDaoImpl.getInstance();
+        ;
         try {
             optionalProductType = dao.findEntityByOneParam(ID, id);
         } catch (DaoException e) {
@@ -313,11 +324,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean updatePhoto(String id, byte[] bytesPhoto) throws ServiceException {
+    public boolean updatePhoto(Map<String, String> productDataMap, byte[] bytesPhoto) throws ServiceException {
         ProductDao productDao = ProductDaoImpl.getInstance();
+        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
+        if (!parameterValidator.validatePhoto(productDataMap, bytesPhoto)) {
+            return false;
+        }
         boolean isUpdated = false;
         try {
-            isUpdated = productDao.updatePhoto(Integer.parseInt(id), bytesPhoto);
+            isUpdated = productDao.updatePhoto(Integer.parseInt(productDataMap.get(ID)), bytesPhoto);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService error while updatePhoto. {}", e.getMessage());
             throw new ServiceException("ProductService error while updatePhoto.", e);
@@ -327,15 +342,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean updateProductData(Map<String, String> productDataMap) throws ServiceException {
-        boolean isUpdated = false;
-        ProductDao productDao = ProductDaoImpl.getInstance();
-        try{
-            isUpdated = productDao.updateProductData(productDataMap);
+        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
+        try {
+            if (!parameterValidator.validateAndMarkIncomeData(productDataMap)
+                || !parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productDataMap)) {
+                return false;
+            }
+            ProductDao productDao = ProductDaoImpl.getInstance();
+            return productDao.updateProductData(productDataMap);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService error while updateProductData. {}", e.getMessage());
             throw new ServiceException("ProductService error while updateProductData.", e);
         }
-        return isUpdated;
     }
 
 

@@ -6,8 +6,6 @@ import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.model.validator.ParameterValidator;
-import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
@@ -27,7 +25,6 @@ public class UpdatePhotoCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         ProductService productService = ProductServiceImpl.getInstance();
         Router router = new Router();
         Map<String, String> productDataMap = new HashMap();
@@ -43,8 +40,7 @@ public class UpdatePhotoCommand implements Command {
             throw new CommandException("updatePhotoCommand error. {}", e);
         }
         try {
-            if (parameterValidator.validatePhoto(productDataMap, bytesPhoto)) {
-                productService.updatePhoto(productDataMap.get(ID), bytesPhoto);
+            if (productService.updatePhoto(productDataMap, bytesPhoto)) {
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_MESSAGE+UPDATE_SUCCESS+REDIRECT_ID+request.getParameter(ID));
             }else {

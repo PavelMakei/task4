@@ -7,8 +7,6 @@ import by.makei.shop.model.command.PagePath;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.model.validator.ParameterValidator;
-import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
@@ -27,7 +25,6 @@ public class AddNewProductCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         ProductService productService = ProductServiceImpl.getInstance();
         Router router = new Router();
 
@@ -41,7 +38,6 @@ public class AddNewProductCommand implements Command {
         productDataMap.put(POWER, request.getParameter(POWER));
         productDataMap.put(SIZE, request.getParameter(SIZE));
         productDataMap.put(QUANTITY_IN_STOCK, request.getParameter(QUANTITY_IN_STOCK));
-
         byte[] bytesPhoto;
         try (
                 InputStream stream = request.getPart(PHOTO).getInputStream()) {
@@ -50,26 +46,20 @@ public class AddNewProductCommand implements Command {
             logger.log(Level.ERROR, "error while addNewProductCommand is trying to get photo. {}", e.getMessage());
             throw new CommandException("addNewProductCommand error. {}", e);
         }
-
         try {
-            if(parameterValidator.validateAndMarkProductData(productDataMap)
-               & parameterValidator.validatePhoto(productDataMap, bytesPhoto)
-               & parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productDataMap))
-            {
-                productService.addNewProduct(productDataMap, bytesPhoto);
+            if (productService.addNewProduct(productDataMap, bytesPhoto)) {
                 router.setRedirectType();
                 router.setCurrentPage(PagePath.GO_TO_ADD_NEW_PRODUCT + REDIRECT_MESSAGE + SUCCESSFULLY_ADDED);
-            }
-            else{
-                for(Map.Entry<String,String> entry: productDataMap.entrySet()){
+            } else {
+                for (Map.Entry<String, String> entry : productDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
-                request.setAttribute(MESSAGE,ADDITION_FAILED);
+                request.setAttribute(MESSAGE, ADDITION_FAILED);
                 router.setCurrentPage(PagePath.ADD_NEW_PRODUCT);
             }
 
         } catch (ServiceException e) {
-            logger.log(Level.ERROR,"GoToAddNewProductCommand command error. {}",e.getMessage());
+            logger.log(Level.ERROR, "GoToAddNewProductCommand command error. {}", e.getMessage());
             request.setAttribute(ERROR_MESSAGE, ERROR + e);
             router.setCurrentPage(ERROR500);
         }

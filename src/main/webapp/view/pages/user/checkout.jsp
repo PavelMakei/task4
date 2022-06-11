@@ -27,7 +27,7 @@
 <fmt:message key="placing.order" var="placing_order_label"/>
 <fmt:message key="contact.phone" var="contact_phone_label"/>
 <fmt:message key="additional.order.details" var="order_details_label"/>
-<fmt:message key="order.details.placeholder" var="description_name_placeholder"/>
+<fmt:message key="order.details.placeholder" var="detail_name_placeholder"/>
 <fmt:message key="address.placeholder" var="address_placeholder"/>
 <fmt:message key="delivery.address" var="address_label"/>
 <fmt:message key="buy.button" var="buy_button"/>
@@ -129,15 +129,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <%----------------------------------------------------- Order description (text)-----------------------------------%>
+                                        <%----------------------------------------------------- Order details (text)-----------------------------------%>
                                         <div class="form-group" style="color: white">
-                                            <label for="description" class="cols-sm-2 control-label"
-                                                    <c:if test="${!empty invalid_description}">
+                                            <label for="detail" class="cols-sm-2 control-label"
+                                                    <c:if test="${!empty invalid_detail}">
                                                         style="color: red"
                                                     </c:if>
                                             >
                                                 ${order_details_label}
-                                                <c:if test="${!empty invalid_description}">
+                                                <c:if test="${!empty invalid_detail}">
                                                     ${incorrect_it_enter_message}
                                                 </c:if>
                                             </label>
@@ -147,13 +147,13 @@
                                                                     aria-hidden="true"></i></span>
                                                     <div class="input-group mb-3">
                                                 <textarea class="form-control
-                                                 <c:if test="${!empty invalid_description}">
+                                                 <c:if test="${!empty invalid_detail}">
                                                      is-invalid
                                                  </c:if>
-                                                          " name="description"
-                                                          id="description"
-                                                          placeholder="${description_name_placeholder}"
-                                                ><c:if test="${!empty description}">${description}</c:if></textarea>
+                                                          " name="detail"
+                                                          id="detail"
+                                                          placeholder="${detail_name_placeholder}"
+                                                ><c:if test="${!empty detail}">${detail}</c:if></textarea>
                                                     </div>
                                                 </div>
                                             </div>

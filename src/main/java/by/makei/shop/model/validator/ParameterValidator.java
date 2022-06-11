@@ -30,5 +30,5 @@ public interface ParameterValidator {
 
     boolean validateAndMarkDepositData(Map<String, String> depositDataMap);
 
-    boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws DaoException;
+    boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws DaoException, ServiceException;
 }
