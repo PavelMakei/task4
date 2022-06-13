@@ -2,9 +2,11 @@ package by.makei.shop.model.dao;
 
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.model.entity.Cart;
+import by.makei.shop.model.entity.Order;
 import by.makei.shop.model.entity.User;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,4 +25,9 @@ public interface UserDao extends BaseDao<User>{
     boolean updateMoneyAmount(int currentUserId, BigDecimal resultAmount) throws DaoException;
 
     boolean createOrderTransaction(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws DaoException;
+
+    boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws DaoException;
+
+    boolean findOrderProductMap(int orderId, Map<Integer, Integer> productIdQuantity) throws DaoException;
+
 }

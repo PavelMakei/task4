@@ -56,7 +56,6 @@
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
-    <script src="${path}/bootstrap/js/bootstrap.min.js"></script>
 
     <title>${update_profile_label}</title>
 </head>

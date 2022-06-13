@@ -283,7 +283,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Map<Product, String> findMapProductQuantityById(String paramName, String paramValue) throws DaoException {
+    public Map<Product, String> findMapProductQuantityById(String paramName, String paramValue,  Map<Product, String> productQuantity) throws DaoException {
 
         if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
             logger.log(Level.ERROR, "findMapProductQuantityByIdincorrect paramName");
@@ -293,7 +293,6 @@ public class ProductDaoImpl implements ProductDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Optional<Product> optionalProduct = Optional.empty();
-        Map<Product, String> productQuantity = new HashMap<>();
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement =

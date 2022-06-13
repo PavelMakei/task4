@@ -45,8 +45,6 @@
     <c:set var="thisTotalSum" value="${thisTotalSum + thisCurrentProductSumm}"/>
 </c:forEach>
 
-
-
 <head>
 
     <meta charset="UTF-8"/>
@@ -101,7 +99,7 @@
 
                                         <%----------------------------------------------------- Address description (text)-----------------------------------%>
                                         <div class="form-group" style="color: white">
-                                            <label for="description" class="cols-sm-2 control-label"
+                                            <label for="address" class="cols-sm-2 control-label"
                                                     <c:if test="${!empty invalid_address}">
                                                         style="color: red"
                                                     </c:if>

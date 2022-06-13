@@ -27,13 +27,12 @@ public class AddToCartCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         HttpSession session = request.getSession();
-        ProductService productService;
+        ProductService productService = ProductServiceImpl.getInstance();
         Cart cart;
         Map<String, String> inputProductIdQuantity = new HashMap<>();
-        Map<Product, String> productQuantityMapFromDB;
+        Map<Product, String> productQuantityMapFromDB = new HashMap<>();
         inputProductIdQuantity.put(ID, request.getParameter(ID));
         inputProductIdQuantity.put(QUANTITY, request.getParameter(QUANTITY));
-        ParameterValidator validator = ParameterValidatorImpl.getInstance();
         cart = (Cart) session.getAttribute(SESS_CART);
         int currentQuantity = 0;
         int inputQuantity;
@@ -42,10 +41,8 @@ public class AddToCartCommand implements Command {
         Product product = null;
 
         try {
-            if (validator.validateAndMarkProductData(inputProductIdQuantity)) {
-                productService = ProductServiceImpl.getInstance();
+            if (productService.findMapProductQuantityById(inputProductIdQuantity, productQuantityMapFromDB)) {
                 inputQuantity = Integer.parseInt(inputProductIdQuantity.get(QUANTITY));
-                productQuantityMapFromDB = productService.findMapProductQuantityById(inputProductIdQuantity.get(ID));
                 if (productQuantityMapFromDB.size() != 1) {
                     logger.log(Level.WARN, "AddToCartCommand error while find product in DB, quantity of product = {}", productQuantityMapFromDB.size());
                     request.setAttribute(ERROR_MESSAGE, "AddToCartCommand error while find product in DB, quantity of product = " + productQuantityMapFromDB.size());

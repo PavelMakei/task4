@@ -37,7 +37,6 @@ public class RegistrationCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         UserServiceImpl userService = UserServiceImpl.getInstance();
         Router router = new Router();
         HttpSession session = request.getSession();
@@ -51,12 +50,7 @@ public class RegistrationCommand implements Command {
         userDataMap.put(PASSWORD, request.getParameter(PASSWORD));
         userDataMap.put(ACTIVATION_CODE, request.getParameter(ACTIVATION_CODE));
         try {
-            if (parameterValidator.validateAndMarkUserData(userDataMap)
-                && parameterValidator.validateAndMarkIfLoginCorrectAndNotExistsInDb(userDataMap)
-                && parameterValidator.validateAndMarkIfPhoneCorrectAndNotExistsInDb(userDataMap)
-                && parameterValidator.validateAndMarkIfEmailCorrectAndNotExistsInDb(userDataMap)
-                && parameterValidator.validateAndMarkActivationCodeAndSavedEmail(userDataMap, session)) {
-                userService.createUser(userDataMap);
+            if (userService.createUser(userDataMap, session)){
                 Optional<User> optionalUser = userService.findUserByEmail(userDataMap.get(EMAIL));
                 if (optionalUser.isPresent()) {
                     User user = optionalUser.get();

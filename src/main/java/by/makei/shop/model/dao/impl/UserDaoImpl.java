@@ -4,8 +4,10 @@ import by.makei.shop.exception.DaoException;
 import by.makei.shop.model.connectionpool.DbConnectionPool;
 import by.makei.shop.model.connectionpool.ProxyConnection;
 import by.makei.shop.model.dao.UserDao;
+import by.makei.shop.model.dao.mapper.impl.OrderMapper;
 import by.makei.shop.model.dao.mapper.impl.UserMapper;
 import by.makei.shop.model.entity.Cart;
+import by.makei.shop.model.entity.Order;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.entity.User;
 import org.apache.logging.log4j.Level;
@@ -23,6 +25,7 @@ import static by.makei.shop.model.command.AttributeName.*;
 
 public class UserDaoImpl implements UserDao {
     private static final UserDaoImpl instance = new UserDaoImpl();
+    private static final String FIND_ANY = "%";
     private static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = """
             SELECT id, first_name, last_name, login, password, email, phone, access_level, registration_date,money_amount
             FROM lightingshop.users WHERE
@@ -61,7 +64,7 @@ public class UserDaoImpl implements UserDao {
             WHERE id =?
             """;
     public static final String SQL_CREATE_ORDER = """
-            INSERT INTO lightingshop.orders (user_id, address, phone, details)
+            INSERT INTO lightingshop.orders (user_id, address, phone, detail)
             VALUES (?,?,?,?)
             """;
     public static final String SQL_FIND_LAST_ORDER_ID = """
@@ -74,8 +77,17 @@ public class UserDaoImpl implements UserDao {
             INSERT INTO lightingshop.order_products (order_id, product_id, quantity) VALUES (?,?,?)
             """;
     public static final String SQL_CHANGE_USER_MONEY = """
-UPDATE lightingshop.users SET money_amount = money_amount - ? WHERE id =?
-""";
+            UPDATE lightingshop.users SET money_amount = money_amount - ? WHERE id =?
+            """;
+    public static final String SQL_FIND_ORDER_BY_PARAM = """
+            SELECT id, user_id, address, phone, detail, status, date_open, date_close FROM lightingshop.orders
+            WHERE user_id LIKE ? AND status LIKE ?
+            ORDER BY status, date_open
+            """;
+    public static final String SQL_FIND_PRODUCT_QUANTITY_BY_ORDER_ID = """
+            SELECT product_id, quantity FROM lightingshop.order_products
+            WHERE order_id =?
+            """;
 
     private UserDaoImpl() {
     }
@@ -349,6 +361,57 @@ UPDATE lightingshop.users SET money_amount = money_amount - ? WHERE id =?
         }
 
     }
+
+    @Override
+    public boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String userId = incomeParam.getOrDefault(ID, FIND_ANY);
+        String orderStatus = incomeParam.getOrDefault(STATUS, FIND_ANY);
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_FIND_ORDER_BY_PARAM);
+            preparedStatement.setString(1, userId);
+            preparedStatement.setString(2, orderStatus);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Optional<Order> optionalOrder = new OrderMapper().mapEntity(resultSet);
+                optionalOrder.ifPresent(orderList::add);
+            }
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error while  findOrderByParam");
+            throw new DaoException("UserDao error while  findOrderByParam", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean findOrderProductMap(int orderId, Map<Integer, Integer> productIdQuantity) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_FIND_PRODUCT_QUANTITY_BY_ORDER_ID);
+            preparedStatement.setInt(1, orderId);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                productIdQuantity.put(resultSet.getInt(PRODUCT_ID), resultSet.getInt(QUANTITY));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "error while findOrderProductMap");
+            proxyConnection.setForChecking(true);
+            throw new DaoException("UserDao error while findOrderProductMap", e);
+        }finally {
+            finallyWhileClosing(proxyConnection,preparedStatement,resultSet);
+        }
+        return true;
+    }
+
 
     //TODO override methods!!!!!!!!!!!
     @Override

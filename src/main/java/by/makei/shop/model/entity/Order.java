@@ -2,8 +2,8 @@ package by.makei.shop.model.entity;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Order extends AbstractEntity {
@@ -11,32 +11,32 @@ public class Order extends AbstractEntity {
     private int userId;
     private String address;
     private String phone;
-    private String details;
+    private String detail;
     private Date openDate;
     private Date closeDate;
     private Status status;
-    private Map<Integer, Integer> prodIdQuantity;
+    private Map<Integer, Integer> prodIdQuantity = new HashMap<>();
 
     public Order() {
     }
 
-    public Order(int userId, String address, String phone, String details, Date openDate, Date closeDate, Status status, Map<Integer, Integer> prodIdQuantity) {
+    public Order(int userId, String address, String phone, String detail, Date openDate, Date closeDate, Status status, Map<Integer, Integer> prodIdQuantity) {
         this.userId = userId;
         this.address = address;
         this.phone = phone;
-        this.details = details;
+        this.detail = detail;
         this.openDate = openDate;
         this.closeDate = closeDate;
         this.status = status;
         this.prodIdQuantity = prodIdQuantity;
     }
 
-    public Order(int id, int userId, String address, String phone, String details, Date openDate, Date closeDate, Status status, Map<Integer, Integer> prodIdQuantity) {
+    public Order(int id, int userId, String address, String phone, String detail, Date openDate, Date closeDate, Status status, Map<Integer, Integer> prodIdQuantity) {
         this.id = id;
         this.userId = userId;
         this.address = address;
         this.phone = phone;
-        this.details = details;
+        this.detail = detail;
         this.openDate = openDate;
         this.closeDate = closeDate;
         this.status = status;
@@ -75,12 +75,12 @@ public class Order extends AbstractEntity {
         this.phone = phone;
     }
 
-    public String getDetails() {
-        return details;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public Date getOpenDate() {
@@ -109,11 +109,11 @@ public class Order extends AbstractEntity {
     }
 
     public Map<Integer, Integer> getProdIdQuantity() {
-        return prodIdQuantity == null ? Collections.emptyMap() : prodIdQuantity;
+        return new HashMap<>(prodIdQuantity);
     }
 
     public void setProdIdQuantity(Map<Integer, Integer> prodIdQuantity) {
-        this.prodIdQuantity = prodIdQuantity;
+        this.prodIdQuantity.putAll(prodIdQuantity);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class Order extends AbstractEntity {
         if (userId != order.userId) return false;
         if (address != null ? !address.equals(order.address) : order.address != null) return false;
         if (phone != null ? !phone.equals(order.phone) : order.phone != null) return false;
-        if (details != null ? !details.equals(order.details) : order.details != null) return false;
+        if (detail != null ? !detail.equals(order.detail) : order.detail != null) return false;
         if (openDate != null ? !openDate.equals(order.openDate) : order.openDate != null) return false;
         if (closeDate != null ? !closeDate.equals(order.closeDate) : order.closeDate != null) return false;
         if (status != order.status) return false;
@@ -140,7 +140,7 @@ public class Order extends AbstractEntity {
         result = 31 * result + userId;
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (details != null ? details.hashCode() : 0);
+        result = 31 * result + (detail != null ? detail.hashCode() : 0);
         result = 31 * result + (openDate != null ? openDate.hashCode() : 0);
         result = 31 * result + (closeDate != null ? closeDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
@@ -155,7 +155,7 @@ public class Order extends AbstractEntity {
         sb.append(", userId=").append(userId);
         sb.append(", address='").append(address).append('\'');
         sb.append(", phone='").append(phone).append('\'');
-        sb.append(", details='").append(details).append('\'');
+        sb.append(", details='").append(detail).append('\'');
         sb.append(", openDate=").append(openDate);
         sb.append(", closeDate=").append(closeDate);
         sb.append(", status=").append(status);

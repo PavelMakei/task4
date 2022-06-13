@@ -14,44 +14,42 @@
 
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
-<fmt:message key="product.name" var="product_name_label"/>
-<fmt:message key="price.name" var="price_label"/>
+<fmt:message key="more.hint" var="more_hint"/>
+<fmt:message key="order.management" var="orders_manage_label"/>
+<fmt:message key="user.id" var="user_id_label"/>
+<fmt:message key="mobile.phone" var="phone_label"/>
+<fmt:message key="delivery.address" var="address_label"/>
+<fmt:message key="additional.order.details" var="details_label"/>
+<fmt:message key="date.open" var="date_open_label"/>
+<fmt:message key="date.close" var="date_close_label"/>
+<fmt:message key="cancel.order" var="cancel_order_button"/>
+<fmt:message key="deliver.order" var="deliver_order_button"/>
+<fmt:message key="order.status" var="order_status_label"/>
+<fmt:message key="product.id" var="product_id_label"/>
+<fmt:message key="order.id" var="order_id_label"/>
 <fmt:message key="quantity.name" var="quantity_label"/>
-<fmt:message key="sum.label" var="sum_label"/>
-<fmt:message key="buy.button" var="buy_button"/>
-<fmt:message key="continue.shopping" var="continue_shopping_button"/>
-<fmt:message key="go.to.checkout" var="go_to_checkout_button"/>
-<fmt:message key="show.cart.label" var="show_cart_label"/>
-<fmt:message key="total.label" var="total_label"/>
-<fmt:message key="clear.cart" var="clear_cart_button"/>
-<fmt:message key="current.money.amount.label" var="user_balance"/>
-<fmt:message key="log.in.before" var="log_in_before"/>
-<fmt:message key="not.enough.money" var="not_enough_money"/>
-<fmt:message key="deposit.button" var="deposit_money_button"/>
-<fmt:message key="enter.button" var="enter_button"/>
+
 
 <html>
 <head>
-    <title>${show_cart_label}</title>
+    <title>${orders_manage_label}</title>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
-    <script src="${path}/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <%--    ---------------Prevent to return to previous page---------------%>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
-
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-        history.pushState(null, null, document.URL);
-    </script>
+    <%--    <script>--%>
+    <%--        function preventBack() {--%>
+    <%--            window.history.forward();--%>
+    <%--        }--%>
+    <%--        setTimeout("preventBack()", 0);--%>
+    <%--        window.onunload = function () {--%>
+    <%--            null--%>
+    <%--        };--%>
+    <%--        history.pushState(null, null, document.URL);--%>
+    <%--    </script>--%>
     <%------------------------------------------%>
 </head>
 <body>
@@ -67,152 +65,80 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-                            Заказы!!!!!!!!!!!!!
+                           ${orders_manage_label}
                         </div>
                         <%------------------------------------------------------Orders-----------------------------------------------%>
-                        <c:forEach var="tests" begin="1" end="5" step="1">
-                        <div class="card-body bg-dark bg-opacity-75" style="padding-bottom: 0">
-                            <div class="form-group bg-white" style="color: white">
+                        <c:forEach var="order" items="${order_list}">
+                            <div class="card-body bg-dark bg-opacity-75" style="padding-bottom: 0">
+                                <div class="form-group bg-white" style="color: white">
 
-                                <table class="table table-responsive table-bordered" style="margin-bottom: 0px">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">id</th>
-                                        <th scope="col">uid</th>
-                                        <th scope="col">phone</th>
-                                        <th scope="col">open date</th>
-                                        <th scope="col">status</th>
-                                        <th scope="col">close date</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td scope="row">1!!</td>
-                                        <td>УИД</td>
-                                        <td>(025)1234567</td>
-                                        <td>01.01.2022</td>
-                                        <td>PAYED</td>
-                                        <td> -</td>
-                                    </tr>
-                                    <tr class="border-2 border-dark">
-                                    </tbody>
-                                </table>
+                                    <table class="table table-responsive table-bordered" style="margin-bottom: 0px">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">${order_id_label}</th>
+                                            <th scope="col">${user_id_label}</th>
+                                            <th scope="col">${phone_label}</th>
+                                            <th scope="col">${date_open_label}</th>
+                                            <th scope="col">${order_status_label}</th>
+                                            <th scope="col">${date_close_label}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>${order.id}</td>
+                                            <td>${order.userId}</td>
+                                            <td>${order.phone}</td>
+                                            <td>${order.openDate}</td>
+                                            <td>${order.status}</td>
+                                            <td>${order.closeDate}</td>
+                                        </tr>
+                                        <tr class="border-2 border-dark">
+                                        </tbody>
+                                    </table>
 
-                                <p style="color: black"><strong>Address:</strong> здесь какой-то длинный адрес
-                                    воооооооооооооооооооот
-                                    ттттттттаааааааааккккоооооооййй или даже воооооооооооооооооооот
-                                   </p>
-                                <p style="color: black"><strong>Details:</strong> здесь какие-то детали, возможно тоже
-                                    длинные</p>
+                                    <p style="color: black"><strong>${address_label}:</strong> ${order.address}</p>
+                                    <p style="color: black"><strong>${details_label}:</strong> ${order.detail}</p>
 
-                                <table class="table table-responsive table-bordered" style="margin-bottom: 0px">
+                                    <table class="table table-responsive table-bordered" style="margin-bottom: 0px">
 
-                                    <thead>
-                                    <tr class="border-2 border-dark">
-                                    <tr>
-                                        <th scope="col" class="col-6">prodId</th>
-                                        <th scope="col" class="col-6">quantity</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr class="border-2 border-dark">
-                                    </tbody>
-                                </table>
-
-                                <div class="justify-content-center" style="color: white; padding-bottom: 01px;">
-                                    <div class="input-group col-12">
-                                        <button class="btn btn-primary col-6"
-                                        >Выполнено!!!
-                                        </button>
-                                        <button class="btn btn-danger col-6"
-                                        >Отменить!!!
-                                        </button>
-
-                                    </div>
+                                        <thead>
+                                        <tr class="border-2 border-dark">
+                                        <tr>
+                                            <th scope="col" class="col-6">${product_id_label}</th>
+                                            <th scope="col" class="col-6">${quantity_label}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:set var="productIdQuantityMap" value="${order.prodIdQuantity}"/>
+                                        <c:forEach var="elem" items="${productIdQuantityMap}">
+                                            <tr>
+                                                <td
+                                                        class="link-primary"
+                                                        href="javascript:void(0);"
+                                                        title="${more_hint}"
+                                                        onClick=window.open("${path}/controller?command=show_product&id=${elem.key}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");
+                                                >${elem.key}</td>
+                                                <td>${elem.value}</td>
+                                            </tr>
+                                        </c:forEach>
+                                        <tr class="border-2 border-dark">
+                                        </tbody>
+                                    </table>
+                                    <c:if test="${order.status eq 'PAID'}">
+                                        <div class="justify-content-center" style="color: white; padding-bottom: 01px;">
+                                            <div class="input-group col-12">
+                                                <button class="btn btn-primary col-6"
+                                                >${deliver_order_button}
+                                                </button>
+                                                <button class="btn btn-danger col-6"
+                                                >${cancel_order_button}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
-                        </div>
                         </c:forEach>
-                        <%--                        ----------------------ВТОРАЯ------------------------%>
-<%--                        <div class="card-body bg-dark bg-opacity-75">--%>
-<%--                            <div class="form-group bg-white" style="color: white">--%>
-
-<%--                                <table class="table table-responsive table-bordered" style="margin-bottom: 0px">--%>
-<%--                                    <thead>--%>
-<%--                                    <tr>--%>
-<%--                                        <th scope="col">id</th>--%>
-<%--                                        <th scope="col">uid</th>--%>
-<%--                                        <th scope="col">phone</th>--%>
-<%--                                        <th scope="col">open date</th>--%>
-<%--                                        <th scope="col">status</th>--%>
-<%--                                        <th scope="col">close date</th>--%>
-<%--                                    </tr>--%>
-<%--                                    </thead>--%>
-<%--                                    <tbody>--%>
-<%--                                    <tr>--%>
-<%--                                        <td scope="row">1!!</td>--%>
-<%--                                        <td>УИД</td>--%>
-<%--                                        <td>(025)1234567</td>--%>
-<%--                                        <td>01.01.2022</td>--%>
-<%--                                        <td>PAYED</td>--%>
-<%--                                        <td> -</td>--%>
-<%--                                    </tr>--%>
-<%--                                    <tr class="border-2 border-dark">--%>
-<%--                                    </tbody>--%>
-<%--                                </table>--%>
-
-<%--                                <p style="color: black"><strong>Address:</strong> здесь какой-то длинный адрес--%>
-<%--                                    воооооооооооооооооооот--%>
-<%--                                    ттттттттаааааааааккккоооооооййй или даже воооооооооооооооооооот--%>
-<%--                                    ттттттттаааааааааккккоооооооййй или дажевоооооооооооооооооооот--%>
-<%--                                    ттттттттаааааааааккккоооооооййй или дажевоооооооооооооооооооот--%>
-<%--                                    ттттттттаааааааааккккоооооооййй или даже</p>--%>
-<%--                                <p style="color: black"><strong>Details:</strong> здесь какие-то детали, возможно тоже--%>
-<%--                                    длинные</p>--%>
-
-<%--                                <table class="table table-responsive table-bordered" style="margin-bottom: 0px">--%>
-
-<%--                                    <thead>--%>
-<%--                                    <tr class="border-2 border-dark">--%>
-<%--                                    <tr>--%>
-<%--                                        <th scope="col" class="col-6">prodId</th>--%>
-<%--                                        <th scope="col" class="col-6">quantity</th>--%>
-<%--                                    </tr>--%>
-<%--                                    </thead>--%>
-<%--                                    <tbody>--%>
-<%--                                    <tr>--%>
-<%--                                        <td>1</td>--%>
-<%--                                        <td>2</td>--%>
-<%--                                    </tr>--%>
-<%--                                    <tr>--%>
-<%--                                        <td>12</td>--%>
-<%--                                        <td>1</td>--%>
-<%--                                    </tr>--%>
-<%--                                    <tr class="border-2 border-dark">--%>
-<%--                                    </tbody>--%>
-<%--                                </table>--%>
-
-<%--                                <div class="justify-content-center" style="color: white; padding-bottom: 01px;">--%>
-<%--                                    <div class="input-group col-12">--%>
-<%--                                        <button class="btn btn-primary col-6"--%>
-<%--                                        >Выполнено!!!--%>
-<%--                                        </button>--%>
-<%--                                        <button class="btn btn-danger col-6"--%>
-<%--                                        >Отменить!!!--%>
-<%--                                        </button>--%>
-
-<%--                                    </div>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
                     </div>
                 </div>
             </div>

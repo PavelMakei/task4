@@ -8,6 +8,7 @@ import by.makei.shop.model.dao.UserDao;
 import by.makei.shop.model.dao.impl.ProductDaoImpl;
 import by.makei.shop.model.dao.impl.UserDaoImpl;
 import by.makei.shop.model.entity.Cart;
+import by.makei.shop.model.entity.Order;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
@@ -16,11 +17,13 @@ import by.makei.shop.model.validator.ParameterValidator;
 import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import by.makei.shop.util.PasswordEncoder;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,27 +64,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createUser(Map<String, String> userData) throws ServiceException {
-        User user = new User();
-        String hashPassword;
-
-        user.setFirstName(userData.get(FIRST_NAME));
-        user.setLastName(userData.get(LAST_NAME));
-        user.setLogin(userData.get(LOGIN));
-        user.setEmail(userData.get(EMAIL));
-        user.setPhone(userData.get(PHONE));
-
-        hashPassword = PasswordEncoder.getHashedPassword(userData.get(PASSWORD));
-
-        UserDaoImpl userDao = UserDaoImpl.getInstance();
-        ;
+    public boolean createUser(Map<String, String> userData, HttpSession session) throws ServiceException {
+        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         try {
-            userDao.create(user, hashPassword);
+            if (parameterValidator.validateAndMarkIncomeData(userData)
+                && parameterValidator.validateAndMarkIfLoginCorrectAndNotExistsInDb(userData)
+                && parameterValidator.validateAndMarkIfPhoneCorrectAndNotExistsInDb(userData)
+                && parameterValidator.validateAndMarkIfEmailCorrectAndNotExistsInDb(userData)
+                && parameterValidator.validateAndMarkActivationCodeAndSavedEmail(userData, session)) {
+
+                User user = new User();
+                String hashPassword;
+
+                user.setFirstName(userData.get(FIRST_NAME));
+                user.setLastName(userData.get(LAST_NAME));
+                user.setLogin(userData.get(LOGIN));
+                user.setEmail(userData.get(EMAIL));
+                user.setPhone(userData.get(PHONE));
+                hashPassword = PasswordEncoder.getHashedPassword(userData.get(PASSWORD));
+                UserDaoImpl userDao = UserDaoImpl.getInstance();
+                userDao.create(user, hashPassword);
+                return true;
+
+            } else {
+                return false;
+            }
         } catch (DaoException e) {
             logger.log(Level.ERROR, "error while addNewUser in UserService. {}", e.getMessage());
             throw new ServiceException(e);
         }
-        return true;
     }
 
     @Override
@@ -100,7 +111,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateAccessLevel(Map<String, String> userDataMap) throws ServiceException {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
-        if (!parameterValidator.validateAndMarkIncomeData(userDataMap)){
+        if (!parameterValidator.validateAndMarkIncomeData(userDataMap)) {
             return false;
         }
 
@@ -168,7 +179,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws ServiceException {
+    public boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws
+            ServiceException {
         UserDao userDao = UserDaoImpl.getInstance();
         BigDecimal inputAmount = BigDecimal.valueOf(Double.valueOf(amountToDeposit));
         BigDecimal resultAmount = currentUserAmount.add(inputAmount);
@@ -181,7 +193,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws ServiceException {
+    public boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws
+            ServiceException {
         ParameterValidator validator = ParameterValidatorImpl.getInstance();
         UserDao userDao = UserDaoImpl.getInstance();
         try {
@@ -194,34 +207,76 @@ public class UserServiceImpl implements UserService {
                 return false;
             }
             userDao.createOrderTransaction(currentUser, currentCart, orderDataMap);
-
         } catch (DaoException e) {
             logger.log(Level.ERROR, "error while create order", e);
             throw new ServiceException(e);
         }
         return true;
-
     }
 
-    private boolean isSteelEnoughProductInStock(Cart currentCart) throws DaoException {
+    private boolean isSteelEnoughProductInStock(Cart currentCart) throws ServiceException {
         boolean isEnough = true;
         ProductDao productDao = ProductDaoImpl.getInstance();
         Map<Product, Integer> productQuantity = currentCart.getProductQuantity();
-        for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
-            Map<Product, String> currentProductQuantity = productDao.findMapProductQuantityById(ID, String.valueOf(entry.getKey().getId()));
-            if (currentProductQuantity.size() == 0) {
-                currentCart.removeProduct(entry.getKey(), entry.getValue());
-                isEnough = false;
-            } else {
-                int difference = entry.getValue() - Integer.parseInt(currentProductQuantity.get(entry.getKey()));
-                if (difference > 0) {
-                    currentCart.removeProduct(entry.getKey(), difference);
+        try {
+            for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
+                Map<Product, String> currentProductQuantity = new HashMap<>();
+                productDao.findMapProductQuantityById(ID, String.valueOf(entry.getKey().getId()), currentProductQuantity);
+                if (currentProductQuantity.size() == 0) {
+                    currentCart.removeProduct(entry.getKey(), entry.getValue());
                     isEnough = false;
+                } else {
+                    int difference = entry.getValue() - Integer.parseInt(currentProductQuantity.get(entry.getKey()));
+                    if (difference > 0) {
+                        currentCart.removeProduct(entry.getKey(), difference);
+                        isEnough = false;
+                    }
                 }
             }
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while isSteelEnoughProductInStock", e);
+            throw new ServiceException(e);
         }
         return isEnough;
     }
 
+    @Override
+    public boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws ServiceException {
+        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
+        try {
+            return parameterValidator.validateAndMarkIncomeData(incomeDataMap);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while validateAndMarkIncomeData", e);
+            throw new ServiceException(e);
+        }
+    }
 
+    @Override
+    public boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws ServiceException {
+        ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
+        int orderId;
+        Map<Integer, Integer> productIdQuantity;
+        if (!parameterValidator.validateAndMarkIncomeData(incomeParam)) {
+            return false;
+        }
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
+        //получить лист ордеров
+        try {
+            userDao.findOrderByParam(orderList, incomeParam);
+            //пройти по списку
+            for (Order order : orderList) {
+                orderId = order.getId();
+
+                //получить мапу продукт-количество для каждого
+                productIdQuantity = order.getProdIdQuantity();
+                userDao.findOrderProductMap(orderId, productIdQuantity);
+                //добавить в каждый его мапу
+                order.setProdIdQuantity(productIdQuantity);
+            }
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while findOrderByParam", e);
+            throw new ServiceException(e);
+        }
+        return true;
+    }
 }

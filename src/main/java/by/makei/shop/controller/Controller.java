@@ -4,10 +4,7 @@ import by.makei.shop.exception.CommandException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.CommandType;
 import by.makei.shop.model.command.Router;
-import by.makei.shop.model.service.ProductService;
-import by.makei.shop.model.service.impl.ProductServiceImpl;
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,10 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Map;
 
-import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.AttributeName.TYPES_MAP;
+import static by.makei.shop.model.command.AttributeName.ERROR_MESSAGE;
 
 
 @WebServlet(name = "Controller", value = "/controller")
@@ -65,8 +60,8 @@ public class Controller extends HttpServlet {
                 }
             }
         } catch (CommandException e) {
-            logger.log(Level.ERROR, "incorrect command : {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, "incorrect command.");
+            logger.log(Level.ERROR, "Command exception", e);
+            request.setAttribute(ERROR_MESSAGE, "Command exception");
             response.sendError(500, e.getMessage());
         }
     }

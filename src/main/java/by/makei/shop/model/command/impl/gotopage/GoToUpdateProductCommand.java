@@ -23,19 +23,23 @@ public class GoToUpdateProductCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-
-        String productId = request.getParameter(ID);
-        logger.log(Level.DEBUG, "GoToUpdateProductCommand get product id :{}", productId);
-        ProductService productService = ProductServiceImpl.getInstance();
+        Map<String, String> inputProductIdQuantity = new HashMap<>();
         Map<Product, String> productQuantity = new HashMap<>();
+        inputProductIdQuantity.put(ID, request.getParameter(ID));
+
+        logger.log(Level.DEBUG, "GoToUpdateProductCommand get product id :{}",request.getParameter(ID));
+        ProductService productService = ProductServiceImpl.getInstance();
         Router router = new Router();
         try {
-            productQuantity = productService.findMapProductQuantityById(productId);
-            request.setAttribute(PRODUCT, productQuantity.keySet().toArray()[0]);
-            request.setAttribute(QUANTITY, productQuantity.values().toArray()[0]);
-            MessageReinstall.extractAndSetMessage(MESSAGE, request);
-            router.setCurrentPage(UPDATE_PRODUCT);
-
+            if(!productService.findMapProductQuantityById(inputProductIdQuantity, productQuantity)){
+                logger.log(Level.ERROR, "GoToUpdateProductCommand. Incorrect id");
+                router.setCurrentPage(ERROR500);
+            }else {
+                request.setAttribute(PRODUCT, productQuantity.keySet().toArray()[0]);
+                request.setAttribute(QUANTITY, productQuantity.values().toArray()[0]);
+                MessageReinstall.extractAndSetMessage(MESSAGE, request);
+                router.setCurrentPage(UPDATE_PRODUCT);
+            }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToUpdateProductCommand. {}", e.getMessage());
             request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());

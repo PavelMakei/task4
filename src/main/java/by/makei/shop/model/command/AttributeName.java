@@ -24,6 +24,8 @@ public enum AttributeName {
     public static final String CURRENT_CONTEXT_PATH = "current_context_path";
     public static final String CURRENT_PAGE = "current_page";
     public static final String DATA_MESSAGE = "data_message";
+    public static final String DATE_OPEN = "date_open";
+    public static final String DATE_CLOSE = "date_close";
     public static final String DESCRIPTION = "description";
     public static final String DETAIL = "detail";
     public static final String EMAIL = "email";
@@ -83,6 +85,7 @@ public enum AttributeName {
     public static final String PREVIOUS_PAGE = "previous_page";
     public static final String PRICE = "price";
     public static final String PRODUCT = "product";
+    public static final String PRODUCT_ID = "product_id";
     public static final String PRODUCT_NAME = "product_name";
     public static final String PRODUCTS_QUANTITY_MAP = "products_quantity_map";
     public static final String QUANTITY = "quantity";
@@ -102,6 +105,7 @@ public enum AttributeName {
     public static final String SESS_EMAIL = "sess_email";
     public static final String SESS_MESSAGE = "sess_message";
     public static final String SIZE = "size";
+    public static final String STATUS = "status";
     public static final String TOTAL_PAGE = "total_page";
     public static final String TOTAL_PRODUCT_FOUND = "total_product_found";
     public static final String TYPE_ID = "type_id";
@@ -110,7 +114,9 @@ public enum AttributeName {
     public static final String USER = "user";
     public static final String USER_ID = "user_id";
     public static final String USER_LIST = "user_list";
+    public static final String ORDER_LIST = "order_list";
     public static final String VALIDATOR_PATTERN = "validator_pattern";
+
 
 
 

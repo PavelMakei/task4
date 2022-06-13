@@ -44,6 +44,7 @@ public enum CommandType {
     ADD_TO_CART(new AddToCartCommand()),
     CLEAR_CART(new ClearCartCommand()),
     GO_TO_CHECKOUT(new GoToCheckoutCommand()),
+    GO_TO_SHOW_ORDER(new GoToShowOrderCommand()),
     CREATE_ORDER(new CreateOrderCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 

@@ -29,8 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger();
     private static final ProductServiceImpl instance = new ProductServiceImpl();
 
-    private ProductServiceImpl() {
-    }
+    private ProductServiceImpl() {}
 
     public static ProductServiceImpl getInstance() {
         return instance;
@@ -267,25 +266,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<Product, String> findMapProductQuantityById(String id) throws ServiceException {
+    public boolean findMapProductQuantityById(Map<String, String> inputProductIdQuantity, Map<Product, String> productQuantityMap) throws ServiceException {
+        ParameterValidator validator = ParameterValidatorImpl.getInstance();
+        try {
+        if(!validator.validateAndMarkIncomeData(inputProductIdQuantity)) {
+         return false;
+        }
+        String id =inputProductIdQuantity.get(ID);
         AttributeValidator attributeValidator = AttributeValidatorImpl.getInstance();
         if (!attributeValidator.isInt5Valid(id)) {
             logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById incorrect id :{}", id);
             throw new ServiceException("ProductService findMapProductQuantityById incorrect id :" + id);
         }
-        Map<Product, String> productQuantityMap = new HashMap<>();
         ProductDao dao = ProductDaoImpl.getInstance();
-        try {
-            productQuantityMap = dao.findMapProductQuantityById(ID, id);
+            dao.findMapProductQuantityById(ID, id, productQuantityMap);
+             if (productQuantityMap.isEmpty()) {
+                 logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById.  id :{}", id);
+                 throw new ServiceException("ProductService findMapProductQuantityById Product was not found by id :" + id);
+             }
+            return true;
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService exception while findMapProductQuantityById. {}", e.getMessage());
             throw new ServiceException(e);
         }
-        if (productQuantityMap.isEmpty()) {
-            logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById.  id :{}", id);
-            throw new ServiceException("ProductService findMapProductQuantityById Product was not found by id :" + id);
-        }
-        return productQuantityMap;
     }
 
     @Override
