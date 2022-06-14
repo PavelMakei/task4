@@ -52,7 +52,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item"
-                   href="${path}/controller?command=go_to_show_order">${show_orders}</a></li>
+                   href="${path}/controller?command=show_order">${show_orders}</a></li>
             <li>
                 <hr class="dropdown-divider"/>
             </li>

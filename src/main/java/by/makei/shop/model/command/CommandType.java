@@ -1,10 +1,7 @@
 package by.makei.shop.model.command;
 
 import by.makei.shop.exception.CommandException;
-import by.makei.shop.model.command.impl.admin.AddNewProductCommand;
-import by.makei.shop.model.command.impl.admin.UpdateAccessLevelCommand;
-import by.makei.shop.model.command.impl.admin.UpdatePhotoCommand;
-import by.makei.shop.model.command.impl.admin.UpdateProductDataCommand;
+import by.makei.shop.model.command.impl.admin.*;
 import by.makei.shop.model.command.impl.common.*;
 import by.makei.shop.model.command.impl.gotopage.*;
 import by.makei.shop.model.command.impl.user.*;
@@ -44,8 +41,9 @@ public enum CommandType {
     ADD_TO_CART(new AddToCartCommand()),
     CLEAR_CART(new ClearCartCommand()),
     GO_TO_CHECKOUT(new GoToCheckoutCommand()),
-    GO_TO_SHOW_ORDER(new GoToShowOrderCommand()),
+    SHOW_ORDER(new ShowOrderCommand()),
     CREATE_ORDER(new CreateOrderCommand()),
+    CANCEL_ORDER(new CancelOrderCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 
     private static final Logger logger = LogManager.getLogger();

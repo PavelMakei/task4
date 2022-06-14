@@ -17,16 +17,14 @@ import by.makei.shop.model.validator.ParameterValidator;
 import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import by.makei.shop.util.PasswordEncoder;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.RedirectMessage.ORDERING_FAIL_INCORRECT_DATA;
@@ -275,6 +273,42 @@ public class UserServiceImpl implements UserService {
             }
         } catch (DaoException e) {
             logger.log(Level.ERROR, "error while findOrderByParam", e);
+            throw new ServiceException(e);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean cancelOrder(HttpServletRequest request) throws ServiceException {
+        ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
+        Map<String, String> incomeParam = new HashMap<>();
+        UserDao userDao = UserDaoImpl.getInstance();
+        //grab ID
+        String id = request.getParameter(ID);
+        incomeParam.put(ID, id);
+
+        try {
+            //Validate map
+            if (!parameterValidator.validateAndMarkIncomeData(incomeParam)) {
+                logger.log(Level.ERROR, "invalid Id {}", id == null ? "null" : id);
+                return false;
+            }
+            //if valid - create order?
+            //Fill prodIdQuantity map to order / just create?
+            List<Order> orderList = new ArrayList<>();
+            findOrderByParam(orderList, incomeParam);
+            Order order = orderList.get(0);
+            if(!order.getStatus().equals(Order.Status.PAID)){
+                logger.log(Level.ERROR, "cancelOrderTransaction not allowed order status for transaction: {}"
+                        , order.getStatus());
+            }
+            if (!userDao.cancelOrderTransaction(order)) {
+                logger.log(Level.ERROR, "error while cancelOrderTransaction");
+                return false;
+            }
+        }
+        catch (DaoException e) {
+            logger.log(Level.ERROR, "exception while cancelOrderTransaction");
             throw new ServiceException(e);
         }
         return true;

@@ -33,17 +33,17 @@ public class CreateOrderCommand implements Command {
         Cart currentCart = (Cart) session.getAttribute(SESS_CART);
         BigDecimal commonOrderPrice = currentCart.getTotalCost();
         //проверить не пуста ли корзина
-        if (currentCart.getProductQuantity().equals(0)) {
+        if (currentCart.getTotalQuantity() == 0) {
             logger.log(Level.ERROR, "CreateOrderCommand empty cart. TotalCost = '{}', and userId ='{}' amount = '{}'"
                     , commonOrderPrice.doubleValue(), currentUser.getId(), currentUser.getAmount().doubleValue());
-            throwNewException("CreateOrderCommand empty cart", request, router);
+            setErrorPage("CreateOrderCommand empty cart", request, router);
             return router;
         }
         //проверить достаточно ли денег
         if (commonOrderPrice.compareTo(currentUser.getAmount()) > 0) {
             logger.log(Level.ERROR, "CreateOrderCommand not enough money to transaction. TotalCost = '{}', and userId ='{}' amount = '{}'"
                     , commonOrderPrice.doubleValue(), currentUser.getId(), currentUser.getAmount().doubleValue());
-            throwNewException("CreateOrderCommand not enough money to make transaction", request, router);
+            setErrorPage("CreateOrderCommand not enough money to make transaction", request, router);
             return router;
         }
         //принять данные address, detail, phone
@@ -64,7 +64,7 @@ public class CreateOrderCommand implements Command {
                             session.setAttribute(USER, user);
                             router.setCurrentPage(GO_TO_MAIN + REDIRECT_MESSAGE + SUCCESSFULLY_ORDERED);
                         }
-                        , () -> throwNewException("user wasn't found by Id", request, router));
+                        , () -> setErrorPage("user wasn't found by Id", request, router));
             } else {
                 //некорректные отправить назад
                 for (Map.Entry<String, String> entry : orderDataMap.entrySet()) {
@@ -80,7 +80,7 @@ public class CreateOrderCommand implements Command {
         return router;
 }
 
-    private void throwNewException(String message, HttpServletRequest request, Router router) {
+    private void setErrorPage(String message, HttpServletRequest request, Router router) {
         request.setAttribute(ERROR_MESSAGE, message);
         router.setCurrentPage(ERROR500);
     }

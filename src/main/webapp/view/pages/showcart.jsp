@@ -29,6 +29,7 @@
 <fmt:message key="not.enough.money" var="not_enough_money"/>
 <fmt:message key="deposit.button" var="deposit_money_button"/>
 <fmt:message key="enter.button" var="enter_button"/>
+<fmt:message key="product.photo" var="photo_label"/>
 
 <html>
 <head>

@@ -4,6 +4,7 @@ import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.entity.Cart;
 import by.makei.shop.model.entity.Order;
 import by.makei.shop.model.entity.User;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import java.math.BigDecimal;
@@ -36,4 +37,6 @@ public interface UserService {
     boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws ServiceException;
 
     boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws ServiceException;
+
+    boolean cancelOrder(HttpServletRequest request) throws ServiceException;
 }

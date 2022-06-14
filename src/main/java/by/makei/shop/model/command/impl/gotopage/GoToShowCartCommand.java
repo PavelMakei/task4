@@ -13,7 +13,6 @@ public class GoToShowCartCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-
         MessageReinstall.extractAndSetMessage(MESSAGE,request);
         Router router = new Router();
         router.setCurrentPage(SHOW_CART);

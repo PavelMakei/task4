@@ -9,7 +9,7 @@
     <thead>
     <tr>
         <th scope="col">#</th>
-        <th scope="col">photo</th>
+        <th scope="col">${photo_label}</th>
         <th scope="col">${product_name_label}</th>
         <th scope="col">${price_label}</th>
         <th scope="col">${quantity_label}</th>

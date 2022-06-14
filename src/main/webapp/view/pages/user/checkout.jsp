@@ -32,6 +32,7 @@
 <fmt:message key="delivery.address" var="address_label"/>
 <fmt:message key="buy.button" var="buy_button"/>
 <fmt:message key="deposit.button" var="deposit_money_button"/>
+<fmt:message key="product.photo" var="photo_label"/>
 
 <fmt:message key="incorrect.he.enter" var="incorrect_he_enter_message"/>
 <fmt:message key="incorrect.she.enter" var="incorrect_she_enter_message"/>

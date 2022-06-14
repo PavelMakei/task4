@@ -14,7 +14,7 @@ public class GoToAddNewUserCommand implements Command {
 
     public Router execute(HttpServletRequest request) throws CommandException {
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
-        logger.log(Level.DEBUG, "GoToAddNewUserPage currentPage :{}", currentPage);
+        logger.log(Level.DEBUG, "GoToAddNewUser currentPage :{}", currentPage);
         request.getSession().setAttribute(CURRENT_PAGE, currentPage);
         Router router = new Router();
         router.setRedirectType();

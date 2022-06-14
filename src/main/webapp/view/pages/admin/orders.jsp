@@ -65,7 +65,7 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-                           ${orders_manage_label}
+                            ${orders_manage_label}
                         </div>
                         <%------------------------------------------------------Orders-----------------------------------------------%>
                         <c:forEach var="order" items="${order_list}">
@@ -89,15 +89,17 @@
                                             <td>${order.userId}</td>
                                             <td>${order.phone}</td>
                                             <td>${order.openDate}</td>
-                                            <td>${order.status}</td>
+                                            <td><fmt:message key="${order.status}"/></td>
                                             <td>${order.closeDate}</td>
                                         </tr>
                                         <tr class="border-2 border-dark">
                                         </tbody>
                                     </table>
 
-                                    <p style="color: black"><strong>${address_label}:</strong> ${order.address}</p>
-                                    <p style="color: black"><strong>${details_label}:</strong> ${order.detail}</p>
+                                    <p style="padding-left: 8px; color: black ">
+                                        <strong>${address_label}:</strong> ${order.address}</p>
+                                    <p style="padding-left: 8px; color: black">
+                                        <strong>${details_label}:</strong> ${order.detail}</p>
 
                                     <table class="table table-responsive table-bordered" style="margin-bottom: 0px">
 
@@ -127,10 +129,13 @@
                                     <c:if test="${order.status eq 'PAID'}">
                                         <div class="justify-content-center" style="color: white; padding-bottom: 01px;">
                                             <div class="input-group col-12">
-                                                <button class="btn btn-primary col-6"
-                                                >${deliver_order_button}
-                                                </button>
+                                                <c:if test="${!empty access_level && access_level eq 'ADMIN'}">
+                                                    <button class="btn btn-primary col-6"
+                                                    >${deliver_order_button}
+                                                    </button>
+                                                </c:if>
                                                 <button class="btn btn-danger col-6"
+                                                        onclick="window.location.href='${path}/controller?command=cancel_order&id=${order.id}'"
                                                 >${cancel_order_button}
                                                 </button>
                                             </div>

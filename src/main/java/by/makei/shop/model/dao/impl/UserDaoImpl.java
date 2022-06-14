@@ -16,10 +16,8 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.*;
 
 import static by.makei.shop.model.command.AttributeName.*;
 
@@ -81,12 +79,26 @@ public class UserDaoImpl implements UserDao {
             """;
     public static final String SQL_FIND_ORDER_BY_PARAM = """
             SELECT id, user_id, address, phone, detail, status, date_open, date_close FROM lightingshop.orders
-            WHERE user_id LIKE ? AND status LIKE ?
+            WHERE id LIKE ?
+            AND user_id LIKE ?
+            AND status LIKE ?
             ORDER BY status, date_open
             """;
     public static final String SQL_FIND_PRODUCT_QUANTITY_BY_ORDER_ID = """
             SELECT product_id, quantity FROM lightingshop.order_products
             WHERE order_id =?
+            """;
+    public static final String SQL_UPDATE_ORDER_STATUS = """
+            UPDATE lightingshop.orders
+            SET 
+            date_close =?,status =?
+            WHERE id =?
+            """;
+
+    public static final String SQL_FIND_PRODUCT_BY_ID = """
+            SELECT id, brand_id, type_id, product_name, description, price, colour, power, size, photo, quantity_in_stock
+            FROM lightingshop.products
+            WHERE id = ?
             """;
 
     private UserDaoImpl() {
@@ -312,11 +324,13 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(3, orderDataMap.get(PHONE));
             preparedStatement.setString(4, orderDataMap.get(DETAIL));
             preparedStatement.execute();
+            preparedStatement.close();
             //получить его id
             preparedStatement = proxyConnection.prepareStatement(SQL_FIND_LAST_ORDER_ID);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             lastOrderId = resultSet.getInt(1);
+            preparedStatement.close();
             resultSet.close();// надо здесь закрывать?
 
             //пробежаться по мапе продуктов
@@ -336,6 +350,7 @@ public class UserDaoImpl implements UserDao {
                 preparedStatement.setInt(2, productId);
                 preparedStatement.setInt(3, quantity);
                 preparedStatement.execute();
+                preparedStatement.close();
                 //скорректировать количество денег у узера
                 preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_USER_MONEY);
                 preparedStatement.setBigDecimal(1, currentCart.getTotalCost());
@@ -352,14 +367,15 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException("SqlException while createOrderTransaction", e);
         } finally {
             try {
-                proxyConnection.rollback();
+                if (proxyConnection != null) {
+                    proxyConnection.rollback();
+                }
             } catch (SQLException e) {
                 logger.log(Level.ERROR, "SqlException while createOrderTransaction rollback", e);
             } finally {
                 finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
             }
         }
-
     }
 
     @Override
@@ -367,13 +383,15 @@ public class UserDaoImpl implements UserDao {
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String userId = incomeParam.getOrDefault(ID, FIND_ANY);
+        String id = incomeParam.getOrDefault(ID, FIND_ANY);
+        String userId = incomeParam.getOrDefault(USER_ID, FIND_ANY);
         String orderStatus = incomeParam.getOrDefault(STATUS, FIND_ANY);
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement = proxyConnection.prepareStatement(SQL_FIND_ORDER_BY_PARAM);
-            preparedStatement.setString(1, userId);
-            preparedStatement.setString(2, orderStatus);
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, userId);
+            preparedStatement.setString(3, orderStatus);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Optional<Order> optionalOrder = new OrderMapper().mapEntity(resultSet);
@@ -399,17 +417,87 @@ public class UserDaoImpl implements UserDao {
             preparedStatement = proxyConnection.prepareStatement(SQL_FIND_PRODUCT_QUANTITY_BY_ORDER_ID);
             preparedStatement.setInt(1, orderId);
             resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 productIdQuantity.put(resultSet.getInt(PRODUCT_ID), resultSet.getInt(QUANTITY));
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "error while findOrderProductMap");
             proxyConnection.setForChecking(true);
             throw new DaoException("UserDao error while findOrderProductMap", e);
-        }finally {
-            finallyWhileClosing(proxyConnection,preparedStatement,resultSet);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
         return true;
+    }
+
+    @Override
+    public boolean cancelOrderTransaction(Order order) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        BigDecimal totalCost = new BigDecimal(0);
+        BigDecimal userAmount = new BigDecimal(0);
+        int currentQuantity;
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection.setAutoCommit(false);
+            //поменять статус
+            preparedStatement = proxyConnection.prepareStatement(SQL_UPDATE_ORDER_STATUS);
+            preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(3, order.getId());
+            preparedStatement.setString(2, Order.Status.CANCELED.toString());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            //вернуть товар на склад
+            Map<Integer, Integer> prodIdQuantity = order.getProdIdQuantity();
+            for (Map.Entry<Integer, Integer> entry : prodIdQuantity.entrySet()) {
+                preparedStatement = proxyConnection.prepareStatement(SQL_FIND_PRODUCT_BY_ID, ResultSet.TYPE_FORWARD_ONLY,
+                        ResultSet.CONCUR_UPDATABLE);
+                preparedStatement.setInt(1, entry.getKey());
+                resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    totalCost = totalCost.add(resultSet.getBigDecimal(PRICE));
+                    currentQuantity = resultSet.getInt(QUANTITY_IN_STOCK);
+                    resultSet.updateInt(QUANTITY_IN_STOCK, currentQuantity + entry.getValue());
+                    resultSet.updateRow();
+                } else {
+                    //надо?
+                    logger.log(Level.ERROR,"product wasn't found");
+                }
+                resultSet.close();
+                preparedStatement.close();
+            }
+            //вернуть деньги юзеру
+            preparedStatement =
+                    proxyConnection.prepareStatement(String.format(SQL_SELECT_USER_BY_VAR_PARAM, ID), ResultSet.TYPE_FORWARD_ONLY,
+                            ResultSet.CONCUR_UPDATABLE);
+            preparedStatement.setInt(1, order.getUserId());
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                userAmount = resultSet.getBigDecimal(MONEY_AMOUNT);
+                resultSet.updateBigDecimal(MONEY_AMOUNT, userAmount.add(totalCost));
+                resultSet.updateRow();
+            } else {
+                //надо?
+                logger.log(Level.ERROR,"user wasn't found");
+            }
+            proxyConnection.commit();
+            return true;
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "SqlException while createOrderTransaction", e);
+            throw new DaoException("SqlException while createOrderTransaction", e);
+        } finally {
+            try {
+                if (proxyConnection != null) {
+                    proxyConnection.rollback();
+                }
+            } catch (SQLException e) {
+                logger.log(Level.ERROR, "SqlException while createOrderTransaction rollback", e);
+            } finally {
+                finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+            }
+        }
     }
 
 
