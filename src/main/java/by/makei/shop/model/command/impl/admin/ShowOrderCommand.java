@@ -4,17 +4,21 @@ import by.makei.shop.exception.CommandException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
+import by.makei.shop.model.entity.AccessLevel;
 import by.makei.shop.model.entity.Order;
+import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.service.impl.UserServiceImpl;
 import by.makei.shop.util.MessageReinstall;
 import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static by.makei.shop.model.command.AttributeName.*;
@@ -35,6 +39,11 @@ public class ShowOrderCommand implements Command {
         Map<String, String[]> inputParamRaw = request.getParameterMap();
         Map<String, String> incomeParam;
         incomeParam = inputParamRaw.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, v -> v.getValue()[0]));
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(USER);
+        if (user.getAccessLevel().equals(AccessLevel.USER)) {
+            incomeParam.put(USER_ID, String.valueOf(user.getId()));
+        }
         try {
             if (!userService.findOrderByParam(orderList, incomeParam)) {
                 logger.log(Level.ERROR, "ShowOrderCommand incorrect income params");

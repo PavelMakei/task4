@@ -308,77 +308,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean createOrderTransaction(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws DaoException {
-        ProxyConnection proxyConnection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Map<Product, Integer> productQuantity = currentCart.getProductQuantity();
-        int lastOrderId;
-        try {
-            proxyConnection = DbConnectionPool.getInstance().takeConnection();
-            proxyConnection.setAutoCommit(false);
-            //создать новый Order
-            preparedStatement = proxyConnection.prepareStatement(SQL_CREATE_ORDER);
-            preparedStatement.setInt(1, currentUser.getId());
-            preparedStatement.setString(2, orderDataMap.get(ADDRESS));
-            preparedStatement.setString(3, orderDataMap.get(PHONE));
-            preparedStatement.setString(4, orderDataMap.get(DETAIL));
-            preparedStatement.execute();
-            preparedStatement.close();
-            //получить его id
-            preparedStatement = proxyConnection.prepareStatement(SQL_FIND_LAST_ORDER_ID);
-            resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            lastOrderId = resultSet.getInt(1);
-            preparedStatement.close();
-            resultSet.close();// надо здесь закрывать?
-
-            //пробежаться по мапе продуктов
-            for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
-                int productId = entry.getKey().getId();
-                int quantity = entry.getValue();
-                //скорректировть количество товара
-                preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_PRODUCT_QUANTITY);
-                preparedStatement.setInt(1, quantity);
-                preparedStatement.setInt(2, productId);
-                if (preparedStatement.executeUpdate() != 1) {//нужна эта проверка?
-                    throw new SQLException("update product return quantity of updated rows != 1");
-                }
-                //создать промежуточную таблицу
-                preparedStatement = proxyConnection.prepareStatement(SQL_CREATE_ORDER_PRODUCTS);
-                preparedStatement.setInt(1, lastOrderId);
-                preparedStatement.setInt(2, productId);
-                preparedStatement.setInt(3, quantity);
-                preparedStatement.execute();
-                preparedStatement.close();
-                //скорректировать количество денег у узера
-                preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_USER_MONEY);
-                preparedStatement.setBigDecimal(1, currentCart.getTotalCost());
-                preparedStatement.setInt(2, currentUser.getId());
-                if (preparedStatement.executeUpdate() != 1) {//нужна эта проверка?
-                    throw new SQLException("update user money return quantity of updated rows != 1");
-                }
-            }
-            proxyConnection.commit();
-            return true;
-        } catch (SQLException e) {
-            proxyConnection.setForChecking(true);
-            logger.log(Level.ERROR, "SqlException while createOrderTransaction", e);
-            throw new DaoException("SqlException while createOrderTransaction", e);
-        } finally {
-            try {
-                if (proxyConnection != null) {
-                    proxyConnection.rollback();
-                }
-            } catch (SQLException e) {
-                logger.log(Level.ERROR, "SqlException while createOrderTransaction rollback", e);
-            } finally {
-                finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
-            }
-        }
-    }
-
-    @Override
     public boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws DaoException {
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
@@ -431,6 +360,77 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean createOrderTransaction(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Map<Product, Integer> productQuantity = currentCart.getProductQuantity();
+        int lastOrderId;
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            proxyConnection.setAutoCommit(false);
+            //создать новый Order
+            preparedStatement = proxyConnection.prepareStatement(SQL_CREATE_ORDER);
+            preparedStatement.setInt(1, currentUser.getId());
+            preparedStatement.setString(2, orderDataMap.get(ADDRESS));
+            preparedStatement.setString(3, orderDataMap.get(PHONE));
+            preparedStatement.setString(4, orderDataMap.get(DETAIL));
+            preparedStatement.execute();
+            preparedStatement.close();
+            //получить его id
+            preparedStatement = proxyConnection.prepareStatement(SQL_FIND_LAST_ORDER_ID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            lastOrderId = resultSet.getInt(1);
+            preparedStatement.close();
+            resultSet.close();// надо здесь закрывать?
+
+            //пробежаться по мапе продуктов
+            for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
+                int productId = entry.getKey().getId();
+                int quantity = entry.getValue();
+                //скорректировть количество товара
+                preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_PRODUCT_QUANTITY);
+                preparedStatement.setInt(1, quantity);
+                preparedStatement.setInt(2, productId);
+                if (preparedStatement.executeUpdate() != 1) {//нужна эта проверка?
+                    throw new SQLException("update product return quantity of updated rows != 1");
+                }
+                //создать промежуточную таблицу
+                preparedStatement = proxyConnection.prepareStatement(SQL_CREATE_ORDER_PRODUCTS);
+                preparedStatement.setInt(1, lastOrderId);
+                preparedStatement.setInt(2, productId);
+                preparedStatement.setInt(3, quantity);
+                preparedStatement.execute();
+                preparedStatement.close();
+            }
+            //скорректировать количество денег у узера
+            preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_USER_MONEY);
+            preparedStatement.setBigDecimal(1, currentCart.getTotalCost());
+            preparedStatement.setInt(2, currentUser.getId());
+            if (preparedStatement.executeUpdate() != 1) {//нужна эта проверка?
+                throw new SQLException("update user money return quantity of updated rows != 1");
+            }
+            proxyConnection.commit();
+            return true;
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "SqlException while createOrderTransaction", e);
+            throw new DaoException("SqlException while createOrderTransaction", e);
+        } finally {
+            try {
+                if (proxyConnection != null) {
+                    proxyConnection.rollback();
+                }
+            } catch (SQLException e) {
+                logger.log(Level.ERROR, "SqlException while createOrderTransaction rollback", e);
+            } finally {
+                finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+            }
+        }
+    }
+
+    @Override
     public boolean cancelOrderTransaction(Order order) throws DaoException {
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
@@ -456,7 +456,7 @@ public class UserDaoImpl implements UserDao {
                 preparedStatement.setInt(1, entry.getKey());
                 resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    totalCost = totalCost.add(resultSet.getBigDecimal(PRICE));
+                    totalCost = totalCost.add(resultSet.getBigDecimal(PRICE).multiply(new BigDecimal(entry.getValue())));
                     currentQuantity = resultSet.getInt(QUANTITY_IN_STOCK);
                     resultSet.updateInt(QUANTITY_IN_STOCK, currentQuantity + entry.getValue());
                     resultSet.updateRow();

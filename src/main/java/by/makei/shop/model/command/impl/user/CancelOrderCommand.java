@@ -4,14 +4,17 @@ import by.makei.shop.exception.CommandException;
 import by.makei.shop.exception.ServiceException;
 import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
+import by.makei.shop.model.entity.AccessLevel;
+import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.UserService;
 import by.makei.shop.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 
-import static by.makei.shop.model.command.AttributeName.ERROR_MESSAGE;
-import static by.makei.shop.model.command.AttributeName.SESS_MESSAGE;
+import java.util.Optional;
+
+import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.*;
 import static by.makei.shop.model.command.RedirectMessage.*;
 
@@ -26,6 +29,12 @@ public class CancelOrderCommand implements Command {
 
         try {
             if (userService.cancelOrder(request)) {
+                User user = (User) session.getAttribute(USER);
+                if (user.getAccessLevel().equals(AccessLevel.USER)) {
+                    Optional<User> optionalUser = userService.findUserByEmail(user.getEmail());
+                    optionalUser.ifPresentOrElse(u -> session.setAttribute(USER, u),
+                            () -> logger.log(Level.WARN, "user was not found"));
+                }
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_ORDERS+REDIRECT_MESSAGE+UPDATE_SUCCESS);
 
