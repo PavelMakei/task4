@@ -10,45 +10,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
            data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-            ${admin_user_menu}
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="${path}/controller?command=go_to_manage_user">${show_users}</a></li>
-            <li>
-                <hr class="dropdown-divider"/>
-            </li>
-            <li><a class="dropdown-item" href="#">Другое действие</a></li>
-            <li>
-                <hr class="dropdown-divider"/>
-            </li>
-            <li><a class="dropdown-item" href="#">Что-то еще здесь</a></li>
-        </ul>
-    </li>
-
-
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-           data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-            ${admin_product_menu}
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item"
-                   href="${path}/controller?command=go_to_add_new_product">${add_new_product_label}</a></li>
-            <li>
-                <hr class="dropdown-divider"/>
-            </li>
-            <li><a class="dropdown-item" href="#">Другое действие</a></li>
-            <li>
-                <hr class="dropdown-divider"/>
-            </li>
-            <li><a class="dropdown-item" href="#">Что-то еще здесь</a></li>
-        </ul>
-    </li>
-
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-           data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-            ${admin_order_menu}
+            ${admin_menu}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item"
@@ -56,11 +18,12 @@
             <li>
                 <hr class="dropdown-divider"/>
             </li>
-            <li><a class="dropdown-item" href="#">Другое действие</a></li>
+            <li><a class="dropdown-item" href="${path}/controller?command=go_to_manage_user">${show_users}</a></li>
             <li>
                 <hr class="dropdown-divider"/>
             </li>
-            <li><a class="dropdown-item" href="#">Что-то еще здесь</a></li>
+            <li><a class="dropdown-item"
+                   href="${path}/controller?command=go_to_add_new_product">${add_new_product_label}</a></li>
         </ul>
     </li>
 </ul>

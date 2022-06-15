@@ -39,4 +39,6 @@ public interface UserService {
     boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws ServiceException;
 
     boolean cancelOrder(HttpServletRequest request) throws ServiceException;
+
+    boolean deliveryOrder(HttpServletRequest request) throws ServiceException;
 }

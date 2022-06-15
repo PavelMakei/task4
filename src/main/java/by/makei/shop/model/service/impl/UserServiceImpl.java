@@ -301,6 +301,7 @@ public class UserServiceImpl implements UserService {
             if(!order.getStatus().equals(Order.Status.PAID)){
                 logger.log(Level.ERROR, "cancelOrderTransaction not allowed order status for transaction: {}"
                         , order.getStatus());
+                return false;
             }
             if (!userDao.cancelOrderTransaction(order)) {
                 logger.log(Level.ERROR, "error while cancelOrderTransaction");
@@ -309,6 +310,38 @@ public class UserServiceImpl implements UserService {
         }
         catch (DaoException e) {
             logger.log(Level.ERROR, "exception while cancelOrderTransaction");
+            throw new ServiceException(e);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deliveryOrder(HttpServletRequest request) throws ServiceException {
+        ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
+        Map<String, String> incomeParam = new HashMap<>();
+        UserDao userDao = UserDaoImpl.getInstance();
+        String id = request.getParameter(ID);
+        incomeParam.put(ID, id);
+        try {
+            if (!parameterValidator.validateAndMarkIncomeData(incomeParam)) {
+                logger.log(Level.ERROR, "invalid Id {}", id == null ? "null" : id);
+                return false;
+            }
+            List<Order> orderList = new ArrayList<>();
+            findOrderByParam(orderList, incomeParam);
+            Order order = orderList.get(0);
+            if(!order.getStatus().equals(Order.Status.PAID)){
+                logger.log(Level.ERROR, "deliverOrder not allowed order status for transaction: {}"
+                        , order.getStatus());
+                return false;
+            }
+            if (!userDao.deliveryOrder(order)) {
+                logger.log(Level.ERROR, "error while UserDao deliverOrder");
+                return false;
+            }
+        }
+        catch (DaoException e) {
+            logger.log(Level.ERROR, "exception while deliverOrder");
             throw new ServiceException(e);
         }
         return true;

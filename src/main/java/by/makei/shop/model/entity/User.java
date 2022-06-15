@@ -1,6 +1,7 @@
 package by.makei.shop.model.entity;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Date;
 
 public class User extends AbstractEntity{
@@ -12,12 +13,12 @@ public class User extends AbstractEntity{
     private String email;
     private String phone;
     private AccessLevel accessLevel;
-    private Date date; // TODO рекомендовано заменить на более свежую реализацию
+    private Instant date;
     private BigDecimal amount;
 
     public User() {}
 
-    public User(int id, String firstName, String lastName, String login, String email, String phone, AccessLevel accessLevel, Date date, BigDecimal amount) {
+    public User(int id, String firstName, String lastName, String login, String email, String phone, AccessLevel accessLevel, Instant date, BigDecimal amount) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,7 +30,7 @@ public class User extends AbstractEntity{
         this.amount = amount;
     }
 
-    public User(String firstName, String lastName, String login,  String email, String phone, AccessLevel accessLevel, Date date, BigDecimal amount) {
+    public User(String firstName, String lastName, String login,  String email, String phone, AccessLevel accessLevel, Instant date, BigDecimal amount) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.login = login;
@@ -96,11 +97,11 @@ public class User extends AbstractEntity{
         this.accessLevel = accessLevel;
     }
 
-    public Date getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

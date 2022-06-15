@@ -518,7 +518,7 @@
                                                                     <c:set var="max"
                                                                            value="${sess_cart.maxQuantityOfOneProductToBy}"/>
                                                                 </c:if>
-                                                                <c:if test="${i < sess_cart.maxQuantityOfOneProductToBy}">
+                                                                <c:if test="${i <= sess_cart.maxQuantityOfOneProductToBy}">
                                                                     ${i}
                                                                     <c:set var="max" value="${i}"/>
                                                                 </c:if>

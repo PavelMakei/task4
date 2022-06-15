@@ -114,12 +114,13 @@
                                         <c:set var="productIdQuantityMap" value="${order.prodIdQuantity}"/>
                                         <c:forEach var="elem" items="${productIdQuantityMap}">
                                             <tr>
-                                                <td
-                                                        class="link-primary"
+                                                <td>
+                                                    <a
+                                                        class="pe-auto"
                                                         href="javascript:void(0);"
                                                         title="${more_hint}"
                                                         onClick=window.open("${path}/controller?command=show_product&id=${elem.key}","Product","width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no");
-                                                >${elem.key}</td>
+                                                    >${elem.key}</a></td>
                                                 <td>${elem.value}</td>
                                             </tr>
                                         </c:forEach>
@@ -131,6 +132,7 @@
                                             <div class="input-group col-12">
                                                 <c:if test="${!empty access_level && access_level eq 'ADMIN'}">
                                                     <button class="btn btn-primary col-6"
+                                                            onclick="window.location.href='${path}/controller?command=deliver_order&id=${order.id}'"
                                                     >${deliver_order_button}
                                                     </button>
                                                 </c:if>

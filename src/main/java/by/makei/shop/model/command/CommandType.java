@@ -44,6 +44,7 @@ public enum CommandType {
     SHOW_ORDER(new ShowOrderCommand()),
     CREATE_ORDER(new CreateOrderCommand()),
     CANCEL_ORDER(new CancelOrderCommand()),
+    DELIVER_ORDER(new DeliverOrderCommand()),
     UPDATE_PROFILE(new UpdateProfileCommand());
 
     private static final Logger logger = LogManager.getLogger();

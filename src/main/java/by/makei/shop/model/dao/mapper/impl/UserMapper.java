@@ -17,7 +17,6 @@ public class UserMapper implements Mapper<User> {
     public Optional<User> mapEntity(ResultSet resultSet) {
         User user = new User();
         Optional<User> optionalUser;
-
         try {
             user.setId(resultSet.getInt(ID));
             user.setFirstName(resultSet.getString(FIRST_NAME));
@@ -26,9 +25,8 @@ public class UserMapper implements Mapper<User> {
             user.setEmail(resultSet.getString(EMAIL.toLowerCase()));
             user.setPhone(resultSet.getString(PHONE));
             user.setAccessLevel(AccessLevel.valueOf(resultSet.getString(ACCESS_LEVEL)));
-            user.setDate(resultSet.getDate(REGISTRATION_DATE));
+            user.setDate(resultSet.getTimestamp(REGISTRATION_DATE).toInstant());
             user.setAmount(BigDecimal.valueOf(resultSet.getDouble(MONEY_AMOUNT)));
-
             optionalUser = Optional.of(user);
         } catch (SQLException e) {
             logger.log(Level.ERROR,"SQLException user wasn't mapped in UserMapper. {}", e.getMessage());

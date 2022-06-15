@@ -14,9 +14,7 @@
 
 <c:set var="path">${pageContext.request.contextPath}</c:set>
 
-<fmt:message key="admin.product.menu" var="admin_product_menu"/>
-<fmt:message key="admin.user.menu" var="admin_user_menu"/>
-<fmt:message key="admin.order.menu" var="admin_order_menu"/>
+<fmt:message key="admin.menu" var="admin_menu"/>
 <fmt:message key="add.new.product" var="add_new_product_label"/>
 <fmt:message key="show.users" var="show_users"/>
 <fmt:message key="show.orders" var="show_orders"/>
@@ -27,6 +25,8 @@
 <fmt:message key="profile.update" var="update_profile_label"/>
 <fmt:message key="deposit.money.label" var="deposit_money_label"/>
 <fmt:message key="cart" var="cart_label"/>
+<fmt:message key="user.menu" var="user_menu"/>
+<fmt:message key="order.management" var="manage_order"/>
 
 
 <head>
@@ -58,18 +58,14 @@
                     <a class="nav-link" style="color: white" href="#">${about_label}</a>
                 </li>
                 <%--                ----------TODO add role!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
+                <c:if test="${!empty user && user.accessLevel eq 'ADMIN'}">
                 <%@include file="admin/adminproductmenu.jspx" %>
+                </c:if>
+                <c:if test="${!empty user && user.accessLevel eq 'USER'}">
                 <%@include file="user/usermenu.jspx" %>
+                </c:if>
                 <%--                ---------------%>
             </ul>
-
-            <%--            <button type="button" class="btn btn-primary" >--%>
-            <%--                <svg xmlns="" width="16" height="16" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">--%>
-            <%--                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>--%>
-            <%--                </svg>--%>
-            <%--                Button--%>
-            <%--                <span class="top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99 <span class="visually-hidden">unread messages</span></span>--%>
-            <%--            </button>--%>
 
             <button type="button" class="btn btn-primary"
             onclick="

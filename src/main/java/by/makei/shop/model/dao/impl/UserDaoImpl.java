@@ -376,15 +376,16 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(3, orderDataMap.get(PHONE));
             preparedStatement.setString(4, orderDataMap.get(DETAIL));
             preparedStatement.execute();
-            preparedStatement.close();
+//            preparedStatement.close();
+// отключено по требованию преподавателя
             //получить его id
             preparedStatement = proxyConnection.prepareStatement(SQL_FIND_LAST_ORDER_ID);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             lastOrderId = resultSet.getInt(1);
-            preparedStatement.close();
-            resultSet.close();// надо здесь закрывать?
-
+//            preparedStatement.close();
+//            resultSet.close();
+// отключено по требованию преподавателя
             //пробежаться по мапе продуктов
             for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
                 int productId = entry.getKey().getId();
@@ -402,7 +403,8 @@ public class UserDaoImpl implements UserDao {
                 preparedStatement.setInt(2, productId);
                 preparedStatement.setInt(3, quantity);
                 preparedStatement.execute();
-                preparedStatement.close();
+//                preparedStatement.close();
+// отключено по требованию преподавателя
             }
             //скорректировать количество денег у узера
             preparedStatement = proxyConnection.prepareStatement(SQL_CHANGE_USER_MONEY);
@@ -432,6 +434,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean cancelOrderTransaction(Order order) throws DaoException {
+        boolean isCorrect = true;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -446,8 +449,12 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStatement.setInt(3, order.getId());
             preparedStatement.setString(2, Order.Status.CANCELED.toString());
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
+            if(preparedStatement.executeUpdate() != 1){
+                isCorrect = false;
+                logger.log(Level.WARN, "order id {} was not found", order.getId());
+            };
+//            preparedStatement.close();
+// отключено по требованию преподавателя
             //вернуть товар на склад
             Map<Integer, Integer> prodIdQuantity = order.getProdIdQuantity();
             for (Map.Entry<Integer, Integer> entry : prodIdQuantity.entrySet()) {
@@ -461,11 +468,12 @@ public class UserDaoImpl implements UserDao {
                     resultSet.updateInt(QUANTITY_IN_STOCK, currentQuantity + entry.getValue());
                     resultSet.updateRow();
                 } else {
-                    //надо?
+                    isCorrect =false;
                     logger.log(Level.ERROR,"product wasn't found");
                 }
-                resultSet.close();
-                preparedStatement.close();
+//                resultSet.close();
+//                preparedStatement.close();
+// отключено по требованию преподавателя
             }
             //вернуть деньги юзеру
             preparedStatement =
@@ -478,11 +486,11 @@ public class UserDaoImpl implements UserDao {
                 resultSet.updateBigDecimal(MONEY_AMOUNT, userAmount.add(totalCost));
                 resultSet.updateRow();
             } else {
-                //надо?
+                isCorrect = false;
                 logger.log(Level.ERROR,"user wasn't found");
             }
             proxyConnection.commit();
-            return true;
+            return isCorrect;
         } catch (SQLException e) {
             proxyConnection.setForChecking(true);
             logger.log(Level.ERROR, "SqlException while createOrderTransaction", e);
@@ -498,6 +506,30 @@ public class UserDaoImpl implements UserDao {
                 finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
             }
         }
+    }
+
+    @Override
+    public boolean deliveryOrder(Order order) throws DaoException {
+        boolean isCorrect = true;
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        try{
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_UPDATE_ORDER_STATUS);
+            preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(3, order.getId());
+            preparedStatement.setString(2, Order.Status.DELIVERED.toString());
+            if(preparedStatement.executeUpdate() != 1){
+                isCorrect = false;
+            }
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error while deliveryOrder");
+            throw new DaoException("UserDao error while deliveryOrder", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement);
+        }
+        return isCorrect;
     }
 
 
