@@ -5,6 +5,8 @@ public enum PagePath {
     public static final String INDEX = "/index.jsp";
     public static final String LOGINATION = "/view/pages/login.jsp";
     public static final String MAIN = "/view/pages/main.jsp";
+    public static final String ERROR403 = "/view/error/error403.jsp";
+    public static final String ERROR404 = "/view/error/error404.jsp";
     public static final String ERROR500 = "/view/error/error500.jsp";
     public static final String REGISTRATION = "/view/pages/registration.jsp";
     public static final String PASSWORD_RECOVERY = "/view/pages/user/passwordrecovery.jsp";
@@ -24,9 +26,5 @@ public enum PagePath {
     public static final String ORDERS = "/view/pages/admin/orders.jsp";
 
 
-
-
-
-    public static final String TEMP = "view/pages/temp.jsp";
 
 }

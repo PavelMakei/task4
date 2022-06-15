@@ -24,9 +24,8 @@ public class ServletContextListenerImpl implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         logger.log(Level.DEBUG, "------context initialized :{}", sce.getServletContext().getServerInfo());
-        // create connection pool or replace it to controller init
         DbConnectionPool.getInstance();
-        //add maps to servlet context
+        //add common data to servlet context
         Map<String, String> brands;
         Map<String, String> types;
         ServletContext servletContext = sce.getServletContext();
@@ -49,7 +48,6 @@ public class ServletContextListenerImpl implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         logger.log(Level.DEBUG, "------context destroyed :{}",sce.getServletContext().getServerInfo());
-        // shutdown connection pool or replace it to controller destroy
         DbConnectionPool.getInstance().shutdown();
         /* This method is called when the servlet Context is undeployed or Application Server shuts down. */
     }

@@ -35,7 +35,7 @@ public class LogInCommand implements Command {
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 session.setAttribute(USER, user);
-                session.setAttribute(ACCESS_LEVEL, user.getAccessLevel());
+                session.setAttribute(ACCESS_LEVEL, user.getAccessLevel().toString());
                 logger.log(Level.DEBUG,"attributes for user {} were set.", user);
                 router.setRedirectType();//f5 defence
                 router.setRedirectType();

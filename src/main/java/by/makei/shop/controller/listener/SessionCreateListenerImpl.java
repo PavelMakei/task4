@@ -1,7 +1,7 @@
 package by.makei.shop.controller.listener;
 
+import by.makei.shop.model.entity.AccessLevel;
 import by.makei.shop.model.entity.Cart;
-import by.makei.shop.model.validator.ValidatorPattern;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionEvent;
@@ -12,33 +12,30 @@ import org.apache.logging.log4j.Logger;
 
 import static by.makei.shop.model.command.AttributeName.*;
 import static by.makei.shop.model.command.PagePath.INDEX;
+import static by.makei.shop.model.entity.AccessLevel.GUEST;
 
 @WebListener
 public class SessionCreateListenerImpl implements HttpSessionListener {
     static Logger logger = LogManager.getLogger();
 //    private static final String DEFAULT_LOCALE = "en_US";
     private static final String DEFAULT_LOCALE = "ru_RU";
+    private static final String DEFAULT_ACCESS_LEVEL = GUEST.toString();
 
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         HttpSession session = se.getSession();
-
         session.setAttribute(LOCALE, DEFAULT_LOCALE);
         session.setAttribute(CURRENT_PAGE, INDEX);
-//        session.setAttribute(VALIDATOR_PATTERN, ValidatorPattern.getInstance());
         session.setAttribute(SESS_CART, new Cart());
+        session.setAttribute(ACCESS_LEVEL,DEFAULT_ACCESS_LEVEL);
 
-
-        logger.log(Level.INFO, "------>>>session created :" + session.getId());
-
-        /* Session is created. */
+        logger.log(Level.INFO, "session created :{}", session.getId());
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        logger.log(Level.INFO, "------session destroyed :" + se.getSession().getId());
-        /* Session is destroyed. */
+        logger.log(Level.INFO, "session destroyed :{}", se.getSession().getId());
     }
 
 }

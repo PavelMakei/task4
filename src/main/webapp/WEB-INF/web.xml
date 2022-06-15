@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
-    <!-- 0000000000000000000000000000000000000000000000-->
     <filter>
         <filter-name>CharEncodingFilter</filter-name>
         <filter-class>by.makei.shop.controller.filter.CharEncodingFilter</filter-class>
@@ -21,6 +20,14 @@
         <filter-name>SessionAttributeClearFilter</filter-name>
         <servlet-name>Controller</servlet-name>
     </filter-mapping>
+    <filter>
+        <filter-name>CommandFilter</filter-name>
+        <filter-class>by.makei.shop.controller.filter.permission.CommandPermissionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CommandFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
 
 
 
@@ -36,14 +43,7 @@
 <!--        <dispatcher>REQUEST</dispatcher>-->
 <!--    </filter-mapping>-->
 
-<!--    <filter>-->
-<!--        <filter-name>JspHideFilter</filter-name>-->
-<!--        <filter-class>by.makei.shop.controller.filter.HideJspFilter</filter-class>-->
-<!--    </filter>-->
-<!--    <filter-mapping>-->
-<!--        <filter-name>JspHideFilter</filter-name>-->
-<!--        <url-pattern>/view/*</url-pattern>-->
-<!--    </filter-mapping>-->
+
 
 
     <filter>
