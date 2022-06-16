@@ -35,13 +35,14 @@ public class AddToCartCommand implements Command {
         inputProductIdQuantity.put(QUANTITY, request.getParameter(QUANTITY));
         cart = (Cart) session.getAttribute(SESS_CART);
         int currentQuantity = 0;
-        int inputQuantity;
+        int inputQuantity = 0;
         int quantityInDb = 0;
         String message;
         Product product = null;
 
         try {
-            if (productService.findMapProductQuantityById(inputProductIdQuantity, productQuantityMapFromDB)) {
+            if ((productService.findMapProductQuantityById(inputProductIdQuantity, productQuantityMapFromDB))
+                && (inputQuantity = Integer.parseInt(inputProductIdQuantity.get(QUANTITY)))>0) {
                 inputQuantity = Integer.parseInt(inputProductIdQuantity.get(QUANTITY));
                 if (productQuantityMapFromDB.size() != 1) {
                     logger.log(Level.WARN, "AddToCartCommand error while find product in DB, quantity of product = {}", productQuantityMapFromDB.size());
@@ -58,11 +59,11 @@ public class AddToCartCommand implements Command {
                 }
                 currentQuantity += inputQuantity;
                 if (currentQuantity > Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY) {
-                    logger.log(Level.INFO, "AddToCartCommand asked product quantity more then " + Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY);
+                    logger.log(Level.INFO, "AddToCartCommand asked product quantity more than " + Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY);
                     currentQuantity = Cart.MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY;
                     message = PRODUCT_MAXIMUM_REACHED;
                 } else if (currentQuantity > quantityInDb) {
-                    logger.log(Level.INFO, "AddToCartCommand asked product quantity more then in stock");
+                    logger.log(Level.INFO, "AddToCartCommand asked product quantity more than in stock");
                     currentQuantity = quantityInDb;
                     message = NO_MORE_IN_STOCK;
                 } else {
@@ -72,8 +73,10 @@ public class AddToCartCommand implements Command {
                 session.setAttribute(SESS_CART, cart);
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_CART + REDIRECT_MESSAGE + message);
-                //При покупке открывать отдельное мелкое окно и в него выводить результат операции
-                //выполнение команды в родительском окне по переходу в корзину?
+            }else{
+                //incorrect data
+                router.setRedirectType();
+                router.setCurrentPage(GO_TO_SHOW_CART + REDIRECT_MESSAGE + ADDING_TO_CART_FAIL_INCORRECT_DATA);
             }
 
         } catch (ServiceException e) {

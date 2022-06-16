@@ -23,6 +23,8 @@ public enum RedirectMessage {
     public static final String SUCCESSFULLY_ORDERED = "successfully.ordered";
     public static final String ORDERING_FAIL_INCORRECT_DATA = "ordering.fail.incorrect.data";
     public static final String ORDERING_FAIL_NOT_ENOUGH_PRODUCTS = "ordering.fail.not.enough.products";
+    public static final String ADDING_TO_CART_FAIL_INCORRECT_DATA = "adding.to.cart.fail.incorrect.data";
+
 
 
 
