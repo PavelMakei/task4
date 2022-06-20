@@ -18,12 +18,12 @@ import static by.makei.shop.model.command.AttributeName.SEARCH_WORD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductDaoImplTest {
-    static final int CORRECT_BRAND_ID = 2;
+    static final int CORRECT_BRAND_ID = 1;
     static final int INCORRECT_BRAND_ID = 0;
     static final int INCORRECT_TYPE_ID = 0;
     static final int CORRECT_TYPE_ID = 1;
-    static final int MIN_PRICE = 20;
-    static final int MAX_PRICE = 600;
+    static final int MIN_PRICE = 10;
+    static final int MAX_PRICE = 1000;
     static final int MIN_POWER = 0;
     static final int MAX_POWER = 190;
     static final int SEARCH_FROM = 0;
@@ -63,7 +63,6 @@ class ProductDaoImplTest {
                 CORRECT_BRAND_ID, CORRECT_TYPE_ID, MIN_PRICE, MAX_PRICE, MIN_POWER, MAX_POWER, WORD, IN_STOCK);
         assert (expected > 1);
     }
-
 
     @AfterAll
     static void teardown() {

@@ -13,7 +13,6 @@ class OrderTest {
 private static Order order;
 
     @BeforeAll
-    @Test
     public static void init(){
         order = new Order();
         productIdQuantity = new HashMap<>();
