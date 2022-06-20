@@ -40,22 +40,22 @@
     <link rel="stylesheet" href="${path}/css/enter.css">
 
     <%--    ---------------Prevent to return to previous page---------------%>
-    <%--    <script>--%>
-    <%--        function preventBack() {--%>
-    <%--            window.history.forward();--%>
-    <%--        }--%>
-    <%--        setTimeout("preventBack()", 0);--%>
-    <%--        window.onunload = function () {--%>
-    <%--            null--%>
-    <%--        };--%>
-    <%--        history.pushState(null, null, document.URL);--%>
-    <%--    </script>--%>
+        <script>
+            function preventBack() {
+                window.history.forward();
+            }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () {
+                null
+            };
+            history.pushState(null, null, document.URL);
+        </script>
     <%------------------------------------------%>
 </head>
 <body>
 <div class="wrapper">
     <div class="header">
-        <%@include file="../header.jsp" %>
+        <%@include file="../common/header.jsp" %>
     </div>
     <!-- end of header -->
     <div class="content">

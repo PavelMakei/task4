@@ -63,25 +63,22 @@
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
         };
         history.pushState(null, null, document.URL);
     </script>
-
     <%------------------------------------------%>
 
 </head>
 <body>
 <div class="wrapper">
     <div class="header">
-        <%@include file="../header.jsp" %>
+        <%@include file="../common/header.jsp" %>
     </div>
     <!-- end of header -->
     <div class="content">
-
         <table class="table table-borderless">
                 <th scope="col" class="col-lg-3" style="padding-left: 0px;padding-top: 0px">
                     <nav id="sidebarMenu" class="col-11 d-md-block sidebar">
@@ -192,7 +189,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <%------------------------------------------------------Button-----------------------------------------------%>
                                         <div class="d-grid gap-1">
                                             <button type="submit" class="btn btn-primary btn-warning"
@@ -210,9 +206,7 @@
                                                         >
                                                         ${buy_button}
                                                     </c:if>
-
-
-                                                </button>
+                                             </button>
                                         </div>
                                     </form>
                                 </div>
@@ -241,10 +235,7 @@
 <script>
     (function () {
         'use strict'
-        // Получите все формы, к которым мы хотим применить пользовательские стили проверки Bootstrap
         let forms = document.querySelectorAll('.needs-validation')
-
-        // Зацикливайтесь на них и предотвращайте отправку
         Array.prototype.slice.call(forms)
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {

@@ -45,7 +45,6 @@
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -65,7 +64,7 @@
 
 <div class="wrapper">
     <div class="header">
-        <%@include file="../header.jsp" %>
+        <%@include file="../common/header.jsp" %>
     </div>
     <div class="content">
         <div class="container">
@@ -106,7 +105,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <%--                                ---------------------------Card number-----------------------------%>
                                 <div class="form-group" style="color: white">
                                     <label for="card_number" class="cols-sm-2 control-label"

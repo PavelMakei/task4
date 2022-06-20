@@ -57,7 +57,7 @@
 <head>
     <title>${head_label}</title>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
@@ -81,7 +81,7 @@
 <body>
 <div class="wrapper">
     <div class="header">
-        <%@include file="../header.jsp" %>
+        <%@include file="../common/header.jsp" %>
     </div>
     <div class="content">
         <div class="container">
@@ -90,11 +90,6 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-<%--                            <c:if test="${!empty message}">--%>
-<%--                                <p style="color: goldenrod">--%>
-<%--                                    <fmt:message key="${message}"></fmt:message>--%>
-<%--                                </p>--%>
-<%--                            </c:if>--%>
                             ${head_label}
                         </div>
                         <div class="card-body bg-dark bg-opacity-75">
@@ -171,7 +166,7 @@
                                         <div class="input-group">
                                     <span class="input-group-sm"><i class="user-select-auto"
                                                                     aria-hidden="true"></i></span>
-                                            <%--                                    выпадающий список--%>
+                                            <%--        Dropdown list--%>
                                             <div class="input-group mb-3">
                                                 <select class="form-select
                                                 <c:if test="${!empty invalid_type_id}">
@@ -201,7 +196,7 @@
                                                     </c:forEach>
                                                 </select>
                                             </div>
-                                            <%--                               конец     выпадающий список--%>
+                                            <%--                           end    Dropdown list--%>
                                         </div>
                                     </div>
                                 </div>
@@ -297,7 +292,10 @@
                                                        <c:if test="${!empty price}">
                                                                value="${price}"
                                                 </c:if>
-                                                       required pattern="${price_pattern}"/>
+                                                       required pattern="${price_pattern}"
+                                                onchange="value = value.replaceAll(',', '.')"
+                                                />
+
                                             </div>
                                         </div>
                                     </div>

@@ -15,6 +15,9 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.TimeZone;
 
+/**
+ * Get properties from file and create connection
+ */
 
 class ConnectionFactory {//ограничить доступ извне
     private static final Logger logger = LogManager.getLogger();

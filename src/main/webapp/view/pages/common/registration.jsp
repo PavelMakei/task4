@@ -46,7 +46,6 @@
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -75,11 +74,6 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold" style="text-align:center; color: black;"
                         >
-                            <%--                            <c:if test="${!empty message}">--%>
-                            <%--                                <p style="color: goldenrod">--%>
-                            <%--                                    <fmt:message key="${message}"></fmt:message>--%>
-                            <%--                                </p>--%>
-                            <%--                            </c:if>--%>
                             ${registration_label}
                         </div>
                         <div class="card-body bg-dark bg-opacity-75">
@@ -317,9 +311,7 @@
                                                         onclick="document.getElementById('command_to_send').value ='registration_send_activation_code';
                                                                    document.getElementById('activation_code').removeAttribute('required');
                                                                    document.getElementById('accept_check').removeAttribute('required')
-                                                                   document.getElementById('btn_update_spinner').remove();
-"
-                                                >
+                                                                   document.getElementById('btn_update_spinner').remove();">
                                                     <span class="spinner-border spinner-border-sm" role="status"
                                                           aria-hidden="true" id="btn_get_code_spinner"
                                                           style="visibility: hidden"></span>
@@ -329,7 +321,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <%--                                ---------------------------check box------------------------------%>
                                 <div class="form-group" style="color: white">
                                     <div class="input-group mb-3">
@@ -364,7 +355,7 @@
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
 
-<%@include file="parts/modalwindow.jsp" %>
+<%@include file="../parts/modalwindow.jsp" %>
 
 <script>
     (function () {
@@ -389,7 +380,6 @@
             })
     })()
 </script>
-
 
 </body>
 </html>

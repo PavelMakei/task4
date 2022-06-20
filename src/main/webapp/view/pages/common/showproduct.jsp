@@ -40,7 +40,6 @@
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -52,9 +51,6 @@
 </head>
 <body>
 <div class="wrapper">
-    <%--    <div class="header">--%>
-    <%--        <%@include file="header.jsp" %>--%>
-    <%--    </div> <!-- end of header -->--%>
     <div class="content">
         <div class="container" style="margin: 0; min-width: 100%">
             <div class="row justify-content-center">
@@ -101,7 +97,6 @@
                                             <dd class="col-sm-9">
                                                 ${product.power}
                                             </dd>
-
                                             <dt class="col-sm-3">${price_name_label}:</dt>
                                             <dd class="col-sm-9">
                                                 ${product.price}
@@ -115,7 +110,6 @@
                                            title="${close_hint}"
                                            class="stretched-link"
                                            onClick=window.close()
-<%--                                        onclick="window.opener.test1()"--%>
                                         >
                                         </a>
                                     </div>

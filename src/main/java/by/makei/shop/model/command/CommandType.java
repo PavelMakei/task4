@@ -14,8 +14,13 @@ import org.apache.logging.log4j.Logger;
 import java.util.EnumSet;
 import java.util.Map;
 
+
 import static by.makei.shop.model.command.AttributeName.COMMAND;
 
+/**
+ * {@code CommandType} enum represent all commands,
+ * contains enum of commands and their AccessLevel{@link AccessLevel} sets
+ */
 public enum CommandType {
     ADD_NEW_PRODUCT(new AddNewProductCommand(), EnumSet.of(AccessLevel.ADMIN)),
     ADD_TO_CART(new AddToCartCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.USER,AccessLevel.GUEST)),
@@ -66,6 +71,12 @@ public enum CommandType {
     private Command command;
     EnumSet<AccessLevel> accessLevels;
 
+    /**
+     *
+     * @param commandName as String
+     * @return Set of AccessLevel{@link AccessLevel} for defined command
+     * @throws CommandException
+     */
     public static EnumSet<AccessLevel> defineCommandAccessLevel(String commandName) throws CommandException {
         if (commandName == null ) {
             logger.log(Level.ERROR, "Command is null");
@@ -79,6 +90,12 @@ public enum CommandType {
         }
     }
 
+    /**
+     * extract  command from request and define Command{@link Command}
+     * @param request
+     * @return Command {@link Command}
+     * @throws CommandException
+     */
     public static Command defineCommand(HttpServletRequest request) throws CommandException {
         Map<String,String[]> parameterMap = request.getParameterMap();
 

@@ -63,7 +63,7 @@
 
 <div class="wrapper">
     <div class="header">
-        <%@include file="../header.jsp" %>
+        <%@include file="../common/header.jsp" %>
     </div>
     <div class="content">
         <div class="container">

@@ -37,6 +37,7 @@ public interface AttributeValidator {
 
     boolean isCardHolderValid(String cardHolder);
 
+    boolean isDetailValid(String detail);
 
-    //TODO add methods??
+
 }

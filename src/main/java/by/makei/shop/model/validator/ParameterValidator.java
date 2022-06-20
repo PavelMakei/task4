@@ -10,8 +10,6 @@ public interface ParameterValidator {
 
     boolean validateAndMarkUserData(Map<String, String> userData) throws ServiceException;
 
-    boolean validateAndMarkProductData(Map<String, String> productData) throws ServiceException;
-
     boolean validateAndMarkIfPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
 
     boolean validateAndMarkIfEmailCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
@@ -27,8 +25,6 @@ public interface ParameterValidator {
     boolean validateAndMarkIfProductNameCorrectAndNotExistsInDb(Map<String, String> productData) throws ServiceException;
 
     boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) throws ServiceException;
-
-    boolean validateAndMarkDepositData(Map<String, String> depositDataMap);
 
     boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws DaoException, ServiceException;
 }

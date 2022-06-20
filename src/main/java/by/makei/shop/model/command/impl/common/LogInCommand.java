@@ -30,27 +30,29 @@ public class LogInCommand implements Command {
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
         UserService userService = UserServiceImpl.getInstance();
-        try{
-            Optional<User> optionalUser = userService.signIn(login,password);
+        try {
+            Optional<User> optionalUser = userService.signIn(login, password);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 session.setAttribute(USER, user);
                 session.setAttribute(ACCESS_LEVEL, user.getAccessLevel().toString());
-                logger.log(Level.DEBUG,"attributes for user {} were set.", user);
+                logger.log(Level.DEBUG, "attributes for user {} were set.", user);
                 router.setRedirectType();//f5 defence
-                router.setRedirectType();
-                router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+USER_WELCOME);
+                if (user.getAccessLevel().toString().equals("BLOCKED")) {
+                    router.setCurrentPage(BLOCKED_USER);
+                    session.setAttribute(CURRENT_PAGE, BLOCKED_USER);
+                } else {
+                    router.setCurrentPage(GO_TO_MAIN + REDIRECT_MESSAGE + USER_WELCOME);
+                }
 
-//                router.setCurrentPage(INDEX);
-
-            }else {
-                logger.log(Level.INFO,"user wasn't found.");
+            } else {
+                logger.log(Level.INFO, "user wasn't found.");
                 request.setAttribute(MESSAGE, RedirectMessage.INVALID_LOGIN_OR_PASSWORD);
                 router.setCurrentPage(PagePath.LOGINATION);
             }
 
         } catch (ServiceException e) {
-            logger.log(Level.ERROR,"login command error. {}",e.getMessage());
+            logger.log(Level.ERROR, "login command error. {}", e.getMessage());
             request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
             router.setCurrentPage(ERROR500);
         }

@@ -50,11 +50,6 @@
 <fmt:message key="no" var="no_radio_label"/>
 <fmt:message key="update.product" var="change_product_button"/>
 
-<%--<c:set var="price_pattern">^((\d{1,5}\.\d{0,2})|(\d{1,5}))$</c:set>--%>
-<%--<c:set var="power_pattern">^[\d]{1,3}$</c:set>--%>
-<%--<c:set var="quantity_pattern">^([1-9]|(10))$</c:set>--%>
-<%--<c:set var="product_name_pattern">^[A-Za-zА-ЯЁа-яё\d_,\.,;:\- ]{3,60}$</c:set>--%>
-
 <c:set var="price_pattern">${validator_pattern.decimalStringPattern}</c:set>
 <c:set var="power_pattern">${validator_pattern.integer3StringPattern}</c:set>
 <c:set var="quantity_pattern">${validator_pattern.quantityToByPattern}</c:set>
@@ -81,14 +76,12 @@
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
         };
         history.pushState(null, null, document.URL);
     </script>
-
     <%------------------------------------------%>
 
 </head>
@@ -99,7 +92,6 @@
     </div>
     <!-- end of header -->
     <div class="content">
-
         <table class="table table-borderless">
             <tr>
                 <th scope="col" class="col-lg-3" style="padding-left: 0px;padding-top: 0px">
@@ -114,8 +106,6 @@
                                           action="${path}/controller"
                                           enctype="multipart/form-data">
                                         <input type="hidden" name="command" value="go_to_main">
-
-                                        <%------------------------------------------------------------------------------------------------%>
                                         <%------------------------------------------------------Brands-----------------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="search_brand_id" class="cols-sm-2 control-label"
@@ -132,7 +122,7 @@
                                                 <div class="input-group">
                                     <span class="input-group-sm"><i class="user-select-auto"
                                                                     aria-hidden="true"></i></span>
-                                                    <%--                                    выпадающий список--%>
+                                                    <%--       Dropdown list--%>
                                                     <div class="input-group mb-3">
                                                         <select class="form-select inputFilter" name="search_brand_id"
                                                                 id="search_brand_id">
@@ -146,16 +136,13 @@
                                                                         value="${search_brand_id}"
                                                                         selected>${brands_map[search_brand_id]}
                                                                 </option>
-
                                                             </c:if>
-
                                                             <c:if test="${empty search_brand_id || (search_brand_id == '0')}">
                                                                 <option
                                                                         value=""
                                                                         selected>${any_brand_option}
                                                                 </option>
                                                             </c:if>
-
                                                             <c:forEach var="brandEnter" items="${brands_map}">
                                                                 <c:if test="${brandEnter.key ne search_brand_id}">
                                                                     <option value=${brandEnter.key}>${brandEnter.value}</option>
@@ -163,7 +150,7 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <%--                               конец     выпадающий список--%>
+                                                    <%--     end  Dropdown list--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -183,7 +170,7 @@
                                                 <div class="input-group">
                                     <span class="input-group-sm"><i class="user-select-auto"
                                                                     aria-hidden="true"></i></span>
-                                                    <%--                                    выпадающий список--%>
+                                                    <%--       Dropdown list--%>
                                                     <div class="input-group mb-3">
                                                         <select class="form-select inputFilter" id="search_type_id"
                                                                 name="search_type_id">
@@ -210,11 +197,10 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <%--                               конец     выпадающий список--%>
+                                                    <%--    end   Dropdown list--%>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <%----------------------------------------------------- price dec(10,2)--------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="search_min_price" class="cols-sm-2 control-label"
@@ -227,7 +213,6 @@
                                                     ${incorrect_she_enter_message}
                                                 </c:if>
                                             </label>
-
                                             <div class="cols-sm-10">
                                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa"
@@ -258,7 +243,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <%----------------------------------------------------- power int--------------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="power_min" class="cols-sm-2 control-label"
@@ -301,7 +285,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <%----------------------------------------------------- words in name--------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="search_min_price" class="cols-sm-2 control-label"
@@ -328,13 +311,10 @@
                                                         <c:if test="${!empty search_word}">
                                                                value="${search_word}"
                                                         </c:if>
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                         <%--------------------------------------------Order by----------------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="search_brand_id" class="cols-sm-2 control-label">
@@ -344,7 +324,7 @@
                                                 <div class="input-group">
                                     <span class="input-group-sm"><i class="user-select-auto"
                                                                     aria-hidden="true"></i></span>
-                                                    <%--                                    выпадающий список--%>
+                                                    <%--       Dropdown list--%>
                                                     <div class="input-group mb-3">
                                                         <select class="form-select inputFilter" name="order_by"
                                                                 id="order_by">
@@ -368,11 +348,10 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <%--                               конец     выпадающий список--%>
+                                                    <%--     end  Dropdown list--%>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <%--------------------------------------------Exists in stock----------------------------------------------%>
                                         <div class="form-group" style="color: white">
                                             <label for="search_brand_id" class="cols-sm-2 control-label">
@@ -391,7 +370,6 @@
                                                             <c:if test="${search_in_stock == search_only_in_stock}">
                                                                    checked
                                                             </c:if>
-
                                                             >
                                                             <label class="form-check-label" for="search_in_stock1">
                                                                 ${yes_radio_label}
@@ -404,7 +382,6 @@
                                                             <c:if test="${search_in_stock == search_all}">
                                                                    checked
                                                             </c:if>
-
                                                             >
                                                             <label class="form-check-label" for="search_in_stock2">
                                                                 ${no_radio_label}
@@ -414,8 +391,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                         <%------------------------------------------------------Button-----------------------------------------------%>
                                         <div class="d-grid gap-1">
                                             <button type="submit" class="btn btn-primary btn-warning"
@@ -433,16 +408,12 @@
                     </nav>
                 </th>
                 <%-----------------------------------------------------main part----------------------------------------------------%>
-
                 <th scope="col" class="col-lg-9" style="padding-top:16px">
                     <%--                -------------Table of products-----------%>
                     <c:if test="${!empty products_quantity_map}">
-
-
                         <c:forEach var="entry" items="${products_quantity_map}">
                             <c:set var="current_product" value="${entry.key}"/>
                             <c:set var="current_quantity" value="${entry.value}"/>
-
                             <table class="product-card table table-bordered"
                                    style="background-color: white; border-color: orange">
                                 <tbody>
@@ -503,7 +474,6 @@
                                                             <dd class="col-sm-9">
                                                                     ${current_product.power}
                                                             </dd>
-
                                                             <dt class="col-sm-3">${price_name_label}:</dt>
                                                             <dd class="col-sm-9">
                                                                     ${current_product.price}
@@ -542,23 +512,21 @@
                                                 <form class="go-to-change_product form-horizontal">
                                                     <div class="d-grid gap-1">
                                                         <button class="btn btn-primary"
-                                                                onclick="window.open('${path}/controller?command=go_update_product&id=${current_product.id}')">
-
-                                                                ${change_product_button} id:${current_product.id}
+                                                                type="button"
+                                                                onclick=window.open("${path}/controller?command=go_update_product&id=${current_product.id}","Changeproduct")>
+                                                        ${change_product_button} id:${current_product.id}
                                                         </button>
                                                     </div>
                                                 </form>
                                             </c:if>
                                         </div>
                                         <div class="row align-items-end">
-
                                             <form class="buy form-horizontal needs-validation" novalidate method="post"
                                                   action="${path}/controller"
                                                   enctype="multipart/form-data">
                                                 <input type="hidden" name="command" value="add_to_cart">
                                                 <input type="hidden" name="id"
                                                        value="${current_product.id}">
-
                                                 <div class="mb-3">
                                                     <label for="quantityInputId${current_product.id}" class="form-label"
                                                            style="color: white">${quantity_name_label}</label>
@@ -579,7 +547,6 @@
                                                             </c:if>
                                                             id="buttBuy1"
                                                             style="color: white"
-
                                                             onclick="
                                                                     if (!this.form.checkValidity()) {
                                                                     this.form.className +=' was-validated';
@@ -628,7 +595,6 @@
                         </form>
                     </c:if>
                     <c:if test="${empty products_quantity_map}">
-
                         <table class="product-card table table-bordered"
                                style="background-color: white; border-color: orange">
                             <tbody>
@@ -653,15 +619,12 @@
 </div>
 <%-----------------------Modal window------------------------------%>
 
-<%@include file="parts/modalwindow.jsp" %>
+<%@include file="../parts/modalwindow.jsp" %>
 
 <script>
     (function () {
         'use strict'
-        // Получите все формы, к которым мы хотим применить пользовательские стили проверки Bootstrap
         var forms = document.querySelectorAll('.needs-validation')
-
-        // Зацикливайтесь на них и предотвращайте отправку
         Array.prototype.slice.call(forms)
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {

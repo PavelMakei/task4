@@ -10,7 +10,6 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
            data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
            ${user_menu}
-<!--            TODO!!!!!!!!!!!!!!!!!!-->
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="${path}/controller?command=go_to_deposit_money">${deposit_money_label}</a></li>

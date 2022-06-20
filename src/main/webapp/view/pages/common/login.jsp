@@ -5,7 +5,6 @@
   Time: 4:51
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="by.makei.shop.model.validator.ValidatorPattern" %>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -35,9 +34,9 @@
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon"${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
 
@@ -48,7 +47,6 @@
         function preventBack() {
             window.history.forward();
         }
-
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -71,13 +69,6 @@
                         <div class="card-header bg-light" style="text-align:center; color: black; font-size: large">
                             ${login_page_welcome}</div>
 
-<%--                        <c:if test="${!empty invalid_login_or_password_message}">--%>
-<%--                            <div class="bg-dark bg-opacity-75"--%>
-<%--                                 type="text" style="text-align:center;color: red"--%>
-<%--                            >${incorrect_login_message}--%>
-<%--                            </div>--%>
-<%--                        </c:if>--%>
-
                         <div class="card-body bg-dark bg-opacity-75">
                             <form class="form-horizontal needs-validation" novalidate method="post"
                                   action="${path}/controller">
@@ -96,7 +87,7 @@
                                                        placeholder="${login_placeholder}"
                                                        required pattern="${login_pattern}"/>
                                             </div>
-                                <%------------------------------------------------forgot--------------------------------%>
+                                            <%------------------------------------------------forgot--------------------------------%>
                                             <div class="forgot-password mb-2">
                                                 <a href="${path}/view/pages/user/passwordrecovery.jsp"
                                                    style="color: goldenrod">${forgot_password_label}</a>
@@ -104,9 +95,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                                 <%------------------------------------------------password--------------------------------%>
                                 <div class="form-group">
                                     <label for="password" class="cols-sm-2 control-label"
@@ -129,15 +117,12 @@
                                     <button type="submit" class="btn btn-primary btn-warning"
                                             style="color: white">
                                         ${enter_button}
-                                        </button>
+                                    </button>
                                 </div>
-
-                                <%--                        //TODO куда переходить?--%>
 
                                 <div class="login-register">
                                     <a href="${path}/controller?command=go_to_add_new_user"
                                        style="color: goldenrod">${sign_in_label}</a>
-                                    <%--                                    todo через контроллер?--%>
                                 </div>
                             </form>
                         </div>
@@ -148,7 +133,7 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
-<%@include file="parts/modalwindow.jsp" %>
+<%@include file="../parts/modalwindow.jsp" %>
 <script>
     (function () {
         'use strict'

@@ -51,7 +51,7 @@
 
 <div class="wrapper">
     <div class="header">
-        <%@include file="../header.jsp" %>
+        <%@include file="../common/header.jsp" %>
     </div>
     <div class="content">
         <div class="container">
@@ -60,11 +60,6 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold" style="text-align:center;"
                         >
-<%--                            <c:if test="${!empty message}">--%>
-<%--                                <p style="color: goldenrod">--%>
-<%--                                    <fmt:message key="${message}"></fmt:message>--%>
-<%--                                </p>--%>
-<%--                            </c:if>--%>
                             ${password_recovery_label}
                         </div>
                         <div class="card-body bg-dark bg-opacity-75">

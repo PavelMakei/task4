@@ -32,15 +32,14 @@ public class UpdateAccessLevelCommand implements Command {
 
         try {
             if (userService.updateAccessLevel(userDataMap)) {
-//                router.setRedirectType();
                 router.setCurrentPage(currentPage);
-//                 router.setCurrentPage(contextPath + USERS);
                 //current user?
                 User currentUser = (User) session.getAttribute(USER);
                 int id = Integer.parseInt(userDataMap.get(ID));
                 if (currentUser.getId() == id) {
-                    currentUser.setId(id);
+                    currentUser = userService.findUserByOneParam(ID,String.valueOf(id)).get();
                     session.setAttribute(ACCESS_LEVEL, request.getParameter(ACCESS_LEVEL));
+                    session.setAttribute(USER,currentUser);
                 }
             } else {
                 logger.log(Level.ERROR, "UpdateAccessLevelCommand incorrect id or access level");

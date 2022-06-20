@@ -106,11 +106,6 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-<%--                            <c:if test="${!empty photo_message}">--%>
-<%--                                <p style="color: goldenrod">--%>
-<%--                                    <fmt:message key="${photo_message}"></fmt:message>--%>
-<%--                                </p>--%>
-<%--                            </c:if>--%>
                             ${photo_of_product_label}
                             ${local_product_id}
                         </div>
@@ -182,11 +177,6 @@
                     <div class="card" style="border-color: goldenrod">
                         <div class="card-header bg-light fw-bold"
                              style="text-align:center; color: black; font-size: large">
-<%--                            <c:if test="${!empty data_message}">--%>
-<%--                                <p style="color: goldenrod">--%>
-<%--                                    <fmt:message key="${data_message}"></fmt:message>--%>
-<%--                                </p>--%>
-<%--                            </c:if>--%>
                             ${data_of_product_label}
                             ${local_product_id}
                         </div>
@@ -254,7 +244,7 @@
                                         <div class="input-group">
                                       <span class="input-group-sm"><i class="user-select-auto"
                                                                       aria-hidden="true"></i></span>
-                                            <%--                                    выпадающий список--%>
+                                            <%--                                    Dropdown list--%>
                                             <div class="input-group mb-3">
                                                 <select class="form-select inputFilter" name="brand_id"
                                                         id="brand_id">
@@ -270,7 +260,7 @@
                                                     </c:forEach>
                                                 </select>
                                             </div>
-                                            <%--                               конец     выпадающий список--%>
+                                            <%--                               end Dropdown list--%>
                                         </div>
                                     </div>
                                 </div>
@@ -290,7 +280,7 @@
                                         <div class="input-group">
                                     <span class="input-group-sm"><i class="user-select-auto"
                                                                     aria-hidden="true"></i></span>
-                                            <%--                                    выпадающий список--%>
+                                            <%--                                    Dropdown list--%>
                                             <div class="input-group mb-3">
                                                 <select class="form-select inputFilter" name="type_id"
                                                         id="type_id">
@@ -306,7 +296,7 @@
                                                     </c:forEach>
                                                 </select>
                                             </div>
-                                            <%--                               конец     выпадающий список--%>
+                                            <%--                              end Dropdown list--%>
                                         </div>
                                     </div>
                                 </div>

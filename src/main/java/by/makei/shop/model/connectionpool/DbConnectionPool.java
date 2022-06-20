@@ -13,7 +13,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
-
+/**
+ * contains code of thread safe ProxyConnection{@link ProxyConnection} pool
+ */
 public final class DbConnectionPool {
     private static final Logger logger = LogManager.getLogger();
     private static final AtomicReference<DbConnectionPool> instance = new AtomicReference<>();
@@ -25,6 +27,12 @@ public final class DbConnectionPool {
     private BlockingDeque<ProxyConnection> busyDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
     private BlockingDeque<ProxyConnection> forCheckingDeque = new LinkedBlockingDeque<>(ConnectionFactory.MAX_CONNECTIONS);
 
+    /**
+     * Constructor creates a BlockingDeque of free {@link ProxyConnection}
+     * checks if it was created and filled
+     * if no connection were created - closes application by throw new RuntimeException
+     */
+
     private DbConnectionPool() {
         fillConnectionsIntoPool();
         if (freeDeque.size() < ConnectionFactory.MAX_CONNECTIONS) {
@@ -35,6 +43,11 @@ public final class DbConnectionPool {
         PoolService.startPoolService( freeDeque, busyDeque, forCheckingDeque);
     }
 
+    /**
+     * It is thread safe singleton
+     * check if instance of DbConnectionPoll not exists and create new, if already exists - return it
+     * @return instance of DbConnectionPoll
+     */
     public static DbConnectionPool getInstance() { // enum and synchronized singletons are forbidden by task
         if (instance.get() == null) {
             getterLock.lock();
@@ -66,6 +79,12 @@ public final class DbConnectionPool {
         return proxyConnection;
     }
 
+    /**
+     * Checks if connection has true field forChecking put this connection into forCheckingDeque, else - into freeDeque
+     * Uses semafore {@link Semaphore} to check if the method free from other threads
+     * @param connection {@link ProxyConnection}
+     * @return boolean as result
+     */
     public boolean returnConnection(ProxyConnection connection) {
         boolean result = false;
         if (connection == null) {
@@ -92,6 +111,10 @@ public final class DbConnectionPool {
         return result;
     }
 
+    /**
+     * Closes all connections{@link ProxyConnection}
+     * @return boolean as result always true
+     */
     public boolean shutdown() {
         PoolService.stopPoolService();
         while (!freeDeque.isEmpty()) {
@@ -127,6 +150,11 @@ public final class DbConnectionPool {
         return true;
     }
 
+    /**
+     * Gets new connection from {@link ConnectionFactory}
+     * and wraps it with {@link ProxyConnection}
+     * fills freDeque until MAX_CONNECTIONS field
+     */
     private void fillConnectionsIntoPool() {
 
         for (int i = (freeDeque.size() + busyDeque.size()); i < ConnectionFactory.MAX_CONNECTIONS; i++) {
@@ -135,7 +163,6 @@ public final class DbConnectionPool {
                 logger.log(Level.DEBUG, "connection created. freeDeque size = {}, busy deQue = {}", freeDeque.size(), busyDeque.size());
             } catch (DbConnectionPoolException e) {
                 logger.log(Level.ERROR, "Can't create connection", e);
-                //TODO if throw new exception?
             }
         }
     }
@@ -144,10 +171,12 @@ public final class DbConnectionPool {
         if (freeDeque.isEmpty()) {
             logger.log(Level.FATAL, "Can't create connections");
             throw new RuntimeException("Can't create connections. Stop application");
-            //TODO
         }
     }
 
+    /**
+     * remove JDBC drivers from application
+     */
     private void deregisterDrivers() {
         DriverManager.getDrivers().asIterator().forEachRemaining(driver -> {
             try {

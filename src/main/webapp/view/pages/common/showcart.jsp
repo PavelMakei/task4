@@ -68,7 +68,7 @@
                         <div class="card-body bg-dark bg-opacity-75">
                             <%------------------------------------------------------Products-----------------------------------------------%>
                             <div class="form-group bg-white" style="color: white">
-                                <%@include file="parts/productsincart.jsp" %>
+                                <%@include file="../parts/productsincart.jsp" %>
                                 <tr class="border-2 border-dark">
                                     <div class="justify-content-center" style="color: white; padding-bottom: 01px;">
                                         <div class="input-group mb-0">
@@ -156,7 +156,7 @@
     </div>
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
-<%@include file="parts/modalwindow.jsp" %>
+<%@include file="../parts/modalwindow.jsp" %>
 
 </body>
 </html>

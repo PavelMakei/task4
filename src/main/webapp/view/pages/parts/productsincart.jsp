@@ -63,7 +63,7 @@
         <th class="border-0" scope="col"></th>
         <th class="border-0" scope="col"></th>
         <th scope="col">${total_quantity}</th>
-        <th scope="col">${totalSum}</th>
+        <th scope="col"><fmt:formatNumber type="number" maxFractionDigits="2" value="${totalSum}"/></th>
     </tr>
 
     <c:if test="${!empty user}">
