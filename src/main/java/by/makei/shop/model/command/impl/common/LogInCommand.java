@@ -24,7 +24,6 @@ public class LogInCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         Router router = new Router();
-        //TODO add cookies?
 
         HttpSession session = request.getSession();
         String login = request.getParameter(LOGIN);

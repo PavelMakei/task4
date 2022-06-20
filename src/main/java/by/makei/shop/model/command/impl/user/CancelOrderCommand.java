@@ -39,6 +39,7 @@ public class CancelOrderCommand implements Command {
                 router.setCurrentPage(GO_TO_SHOW_ORDERS+REDIRECT_MESSAGE+UPDATE_SUCCESS);
 
             } else {
+                logger.log(Level.ERROR,"Incorrect id or order status");
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_ORDERS+REDIRECT_MESSAGE+UPDATE_FAIL);
                 //return false

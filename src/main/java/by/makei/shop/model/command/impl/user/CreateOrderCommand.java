@@ -67,6 +67,7 @@ public class CreateOrderCommand implements Command {
                         , () -> setErrorPage("user wasn't found by Id", request, router));
             } else {
                 //некорректные отправить назад
+                logger.log(Level.INFO,"incorrect input data. Cancel operation");
                 for (Map.Entry<String, String> entry : orderDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }

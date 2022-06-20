@@ -6,8 +6,6 @@ import by.makei.shop.model.command.Command;
 import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.impl.UserServiceImpl;
-import by.makei.shop.model.validator.ParameterValidator;
-import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
@@ -29,7 +27,6 @@ public class DepositMoneyCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         UserServiceImpl userService = UserServiceImpl.getInstance();
         Router router = new Router();
         HttpSession session = request.getSession();
@@ -47,7 +44,7 @@ public class DepositMoneyCommand implements Command {
         try {
             //проверить данные
             if (!userService.validateAndMarkIncomeData(depositDataMap)) {
-                logger.log(Level.INFO, "DepositMoneyCommand incorrect params was given");
+                logger.log(Level.INFO, "DepositMoneyCommand incorrect input data. Operation canceled");
                 for (Map.Entry<String, String> entry : depositDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                     router.setCurrentPage(DEPOSIT_MONEY);
@@ -62,6 +59,7 @@ public class DepositMoneyCommand implements Command {
             currentUserAmount = currentUser.getAmount(); //or get fresh user data from DB?
             //отправить полученную сумму, баланс и айди в сервис. В сервисе суммировать
             if (!userService.updateUserMoneyAmount(currentUserId, currentUserAmount, depositDataMap.get(AMOUNT_TO_DEPOSIT))) {
+                logger.log(Level.ERROR,"unknown error");
                 return goToError(UNKNOWN_ERROR, request, router);
             }
             //из сервиса вернуть нового юзера из БД по айди
@@ -74,6 +72,7 @@ public class DepositMoneyCommand implements Command {
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_MAIN + REDIRECT_MESSAGE + USER_MONEY_AMOUNT_UPDATED);
             } else {
+                logger.log(Level.WARN,"user wasn't found");
                 return goToError(USER_NOT_FOUND, request, router);
             }
         } catch (ServiceException e) {

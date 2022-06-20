@@ -7,7 +7,6 @@ import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.util.MessageReinstall;
 import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
@@ -60,17 +59,15 @@ public class GoToMainCommand implements Command {
         for (Map.Entry<String, String[]> entry : parametersMap.entrySet()) {
             searchAttr.put(entry.getKey(), entry.getValue()[0]);
         }
-
         try {
 //загрузить продукты
             productQuantityMap = productService.findProductsByParam(searchAttr, orderByParamQuery);
             request.setAttribute(PRODUCTS_QUANTITY_MAP, productQuantityMap);
             request.setAttribute(ORDER_ARRAY, new LinkedList<String>(orderByParamQuery.keySet()));
-//загрузить аттрибуты поиска в реквест
+//загрузить аттрибуты поиска в реквест (вернуть в формы на странице)
             for (Map.Entry<String, String> entry : searchAttr.entrySet()) {
                 request.setAttribute(entry.getKey(), entry.getValue());
             }
-//            MessageReinstall.extractAndSetMessage(MESSAGE,request);
             router.setCurrentPage(MAIN);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToMain command error. {}", e.getMessage());

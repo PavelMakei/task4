@@ -22,6 +22,7 @@ import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class UpdateProfileCommand implements Command {
     private static final String ERROR = "UpdateProfileCommand Service exception : ";
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
@@ -43,28 +44,22 @@ public class UpdateProfileCommand implements Command {
                 String currentUserid = String.valueOf(user.getId());
                 //not for and switch because only 3params and add to the same map
                 optionalUser = userService.findUserByOneParam(LOGIN, userDataMap.get(LOGIN));
-                if (optionalUser.isPresent()) {
-                    if (optionalUser.get().getId() != Integer.parseInt(currentUserid)) {
-                        logger.log(Level.ERROR, "UpdateProfileCommand busy login");
-                        isCorrect = false;
-                        userDataMap.put(BUSY_LOGIN, BUSY_LOGIN);
-                    }
+                if (optionalUser.isPresent() && (optionalUser.get().getId() != Integer.parseInt(currentUserid))) {
+                    logger.log(Level.ERROR, "UpdateProfileCommand busy login");
+                    isCorrect = false;
+                    userDataMap.put(BUSY_LOGIN, BUSY_LOGIN);
                 }
                 optionalUser = userService.findUserByOneParam(EMAIL, userDataMap.get(EMAIL));
-                if (optionalUser.isPresent()) {
-                    if (optionalUser.get().getId() != Integer.parseInt(currentUserid)) {
-                        logger.log(Level.ERROR, "UpdateProfileCommand busy email");
-                        isCorrect = false;
-                        userDataMap.put(BUSY_EMAIL, BUSY_EMAIL);
-                    }
+                if (optionalUser.isPresent() && (optionalUser.get().getId() != Integer.parseInt(currentUserid))) {
+                    logger.log(Level.ERROR, "UpdateProfileCommand busy email");
+                    isCorrect = false;
+                    userDataMap.put(BUSY_EMAIL, BUSY_EMAIL);
                 }
                 optionalUser = userService.findUserByOneParam(PHONE, userDataMap.get(PHONE));
-                if (optionalUser.isPresent()) {
-                    if (optionalUser.get().getId() != Integer.parseInt(currentUserid)) {
-                        logger.log(Level.ERROR, "UpdateProfileCommand busy phone");
-                        isCorrect = false;
-                        userDataMap.put(BUSY_PHONE, BUSY_PHONE);
-                    }
+                if (optionalUser.isPresent() && (optionalUser.get().getId() != Integer.parseInt(currentUserid))) {
+                    logger.log(Level.ERROR, "UpdateProfileCommand busy phone");
+                    isCorrect = false;
+                    userDataMap.put(BUSY_PHONE, BUSY_PHONE);
                 }
                 if (isCorrect) {
                     userDataMap.put(ID, currentUserid);
@@ -77,7 +72,7 @@ public class UpdateProfileCommand implements Command {
                     if (optionalUser.isPresent()) {
                         session.setAttribute(USER, optionalUser.get());
                         router.setRedirectType();
-                        router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+UPDATE_SUCCESS);
+                        router.setCurrentPage(GO_TO_MAIN + REDIRECT_MESSAGE + UPDATE_SUCCESS);
 
                     } else {
                         logger.log(Level.ERROR, "UpdateProfile command user wasn't found after update profile");
@@ -86,7 +81,7 @@ public class UpdateProfileCommand implements Command {
                         return router;
                     }
                 } else {
-                    logger.log(Level.INFO,"UpdateProfileCommand incorrect params was given");
+                    logger.log(Level.INFO, "UpdateProfileCommand incorrect params was given");
                     for (Map.Entry<String, String> entry : userDataMap.entrySet()) {
                         request.setAttribute(entry.getKey(), entry.getValue());
                         router.setCurrentPage(UPDATE_PROFILE);

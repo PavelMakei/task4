@@ -23,7 +23,6 @@ public class RegistrationSendActivationCodeCommand implements Command {
     private static final String CODE_SENT = "activation.code.sent";
     private static final String INCORRECT_EMAIL = "incorrect.email";
 
-
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
@@ -53,6 +52,7 @@ public class RegistrationSendActivationCodeCommand implements Command {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
             } else {
+                logger.log(Level.INFO,"Incorrect data input");
                 for (Map.Entry<String, String> entry : userDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }

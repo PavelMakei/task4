@@ -43,7 +43,7 @@ public class ShowOrderCommand implements Command {
         User user = (User) session.getAttribute(USER);
         if (user.getAccessLevel().equals(AccessLevel.USER)) {
             incomeParam.put(USER_ID, String.valueOf(user.getId()));
-        }
+        }//else (for ADMIN) will be used all ids, and returned all user's orders
         try {
             if (!userService.findOrderByParam(orderList, incomeParam)) {
                 logger.log(Level.ERROR, "ShowOrderCommand incorrect income params");

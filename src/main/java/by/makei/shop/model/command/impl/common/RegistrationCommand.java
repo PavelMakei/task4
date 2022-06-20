@@ -8,8 +8,6 @@ import by.makei.shop.model.command.Router;
 import by.makei.shop.model.entity.User;
 import by.makei.shop.model.service.impl.UserServiceImpl;
 import by.makei.shop.model.service.mail.MailService;
-import by.makei.shop.model.validator.ParameterValidator;
-import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import by.makei.shop.util.ResourceManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

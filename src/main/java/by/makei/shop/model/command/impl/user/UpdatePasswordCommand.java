@@ -37,12 +37,10 @@ public class UpdatePasswordCommand implements Command {
             if (parameterValidator.validateAndMarkUserData(userDataMap)
                 && userService.findUserByEmail(userDataMap.get(EMAIL)).isPresent()
                 && parameterValidator.validateAndMarkActivationCodeAndSavedEmail(userDataMap, session)) {
-                //TODO проверять ответ?
                 userService.updatePassword(userDataMap);
                 session.removeAttribute(SESS_EMAIL);
                 session.removeAttribute(SESS_ACTIVATION_CODE);
-                //TODO !!!! почистить сессию
-                //отправить мыло
+                //отправить мыло о смене пароля?
                 //авторизовать юзера?
                 request.setAttribute(MESSAGE, PASSWORD_UPDATED);
                 router.setCurrentPage(LOGINATION);
@@ -54,7 +52,6 @@ public class UpdatePasswordCommand implements Command {
                 for (Map.Entry<String, String> entry : userDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
-
             }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "UpdatePasswordCommand command error. {}", e.getMessage());

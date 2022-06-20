@@ -20,9 +20,12 @@ import java.io.IOException;
 import static by.makei.shop.model.command.AttributeName.ERROR_MESSAGE;
 
 
-@WebServlet(name = "Controller", value = "/controller")
-//@MultipartConfig(maxFileSize = 16777215)
+/**
+ * Controller class
+ * Processes all requests after filtering.
+ */
 
+@WebServlet(name = "Controller", value = "/controller")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 25)

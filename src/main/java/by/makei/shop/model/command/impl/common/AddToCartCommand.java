@@ -43,7 +43,6 @@ public class AddToCartCommand implements Command {
         try {
             if ((productService.findMapProductQuantityById(inputProductIdQuantity, productQuantityMapFromDB))
                 && (inputQuantity = Integer.parseInt(inputProductIdQuantity.get(QUANTITY)))>0) {
-                inputQuantity = Integer.parseInt(inputProductIdQuantity.get(QUANTITY));
                 if (productQuantityMapFromDB.size() != 1) {
                     logger.log(Level.WARN, "AddToCartCommand error while find product in DB, quantity of product = {}", productQuantityMapFromDB.size());
                     request.setAttribute(ERROR_MESSAGE, "AddToCartCommand error while find product in DB, quantity of product = " + productQuantityMapFromDB.size());
@@ -75,6 +74,7 @@ public class AddToCartCommand implements Command {
                 router.setCurrentPage(GO_TO_SHOW_CART + REDIRECT_MESSAGE + message);
             }else{
                 //incorrect data
+                logger.log(Level.INFO,"incorrect data. Input quantity: {}", inputQuantity);
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_CART + REDIRECT_MESSAGE + ADDING_TO_CART_FAIL_INCORRECT_DATA);
             }
@@ -84,8 +84,6 @@ public class AddToCartCommand implements Command {
             request.setAttribute(ERROR_MESSAGE, "AddToCardCommand service exception" + e);
             router.setCurrentPage(ERROR500);
         }
-
-
         return router;
     }
 
