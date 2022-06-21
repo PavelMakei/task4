@@ -4,6 +4,7 @@ import java.util.Set;
 
 public enum PagePath {
     ;
+    public static final String ABOUT = "/view/pages/common/about.jsp";
     public static final String ADD_NEW_PRODUCT = "/view/pages/admin/addnewproduct.jsp";
     public static final String BLOCKED_USER = "/view/pages/common/blockeduser.jsp";
     public static final String CHECKOUT = "/view/pages/user/checkout.jsp";
@@ -38,6 +39,7 @@ public enum PagePath {
 
     static {
         adminPages = Set.of(
+                ABOUT,
                 ADD_NEW_PRODUCT,
                 CHECKOUT,
                 DEPOSIT_MONEY,
@@ -54,6 +56,7 @@ public enum PagePath {
                 UPDATE_PROFILE,
                 USERS);
         userPages = Set.of(
+                ABOUT,
                 CHECKOUT,
                 DEPOSIT_MONEY,
                 ERROR403,
@@ -68,6 +71,7 @@ public enum PagePath {
                 UPDATE_PROFILE
         );
         guestPages = Set.of(
+                ABOUT,
                 ERROR403,
                 ERROR404,
                 ERROR500,
@@ -78,6 +82,7 @@ public enum PagePath {
                 SHOW_CART,
                 SHOW_PRODUCT);
         blockedPages = Set.of(
+                ABOUT,
                 INDEX,
                 BLOCKED_USER,
                 ROOT

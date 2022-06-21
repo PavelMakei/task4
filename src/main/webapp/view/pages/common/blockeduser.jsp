@@ -31,7 +31,7 @@
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
 
-    <title>${blocked_accaunt_label}</title>
+    <title>${blocked_account_label}</title>
 
     <%-----------------Prevent to return to previous page---------------%>
     <script>
@@ -71,8 +71,8 @@
                 </div>
             </div>
         </div>
+        <div class="footer" style="color: white"><ft:footerTag/></div>
     </div>
-    <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
 
 </body>
