@@ -90,20 +90,6 @@ public class BrandDaoImpl implements BrandDao {
         return resultList;
     }
 
-    //TODO check !!!!!!!!!!!!
-
-    public List<Brand> findAll2() throws DaoException {
-        return withException((c, s, rs) -> {
-            List<Brand> resultList = new ArrayList<>();
-            while (rs.next()) {
-                Optional<Brand> optionalBrand = new BrandMapper().mapEntity(rs);
-                optionalBrand.ifPresent(resultList::add);
-                logger.log(Level.DEBUG, "brand was found by param");
-            }
-            return resultList;
-        }, SQL_SELECT_ALL_BRANDS);
-    }
-
     interface Action<R> {
         R execute(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException;
     }

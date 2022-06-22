@@ -1,5 +1,6 @@
 package by.makei.shop.util;
 
+import by.makei.shop.exception.ServiceException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -28,12 +29,12 @@ public final class ImageConverter {
             byte[] encodeBase64 = Base64.encodeBase64(imageBytes);
             base64Encoded = new String(encodeBase64, CHARSET_NAME);
         } catch (UnsupportedEncodingException e) {
-            logger.log(Level.WARN,"ImageConverter imageToString can't be reached. {}",e);
+            logger.log(Level.WARN,"ImageConverter imageToString can't be reached. {}",e.getMessage());
         }
         return base64Encoded;
     }
-
-    private static byte[] changeImgSize(byte[] data, int nw, int nh){
+//TODO обрезать большие картинки?
+    private static byte[] changeImgSize(byte[] data, int nw, int nh) throws ServiceException {
         byte[] newdata = null;
         try{
             BufferedImage bis = ImageIO.read(new ByteArrayInputStream(data));
@@ -54,8 +55,9 @@ public final class ImageConverter {
             newdata = baos.toByteArray();
 
         }catch(IOException e){
-            logger.log(Level.ERROR,"Image converter changgeImgSize IO exception :{}",e);
-            //TODO !!!!!!!!!!!!!!!!!!!!!!!
+            logger.log(Level.ERROR,"Image converter changeImgSize IO exception :{}",e.getMessage());
+            throw new ServiceException("Image converter changeImgSize IO exception", e);
+
         }
         return newdata;
     }

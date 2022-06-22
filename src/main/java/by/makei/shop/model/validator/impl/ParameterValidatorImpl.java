@@ -129,7 +129,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
 
     @Override
     public boolean validateAndMarkIfProductNameCorrectAndNotExistsInDb(Map<String, String> productData) throws ServiceException {
-        //TODO разбить на несколько?
         boolean isCorrect = true;
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
@@ -161,7 +160,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
             logger.log(Level.ERROR, "ParameterValidator error while validateProductData {}", e.getMessage());
             throw new ServiceException("ParameterValidator error while validateProductData", e);
             //incorrect work of application. It's not a problem of incorrect input to validation data
-            //TODO Создать новый validator exception?
+
         }
         productData.putAll(invalidParameters);
         return isCorrect;
@@ -562,7 +561,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
             logger.log(Level.ERROR, "ParameterValidator error while validateProductData {}", e.getMessage());
             throw new ServiceException("ParameterValidator error while validateProductData", e);
             //incorrect work of application. It's not a problem of incorrect input to validation data
-            //TODO Создать новый validator exception?
 
         }
         incomeDataMap.putAll(invalidParameters);
