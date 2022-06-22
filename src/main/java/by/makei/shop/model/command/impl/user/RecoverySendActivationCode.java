@@ -17,11 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.PASSWORD_RECOVERY;
 
 public class RecoverySendActivationCode implements Command {
-    private static final String ERROR = "RecoverySendActivationCode Service exception : ";
     private static final String CODE_SENT = "activation.code.sent";
     private static final String INCORRECT_EMAIL = "incorrect.email";
 
@@ -57,8 +55,7 @@ public class RecoverySendActivationCode implements Command {
             }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "RecoverySendActivationCode command error. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            throw new CommandException("RecoverySendActivationCode command error", e);
         }
         return router;
     }

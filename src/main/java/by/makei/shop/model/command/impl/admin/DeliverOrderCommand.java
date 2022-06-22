@@ -15,7 +15,6 @@ import static by.makei.shop.model.command.PagePath.GO_TO_SHOW_ORDERS;
 import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class DeliverOrderCommand implements Command {
-    private static final String ERROR = "DeliverOrderCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -32,8 +31,7 @@ public class DeliverOrderCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Service exception: {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e);
-            router.setCurrentPage(ERROR500);
+           throw new CommandException("DeliverOrderCommand command error",e);
         }
         return router;
     }

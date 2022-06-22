@@ -49,9 +49,8 @@ public class UpdatePhotoCommand implements Command {
                 router.setCurrentPage(GO_TO_UPDATE_PRODUCT+REDIRECT_MESSAGE+UPDATE_FAIL+REDIRECT_ID+request.getParameter(ID));
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "GoToUpdateProductCommand. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "GoToUpdateProductCommand command error {}", e.getMessage());
+            throw new CommandException("GoToUpdateProductCommand command error",e);
         }
         return router;
 

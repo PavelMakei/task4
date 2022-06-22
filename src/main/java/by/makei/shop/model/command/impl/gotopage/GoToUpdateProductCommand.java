@@ -19,7 +19,6 @@ import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.UPDATE_PRODUCT;
 
 public class GoToUpdateProductCommand implements Command {
-    private static final String ERROR = "GoToUpdateProductCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -27,23 +26,22 @@ public class GoToUpdateProductCommand implements Command {
         Map<Product, String> productQuantity = new HashMap<>();
         inputProductIdQuantity.put(ID, request.getParameter(ID));
 
-        logger.log(Level.DEBUG, "GoToUpdateProductCommand get product id :{}",request.getParameter(ID));
+        logger.log(Level.DEBUG, "GoToUpdateProductCommand get product id :{}", request.getParameter(ID));
         ProductService productService = ProductServiceImpl.getInstance();
         Router router = new Router();
         try {
-            if(!productService.findMapProductQuantityById(inputProductIdQuantity, productQuantity)){
+            if (!productService.findMapProductQuantityById(inputProductIdQuantity, productQuantity)) {
                 logger.log(Level.ERROR, "GoToUpdateProductCommand. Incorrect id");
                 router.setCurrentPage(ERROR500);
-            }else {
+            } else {
                 request.setAttribute(PRODUCT, productQuantity.keySet().toArray()[0]);
                 request.setAttribute(QUANTITY, productQuantity.values().toArray()[0]);
                 MessageReinstall.extractAndSetMessage(MESSAGE, request);
                 router.setCurrentPage(UPDATE_PRODUCT);
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "GoToUpdateProductCommand. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "GoToUpdateProductCommand command error {}", e.getMessage());
+            throw new CommandException("GoToUpdateProductCommand command error", e);
         }
 
         return router;

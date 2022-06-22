@@ -17,12 +17,10 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.MAIN;
 import static by.makei.shop.model.validator.DefaultSearchParam.*;
 
 public class GoToMainCommand implements Command {
-    private static final String ERROR = "GotoMainCommand Service exception : ";
     private static final String DESC = "DESC";
     private static final Map<String, String> orderByParamQuery = new LinkedHashMap();
 
@@ -71,8 +69,7 @@ public class GoToMainCommand implements Command {
             router.setCurrentPage(MAIN);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToMain command error. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            throw new CommandException("GoToMain command error", e);
         }
         return router;
     }

@@ -23,7 +23,6 @@ import static by.makei.shop.model.command.RedirectMessage.REDIRECT_MESSAGE;
 import static by.makei.shop.model.command.RedirectMessage.SUCCESSFULLY_ORDERED;
 
 public class CreateOrderCommand implements Command {
-    private static final String ERROR = "CreateOrderCommand Service exception : ";
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
@@ -67,19 +66,18 @@ public class CreateOrderCommand implements Command {
                         , () -> setErrorPage("user wasn't found by Id", request, router));
             } else {
                 //некорректные отправить назад
-                logger.log(Level.INFO,"incorrect input data. Cancel operation");
+                logger.log(Level.INFO, "incorrect input data. Cancel operation");
                 for (Map.Entry<String, String> entry : orderDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
                 router.setCurrentPage(CHECKOUT);
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR,"Service exception: {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e);
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "CreateOrderCommand command error. {}", e.getMessage());
+            throw new CommandException("CreateOrderCommand command error", e);
         }
         return router;
-}
+    }
 
     private void setErrorPage(String message, HttpServletRequest request, Router router) {
         request.setAttribute(ERROR_MESSAGE, message);

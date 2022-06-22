@@ -56,9 +56,8 @@ public class UpdateProductDataCommand implements Command {
                 router.setCurrentPage(PagePath.UPDATE_PRODUCT);
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "UpdateProductDataCommand. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "UpdateProductDataCommand command error {}", e.getMessage());
+            throw new CommandException("UpdateProductDataCommand command error",e);
         }
         return router;
 

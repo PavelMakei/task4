@@ -21,7 +21,6 @@ import static by.makei.shop.model.command.PagePath.*;
 import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class UpdateProfileCommand implements Command {
-    private static final String ERROR = "UpdateProfileCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -90,9 +89,8 @@ public class UpdateProfileCommand implements Command {
                 }
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "UpdateProfileCommand. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e);
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "UpdateProfileCommand command error. {}", e.getMessage());
+            throw new CommandException("UpdateProfileCommand command error",e);
         }
         return router;
     }

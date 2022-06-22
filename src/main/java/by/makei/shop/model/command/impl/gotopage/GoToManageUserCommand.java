@@ -18,11 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.USERS;
 
 public class GoToManageUserCommand implements Command {
-    private static final String ERROR = "GoToManageUserCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -43,8 +41,7 @@ public class GoToManageUserCommand implements Command {
 
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToManageUserCommand command error. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            throw new CommandException("GoToManageUserCommand command error", e);
         }
         return router;
 

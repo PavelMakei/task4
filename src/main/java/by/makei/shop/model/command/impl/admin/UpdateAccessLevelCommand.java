@@ -48,9 +48,8 @@ public class UpdateAccessLevelCommand implements Command {
             }
         } catch (
                 ServiceException e) {
-            logger.log(Level.ERROR, "UpdateAccessLevelCommand. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "UpdateAccessLevelCommand command error {}", e.getMessage());
+            throw new CommandException("UpdateAccessLevelCommand command error",e);
         }
         return router;
 

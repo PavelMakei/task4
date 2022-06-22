@@ -53,9 +53,8 @@ public class ShowOrderCommand implements Command {
             request.setAttribute(ORDER_LIST, orderList);
 
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "ShowOrderCommand. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "ShowOrderCommand command error {}", e.getMessage());
+            throw new CommandException("ShowOrderCommand command error",e);
         }
         return router;
     }

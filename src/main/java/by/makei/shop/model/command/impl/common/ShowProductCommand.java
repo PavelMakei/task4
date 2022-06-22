@@ -17,7 +17,6 @@ import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.PagePath.SHOW_PRODUCT;
 
 public class ShowProductCommand implements Command {
-    private static final String ERROR = "ShowProductCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -39,8 +38,7 @@ public class ShowProductCommand implements Command {
             router.setCurrentPage(SHOW_PRODUCT);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "ShowProductCommand command error. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e.getMessage());
-            router.setCurrentPage(ERROR500);
+            throw new CommandException("ShowProductCommand command error",e);
         }
         return router;
     }

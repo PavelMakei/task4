@@ -64,7 +64,7 @@ public class Controller extends HttpServlet {
             }
         } catch (CommandException e) {
             logger.log(Level.ERROR, "Command exception", e);
-            request.setAttribute(ERROR_MESSAGE, "Command exception");
+            request.setAttribute(ERROR_MESSAGE, "Command exception " + e);
             response.sendError(500, e.getMessage());
         }
     }

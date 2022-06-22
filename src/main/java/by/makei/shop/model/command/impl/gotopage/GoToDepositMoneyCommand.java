@@ -7,7 +7,6 @@ import by.makei.shop.util.PagePathExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
 
-import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
 import static by.makei.shop.model.command.PagePath.DEPOSIT_MONEY;
 
 public class GoToDepositMoneyCommand implements Command {

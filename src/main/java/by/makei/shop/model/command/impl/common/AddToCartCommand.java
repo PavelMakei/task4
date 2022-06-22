@@ -8,8 +8,6 @@ import by.makei.shop.model.entity.Cart;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.service.ProductService;
 import by.makei.shop.model.service.impl.ProductServiceImpl;
-import by.makei.shop.model.validator.ParameterValidator;
-import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
@@ -18,7 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.model.command.PagePath.ERROR500;
+import static by.makei.shop.model.command.PagePath.GO_TO_SHOW_CART;
 import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class AddToCartCommand implements Command {
@@ -80,9 +79,8 @@ public class AddToCartCommand implements Command {
             }
 
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "AddToCardCommand service exception. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, "AddToCardCommand service exception" + e);
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "AddToCardCommand command error. {}", e.getMessage());
+            throw new CommandException("AddToCardCommand command error",e);
         }
         return router;
     }

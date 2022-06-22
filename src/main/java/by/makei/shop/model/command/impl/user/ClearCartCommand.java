@@ -9,7 +9,8 @@ import jakarta.servlet.http.HttpSession;
 
 import static by.makei.shop.model.command.AttributeName.SESS_CART;
 import static by.makei.shop.model.command.PagePath.GO_TO_MAIN;
-import static by.makei.shop.model.command.RedirectMessage.*;
+import static by.makei.shop.model.command.RedirectMessage.CART_IS_EMPTY;
+import static by.makei.shop.model.command.RedirectMessage.REDIRECT_MESSAGE;
 
 public class ClearCartCommand implements Command {
     @Override
@@ -19,7 +20,7 @@ public class ClearCartCommand implements Command {
         cart.clear();
         Router router = new Router();
         router.setRedirectType();
-        router.setCurrentPage(GO_TO_MAIN+REDIRECT_MESSAGE+CART_IS_EMPTY);
+        router.setCurrentPage(GO_TO_MAIN + REDIRECT_MESSAGE + CART_IS_EMPTY);
         return router;
     }
 }

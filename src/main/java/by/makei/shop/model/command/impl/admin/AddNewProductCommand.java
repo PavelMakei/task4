@@ -21,7 +21,6 @@ import static by.makei.shop.model.command.PagePath.ERROR500;
 import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class AddNewProductCommand implements Command {
-    private static final String ERROR = "AddNewProductCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -61,8 +60,7 @@ public class AddNewProductCommand implements Command {
 
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "GoToAddNewProductCommand command error. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e);
-            router.setCurrentPage(ERROR500);
+            throw new CommandException("GoToAddNewProductCommand command error",e);
         }
         return router;
     }

@@ -88,7 +88,7 @@ public class RegistrationCommand implements Command {
         String password = request.getParameter(PASSWORD);
         String sendEmailTo = request.getParameter(EMAIL);
         StringBuilder mailText = new StringBuilder("");
-        //TODO отдельный поток для почты? Книга Блинова
+        // отдельный поток для почты? Книга Блинова
         mailText.append(manager.getString(MESSAGE_SHOP_REGISTRATION_SUCCESSFUL))
                 .append("\n")
                 .append(manager.getString(MESSAGE_YOUR_LOGIN_IS))

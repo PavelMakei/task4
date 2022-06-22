@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.AttributeName.ACTIVATION_CODE;
-import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.model.command.PagePath.LOGINATION;
+import static by.makei.shop.model.command.PagePath.PASSWORD_RECOVERY;
 
 public class UpdatePasswordCommand implements Command {
     private static final String ERROR = "UpdatePasswordCommand Service exception : ";
@@ -45,7 +45,7 @@ public class UpdatePasswordCommand implements Command {
                 request.setAttribute(MESSAGE, PASSWORD_UPDATED);
                 router.setCurrentPage(LOGINATION);
 
-            }else {
+            } else {
                 logger.log(Level.INFO, "UpdatePasswordCommand incorrect input data");
                 request.setAttribute(MESSAGE, PASSWORD_NOT_UPDATED);
                 router.setCurrentPage(PASSWORD_RECOVERY);
@@ -55,9 +55,8 @@ public class UpdatePasswordCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "UpdatePasswordCommand command error. {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e);
-            router.setCurrentPage(ERROR500);
+            throw new CommandException("UpdatePasswordCommand command error", e);
         }
         return router;
-        }
     }
+}

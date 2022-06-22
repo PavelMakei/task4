@@ -14,12 +14,11 @@ import org.apache.logging.log4j.Level;
 
 import java.util.Optional;
 
-import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.model.command.AttributeName.USER;
+import static by.makei.shop.model.command.PagePath.GO_TO_SHOW_ORDERS;
 import static by.makei.shop.model.command.RedirectMessage.*;
 
 public class CancelOrderCommand implements Command {
-    private static final String ERROR = "CancelOrderCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -36,18 +35,17 @@ public class CancelOrderCommand implements Command {
                             () -> logger.log(Level.WARN, "user was not found"));
                 }
                 router.setRedirectType();
-                router.setCurrentPage(GO_TO_SHOW_ORDERS+REDIRECT_MESSAGE+UPDATE_SUCCESS);
+                router.setCurrentPage(GO_TO_SHOW_ORDERS + REDIRECT_MESSAGE + UPDATE_SUCCESS);
 
             } else {
-                logger.log(Level.ERROR,"Incorrect id or order status");
+                logger.log(Level.ERROR, "Incorrect id or order status");
                 router.setRedirectType();
-                router.setCurrentPage(GO_TO_SHOW_ORDERS+REDIRECT_MESSAGE+UPDATE_FAIL);
+                router.setCurrentPage(GO_TO_SHOW_ORDERS + REDIRECT_MESSAGE + UPDATE_FAIL);
                 //return false
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "Service exception: {}", e.getMessage());
-            request.setAttribute(ERROR_MESSAGE, ERROR + e);
-            router.setCurrentPage(ERROR500);
+            logger.log(Level.ERROR, "CancelOrderCommand command error. {}", e.getMessage());
+            throw new CommandException("CancelOrderCommand command error", e);
         }
         return router;
     }
