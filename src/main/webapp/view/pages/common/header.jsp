@@ -56,7 +56,7 @@
                     </c:if>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white" href="#">${about_label}</a>
+                    <a class="nav-link" style="color: white" href="${path}/controller?command=go_to_about">${about_label}</a>
                 </li>
                 <%--               TODO add role!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--%>
                 <c:if test="${!empty user && user.accessLevel eq 'ADMIN'}">

@@ -32,6 +32,7 @@ public enum CommandType {
     DELIVER_ORDER(new DeliverOrderCommand(), EnumSet.of(AccessLevel.ADMIN)),
     DEPOSIT_MONEY(new DepositMoneyCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.USER)),
     GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProductCommand(), EnumSet.of(AccessLevel.ADMIN)),
+    GO_TO_ABOUT(new GoToAboutCommand(), EnumSet.of(AccessLevel.ADMIN,AccessLevel.USER,AccessLevel.GUEST,AccessLevel.BLOCKED)),
     GO_TO_ADD_NEW_USER(new GoToAddNewUserCommand(), EnumSet.of(AccessLevel.GUEST)),
     GO_TO_CHECKOUT(new GoToCheckoutCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.USER)),
     GO_TO_DEPOSIT_MONEY(new GoToDepositMoneyCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.USER)),

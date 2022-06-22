@@ -15,6 +15,7 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
 <fmt:message key="about.message" var="about_message"/>
+<fmt:message key="about.text" var="about_text"/>
 
 
 <head>
@@ -42,22 +43,20 @@
     <div class="content">
         <div class="container">
             <div class="row justify-content-center" id="box" style="opacity: 0">
-                <%--                <div class="row align-items-center">--%>
-                <%--                    <div class="col" style=" position: fixed; top: 25%; left: 25%">--%>
-
                 <div class="sign" style="position: fixed; top: 33%; left: 37%">
-                    <%--                            <span class="fast-flicker">b</span>rea<span class="flicker">t</span>he--%>
-                    <span class="fast-flicker">${about_message.substring(0,1)}</span>${about_message.substring(1,5)}<span
-                        class="flicker">${about_message.substring(5,6)}</span>${about_message.substring(6)}
+                    <span class="fast-flicker">${about_message.substring(0,1)}</span>${about_message.substring(1,5)}
+                    <span class="flicker">${about_message.substring(5,6)}</span>${about_message.substring(6,27)}
+                    <span class="medium-flicker">${about_message.substring(27,28)}</span>${about_message.substring(28)}
                 </div>
-
-
-                <%--                        <h1 class="text-about" id="text-about"> ${about_message} </h1>--%>
-                <%--                    </div>--%>
-                <%--                </div>--%>
+                <div class="col-4" id="txt"
+                     style="position: fixed; top: 45%; left:20%; color: goldenrod; text-align: justify; opacity: 0">
+                    <p>
+                    <h3>
+                        &nbsp &nbsp &nbsp &nbsp ${about_text}
+                    </h3>
+                    </p>
+                </div>
             </div>
-
-
         </div>
     </div>
     <%--        </div>--%>
@@ -72,7 +71,6 @@
     let ftr = document.getElementById('footer');
     let box = document.getElementById('box');
     let colr = "rgba(0,0,0,.99)"
-
     let i = 100, counter = 0;
 
     function changeVisibility() {
@@ -81,47 +79,38 @@
         hdr.style.background = colr;
         wrpp.style.background = colr;
         ftr.style.background = colr;
-
         if (i >= counter) {
             setTimeout(changeVisibility, 30);
         }
     }
-    window.onload = changeVisibility;
 
-   let j  = 0;
+    window.onload = setTimeout(changeVisibility, 2000)
+    // ==========================================
+    let j = 0;
 
     function boxOpacity() {
         j++;
         box.style.opacity = j * .01;
         if (j < 100) {
-            setTimeout(boxOpacity, 10);
+            setTimeout(boxOpacity, 30);
         }
     }
 
-    window.onunload = setTimeout(boxOpacity, 3500)
+    window.onunload = setTimeout(boxOpacity, 500)
+    // ========================================
+    let txt = document.getElementById('txt');
+    let k = 0;
+
+    function txtOpacity() {
+        k++;
+        txt.style.opacity = k * .01;
+        if (k < 100) {
+            setTimeout(txtOpacity, 10);
+        }
+    }
+
+    window.onunload = setTimeout(txtOpacity, 3500)
 </script>
-
-<%--<script>--%>
-<%--    let mess = "${about_message}";--%>
-<%--    let message_size = mess.length;--%>
-<%--    let step = 3000/message_size;--%>
-<%--    console.log('string length ='+message_size+' step ='+step);--%>
-<%--    let substr = "";--%>
-
-<%--    let k = 0, count = message_size+1, offset = 0;--%>
-
-<%--    function changeVisibilityMess() {--%>
-<%--        k++;--%>
-<%--        substr = mess.substring(0,offset);--%>
-<%--        ta.innerHTML = substr--%>
-<%--        offset++;--%>
-<%--        console.log('mess ='+substr+' offset ='+ offset);--%>
-<%--        if (k < count) {--%>
-<%--            setTimeout(changeVisibilityMess, step);--%>
-<%--        }--%>
-<%--    }--%>
-<%--    window.onload = changeVisibilityMess;--%>
-<%--</script>--%>
 
 
 </body>

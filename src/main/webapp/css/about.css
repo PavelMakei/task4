@@ -73,6 +73,10 @@ body {
     animation: shine 2s forwards, blink 10s 1s infinite;
 }
 
+.medium-flicker {
+    animation: shine 2s forwards, blink 7s 1500ms infinite;
+}
+
 @keyframes shine {
     0% {
         color: #934e03;
