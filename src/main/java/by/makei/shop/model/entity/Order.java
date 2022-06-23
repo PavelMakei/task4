@@ -32,7 +32,7 @@ public class Order extends AbstractEntity {
         this.openDate = openDate;
         this.closeDate = closeDate;
         this.status = status;
-        this.prodIdQuantity = prodIdQuantity;
+        this.prodIdQuantity = Map.copyOf(prodIdQuantity);
     }
 
     public Order(int id, int userId, String address, String phone, String detail, Date openDate, Date closeDate, Status status, Map<Integer, Integer> prodIdQuantity) {
@@ -44,7 +44,7 @@ public class Order extends AbstractEntity {
         this.openDate = openDate;
         this.closeDate = closeDate;
         this.status = status;
-        this.prodIdQuantity = prodIdQuantity;
+        this.prodIdQuantity = Map.copyOf(prodIdQuantity);;
     }
 
     public int getId() {
@@ -113,9 +113,13 @@ public class Order extends AbstractEntity {
     }
 
     public Map<Integer, Integer> getProdIdQuantity() {
-        return new HashMap<>(prodIdQuantity);
+        return Map.copyOf(prodIdQuantity);
     }
 
+    /**
+     * merge this prodIdQuantity Map and income
+     * @param prodIdQuantity contains product_id as key and quantity as value
+     */
     public void setProdIdQuantity(Map<Integer, Integer> prodIdQuantity) {
         this.prodIdQuantity.putAll(prodIdQuantity);
     }
