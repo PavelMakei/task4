@@ -16,7 +16,7 @@ import static by.makei.shop.model.entity.AccessLevel.GUEST;
 @WebListener
 public class SessionCreateListenerImpl implements HttpSessionListener {
     static Logger logger = LogManager.getLogger();
-//    private static final String DEFAULT_LOCALE = "en_US";
+    //    private static final String DEFAULT_LOCALE = "en_US";
     private static final String DEFAULT_LOCALE = "ru_RU";
     private static final String DEFAULT_ACCESS_LEVEL = GUEST.toString();
 
@@ -27,7 +27,7 @@ public class SessionCreateListenerImpl implements HttpSessionListener {
         session.setAttribute(LOCALE, DEFAULT_LOCALE);
         session.setAttribute(CURRENT_PAGE, INDEX);
         session.setAttribute(SESS_CART, new Cart());
-        session.setAttribute(ACCESS_LEVEL,DEFAULT_ACCESS_LEVEL);
+        session.setAttribute(ACCESS_LEVEL, DEFAULT_ACCESS_LEVEL);
 
         logger.log(Level.INFO, "session created :{}", session.getId());
     }

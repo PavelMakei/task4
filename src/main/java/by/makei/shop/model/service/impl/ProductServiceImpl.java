@@ -15,7 +15,7 @@ import by.makei.shop.model.validator.AttributeValidator;
 import by.makei.shop.model.validator.ParameterValidator;
 import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
-import by.makei.shop.util.SqlUtil;
+import by.makei.shop.model.dao.util.SqlUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

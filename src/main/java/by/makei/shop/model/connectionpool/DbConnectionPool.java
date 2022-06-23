@@ -57,7 +57,7 @@ public final class DbConnectionPool {
                     logger.log(Level.INFO, "new DBConnectionPool is created");
                 }
             } finally {
-                getterLock.unlock(); // снятие блокировки
+                getterLock.unlock();
             }
         }
         return instance.get();
@@ -94,7 +94,7 @@ public final class DbConnectionPool {
         try {
             getterLock.lock();// method "remove" isn't thread safe
             semaphore.acquire();
-            busyDeque.remove(connection);//дешевле создать новый, чем искать дубли в очередях
+            busyDeque.remove(connection);
             if ((connection).isForChecking()) {
                 forCheckingDeque.put(connection);
             } else {

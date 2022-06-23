@@ -15,9 +15,9 @@ public class CharEncodingFilter implements Filter {
     private static final String DEFAULT_CONTEXT_TYPE = "text/html; charset=UTF-8";
 
     public void init() throws ServletException {
-}
+    }
 
-@Override
+    @Override
     public void doFilter(
             ServletRequest request,
             ServletResponse response,
@@ -27,6 +27,6 @@ public class CharEncodingFilter implements Filter {
         response.setContentType(DEFAULT_CONTEXT_TYPE);
         response.setCharacterEncoding(DEFAULT_ENCODING);
         next.doFilter(request, response);
-    logger.log(Level.DEBUG, "CharEncodingFilter on out");
+        logger.log(Level.DEBUG, "CharEncodingFilter on out");
     }
 }

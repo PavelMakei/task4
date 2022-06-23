@@ -1,4 +1,4 @@
-package by.makei.shop.util;
+package by.makei.shop.model.dao.util;
 
 public class SqlUtil {
     private static final String COMMON_REGEX = "[a-zA-Z0-9_!@#$%^&*()-=+~.;:,\\Q[\\E\\Q]\\E<>{}\\/? ]";

@@ -14,6 +14,10 @@ import java.util.concurrent.TimeUnit;
 
 import static by.makei.shop.model.connectionpool.ConnectionFactory.NUMBER_OF_ATTEMPTS;
 
+/**
+ * Pool service check connections by timer
+ * If it found bad connections it tries to restore pool
+ */
 public class PoolService extends TimerTask {
     private static final Logger logger = LogManager.getLogger();
     private static final Timer timer = new Timer();
@@ -30,6 +34,14 @@ public class PoolService extends TimerTask {
         this.forCheckingDeque = forCheckingDeque;
     }
 
+    /**
+     *
+     * @param freeDeque - deque for {@link ProxyConnection} which is free
+     * @param busyDeque - deque for {@link ProxyConnection} that is being used
+     * @param forCheckingDeque deque for {@link ProxyConnection} which has been marked as forChecking
+     *
+     * Starts pool service by timer schedule
+     */
     static void startPoolService(BlockingDeque<ProxyConnection> freeDeque,
                                  BlockingDeque<ProxyConnection> busyDeque,
                                  BlockingDeque<ProxyConnection> forCheckingDeque) {
@@ -43,17 +55,17 @@ public class PoolService extends TimerTask {
         logger.log(Level.INFO, "pool service timer stopped");
     }
 
-//TODO remove before realise
+
     /*
-     * 2. Инициализировать время запуска таймера <
-     * 3. Запускать после сотворения и наполнения пула <
-     * 4. Перед проходом тормозить все потоки <
-     * 5. Проверить на потеряшки между очередями <
-     * 6. Проверить коннекшоны в занятой декю и, если поток, его туда положивший мёртв, то:
-     * 6.1. удалить коннекшон из занятой декю <
-     * 6.2 проверить жив ли коннекшон <
-     * 6.2.1. если мёртв, то создать новый и положить во фри декю
-     * 6.2.2. если жив, то положить во фри декю.
+     * 2. Initialize timer run time<
+     * 3. Run timer after pool create <
+     * 4. Stop all threads before service <
+     * 5. Check deque if it has lost connections <
+     * 6. Check connections in busy deque and if it's thread is dead then:
+     * 6.1. remove connection from busy deque <
+     * 6.2 check this connection <
+     * 6.2.1. if it is dead then create a new one and put it into free deque
+     * 6.2.2. if it is alive then put it into free deque.
      */
 
 
@@ -86,11 +98,16 @@ public class PoolService extends TimerTask {
             logger.log(Level.DEBUG, "pool service {} permits were realized", gotSemaforePermits);
         }
 
-        activeConnections = sortOutForCheckinDequeConnections(activeConnections);
+        activeConnections = sortOutForCheckingDequeConnections(activeConnections);
 
         refillPoolWithNewConnections(activeConnections);
     }
 
+    /**
+     * Try to fill pool with {@link ProxyConnection} until ConnectionFactory.MAX_CONNECTIONS
+     * @param activeConnections - current amount of {@link ProxyConnection} in the pool
+     * If it can't create ANY {@link ProxyConnection} after NUMBER_OF_ATTEMPTS - throws RuntimeException
+     */
     private void refillPoolWithNewConnections(int activeConnections) {
         int attemptCounter = 0;
         while (activeConnections < ConnectionFactory.MAX_CONNECTIONS) {
@@ -120,7 +137,12 @@ public class PoolService extends TimerTask {
         }
     }
 
-    private int sortOutForCheckinDequeConnections(int activeConnections) {
+    /**
+     * Checks connections from forCheckingDeque, close bad connections
+     * @param activeConnections - total active connections amount in pool
+     * @return total active connections amount in pool
+     */
+    private int sortOutForCheckingDequeConnections(int activeConnections) {
         ArrayList<ProxyConnection> proxyConnectionForCheckList = new ArrayList<>(forCheckingDeque);
         for (ProxyConnection proxyConnection : proxyConnectionForCheckList) {
             try {

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-public class ProxyConnection implements Connection {// нужен доступ в DAO
+public class ProxyConnection implements Connection {// needs access from DAO
     private static final Logger logger = LogManager.getLogger();
     private static final boolean FOR_CHECKING_DEFAULT_VALUE = false;
     private Connection connection;
@@ -20,8 +20,14 @@ public class ProxyConnection implements Connection {// нужен доступ �
     ProxyConnection(Connection connection) {
         this.connection = connection;
         this.forChecking = FOR_CHECKING_DEFAULT_VALUE;
-    } // создание только из пакета connection pool
+    } // Access from this package
 
+
+    /**
+     * Method doesn't really close {@link ProxyConnection}. It sets autocommit to true and returns connection to {@link DbConnectionPool}
+     * For closing connection should use reallyClose() method
+     * @throws SQLException
+     */
     @Override
     public void close() throws SQLException {
         if (!this.getAutoCommit()) {

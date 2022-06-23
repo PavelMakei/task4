@@ -31,7 +31,6 @@ import static by.makei.shop.command.PagePath.ERROR500;
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 25)
 
-//порог для записи из памяти
 
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();

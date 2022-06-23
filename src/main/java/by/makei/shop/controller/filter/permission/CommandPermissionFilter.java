@@ -36,11 +36,7 @@ public class CommandPermissionFilter implements Filter {
         String currentAccessLevel = (String) session.getAttribute(ACCESS_LEVEL);
         logger.log(Level.INFO, "CommandFilter access level = {}", currentAccessLevel);
         String command = httpServletRequest.getParameter(COMMAND);
-//        if (currentAccessLevel.equals(AccessLevel.BLOCKED.toString())) {
-//            logger.log(Level.INFO, "CommandFilter command = {}", command);
-//            request.getRequestDispatcher(BLOCKED_USER).forward(httpServletRequest, httpServletResponse);
-//            return;
-//        }
+
         if (command == null || command.equals("")) {
             logger.log(Level.INFO, "CommandFilter command = {}", command);
             request.getRequestDispatcher(ERROR404).forward(httpServletRequest, httpServletResponse);

@@ -47,7 +47,7 @@ public class ServletContextListenerImpl implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        logger.log(Level.DEBUG, "------context destroyed :{}",sce.getServletContext().getServerInfo());
+        logger.log(Level.DEBUG, "------context destroyed :{}", sce.getServletContext().getServerInfo());
         DbConnectionPool.getInstance().shutdown();
         /* This method is called when the servlet Context is undeployed or Application Server shuts down. */
     }

@@ -28,16 +28,16 @@ public class SessionAttributeClearFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
         Enumeration<String> attributes = session.getAttributeNames();
-        while (attributes.hasMoreElements()){
-            if(attributes.nextElement().equals(SESS_MESSAGE)){
-                logger.log(Level.INFO,"SessionAttributeClearFilter message '{}' was removed", session.getAttribute(SESS_MESSAGE));
+        while (attributes.hasMoreElements()) {
+            if (attributes.nextElement().equals(SESS_MESSAGE)) {
+                logger.log(Level.INFO, "SessionAttributeClearFilter message '{}' was removed", session.getAttribute(SESS_MESSAGE));
                 session.removeAttribute(SESS_MESSAGE);
             }
         }
-        logger.log(Level.INFO,"SessionAttributeClearFilter before chain");
+        logger.log(Level.INFO, "SessionAttributeClearFilter before chain");
 
         chain.doFilter(request, response);
-        logger.log(Level.INFO,"SessionAttributeClearFilter after chain");
+        logger.log(Level.INFO, "SessionAttributeClearFilter after chain");
 
     }
 }
