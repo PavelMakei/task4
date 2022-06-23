@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.*;
 
-import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.command.AttributeName.*;
 
 @WebFilter(filterName = "ParameterCorrectFilter")
 public class ParameterCorrectFilter implements Filter {
@@ -20,7 +20,7 @@ public class ParameterCorrectFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        logger.log(Level.INFO, "ParameterCorrectFilter started");
+        logger.log(Level.DEBUG, "ParameterCorrectFilter started");
         ArrayList<String> parametersToLowerCaseAndTrim = new ArrayList(List.of(LOGIN, EMAIL, PRODUCT_NAME));
         ArrayList<String> parametersToTrim = new ArrayList(List.of(PRODUCT_NAME, DESCRIPTION, SIZE, COLOUR));
         MutableHttpRequest mutableHttpRequest = new MutableHttpRequest((HttpServletRequest) request);

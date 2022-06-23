@@ -7,23 +7,23 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 public class FooterTag extends TagSupport {
     private static final Logger logger = LogManager.getLogger();
 
     public int doStartTag() throws JspException {
-        logger.log(Level.DEBUG,"Footer tag doStart");
+        logger.log(Level.DEBUG, "Footer tag doStart");
         try {
             pageContext.getOut().print("<footer><p class=\"footer\"> <br> © Lighting shop by Pavel Makei 2022</p></footer>");
         } catch (Exception ex) {
-            logger.log(Level.ERROR,"Footer tag exception : {}", ex.getMessage());
+            logger.log(Level.ERROR, "Footer tag exception : {}", ex.getMessage());
             throw new JspTagException("SimpleTag: " +
                                       ex.getMessage());
         }
         return SKIP_BODY;
     }
+
     public int doEndTag() {
-        logger.log(Level.DEBUG,"Footer tag doEnd");
+        logger.log(Level.DEBUG, "Footer tag doEnd");
         return EVAL_PAGE;
     }
 

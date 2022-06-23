@@ -2,11 +2,15 @@ package by.makei.shop.model.entity;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Order extends AbstractEntity {
+
+    @Serial
+    private static final long serialVersionUID = 4065902391111045349L;
     private int id;
     private int userId;
     private String address;

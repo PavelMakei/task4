@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import static by.makei.shop.model.command.AttributeName.ID;
-import static by.makei.shop.model.command.AttributeName.TYPE_NAME;
+import static by.makei.shop.command.AttributeName.ID;
+import static by.makei.shop.command.AttributeName.TYPE_NAME;
 
 public class TypeMapper implements Mapper<ProductType> {
 

@@ -1,7 +1,7 @@
 package by.makei.shop.controller.filter.permission;
 
 import by.makei.shop.exception.CommandException;
-import by.makei.shop.model.command.CommandType;
+import by.makei.shop.command.CommandType;
 import by.makei.shop.model.entity.AccessLevel;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -15,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.EnumSet;
 
-import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.*;
+import static by.makei.shop.command.AttributeName.*;
+import static by.makei.shop.command.PagePath.*;
 
 @WebFilter(filterName = "CommandPermissionFilter")
 public class CommandPermissionFilter implements Filter {

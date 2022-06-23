@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.command.AttributeName.*;
 
 public class ProductDaoImpl implements ProductDao {
     private static final ProductDaoImpl instance = new ProductDaoImpl();

@@ -1,6 +1,5 @@
 package by.makei.shop.controller.listener;
 
-import by.makei.shop.model.entity.AccessLevel;
 import by.makei.shop.model.entity.Cart;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSession;
@@ -10,8 +9,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.INDEX;
+import static by.makei.shop.command.AttributeName.*;
+import static by.makei.shop.command.PagePath.INDEX;
 import static by.makei.shop.model.entity.AccessLevel.GUEST;
 
 @WebListener

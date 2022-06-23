@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.command.AttributeName.*;
 import static by.makei.shop.model.validator.DefaultSearchParam.PRODUCTS_ON_PAGE;
 
 public class ProductServiceImpl implements ProductService {

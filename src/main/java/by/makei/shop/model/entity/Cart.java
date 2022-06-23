@@ -2,6 +2,7 @@ package by.makei.shop.model.entity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,10 +10,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Cart extends AbstractEntity {
+    @Serial
     private static final long serialVersionUID = -8505218436939515801L;
     public static final int MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY = 10;
     private int maxQuantityOfOneProductToBy = MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY;
-    private Map<Product, Integer> productQuantity;
+    private final Map<Product, Integer> productQuantity;
     private int totalQuantity = 0;
 
     private BigDecimal totalCost = BigDecimal.ZERO;
@@ -22,25 +24,25 @@ public class Cart extends AbstractEntity {
     }
 
     public void putProductQuantity(@NotNull Product product, @NotNull Integer quantity) {
-            this.productQuantity.put(product, quantity);
-            totalProductRecount();
+        this.productQuantity.put(product, quantity);
+        totalProductRecount();
     }
 
-    public Map<Product,Integer> getProductQuantity() {
+    public Map<Product, Integer> getProductQuantity() {
         return new HashMap<>(productQuantity);
     }
 
-    public void clear(){
+    public void clear() {
         productQuantity.clear();
         totalQuantity = 0;
         totalCost = BigDecimal.ZERO;
     }
 
-    public Map<Product,Integer> removeProduct(@NotNull Product product, @NotNull Integer quantity){
+    public Map<Product, Integer> removeProduct(@NotNull Product product, @NotNull Integer quantity) {
         Integer savedQuantity = this.productQuantity.get(product);
-        if (savedQuantity-quantity < 1){
+        if (savedQuantity - quantity < 1) {
             productQuantity.remove(product);
-        }else {
+        } else {
             this.productQuantity.put(product, (savedQuantity - quantity));
         }
         totalProductRecount();
@@ -59,12 +61,12 @@ public class Cart extends AbstractEntity {
         return totalCost;
     }
 
-    private void totalProductRecount(){
+    private void totalProductRecount() {
         AtomicInteger count = new AtomicInteger();
         AtomicReference<Double> sumPrice = new AtomicReference<>(0.0);
-        productQuantity.forEach((k, v)-> {
+        productQuantity.forEach((k, v) -> {
             count.addAndGet(v);
-            sumPrice.updateAndGet(cost ->  (cost + k.getPrice() * v));
+            sumPrice.updateAndGet(cost -> (cost + k.getPrice() * v));
         });
         totalCost = new BigDecimal(sumPrice.get());
         totalQuantity = count.get();

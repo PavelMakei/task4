@@ -8,7 +8,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.Optional;
 
-import static by.makei.shop.model.command.AttributeName.LOGIN;
+import static by.makei.shop.command.AttributeName.LOGIN;
 
 class UserDaoImplTest {
     static final String USER_LOGIN = "admin";

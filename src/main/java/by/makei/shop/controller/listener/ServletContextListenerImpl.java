@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.command.AttributeName.*;
 
 @WebListener
 public class ServletContextListenerImpl implements ServletContextListener {

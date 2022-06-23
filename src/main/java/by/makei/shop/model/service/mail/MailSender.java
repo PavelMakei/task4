@@ -5,8 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Locale;
 
-import static by.makei.shop.model.command.AttributeName.EMAIL;
-import static by.makei.shop.model.command.AttributeName.LOCALE;
+import static by.makei.shop.command.AttributeName.EMAIL;
+import static by.makei.shop.command.AttributeName.LOCALE;
 
 public final class MailSender {
     private static final String LOCALE_SPLIT_REGEXP = "_";

@@ -3,17 +3,18 @@ package by.makei.shop.model.validator.impl;
 import by.makei.shop.model.validator.AttributeValidator;
 import by.makei.shop.model.validator.ValidatorPattern;
 
-import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.command.AttributeName.*;
 
 public class AttributeValidatorImpl implements AttributeValidator {
     private static final AttributeValidatorImpl instance = new AttributeValidatorImpl();
     private static final ValidatorPattern validatorPattern = ValidatorPattern.getInstance();
-    private static final String EMPTY_STRING ="";
+    private static final String EMPTY_STRING = "";
 
 
-    private AttributeValidatorImpl(){}
+    private AttributeValidatorImpl() {
+    }
 
-    public static AttributeValidator getInstance (){
+    public static AttributeValidator getInstance() {
         return instance;
     }
 
@@ -51,6 +52,7 @@ public class AttributeValidatorImpl implements AttributeValidator {
     public boolean isInt3Valid(String idValue) {
         return (idValue != null && idValue.matches(validatorPattern.getInteger3StringPattern()));
     }
+
     @Override
     public boolean isInt5Valid(String idValue) {
         return (idValue != null && idValue.matches(validatorPattern.getInteger5StringPattern()));
@@ -78,7 +80,7 @@ public class AttributeValidatorImpl implements AttributeValidator {
 
     @Override
     public boolean isPageButtonValid(String pageButton) {
-        return (pageButton != null && (pageButton.matches(NEXT_PAGE)||pageButton.matches(PREVIOUS_PAGE)||pageButton.matches(SEARCH_PAGE)));
+        return (pageButton != null && (pageButton.matches(NEXT_PAGE) || pageButton.matches(PREVIOUS_PAGE) || pageButton.matches(SEARCH_PAGE)));
     }
 
     @Override
@@ -93,7 +95,7 @@ public class AttributeValidatorImpl implements AttributeValidator {
 
     @Override
     public boolean isCardExpDateValid(String cardExpDate) {
-        return (cardExpDate!= null && cardExpDate.matches(validatorPattern.getCardExpDatePattern()));
+        return (cardExpDate != null && cardExpDate.matches(validatorPattern.getCardExpDatePattern()));
     }
 
     @Override
@@ -103,7 +105,7 @@ public class AttributeValidatorImpl implements AttributeValidator {
 
     @Override
     public boolean isDetailValid(String detail) {
-        return ( detail == null || detail.equals(EMPTY_STRING)||detail.matches(validatorPattern.getDescriptionPattern()));
+        return (detail == null || detail.equals(EMPTY_STRING) || detail.matches(validatorPattern.getDescriptionPattern()));
     }
 
 

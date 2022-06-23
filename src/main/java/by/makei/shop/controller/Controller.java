@@ -1,9 +1,9 @@
 package by.makei.shop.controller;
 
 import by.makei.shop.exception.CommandException;
-import by.makei.shop.model.command.Command;
-import by.makei.shop.model.command.CommandType;
-import by.makei.shop.model.command.Router;
+import by.makei.shop.command.Command;
+import by.makei.shop.command.CommandType;
+import by.makei.shop.command.Router;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -17,7 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-import static by.makei.shop.model.command.AttributeName.ERROR_MESSAGE;
+import static by.makei.shop.command.AttributeName.ERROR_MESSAGE;
+import static by.makei.shop.command.PagePath.ERROR500;
 
 
 /**
@@ -65,7 +66,8 @@ public class Controller extends HttpServlet {
         } catch (CommandException e) {
             logger.log(Level.ERROR, "Command exception", e);
             request.setAttribute(ERROR_MESSAGE, "Command exception " + e);
-            response.sendError(500, e.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher(ERROR500);
+            dispatcher.forward(request, response);
         }
     }
 }

@@ -2,10 +2,7 @@ package by.makei.shop.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Locale;
 import java.util.Map;
-
-import static by.makei.shop.model.command.AttributeName.LOCALE;
 
 public class MessageReinstall {
 //    private static final String LOCALE_SPLIT_REGEXP = "_";

@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import static by.makei.shop.model.command.AttributeName.BRAND_NAME;
-import static by.makei.shop.model.command.AttributeName.ID;
+import static by.makei.shop.command.AttributeName.BRAND_NAME;
+import static by.makei.shop.command.AttributeName.ID;
 
 
 public class BrandMapper implements Mapper<Brand> {

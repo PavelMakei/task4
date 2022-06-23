@@ -3,19 +3,12 @@ package by.makei.shop.model.dao.impl;
 import by.makei.shop.exception.DaoException;
 import by.makei.shop.model.connectionpool.DbConnectionPool;
 import by.makei.shop.model.dao.ProductDao;
-import by.makei.shop.model.dao.UserDao;
 import by.makei.shop.model.entity.Product;
-import by.makei.shop.model.entity.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.Optional;
-
-import static by.makei.shop.model.command.AttributeName.LOGIN;
-import static by.makei.shop.model.command.AttributeName.SEARCH_WORD;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ProductDaoImplTest {
     static final int CORRECT_BRAND_ID = 1;

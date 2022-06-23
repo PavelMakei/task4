@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static by.makei.shop.model.command.AttributeName.CURRENT_CONTEXT_PATH;
-import static by.makei.shop.model.command.AttributeName.CURRENT_PAGE;
+import static by.makei.shop.command.AttributeName.CURRENT_CONTEXT_PATH;
+import static by.makei.shop.command.AttributeName.CURRENT_PAGE;
 
 public class PagePathExtractor {
     private static final Logger logger = LogManager.getLogger();

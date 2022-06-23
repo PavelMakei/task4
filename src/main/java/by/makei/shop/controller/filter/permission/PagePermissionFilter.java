@@ -1,7 +1,6 @@
 package by.makei.shop.controller.filter.permission;
 
-import by.makei.shop.model.command.PagePath;
-import by.makei.shop.model.entity.AccessLevel;
+import by.makei.shop.command.PagePath;
 import by.makei.shop.model.entity.User;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
@@ -14,9 +13,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.PagePath.BLOCKED_USER;
-import static by.makei.shop.model.command.PagePath.ERROR404;
+import static by.makei.shop.command.AttributeName.*;
+import static by.makei.shop.command.PagePath.ERROR404;
 
 @WebFilter(filterName = "PagePermissionFilter")
 public class PagePermissionFilter implements Filter {

@@ -1,11 +1,13 @@
 package by.makei.shop.model.entity;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Date;
 
-public class User extends AbstractEntity{
-    private static final long serialVersionUID = -3228469065808083964L;
+public class User extends AbstractEntity {
+
+    @Serial
+    private static final long serialVersionUID = 2977313543897353371L;
     private int id;
     private String firstName;
     private String lastName;
@@ -16,7 +18,8 @@ public class User extends AbstractEntity{
     private Instant date;
     private BigDecimal amount;
 
-    public User() {}
+    public User() {
+    }
 
     public User(int id, String firstName, String lastName, String login, String email, String phone, AccessLevel accessLevel, Instant date, BigDecimal amount) {
         this.id = id;
@@ -30,7 +33,7 @@ public class User extends AbstractEntity{
         this.amount = amount;
     }
 
-    public User(String firstName, String lastName, String login,  String email, String phone, AccessLevel accessLevel, Instant date, BigDecimal amount) {
+    public User(String firstName, String lastName, String login, String email, String phone, AccessLevel accessLevel, Instant date, BigDecimal amount) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.login = login;

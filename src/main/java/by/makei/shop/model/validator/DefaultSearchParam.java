@@ -1,6 +1,6 @@
 package by.makei.shop.model.validator;
 
-import static by.makei.shop.model.command.AttributeName.ORDER_BY_PRICE_UP;
+import static by.makei.shop.command.AttributeName.ORDER_BY_PRICE_UP;
 
 public enum DefaultSearchParam {
     ;

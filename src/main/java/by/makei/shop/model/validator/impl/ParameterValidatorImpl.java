@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static by.makei.shop.model.command.AttributeName.*;
+import static by.makei.shop.command.AttributeName.*;
 import static by.makei.shop.model.validator.DefaultSearchParam.*;
 
 public class ParameterValidatorImpl implements ParameterValidator {
@@ -148,7 +148,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
                                 invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
                                 isCorrect = false;
                             }
-                            if (productData.get(ID) == null ) {
+                            if (productData.get(ID) == null) {
                                 invalidParameters.put(BUSY_PRODUCT_NAME, BUSY_PRODUCT_NAME);
                                 isCorrect = false;
                             }
@@ -553,7 +553,6 @@ public class ParameterValidatorImpl implements ParameterValidator {
                             invalidParameters.put(INVALID_DETAIL, INVALID_DETAIL);
                             isCorrect = false;
                         }
-
                     }
                 }
             }

@@ -15,7 +15,6 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
 
-
 <fmt:message key="blocked.account.label" var="blocked_account_label"/>
 <fmt:message key="blocked.account.message" var="blocked_account_message"/>
 <fmt:message key="our.contact.phone" var="our_contact_phone"/>
@@ -26,7 +25,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
@@ -38,6 +37,7 @@
         function preventBack() {
             window.history.forward();
         }
+
         setTimeout("preventBack()", 0);
         window.onunload = function () {
             null
@@ -57,7 +57,8 @@
             <div class="row justify-content-center">
                 <div class="col-md-7">
                     <div class="card" style="border-color: goldenrod">
-                        <div class="card-header bg-light" style="text-align:center; color: black; font-size: large"></div>
+                        <div class="card-header bg-light"
+                             style="text-align:center; color: black; font-size: large"></div>
                         <div class="card-body bg-dark bg-opacity-75">
                             <div class="alert alert-danger" role="alert">
                                 <h4 class="alert-heading">${blocked_account_label}</h4>
@@ -65,14 +66,13 @@
                                 <hr>
                                 <p class="mb-0">${our_contact_phone}</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer" style="color: white"><ft:footerTag/></div>
     </div>
+    <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
 
 </body>

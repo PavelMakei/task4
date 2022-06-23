@@ -1,11 +1,15 @@
 package by.makei.shop.model.entity;
 
-public class ProductType extends AbstractEntity{
+import java.io.Serial;
+
+public class ProductType extends AbstractEntity {
+    @Serial
     private static final long serialVersionUID = -5295915945980814983L;
     private int id;
     private String typeName;
 
-    public ProductType(){}
+    public ProductType() {
+    }
 
     public ProductType(int id, String typeName) {
         this.id = id;

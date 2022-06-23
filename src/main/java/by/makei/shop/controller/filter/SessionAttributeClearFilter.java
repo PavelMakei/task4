@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import static by.makei.shop.model.command.AttributeName.SESS_MESSAGE;
+import static by.makei.shop.command.AttributeName.SESS_MESSAGE;
 
 @WebFilter(filterName = "SessionAttributeClearFilter")
 public class SessionAttributeClearFilter implements Filter {

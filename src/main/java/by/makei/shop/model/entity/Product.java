@@ -1,8 +1,9 @@
 package by.makei.shop.model.entity;
 
-import java.util.Arrays;
+import java.io.Serial;
 
-public class Product extends AbstractEntity{
+public class Product extends AbstractEntity {
+    @Serial
     private static final long serialVersionUID = -630535397616720156L;
 
     private int id;
@@ -18,7 +19,8 @@ public class Product extends AbstractEntity{
     private String photoString; // correct format for sending image to jsp
 
 
-   public Product(){}
+    public Product() {
+    }
 
     public Product(int id, int brandId, int typeId, String productName, String description, double price, String colour, int power, String size, String photoString) {
         this.id = id;

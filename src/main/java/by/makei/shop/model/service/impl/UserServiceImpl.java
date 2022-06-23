@@ -26,9 +26,9 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static by.makei.shop.model.command.AttributeName.*;
-import static by.makei.shop.model.command.RedirectMessage.ORDERING_FAIL_INCORRECT_DATA;
-import static by.makei.shop.model.command.RedirectMessage.ORDERING_FAIL_NOT_ENOUGH_PRODUCTS;
+import static by.makei.shop.command.AttributeName.*;
+import static by.makei.shop.command.RedirectMessage.ORDERING_FAIL_INCORRECT_DATA;
+import static by.makei.shop.command.RedirectMessage.ORDERING_FAIL_NOT_ENOUGH_PRODUCTS;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
