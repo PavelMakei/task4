@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 import static by.makei.shop.command.AttributeName.*;
+import static by.makei.shop.command.PagePath.ERROR403;
 import static by.makei.shop.command.PagePath.ERROR404;
 
 @WebFilter(filterName = "PagePermissionFilter")
@@ -47,7 +48,8 @@ public class PagePermissionFilter implements Filter {
         if (!isAllowed) {
             logger.log(Level.INFO, "Access forbidden! userId: {}, accessLevel: {}, try to go to page {}", userId, accessLevel, requestURI);
             httpServletRequest.setAttribute(MESSAGE, "Page not found");
-            httpServletRequest.getRequestDispatcher(ERROR404).forward(httpServletRequest, httpServletResponse);
+            request.getRequestDispatcher(ERROR404)
+                    .forward(httpServletRequest, httpServletResponse);
             return;
         }
         logger.log(Level.DEBUG, "Access approved! userId: {}, accessLevel: {}, try to go to page {}", userId, accessLevel, requestURI);

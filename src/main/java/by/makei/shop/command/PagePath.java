@@ -5,6 +5,7 @@ import java.util.Set;
 public enum PagePath {
     ;
     public static final String ABOUT = "/view/pages/common/about.jsp";
+    public static final String HEADER = "/view/pages/common/header.jsp";//FIXME Remove
     public static final String ADD_NEW_PRODUCT = "/view/pages/admin/addnewproduct.jsp";
     public static final String BLOCKED_USER = "/view/pages/common/blockeduser.jsp";
     public static final String CHECKOUT = "/view/pages/user/checkout.jsp";
@@ -71,6 +72,7 @@ public enum PagePath {
                 UPDATE_PROFILE
         );
         guestPages = Set.of(
+                HEADER,//FIXME remove!
                 ABOUT,
                 ERROR403,
                 ERROR404,

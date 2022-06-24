@@ -19,6 +19,8 @@
 <br>
 Request From -> ${pageContext.errorData.requestURI}
 <hr/>
+Reason -> ${message}
+<hr/>
 Exception -> ${pageContext.exception}
 <hr/>
 Exception Status -> ${pageContext.errorData.statusCode}

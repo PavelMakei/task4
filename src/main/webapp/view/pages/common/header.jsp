@@ -13,6 +13,7 @@
 <fmt:setBundle basename="language_text"/>
 
 <c:set var="path">${pageContext.request.contextPath}</c:set>
+<c:set var="rate" value="N/D"/>
 
 <fmt:message key="admin.menu" var="admin_menu"/>
 <fmt:message key="add.new.product" var="add_new_product_label"/>
@@ -28,6 +29,8 @@
 <fmt:message key="user.menu" var="user_menu"/>
 <fmt:message key="order.management" var="manage_order"/>
 
+
+
 <head>
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
@@ -37,6 +40,7 @@
     <link href="${path}/css/enter.css" rel="stylesheet">
 
     <script src="${path}/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
 </head>
 <body>
@@ -51,12 +55,13 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <c:if test="${access_level ne 'BLOCKED'}">
-                    <a class="nav-link active" style="color: white" aria-current="page"
-                       href="${path}/index.jsp">${main_page_label}</a>
+                        <a class="nav-link active" style="color: white" aria-current="page"
+                           href="${path}/index.jsp">${main_page_label}</a>
                     </c:if>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white" href="${path}/controller?command=go_to_about">${about_label}</a>
+                    <a class="nav-link" style="color: white"
+                       href="${path}/controller?command=go_to_about">${about_label}</a>
                 </li>
                 <c:if test="${!empty user && user.accessLevel eq 'ADMIN'}">
                     <%@include file="../admin/adminproductmenu.jspx" %>
@@ -64,8 +69,73 @@
                 <c:if test="${!empty user && user.accessLevel eq 'USER'}">
                     <%@include file="../user/usermenu.jspx" %>
                 </c:if>
-                <%--                ---------------%>
             </ul>
+
+            <%--                ---------------%>
+
+            <%--            <li class="nav-item">--%>
+            <%--                <a class="nav-link" style="color: white" href="https://www.nbrb.by/">${exchange_course}</a>--%>
+            <%--            </li>--%>
+
+            <ul class="nav nav-pills" style="border-color: goldenrod;padding: 6px; border-width: 1px; border-style: solid; border-radius: .25rem;">
+                <li class="nav-item" style="color: white;" id="curr_scale"></li>
+                <li class="nav-item ">
+                    <div class="currency">
+                        <select class="bg-black bg-opacity-75 border-0" style="margin-top: 2px; color: goldenrod; cursor: pointer;" id="currency">
+                            <option value="AED">AED</option>
+                            <option value="ARS">ARS</option>
+                            <option value="AUD">AUD</option>
+                            <option value="BGN">BGN</option>
+                            <option value="BRL">BRL</option>
+                            <option value="CAD">CAD</option>
+                            <option value="CHF">CHF</option>
+                            <option value="CLP">CLP</option>
+                            <option value="CNY">CNY</option>
+                            <option value="COP">COP</option>
+                            <option value="CZK">CZK</option>
+                            <option value="DKK">DKK</option>
+                            <option value="EGP">EGP</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="HKD">HKD</option>
+                            <option value="HRK">HRK</option>
+                            <option value="HUF">HUF</option>
+                            <option value="IDR">IDR</option>
+                            <option value="ILS">ILS</option>
+                            <option value="INR">INR</option>
+                            <option value="ISK">ISK</option>
+                            <option value="JPY">JPY</option>
+                            <option value="KRW">KRW</option>
+                            <option value="KZT">KZT</option>
+                            <option value="MXN">MXN</option>
+                            <option value="MYR">MYR</option>
+                            <option value="NOK">NOK</option>
+                            <option value="NZD">NZD</option>
+                            <option value="PEN">PEN</option>
+                            <option value="PHP">PHP</option>
+                            <option value="PKR">PKR</option>
+                            <option value="PLN">PLN</option>
+                            <option value="RON">RON</option>
+                            <option value="RUB">RUB</option>
+                            <option value="SAR">SAR</option>
+                            <option value="SEK">SEK</option>
+                            <option value="SGD">SGD</option>
+                            <option value="THB">THB</option>
+                            <option value="TRY">TRY</option>
+                            <option value="TWD">TWD</option>
+                            <option value="UAH">UAH</option>
+                            <option value="USD" selected>USD</option>
+                            <option value="UYU">UYU</option>
+                            <option value="VND">VND</option>
+                            <option value="ZAR">ZAR</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="nav-item" style="color: white;">
+                                    <a class="nav-link" style="color: white; padding: 0;" href="https://www.nbrb.by/" target="_blank" id="rate"></a>
+                </li>
+            </ul>
+
 
             <c:if test="${access_level ne 'BLOCKED'}">
                 <button type="button" class="btn btn-primary"
@@ -88,7 +158,7 @@
                 <c:when test="${sessionScope.access_level eq 'ADMIN' or access_level eq 'USER' or access_level eq 'BLOCKED'}">
                 <input type="hidden" name="command" value="logout">
                 <button class="btn btn-outline-warning"
-                        style="color: black; background-color: white; border-width: 2px; border-color: goldenrod;border-radius: 5% "
+                        style="color: black; background-color: white; border-width: 2px; border-color: goldenrod;border-radius: .25rem; "
                         type="submit">
                         ${log_out}
                     </c:when>
@@ -121,26 +191,7 @@
     </div>
 </nav>
 
-<script>
-    function goToCheckout() {
-        window.location.href = '${path}/controller?command=go_to_checkout';
-    }
-</script>
-<script>
-    function goToDeposit() {
-        window.location.href = '${path}/controller?command=go_to_deposit_money';
-    }
-</script>
-<script>
-    function goToLogin() {
-        window.location.href = '${path}/controller?command=go_to_login';
-    }
-</script>
-<script>
-    function clearCart() {
-        window.location.href = '${path}/controller?command=clear_cart';
-    }
-</script>
+<script src="${path}/js/header.js"></script>
 
 </body>
 </html>
