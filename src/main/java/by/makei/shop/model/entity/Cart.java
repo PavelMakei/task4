@@ -29,7 +29,7 @@ public class Cart extends AbstractEntity {
     }
 
     public Map<Product, Integer> getProductQuantity() {
-        return Map.copyOf(productQuantity);
+        return new HashMap<>(productQuantity);
     }
 
     public void clear() {
@@ -46,7 +46,7 @@ public class Cart extends AbstractEntity {
             this.productQuantity.put(product, (savedQuantity - quantity));
         }
         totalProductRecount();
-        return Map.copyOf(this.productQuantity);
+        return this.productQuantity;
     }
 
     public int getTotalQuantity() {
