@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Level;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static by.makei.shop.command.PagePath.USERS;
 
@@ -27,6 +28,7 @@ public class GoToManageUserCommand implements Command {
         Router router = new Router();
         UserService userService = UserServiceImpl.getInstance();
         List<User> userList;
+        Map<User,double[]> userOrderSumMap;
         HttpSession session = request.getSession();
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
         logger.log(Level.DEBUG, "GoToManageUserCommand currentPage :{}", currentPage);
@@ -34,8 +36,8 @@ public class GoToManageUserCommand implements Command {
         ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
         accessLevelList.remove(AccessLevel.GUEST);
         try {
-            userList = userService.findAllUser();
-            request.setAttribute(AttributeName.USER_LIST, userList);
+            userOrderSumMap= userService.findAllUserOrderSum();
+            request.setAttribute(AttributeName.USER_LIST, userOrderSumMap);
             request.setAttribute(AttributeName.ACCESS_LEVEL_LIST, accessLevelList);
             router.setCurrentPage(USERS);
 

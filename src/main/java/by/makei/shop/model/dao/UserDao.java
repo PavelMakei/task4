@@ -26,6 +26,8 @@ public interface UserDao extends BaseDao<User>{
 
     boolean createOrderTransaction(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws DaoException;
 
+    Map<User, double[]> findAllUsersOrdersSum() throws DaoException;
+
     boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws DaoException;
 
     boolean findOrderProductMap(int orderId, Map<Integer, Integer> productIdQuantity) throws DaoException;

@@ -107,6 +107,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map<User, double[]> findAllUserOrderSum() throws ServiceException {
+        Map<User, double[]> userOrderMap;
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            userOrderMap = userDao.findAllUsersOrdersSum();
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while findAllUser in UserService. {}", e.getMessage());
+            throw new ServiceException(e);
+        }
+        return userOrderMap;
+    }
+
+    @Override
     public boolean updateAccessLevel(Map<String, String> userDataMap) throws ServiceException {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
         if (!parameterValidator.validateAndMarkIncomeData(userDataMap)) {

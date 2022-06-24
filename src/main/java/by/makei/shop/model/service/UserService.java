@@ -19,6 +19,8 @@ public interface UserService {
 
     List<User> findAllUser() throws ServiceException;
 
+    Map<User, double[]> findAllUserOrderSum() throws ServiceException;
+
     boolean updateAccessLevel(Map<String, String> userDataMap) throws ServiceException;
 
     Optional<User>findUserByEmail(String email) throws ServiceException;

@@ -100,6 +100,17 @@ public class UserDaoImpl implements UserDao {
             FROM lightingshop.products
             WHERE id = ?
             """;
+    public static final String SQL_FIND_ALL_USER_ORDER_SUM = """
+            SELECT users.id, users.first_name, users.last_name, users.login, users.password, users.email, users.phone,
+            users.access_level, users.registration_date,users.money_amount,
+            SUM(CASE WHEN orders.status ='DELIVERED' THEN order_products.quantity END) AS number_prods,
+            SUM(CASE WHEN orders.status ='DELIVERED' THEN products.price*order_products.quantity END) AS total_ords_sum FROM lightingshop.users
+            LEFT JOIN lightingshop.orders ON users.id = orders.user_id
+            LEFT JOIN lightingshop.order_products ON orders.id = order_products.order_id
+            left join lightingshop.products on order_products.product_id = products.id
+            GROUP BY users.id
+            ORDER BY users.id;
+            """;
 
     private UserDaoImpl() {
     }
@@ -308,6 +319,34 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Map<User, double[]> findAllUsersOrdersSum() throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Map<User, double[]> userMap = new LinkedHashMap<>();
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement =
+                    proxyConnection.prepareStatement(SQL_FIND_ALL_USER_ORDER_SUM);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Optional<User> optionalUser = new UserMapper().mapEntity(resultSet);
+                if (optionalUser.isPresent()) {
+                    userMap.put(optionalUser.get(), new double[]
+                            {resultSet.getDouble("number_prods"), resultSet.getDouble("total_ords_sum")});
+                }
+            }
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error while findAllUsersOrdersSum");
+            throw new DaoException("UserDao error while findAllUsersOrdersSum", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+        }
+        return userMap;
+    }
+
+    @Override
     public boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws DaoException {
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
@@ -449,10 +488,11 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStatement.setInt(3, order.getId());
             preparedStatement.setString(2, Order.Status.CANCELED.toString());
-            if(preparedStatement.executeUpdate() != 1){
+            if (preparedStatement.executeUpdate() != 1) {
                 isCorrect = false;
                 logger.log(Level.WARN, "order id {} was not found", order.getId());
-            };
+            }
+            ;
 //            preparedStatement.close();
 // отключено по требованию преподавателя
             //вернуть товар на склад
@@ -468,8 +508,8 @@ public class UserDaoImpl implements UserDao {
                     resultSet.updateInt(QUANTITY_IN_STOCK, currentQuantity + entry.getValue());
                     resultSet.updateRow();
                 } else {
-                    isCorrect =false;
-                    logger.log(Level.ERROR,"product wasn't found");
+                    isCorrect = false;
+                    logger.log(Level.ERROR, "product wasn't found");
                 }
 //                resultSet.close();
 //                preparedStatement.close();
@@ -487,7 +527,7 @@ public class UserDaoImpl implements UserDao {
                 resultSet.updateRow();
             } else {
                 isCorrect = false;
-                logger.log(Level.ERROR,"user wasn't found");
+                logger.log(Level.ERROR, "user wasn't found");
             }
             proxyConnection.commit();
             return isCorrect;
@@ -513,13 +553,13 @@ public class UserDaoImpl implements UserDao {
         boolean isCorrect = true;
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
-        try{
+        try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             preparedStatement = proxyConnection.prepareStatement(SQL_UPDATE_ORDER_STATUS);
             preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStatement.setInt(3, order.getId());
             preparedStatement.setString(2, Order.Status.DELIVERED.toString());
-            if(preparedStatement.executeUpdate() != 1){
+            if (preparedStatement.executeUpdate() != 1) {
                 isCorrect = false;
             }
         } catch (SQLException e) {
