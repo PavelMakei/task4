@@ -22,6 +22,8 @@
 <fmt:message key="registration.date" var="registration_date"/>
 <fmt:message key="money.amount" var="money_amount"/>
 <fmt:message key="users" var="users_lable"/>
+<fmt:message key="purchased.products" var="purchased_products"/>
+<fmt:message key="for.the.amount" var="for_the_amount"/>
 
 <c:set var="email">email</c:set>
 <c:set var="url_part1">${path}/controller?command=update_access_level&id=</c:set>
@@ -38,17 +40,18 @@
 
 
     <%-----------------Prevent to return to previous page---------------%>
-        <script>
-            function preventBack() {
-                window.history.forward();
-            }
-            setTimeout("preventBack()", 0);
-            window.onunload = function () {
-                null
-            };
-            history.pushState(null, null, document.URL);
-        </script>
-        <%------------------------------------------%>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout("preventBack()", 0);
+        window.onunload = function () {
+            null
+        };
+        history.pushState(null, null, document.URL);
+    </script>
+    <%------------------------------------------%>
 
 
 </head>
@@ -86,31 +89,37 @@
                                         <th scope="col">${mobile_phone}</th>
                                         <th scope="col">${registration_date}</th>
                                         <th scope="col">${money_amount}</th>
+                                        <th scope="col">${purchased_products}</th>
+                                        <th scope="col">${for_the_amount}</th>
                                         <th scope="col">${access_level}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach var="user_elem" items="${user_list}">
                                         <tr
-                                                <c:if test="${user_elem.accessLevel eq 'ADMIN'}">
+                                                <c:if test="${user_elem.key.accessLevel eq 'ADMIN'}">
                                                     class="table-warning"
                                                 </c:if>
-                                                <c:if test="${user_elem.accessLevel eq 'USER'}">
+                                                <c:if test="${user_elem.key.accessLevel eq 'USER'}">
                                                     class="table-success"
                                                 </c:if>
-                                                <c:if test="${user_elem.accessLevel eq 'BLOCKED'}">
+                                                <c:if test="${user_elem.key.accessLevel eq 'BLOCKED'}">
                                                     class="table-danger"
                                                 </c:if>
                                         >
-                                            <th scope="row">${user_elem.id}</th>
-                                            <td>${user_elem.firstName}</td>
-                                            <td>${user_elem.lastName}</td>
-                                            <td>${user_elem.login}</td>
-                                            <td>${user_elem.email}</td>
-                                            <td>${user_elem.phone}</td>
-                                            <fmt:parseDate value="${user_elem.date}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-                                            <td><fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}" /></td>
-                                            <td>${user_elem.amount}</td>
+                                            <th scope="row">${user_elem.key.id}</th>
+                                            <td>${user_elem.key.firstName}</td>
+                                            <td>${user_elem.key.lastName}</td>
+                                            <td>${user_elem.key.login}</td>
+                                            <td>${user_elem.key.email}</td>
+                                            <td>${user_elem.key.phone}</td>
+                                            <fmt:parseDate value="${user_elem.key.date}" pattern="yyyy-MM-dd'T'HH:mm"
+                                                           var="parsedDateTime" type="both"/>
+                                            <td><fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/></td>
+                                            <td><fmt:formatNumber value="${user_elem.key.amount}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                            <td><fmt:formatNumber value="${user_elem.value[0]}" maxFractionDigits="0"/></td>
+                                            <td><fmt:formatNumber value="${user_elem.value[1]}" maxFractionDigits="2" minFractionDigits="2"/></td>
+
                                             <td>
                                                 <select
                                                         id="access_level" name="access_level" required
@@ -118,15 +127,15 @@
                                                                 = '${url_part1}'+this.options[this.selectedIndex].id
                                                                 +'${url_part2}'+this.options[this.selectedIndex].value);">
                                                     <option
-                                                            id="${user_elem.id}"
-                                                            value="${user_elem.accessLevel}"
-                                                            selected>${user_elem.accessLevel}
+                                                            id="${user_elem.key.id}"
+                                                            value="${user_elem.key.accessLevel}"
+                                                            selected>${user_elem.key.accessLevel}
                                                     </option>
                                                     <c:forEach var="access_level_elem"
                                                                items="${access_level_list}">
-                                                        <c:if test="${user_elem.accessLevel ne access_level_elem}">
+                                                        <c:if test="${user_elem.key.accessLevel ne access_level_elem}">
                                                             <option value="${access_level_elem}"
-                                                                    id="${user_elem.id}"
+                                                                    id="${user_elem.key.id}"
                                                             >${access_level_elem}</option>
                                                         </c:if>
                                                     </c:forEach>
