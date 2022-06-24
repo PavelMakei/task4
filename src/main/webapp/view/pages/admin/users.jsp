@@ -84,7 +84,13 @@
                                         <th scope="col">${login}</th>
                                         <th scope="col">${email}</th>
                                         <th scope="col">${mobile_phone}</th>
-                                        <th scope="col">${registration_date}</th>
+
+                                        <fmt:parseDate value="2022-05-23T19:02" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+
+<%--                                        <th scope="col"> <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}" /></th>--%>
+                                        <th scope="col"> !!!!!!!!!!!!!!!!!!!</th>
+<%--                                        <th scope="col">${registration_date}</th>--%>
+
                                         <th scope="col">${money_amount}</th>
                                         <th scope="col">${access_level}</th>
                                     </tr>
