@@ -476,7 +476,7 @@
                                                             </dd>
                                                             <dt class="col-sm-3">${price_name_label}:</dt>
                                                             <dd class="col-sm-9">
-                                                                    ${current_product.price}
+                                                                <fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${current_product.price}"/>
                                                             </dd>
                                                             <dt class="col-sm-3">${in_stock}:</dt>
                                                             <dd class="col-sm-9">

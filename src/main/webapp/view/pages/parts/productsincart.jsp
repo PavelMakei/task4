@@ -51,9 +51,9 @@
             </td>
 
             <td>${productQuantity.key.productName}</td>
-            <td>${productQuantity.key.price}</td>
+            <td><fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${productQuantity.key.price}"/></td>
             <td>${productQuantity.value}</td>
-            <td>${currentProductSumm}</td>
+            <td><fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${currentProductSumm}"/></td>
         </tr>
     </c:forEach>
     <tr class="border-2 border-dark">
@@ -63,7 +63,7 @@
         <th class="border-0" scope="col"></th>
         <th class="border-0" scope="col"></th>
         <th scope="col">${total_quantity}</th>
-        <th scope="col"><fmt:formatNumber type="number" maxFractionDigits="2" value="${totalSum}"/></th>
+        <th scope="col"><fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${totalSum}"/></th>
     </tr>
 
     <c:if test="${!empty user}">
@@ -77,7 +77,7 @@
             <th class="border-0" scope="col"></th>
             <th class="border-0" scope="col"></th>
             <th class="border-0" scope="col"></th>
-            <th scope="col">${user.amount}</th>
+            <th scope="col"><fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${user.amount}"/></th>
         </tr>
     </c:if>
 

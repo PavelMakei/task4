@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,7 +32,8 @@ public class ShowOrderCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         UserService userService = UserServiceImpl.getInstance();
-        List<Order> orderList = new ArrayList<>();
+//        List<Order> orderList = new ArrayList<>();
+        Map<Order, String[]> orderMap = new LinkedHashMap<>();
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
         logger.log(Level.DEBUG, "ShowOrderCommand currentPage :{}", currentPage);
         MessageReinstall.extractAndSetMessage(AttributeName.MESSAGE, request);
@@ -44,12 +46,12 @@ public class ShowOrderCommand implements Command {
             incomeParam.put(AttributeName.USER_ID, String.valueOf(user.getId()));
         }//else (for ADMIN) will be used all ids, and returned all user's orders
         try {
-            if (!userService.findOrderByParam(orderList, incomeParam)) {
+            if (!userService.findOrderMapByParam(orderMap, incomeParam)) {
                 logger.log(Level.ERROR, "ShowOrderCommand incorrect income params");
                 router.setCurrentPage(ERROR500);
             }
             router.setCurrentPage(ORDERS);
-            request.setAttribute(AttributeName.ORDER_LIST, orderList);
+            request.setAttribute(AttributeName.ORDER_MAP, orderMap);
 
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "ShowOrderCommand command error {}", e.getMessage());

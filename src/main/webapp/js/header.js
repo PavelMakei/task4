@@ -23,14 +23,14 @@ currencyEL.addEventListener('change', calculate);
 calculate();
 
 function goToCheckout() {
-    window.location.href = '${path}/controller?command=go_to_checkout';
+    window.location.href = '/controller?command=go_to_checkout';
 }
 function goToDeposit() {
-    window.location.href = '${path}/controller?command=go_to_deposit_money';
+    window.location.href = '/controller?command=go_to_deposit_money';
 }
 function goToLogin() {
-    window.location.href = '${path}/controller?command=go_to_login';
+    window.location.href = '/controller?command=go_to_login';
 }
 function clearCart() {
-    window.location.href = '${path}/controller?command=clear_cart';
+    window.location.href = '/controller?command=clear_cart';
 }

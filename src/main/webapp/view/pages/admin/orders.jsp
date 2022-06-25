@@ -28,6 +28,8 @@
 <fmt:message key="product.id" var="product_id_label"/>
 <fmt:message key="order.id" var="order_id_label"/>
 <fmt:message key="quantity.name" var="quantity_label"/>
+<fmt:message key="login" var="login_label"/>
+<fmt:message key="sum.label" var="sum_label"/>
 
 
 <html>
@@ -68,38 +70,43 @@
                             ${orders_manage_label}
                         </div>
                         <%------------------------------------------------------Orders-----------------------------------------------%>
-                        <c:forEach var="order" items="${order_list}">
+                        <c:forEach var="order" items="${order_map}">
                             <div class="card-body bg-dark bg-opacity-75" style="padding-bottom: 0">
-                                <div class="form-group bg-white" style="color: white">
+                                <div class="form-group bg-white" style="color: white; border-style: solid; border-width: 1px; border-radius: .25rem">
 
                                     <table class="table table-responsive table-bordered" style="margin-bottom: 0px">
                                         <thead>
                                         <tr>
                                             <th scope="col">${order_id_label}</th>
                                             <th scope="col">${user_id_label}</th>
+                                            <th scope="col">${login_label}</th>
                                             <th scope="col">${phone_label}</th>
                                             <th scope="col">${date_open_label}</th>
                                             <th scope="col">${order_status_label}</th>
                                             <th scope="col">${date_close_label}</th>
+                                            <th scope="col">${sum_label}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>${order.id}</td>
-                                            <td>${order.userId}</td>
-                                            <td>${order.phone}</td>
-                                            <td>${order.openDate}</td>
-                                            <td><fmt:message key="${order.status}"/></td>
-                                            <td>${order.closeDate}</td>
+                                            <td>${order.key.id}</td>
+                                            <td>${order.key.userId}</td>
+                                            <td>${order.value[0]}</td>
+                                            <td>${order.key.phone}</td>
+                                            <td>${order.key.openDate}</td>
+                                            <td><fmt:message key="${order.key.status}"/></td>
+                                            <td>${order.key.closeDate}</td>
+                                            <td>${order.value[1]}</td>
+
                                         </tr>
                                         <tr class="border-2 border-dark">
                                         </tbody>
                                     </table>
 
                                     <p style="padding-left: 8px; color: black ">
-                                        <strong>${address_label}:</strong> ${order.address}</p>
+                                        <strong>${address_label}:</strong> ${order.key.address}</p>
                                     <p style="padding-left: 8px; color: black">
-                                        <strong>${details_label}:</strong> ${order.detail}</p>
+                                        <strong>${details_label}:</strong> ${order.key.detail}</p>
 
                                     <table class="table table-responsive table-bordered" style="margin-bottom: 0px">
 
@@ -111,7 +118,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:set var="productIdQuantityMap" value="${order.prodIdQuantity}"/>
+                                        <c:set var="productIdQuantityMap" value="${order.key.prodIdQuantity}"/>
                                         <c:forEach var="elem" items="${productIdQuantityMap}">
                                             <tr>
                                                 <td>
@@ -124,20 +131,20 @@
                                                 <td>${elem.value}</td>
                                             </tr>
                                         </c:forEach>
-                                        <tr class="border-2 border-dark">
                                         </tbody>
                                     </table>
-                                    <c:if test="${order.status eq 'PAID'}">
-                                        <div class="justify-content-center" style="color: white; padding-bottom: 01px;">
+                                    <c:if test="${order.key.status eq 'PAID'}">
+                                        <div class="justify-content-center" style="color: white;background-color:#000000a3;">
                                             <div class="input-group col-12">
                                                 <c:if test="${!empty access_level && access_level eq 'ADMIN'}">
                                                     <button class="btn btn-primary col-6"
-                                                            onclick="window.location.href='${path}/controller?command=deliver_order&id=${order.id}'"
+                                                            onclick="window.location.href='${path}/controller?command=deliver_order&id=${order.key.id}'"
                                                     >${deliver_order_button}
                                                     </button>
                                                 </c:if>
                                                 <button class="btn btn-danger col-6"
-                                                        onclick="window.location.href='${path}/controller?command=cancel_order&id=${order.id}'"
+                                                        style="margin-left: 0"
+                                                        onclick="window.location.href='${path}/controller?command=cancel_order&id=${order.key.id}'"
                                                 >${cancel_order_button}
                                                 </button>
                                             </div>

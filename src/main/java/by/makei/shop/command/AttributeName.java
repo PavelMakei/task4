@@ -115,6 +115,7 @@ public enum AttributeName {
     public static final String USER_ID = "user_id";
     public static final String USER_LIST = "user_list";
     public static final String ORDER_LIST = "order_list";
+    public static final String ORDER_MAP = "order_map";
     public static final String VALIDATOR_PATTERN = "validator_pattern";
 
 
