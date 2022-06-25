@@ -271,17 +271,17 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         UserDaoImpl userDao = UserDaoImpl.getInstance();
-        //получить лист ордеров
+        //find list of orders
         try {
             userDao.findOrderByParam(orderList, incomeParam);
-            //пройти по списку
+            //run through list
             for (Order order : orderList) {
                 orderId = order.getId();
 
-                //получить мапу продукт-количество для каждого
+                //find product-quantity
                 productIdQuantity = order.getProdIdQuantity();
                 userDao.findOrderProductMap(orderId, productIdQuantity);
-                //добавить в каждый его мапу
+                //fill orders with order-quantity
                 order.setProdIdQuantity(productIdQuantity);
             }
         } catch (DaoException e) {
@@ -290,6 +290,44 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+
+    /**
+     *
+     * @param orderMap empty Orders as key and String[] as value
+     *                 String[0] - User.login, String[1] - total sum of order
+     * @param incomeParam - Product.id, User.id, Product.status. If is empty will be found all
+     * @return filled income orderMap
+     * @throws ServiceException
+     */
+    @Override
+    public boolean findOrderMapByParam(Map<Order, String[]> orderMap, Map<String, String> incomeParam) throws ServiceException {
+        ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
+        int orderId;
+        Map<Integer, Integer> productIdQuantity;
+        if (!parameterValidator.validateAndMarkIncomeData(incomeParam)) {
+            return false;
+        }
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
+        //find map of orders
+        try {
+            userDao.findOrderMapByParam(orderMap, incomeParam);
+            //run through map
+            for (Map.Entry<Order,String[]> entry: orderMap.entrySet()) {
+                orderId = entry.getKey().getId();
+
+                //find product-quantity
+                productIdQuantity = entry.getKey().getProdIdQuantity();
+                userDao.findOrderProductMap(orderId, productIdQuantity);
+                //fill orders with order-quantity
+                entry.getKey().setProdIdQuantity(productIdQuantity);
+            }
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "error while findOrderByParam", e);
+            throw new ServiceException(e);
+        }
+        return true;
+    }
+
 
     @Override
     public boolean cancelOrder(HttpServletRequest request) throws ServiceException {

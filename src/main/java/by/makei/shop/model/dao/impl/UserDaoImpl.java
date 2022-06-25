@@ -24,6 +24,7 @@ import static by.makei.shop.command.AttributeName.*;
 public class UserDaoImpl implements UserDao {
     private static final UserDaoImpl instance = new UserDaoImpl();
     private static final String FIND_ANY = "%";
+    public static final String TOTAL_SUM ="total";
     private static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = """
             SELECT id, first_name, last_name, login, password, email, phone, access_level, registration_date,money_amount
             FROM lightingshop.users WHERE
@@ -110,6 +111,18 @@ public class UserDaoImpl implements UserDao {
             left join lightingshop.products on order_products.product_id = products.id
             GROUP BY users.id
             ORDER BY users.id;
+            """;
+    public static final String SQL_FIND_ORDER_SUM_BY_PARAM = """
+             SELECT orders.id, orders.user_id, orders.address, orders.phone, orders.detail, orders.status, orders.date_open,
+              orders.date_close, users.login,SUM(products.price*order_products.quantity) AS total FROM lightingshop.orders
+             LEFT JOIN lightingshop.users ON orders.user_id = users.id
+             LEFT JOIN lightingshop.order_products ON order_products.order_id = orders.id
+             LEFT JOIN lightingshop.products ON order_products.product_id = products.id
+                        WHERE orders.id LIKE ?
+                        AND user_id LIKE ?
+                        AND orders.status LIKE ?
+                        GROUP BY orders.id, orders.status, orders.date_open
+                        ORDER BY orders.status, orders.date_open DESC ;
             """;
 
     private UserDaoImpl() {
@@ -483,7 +496,7 @@ public class UserDaoImpl implements UserDao {
         try {
             proxyConnection = DbConnectionPool.getInstance().takeConnection();
             proxyConnection.setAutoCommit(false);
-            //поменять статус
+            //change status
             preparedStatement = proxyConnection.prepareStatement(SQL_UPDATE_ORDER_STATUS);
             preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             preparedStatement.setInt(3, order.getId());
@@ -495,7 +508,7 @@ public class UserDaoImpl implements UserDao {
             ;
 //            preparedStatement.close();
 // отключено по требованию преподавателя
-            //вернуть товар на склад
+            //return product to stock
             Map<Integer, Integer> prodIdQuantity = order.getProdIdQuantity();
             for (Map.Entry<Integer, Integer> entry : prodIdQuantity.entrySet()) {
                 preparedStatement = proxyConnection.prepareStatement(SQL_FIND_PRODUCT_BY_ID, ResultSet.TYPE_FORWARD_ONLY,
@@ -515,7 +528,7 @@ public class UserDaoImpl implements UserDao {
 //                preparedStatement.close();
 // отключено по требованию преподавателя
             }
-            //вернуть деньги юзеру
+            //return user's money
             preparedStatement =
                     proxyConnection.prepareStatement(String.format(SQL_SELECT_USER_BY_VAR_PARAM, ID), ResultSet.TYPE_FORWARD_ONLY,
                             ResultSet.CONCUR_UPDATABLE);
@@ -570,6 +583,40 @@ public class UserDaoImpl implements UserDao {
             finallyWhileClosing(proxyConnection, preparedStatement);
         }
         return isCorrect;
+    }
+
+    @Override
+    public boolean findOrderMapByParam(Map<Order, String[]> orderMap, Map<String, String> incomeParam) throws DaoException {
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String id = incomeParam.getOrDefault(ID, FIND_ANY);
+        String userId = incomeParam.getOrDefault(USER_ID, FIND_ANY);
+        String orderStatus = incomeParam.getOrDefault(STATUS, FIND_ANY);
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_FIND_ORDER_SUM_BY_PARAM);
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, userId);
+            preparedStatement.setString(3, orderStatus);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Optional<Order> optionalOrder = new OrderMapper().mapEntity(resultSet);
+                if(optionalOrder.isPresent()){
+                    orderMap.put(optionalOrder.get(), new String[]{
+                            resultSet.getString(LOGIN),
+                            resultSet.getString(TOTAL_SUM)
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error while findOrderMapByParam");
+            throw new DaoException("UserDao error while findOrderMapByParam", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
+        }
+        return true;
     }
 
 

@@ -75,4 +75,18 @@ class UserServiceImplTest {
         assertTrue(orderList.get(0).getProdIdQuantity().size()>0);
         connectionPool.shutdown();
     }
+
+    @Test
+    void findOrderMapByParamShouldReturnFilledOrder() throws ServiceException {
+        DbConnectionPool connectionPool = DbConnectionPool.getInstance();
+        UserServiceImpl service = UserServiceImpl.getInstance();
+        Map<Order, String[]> orderMap = new LinkedHashMap<>();
+        Map<String, String> incomeParam = new HashMap<>();
+        service.findOrderMapByParam(orderMap,incomeParam);
+        Map.Entry<Order, String[]> entry = orderMap.entrySet().iterator().next();
+        assertTrue(orderMap.size()>0);
+        assertTrue(entry.getKey().getProdIdQuantity().size()>0);
+        connectionPool.shutdown();
+
+    }
 }

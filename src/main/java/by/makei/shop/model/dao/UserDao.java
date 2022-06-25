@@ -35,5 +35,7 @@ public interface UserDao extends BaseDao<User>{
     boolean cancelOrderTransaction(Order order) throws DaoException;
 
     boolean deliveryOrder(Order order) throws DaoException;
+
+    boolean findOrderMapByParam(Map<Order, String[]> orderMap, Map<String, String> incomeParam) throws DaoException;
 }
 
