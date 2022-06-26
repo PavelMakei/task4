@@ -78,6 +78,7 @@ public enum PagePath {
                 INDEX,
                 LOGINATION,
                 MAIN,
+                PASSWORD_RECOVERY,
                 REGISTRATION,
                 ROOT,
                 SHOW_CART,

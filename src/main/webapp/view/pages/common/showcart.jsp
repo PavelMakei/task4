@@ -18,7 +18,7 @@
 <fmt:message key="price.name" var="price_label"/>
 <fmt:message key="quantity.name" var="quantity_label"/>
 <fmt:message key="sum.label" var="sum_label"/>
-<fmt:message key="buy.button" var="buy_button"/>
+<fmt:message key="proceed.to.checkout" var="proceed_to_checkout"/>
 <fmt:message key="continue.shopping" var="continue_shopping_button"/>
 <fmt:message key="go.to.checkout" var="go_to_checkout_button"/>
 <fmt:message key="show.cart.label" var="show_cart_label"/>
@@ -30,6 +30,7 @@
 <fmt:message key="deposit.button" var="deposit_money_button"/>
 <fmt:message key="enter.button" var="enter_button"/>
 <fmt:message key="product.photo" var="photo_label"/>
+
 
 <html>
 <head>
@@ -115,11 +116,11 @@
                                                         else {window.opener.goToCheckout()}
                                                         window.close();
                                                         "
-                                                        >${buy_button}
+                                                        >${proceed_to_checkout}
                                                     </c:if>
                                                     <c:if test="${!empty user && empty totalSum}">
                                                         disabled
-                                                        >${buy_button}
+                                                        >${proceed_to_checkout}
                                                     </c:if>
                                                         </button>
                                             <button class="btn btn-warning col-4" style="color: white"

@@ -17,7 +17,7 @@
                 <hr class="dropdown-divider"/>
             </li>
             <li><a class="dropdown-item"
-                   href="${path}/controller?command=show_order">${manage_order}</a></li>
+                   href="${path}/controller?command=show_order">${my_orders}</a></li>
             <li>
                 <hr class="dropdown-divider"/>
             </li>

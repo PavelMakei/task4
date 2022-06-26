@@ -17,7 +17,6 @@
 <fmt:message key="price.name" var="price_label"/>
 <fmt:message key="quantity.name" var="quantity_label"/>
 <fmt:message key="sum.label" var="sum_label"/>
-<fmt:message key="buy.button" var="buy_button"/>
 <fmt:message key="continue.shopping" var="continue_shopping_button"/>
 <fmt:message key="go.to.checkout" var="go_to_checkout_button"/>
 <fmt:message key="show.cart.label" var="show_cart_label"/>
@@ -30,7 +29,7 @@
 <fmt:message key="order.details.placeholder" var="detail_name_placeholder"/>
 <fmt:message key="address.placeholder" var="address_placeholder"/>
 <fmt:message key="delivery.address" var="address_label"/>
-<fmt:message key="buy.button" var="buy_button"/>
+<fmt:message key="place.your.order" var="place_your_order_button"/>
 <fmt:message key="deposit.button" var="deposit_money_button"/>
 <fmt:message key="product.photo" var="photo_label"/>
 
@@ -204,7 +203,7 @@
                                                     </c:if>
                                                     <c:if test="${user.amount>=thisTotalSum}">
                                                         >
-                                                        ${buy_button}
+                                                        ${place_your_order_button}
                                                     </c:if>
                                              </button>
                                         </div>

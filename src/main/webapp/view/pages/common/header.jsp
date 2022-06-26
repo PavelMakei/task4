@@ -28,6 +28,7 @@
 <fmt:message key="cart" var="cart_label"/>
 <fmt:message key="user.menu" var="user_menu"/>
 <fmt:message key="order.management" var="manage_order"/>
+<fmt:message key="my.orders" var="my_orders"/>
 
 
 

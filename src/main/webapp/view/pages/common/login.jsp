@@ -26,7 +26,7 @@
 <fmt:message key="password" var="password_label"/>
 <fmt:message key="enter.password" var="password_placeholder"/>
 <fmt:message key="return.main.page" var="return_link_label"/>
-<fmt:message key="sign.in" var="sign_in_label"/>
+<fmt:message key="sign.up" var="sign_up_label"/>
 <fmt:message key="forgot.password" var="forgot_password_label"/>
 <fmt:message key="enter.button" var="enter_button"/>
 
@@ -122,7 +122,7 @@
 
                                 <div class="login-register">
                                     <a href="${path}/controller?command=go_to_add_new_user"
-                                       style="color: goldenrod">${sign_in_label}</a>
+                                       style="color: goldenrod">${sign_up_label}</a>
                                 </div>
                             </form>
                         </div>
