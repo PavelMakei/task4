@@ -53,6 +53,11 @@ public class PasswordEncoder {
     return result;
 }
 
+    /**
+     * convert input bytes array to it's HEX String representation
+     * @param hash
+     * @return converted String
+     */
     static String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder(2 * hash.length);
         for (byte h : hash) {

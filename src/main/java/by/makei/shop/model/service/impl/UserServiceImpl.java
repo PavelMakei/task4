@@ -167,6 +167,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * find user by email
+     * @param email as String
+     * @return Optional {@link User}
+     * @throws ServiceException
+     */
     @Override
     public Optional<User> findUserByEmail(String email) throws ServiceException {
         Optional<User> optionalUser = Optional.empty();
@@ -180,6 +186,12 @@ public class UserServiceImpl implements UserService {
         return optionalUser;
     }
 
+    /**
+     * encoding password to hashedPassword {@link PasswordEncoder} and try to update it by email {@link User}
+     * @param userDataMap
+     * @return boolean result
+     * @throws ServiceException
+     */
     @Override
     public boolean updatePassword(Map<String, String> userDataMap) throws ServiceException {
         boolean isCorrect = false;
@@ -196,6 +208,12 @@ public class UserServiceImpl implements UserService {
         return isCorrect;
     }
 
+    /**
+     * try to update {@link User} profile
+     * @param userDataMap
+     * @return boolean result
+     * @throws ServiceException
+     */
     @Override
     public boolean updateProfile(Map<String, String> userDataMap) throws ServiceException {
         boolean isCorrect = false;
@@ -210,6 +228,13 @@ public class UserServiceImpl implements UserService {
         return isCorrect;
     }
 
+    /**
+     * find {@link User} by one parameter (ID, EMAIL, LOGIN...) if number of user have the same pair param - value, returns first found
+     * @param paramName
+     * @param paramValue
+     * @return Optional {@link User}
+     * @throws ServiceException
+     */
     @Override
     public Optional<User> findUserByOneParam(String paramName, String paramValue) throws ServiceException {
         UserDao userDao = UserDaoImpl.getInstance();
@@ -221,6 +246,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * update user's money amount with sum of currentUserAmount and amountToDeposit
+     * @param currentUserId as int
+     * @param currentUserAmount as BigDecimal
+     * @param amountToDeposit as String
+     * @return boolean result
+     * @throws ServiceException
+     */
     @Override
     public boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws
             ServiceException {
@@ -235,6 +268,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * check if input data are not correct add MESSAGE ORDERING_FAIL_INCORRECT_DATA to orderDataMap, return false
+     * check if user has enough money to make this transaction, if not - add MESSAGE ORDERING_FAIL_NOT_ENOUGH_PRODUCTS to orderDataMap, return false
+     * try to make transaction and return boolean result
+     * @param currentUser as {@link User}
+     * @param currentCart as currentUser {@link Cart}
+     * @param orderDataMap
+     * @return boolean as result
+     * @throws ServiceException
+     */
     @Override
     public boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws
             ServiceException {
@@ -245,7 +288,7 @@ public class UserServiceImpl implements UserService {
                 orderDataMap.put(MESSAGE, ORDERING_FAIL_INCORRECT_DATA);
                 return false;
             }
-            if (!isSteelEnoughProductInStock(currentCart)) {
+            if (!isStillEnoughProductInStock(currentCart)) {
                 orderDataMap.put(MESSAGE, ORDERING_FAIL_NOT_ENOUGH_PRODUCTS);
                 return false;
             }
@@ -257,7 +300,14 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    private boolean isSteelEnoughProductInStock(Cart currentCart) throws ServiceException {
+    /**
+     * check if quantity of ordered (in {@link Cart}) products <= quantity these products in stock
+     * if not - correct quantity in currentCart = quantity in stock. If quantity in stock == 0< remove this product from currentCart and return false
+     * @param currentCart
+     * @return boolean as result
+     * @throws ServiceException
+     */
+    private boolean isStillEnoughProductInStock(Cart currentCart) throws ServiceException {
         boolean isEnough = true;
         ProductDao productDao = ProductDaoImpl.getInstance();
         Map<Product, Integer> productQuantity = currentCart.getProductQuantity();
@@ -277,11 +327,12 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } catch (DaoException e) {
-            logger.log(Level.ERROR, "error while isSteelEnoughProductInStock", e);
+            logger.log(Level.ERROR, "error while isStillEnoughProductInStock", e);
             throw new ServiceException(e);
         }
         return isEnough;
     }
+
 
     @Override
     public boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws ServiceException {
@@ -294,12 +345,21 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * check if input parameters are valid. If not - mark incorrect and return false.
+     * find orders by param and fill them into orderList
+     * @param orderList {@link Order} as List
+     * @param incomeParam (orders.ID, USER_ID,STATUS) if there is no parameter - will be used % to find all
+     * @return boolean as result
+     * @throws ServiceException
+     */
     @Override
     public boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws ServiceException {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
         int orderId;
         Map<Integer, Integer> productIdQuantity;
         if (!parameterValidator.validateAndMarkIncomeData(incomeParam)) {
+            logger.log(Level.ERROR, "findOrderByParam incorrect data input");
             return false;
         }
         UserDaoImpl userDao = UserDaoImpl.getInstance();
@@ -309,7 +369,6 @@ public class UserServiceImpl implements UserService {
             //run through list
             for (Order order : orderList) {
                 orderId = order.getId();
-
                 //find product-quantity
                 productIdQuantity = order.getProdIdQuantity();
                 userDao.findOrderProductMap(orderId, productIdQuantity);
@@ -346,7 +405,6 @@ public class UserServiceImpl implements UserService {
             //run through map
             for (Map.Entry<Order,String[]> entry: orderMap.entrySet()) {
                 orderId = entry.getKey().getId();
-
                 //find product-quantity
                 productIdQuantity = entry.getKey().getProdIdQuantity();
                 userDao.findOrderProductMap(orderId, productIdQuantity);
@@ -360,7 +418,13 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-
+    /**
+     * check if input params are correct. If not - mark incorrect, return false.
+     * try to make cancel transaction, return result
+     * @param request should consist ID
+     * @return boolean as result
+     * @throws ServiceException
+     */
     @Override
     public boolean cancelOrder(HttpServletRequest request) throws ServiceException {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
@@ -369,9 +433,7 @@ public class UserServiceImpl implements UserService {
         //grab ID
         String id = request.getParameter(ID);
         incomeParam.put(ID, id);
-
         try {
-            //Validate map
             if (!parameterValidator.validateAndMarkIncomeData(incomeParam)) {
                 logger.log(Level.ERROR, "invalid Id {}", id == null ? "null" : id);
                 return false;
@@ -398,6 +460,13 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     * check if input parameter is correct. If not - return false.
+     * try to change order status, return result
+     * @param request should consist ID ({@link Order})
+     * @return boolean as result
+     * @throws ServiceException
+     */
     @Override
     public boolean deliveryOrder(HttpServletRequest request) throws ServiceException {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
