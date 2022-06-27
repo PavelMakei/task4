@@ -23,6 +23,11 @@ public final class ImageConverter {
 
     private ImageConverter(){}
 
+    /**
+     * convert image to String format to be sent/used on jsp pages
+     * @param imageBytes - an image as byte array
+     * @return coverted to String image
+     */
     public static String imageToString(byte[] imageBytes) {
         String base64Encoded = null;
         try {
@@ -34,6 +39,15 @@ public final class ImageConverter {
         return base64Encoded;
     }
 //TODO обрезать большие картинки?
+
+    /**
+     * Resize image
+     * @param data image as byte array
+     * @param nw - new width
+     * @param nh - new higth
+     * @return converted image as byte array
+     * @throws ServiceException
+     */
     private static byte[] changeImgSize(byte[] data, int nw, int nh) throws ServiceException {
         byte[] newdata = null;
         try{

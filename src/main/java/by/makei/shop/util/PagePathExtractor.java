@@ -15,6 +15,12 @@ public class PagePathExtractor {
 
     private PagePathExtractor(){}
 
+    /**
+     * grub command part of request concatenate it with /controller and set it into session scope as CURRENT_PAGE
+     * grab current context path from request and set it into session scope as CURRENT_CONTEXT_PATH
+     * @param request
+     * @return current page String like "/controller?command=example_command"
+     */
     public static String extractAndSetToSessionPagePathAndContextPath(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String contextPath = request.getContextPath();

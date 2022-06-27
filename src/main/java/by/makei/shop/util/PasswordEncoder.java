@@ -31,8 +31,12 @@ public class PasswordEncoder {
     private static final String CHARSET_NAME = "UTF-8";
     private static final int PASSWORD_HASH_MAX_SIZE_VALUE = 45;
 
-
-public static String getHashedPassword(String password){
+    /**
+     * generate hash with SHA3-256 algorithm and cut it up to 45 chars
+     * @param password - String as password
+     * @return encoded String with length 45
+     */
+    public static String getHashedPassword(String password){
     String result = null;
     try{
     MessageDigest messageDigest = MessageDigest.getInstance(ENCODING_ALGORITHM);

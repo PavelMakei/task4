@@ -8,13 +8,13 @@ public class MessageReinstall {
 //    private static final String LOCALE_SPLIT_REGEXP = "_";
     private MessageReinstall(){}
 
+    /**
+     * find value of messageAttrParam in request parameters and set it into request attribute
+     * @param messageAttrParam - String key
+     * @param request
+     * @return true if parameter was found
+     */
     public static boolean extractAndSetMessage(String messageAttrParam,HttpServletRequest request){
-//        ResourceManager manager = ResourceManager.INSTANCE;
-//        String locale = request.getSession().getAttribute(LOCALE).toString();
-//        String[] languageAndCountry = locale.split(LOCALE_SPLIT_REGEXP);
-//        manager.changeResource(new Locale(languageAndCountry[0],languageAndCountry[1]));
-//        manager.getString(parameters.get(messageAttrParam)[0]);
-
         boolean isExists = false;
         Map<String,String[]> parameters = request.getParameterMap();
         if(parameters.containsKey(messageAttrParam)){

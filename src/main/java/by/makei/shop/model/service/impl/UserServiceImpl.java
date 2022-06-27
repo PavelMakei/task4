@@ -44,6 +44,13 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
+    /**
+     * find user by login and password
+     * @param login as String
+     * @param password as String
+     * @return optional
+     * @throws ServiceException
+     */
     @Override
     public Optional<User> signIn(String login, String password) throws ServiceException {
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
@@ -61,6 +68,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * check input params and if correct create user, else add incorrect markers into userData map
+      * @param userData Map with income data
+     * @param session
+     * @return if input data incorrect - false
+     * @throws ServiceException
+     */
     @Override
     public boolean createUser(Map<String, String> userData, HttpSession session) throws ServiceException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
@@ -85,6 +99,7 @@ public class UserServiceImpl implements UserService {
                 return true;
 
             } else {
+                logger.log(Level.ERROR, "createUser incorrect data unput");
                 return false;
             }
         } catch (DaoException e) {
@@ -93,6 +108,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * find all users
+     * @return List of user
+     * @throws ServiceException
+     */
     @Override
     public List<User> findAllUser() throws ServiceException {
         List<User> userList;
@@ -106,6 +126,11 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+    /**
+     * find all users, quantity of products and total price sum in {@link Order} with status 'DELIVERED'
+     * @return Map <{@link User}, double[0] - quantity of bought products, double[1] - total price sum
+     * @throws ServiceException
+     */
     @Override
     public Map<User, double[]> findAllUserOrderSum() throws ServiceException {
         Map<User, double[]> userOrderMap;
@@ -119,6 +144,13 @@ public class UserServiceImpl implements UserService {
         return userOrderMap;
     }
 
+    /**
+     * check if income params are correct and if correct - try to update AccessLevel and return result as boolean
+     * else mark incorrect data and return false
+     * @param userDataMap
+     * @return
+     * @throws ServiceException
+     */
     @Override
     public boolean updateAccessLevel(Map<String, String> userDataMap) throws ServiceException {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();

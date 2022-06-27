@@ -1,5 +1,8 @@
 package by.makei.shop.model.validator;
 
+/**
+ * contains number of regex patterns and getters for them
+ */
 public class ValidatorPattern {
     private static final ValidatorPattern instance = new ValidatorPattern();
     private ValidatorPattern(){}
