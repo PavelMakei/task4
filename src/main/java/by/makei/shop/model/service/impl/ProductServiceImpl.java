@@ -7,6 +7,7 @@ import by.makei.shop.model.dao.ProductDao;
 import by.makei.shop.model.dao.impl.BrandDaoImpl;
 import by.makei.shop.model.dao.impl.ProductDaoImpl;
 import by.makei.shop.model.dao.impl.ProductTypeDaoImpl;
+import by.makei.shop.model.dao.util.SqlUtil;
 import by.makei.shop.model.entity.Brand;
 import by.makei.shop.model.entity.Product;
 import by.makei.shop.model.entity.ProductType;
@@ -15,7 +16,6 @@ import by.makei.shop.model.validator.AttributeValidator;
 import by.makei.shop.model.validator.ParameterValidator;
 import by.makei.shop.model.validator.impl.AttributeValidatorImpl;
 import by.makei.shop.model.validator.impl.ParameterValidatorImpl;
-import by.makei.shop.model.dao.util.SqlUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,12 +29,16 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger();
     private static final ProductServiceImpl instance = new ProductServiceImpl();
 
-    private ProductServiceImpl() {}
+    private ProductServiceImpl() {
+    }
 
     public static ProductServiceImpl getInstance() {
         return instance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addNewProduct(Map<String, String> productData, byte[] photo) throws ServiceException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
@@ -42,12 +46,11 @@ public class ProductServiceImpl implements ProductService {
             if (!parameterValidator.validateAndMarkIncomeData(productData)
                 | !parameterValidator.validatePhoto(productData, photo)
                 | !parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productData)) {
+                logger.log(Level.ERROR, "incorrect data  input");
                 return false;
             }
-
             Product product = new Product();
             ProductDaoImpl productDao = ProductDaoImpl.getInstance();
-
             product.setBrandId(Integer.parseInt(productData.get(BRAND_ID)));
             product.setTypeId(Integer.parseInt(productData.get(TYPE_ID)));
             product.setProductName((productData.get(PRODUCT_NAME)));
@@ -56,10 +59,8 @@ public class ProductServiceImpl implements ProductService {
             product.setColour(productData.get(COLOUR));
             product.setPower(Integer.parseInt(productData.get(POWER)));
             product.setSize(productData.get(SIZE));
-
             int quantityInStock = Integer.parseInt(productData.get(QUANTITY_IN_STOCK));
-            productDao.create(product, photo, quantityInStock);
-            return true;
+            return productDao.create(product, photo, quantityInStock);
         } catch (
                 DaoException e) {
             logger.log(Level.ERROR, "ProductService error while addNewProduct. {}", e.getMessage());
@@ -67,6 +68,9 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> findAllBrandsMap() throws ServiceException {
         BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
@@ -87,10 +91,12 @@ public class ProductServiceImpl implements ProductService {
         return resultMap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> findAllTypesMap() throws ServiceException {
         BaseDao<ProductType> productTypeDao = ProductTypeDaoImpl.getInstance();
-        ;
         Map<String, String> typesMap = new TreeMap<>();
         try {
             List<ProductType> productTypeList = productTypeDao.findAll();
@@ -108,32 +114,9 @@ public class ProductServiceImpl implements ProductService {
         return resultMap;
     }
 
-    @Override
-    public List<Product> findAllProductList() throws ServiceException {
-        BaseDao<Product> productTypeDao = ProductDaoImpl.getInstance();
-        List<Product> productList = new ArrayList<>();
-        try {
-            productList = productTypeDao.findAll();
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "ProductService error while getAllProductsList. {}", e.getMessage());
-            throw new ServiceException(e);
-        }
-        return productList;
-    }
-
-    @Override
-    public Map<Product, String> findAllProductMap() throws ServiceException {
-        ProductDao productTypeDao = ProductDaoImpl.getInstance();
-        Map<Product, String> productQuantityMap;
-        try {
-            productQuantityMap = productTypeDao.findAllMap();
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "ProductService error while getAllProductsMap. {}", e.getMessage());
-            throw new ServiceException(e);
-        }
-        return productQuantityMap;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<Product, String> findProductsByParam(Map<String, String> searchParamMap, Map<String, String> orderByParamQuery) throws ServiceException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
@@ -157,7 +140,6 @@ public class ProductServiceImpl implements ProductService {
         int inStock = 0;
         int totalProductsFound = 0;
         int totalPages = 0;
-
 
         for (Map.Entry<String, String> entry : searchParamMap.entrySet()) {
             switch (entry.getKey()) {
@@ -207,14 +189,12 @@ public class ProductServiceImpl implements ProductService {
         if (minPower > maxPower) {
             minPower = maxPower;
         }
-
-        //пересчитать текущую search_page
+        //calculate current search_page
         searchPage += searchPageIncrement;
         if (searchPage < 1) {
             searchPage = 1;
         }
         try {
-            //отправить запрос в ДАО на количество удовлетворяющих записей
             totalProductsFound = productDao.countBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchWord, inStock);
             if (totalProductsFound > 0) {
                 totalPages = totalProductsFound / PRODUCTS_ON_PAGE;
@@ -227,7 +207,6 @@ public class ProductServiceImpl implements ProductService {
             if (searchPage > totalPages) {
                 searchPage = totalPages;
             }
-
             int searchNextNumberOfProducts = PRODUCTS_ON_PAGE;
             int searchFrom = (searchPage - 1) * PRODUCTS_ON_PAGE;
             productQuantityMap = productDao.findBySearchParam(brandId, typeId, minPrice, maxPrice, minPower, maxPower, searchFrom, searchNextNumberOfProducts, searchWord, orderQuery, inStock);
@@ -242,6 +221,9 @@ public class ProductServiceImpl implements ProductService {
         return productQuantityMap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Product findProductById(String id) throws ServiceException {
         AttributeValidator attributeValidator = AttributeValidatorImpl.getInstance();
@@ -265,25 +247,29 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean findMapProductQuantityById(Map<String, String> inputProductIdQuantity, Map<Product, String> productQuantityMap) throws ServiceException {
         ParameterValidator validator = ParameterValidatorImpl.getInstance();
         try {
-        if(!validator.validateAndMarkIncomeData(inputProductIdQuantity)) {
-         return false;
-        }
-        String id =inputProductIdQuantity.get(ID);
-        AttributeValidator attributeValidator = AttributeValidatorImpl.getInstance();
-        if (!attributeValidator.isInt5Valid(id)) {
-            logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById incorrect id :{}", id);
-            throw new ServiceException("ProductService findMapProductQuantityById incorrect id :" + id);
-        }
-        ProductDao dao = ProductDaoImpl.getInstance();
+            if (!validator.validateAndMarkIncomeData(inputProductIdQuantity)) {
+                logger.log(Level.ERROR, "findMapProductQuantityById incorrect data input");
+                return false;
+            }
+            String id = inputProductIdQuantity.get(ID);
+//        AttributeValidator attributeValidator = AttributeValidatorImpl.getInstance();
+//        if (!attributeValidator.isInt5Valid(id)) {
+//            logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById incorrect id :{}", id);
+//            throw new ServiceException("ProductService findMapProductQuantityById incorrect id :" + id);
+//        }
+            ProductDao dao = ProductDaoImpl.getInstance();
             dao.findMapProductQuantityById(ID, id, productQuantityMap);
-             if (productQuantityMap.isEmpty()) {
-                 logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById.  id :{}", id);
-                 throw new ServiceException("ProductService findMapProductQuantityById Product was not found by id :" + id);
-             }
+            if (productQuantityMap.isEmpty()) {
+                logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById.  id :{}", id);
+                throw new ServiceException("ProductService findMapProductQuantityById Product was not found by id :" + id);
+            }
             return true;
         } catch (DaoException e) {
             logger.log(Level.ERROR, "ProductService exception while findMapProductQuantityById. {}", e.getMessage());
@@ -291,6 +277,9 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Brand findBrandById(String id) throws ServiceException {
         Optional<Brand> optionalBrand;
@@ -308,11 +297,13 @@ public class ProductServiceImpl implements ProductService {
         return optionalBrand.get();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductType findProductTypeById(String id) throws ServiceException {
         Optional<ProductType> optionalProductType;
         BaseDao<ProductType> dao = ProductTypeDaoImpl.getInstance();
-        ;
         try {
             optionalProductType = dao.findEntityByOneParam(ID, id);
         } catch (DaoException e) {
@@ -326,6 +317,9 @@ public class ProductServiceImpl implements ProductService {
         return optionalProductType.get();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean updatePhoto(Map<String, String> productDataMap, byte[] bytesPhoto) throws ServiceException {
         ProductDao productDao = ProductDaoImpl.getInstance();
@@ -343,12 +337,16 @@ public class ProductServiceImpl implements ProductService {
         return isUpdated;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean updateProductData(Map<String, String> productDataMap) throws ServiceException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
         try {
             if (!parameterValidator.validateAndMarkIncomeData(productDataMap)
                 || !parameterValidator.validateAndMarkIfProductNameCorrectAndNotExistsInDb(productDataMap)) {
+                logger.log(Level.ERROR, "incorrect data input");
                 return false;
             }
             ProductDao productDao = ProductDaoImpl.getInstance();

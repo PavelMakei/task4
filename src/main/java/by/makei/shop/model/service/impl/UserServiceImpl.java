@@ -45,11 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * find user by login and password
-     * @param login as String
-     * @param password as String
-     * @return optional
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public Optional<User> signIn(String login, String password) throws ServiceException {
@@ -69,11 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * check input params and if correct create user, else add incorrect markers into userData map
-      * @param userData Map with income data
-     * @param session
-     * @return if input data incorrect - false
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean createUser(Map<String, String> userData, HttpSession session) throws ServiceException {
@@ -109,9 +101,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * find all users
-     * @return List of user
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public List<User> findAllUser() throws ServiceException {
@@ -127,9 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * find all users, quantity of products and total price sum in {@link Order} with status 'DELIVERED'
-     * @return Map <{@link User}, double[0] - quantity of bought products, double[1] - total price sum
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public Map<User, double[]> findAllUserOrderSum() throws ServiceException {
@@ -145,11 +133,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * check if income params are correct and if correct - try to update AccessLevel and return result as boolean
-     * else mark incorrect data and return false
-     * @param userDataMap
-     * @return
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean updateAccessLevel(Map<String, String> userDataMap) throws ServiceException {
@@ -168,10 +152,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * find user by email
-     * @param email as String
-     * @return Optional {@link User}
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public Optional<User> findUserByEmail(String email) throws ServiceException {
@@ -187,10 +168,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * encoding password to hashedPassword {@link PasswordEncoder} and try to update it by email {@link User}
-     * @param userDataMap
-     * @return boolean result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean updatePassword(Map<String, String> userDataMap) throws ServiceException {
@@ -209,10 +187,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * try to update {@link User} profile
-     * @param userDataMap
-     * @return boolean result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean updateProfile(Map<String, String> userDataMap) throws ServiceException {
@@ -229,11 +204,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * find {@link User} by one parameter (ID, EMAIL, LOGIN...) if number of user have the same pair param - value, returns first found
-     * @param paramName
-     * @param paramValue
-     * @return Optional {@link User}
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public Optional<User> findUserByOneParam(String paramName, String paramValue) throws ServiceException {
@@ -247,12 +218,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * update user's money amount with sum of currentUserAmount and amountToDeposit
-     * @param currentUserId as int
-     * @param currentUserAmount as BigDecimal
-     * @param amountToDeposit as String
-     * @return boolean result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean updateUserMoneyAmount(int currentUserId, BigDecimal currentUserAmount, String amountToDeposit) throws
@@ -269,14 +235,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * check if input data are not correct add MESSAGE ORDERING_FAIL_INCORRECT_DATA to orderDataMap, return false
-     * check if user has enough money to make this transaction, if not - add MESSAGE ORDERING_FAIL_NOT_ENOUGH_PRODUCTS to orderDataMap, return false
-     * try to make transaction and return boolean result
-     * @param currentUser as {@link User}
-     * @param currentCart as currentUser {@link Cart}
-     * @param orderDataMap
-     * @return boolean as result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean createOrder(User currentUser, Cart currentCart, Map<String, String> orderDataMap) throws
@@ -301,13 +260,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * check if quantity of ordered (in {@link Cart}) products <= quantity these products in stock
-     * if not - correct quantity in currentCart = quantity in stock. If quantity in stock == 0< remove this product from currentCart and return false
-     * @param currentCart
-     * @return boolean as result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
-    private boolean isStillEnoughProductInStock(Cart currentCart) throws ServiceException {
+    @Override
+    public boolean isStillEnoughProductInStock(Cart currentCart) throws ServiceException {
         boolean isEnough = true;
         ProductDao productDao = ProductDaoImpl.getInstance();
         Map<Product, Integer> productQuantity = currentCart.getProductQuantity();
@@ -346,12 +302,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * check if input parameters are valid. If not - mark incorrect and return false.
-     * find orders by param and fill them into orderList
-     * @param orderList {@link Order} as List
-     * @param incomeParam (orders.ID, USER_ID,STATUS) if there is no parameter - will be used % to find all
-     * @return boolean as result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean findOrderByParam(List<Order> orderList, Map<String, String> incomeParam) throws ServiceException {
@@ -383,12 +334,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
-     * @param orderMap empty Orders as key and String[] as value
-     *                 String[0] - User.login, String[1] - total sum of order
-     * @param incomeParam - Product.id, User.id, Product.status. If is empty will be found all
-     * @return filled income orderMap
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean findOrderMapByParam(Map<Order, String[]> orderMap, Map<String, String> incomeParam) throws ServiceException {
@@ -403,7 +349,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDao.findOrderMapByParam(orderMap, incomeParam);
             //run through map
-            for (Map.Entry<Order,String[]> entry: orderMap.entrySet()) {
+            for (Map.Entry<Order, String[]> entry : orderMap.entrySet()) {
                 orderId = entry.getKey().getId();
                 //find product-quantity
                 productIdQuantity = entry.getKey().getProdIdQuantity();
@@ -419,11 +365,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * check if input params are correct. If not - mark incorrect, return false.
-     * try to make cancel transaction, return result
-     * @param request should consist ID
-     * @return boolean as result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean cancelOrder(HttpServletRequest request) throws ServiceException {
@@ -443,7 +385,7 @@ public class UserServiceImpl implements UserService {
             List<Order> orderList = new ArrayList<>();
             findOrderByParam(orderList, incomeParam);
             Order order = orderList.get(0);
-            if(!order.getStatus().equals(Order.Status.PAID)){
+            if (!order.getStatus().equals(Order.Status.PAID)) {
                 logger.log(Level.ERROR, "cancelOrderTransaction not allowed order status for transaction: {}"
                         , order.getStatus());
                 return false;
@@ -452,8 +394,7 @@ public class UserServiceImpl implements UserService {
                 logger.log(Level.ERROR, "error while cancelOrderTransaction");
                 return false;
             }
-        }
-        catch (DaoException e) {
+        } catch (DaoException e) {
             logger.log(Level.ERROR, "exception while cancelOrderTransaction");
             throw new ServiceException(e);
         }
@@ -461,11 +402,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * check if input parameter is correct. If not - return false.
-     * try to change order status, return result
-     * @param request should consist ID ({@link Order})
-     * @return boolean as result
-     * @throws ServiceException
+     * {@inheritDoc}
      */
     @Override
     public boolean deliveryOrder(HttpServletRequest request) throws ServiceException {
@@ -482,7 +419,7 @@ public class UserServiceImpl implements UserService {
             List<Order> orderList = new ArrayList<>();
             findOrderByParam(orderList, incomeParam);
             Order order = orderList.get(0);
-            if(!order.getStatus().equals(Order.Status.PAID)){
+            if (!order.getStatus().equals(Order.Status.PAID)) {
                 logger.log(Level.ERROR, "deliverOrder not allowed order status for transaction: {}"
                         , order.getStatus());
                 return false;
@@ -491,8 +428,7 @@ public class UserServiceImpl implements UserService {
                 logger.log(Level.ERROR, "error while UserDao deliverOrder");
                 return false;
             }
-        }
-        catch (DaoException e) {
+        } catch (DaoException e) {
             logger.log(Level.ERROR, "exception while deliverOrder");
             throw new ServiceException(e);
         }
