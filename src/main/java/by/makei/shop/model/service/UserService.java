@@ -115,7 +115,7 @@ public interface UserService {
      *
      * @param currentUser  as {@link User}
      * @param currentCart  as currentUser {@link Cart}
-     * @param orderDataMap
+     * @param orderDataMap set of pairs field name - value to create order
      * @return boolean as result
      * @throws ServiceException
      */
