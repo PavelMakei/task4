@@ -270,7 +270,7 @@ public class UserServiceImpl implements UserService {
         try {
             for (Map.Entry<Product, Integer> entry : productQuantity.entrySet()) {
                 Map<Product, String> currentProductQuantity = new HashMap<>();
-                productDao.findMapProductQuantityById(ID, String.valueOf(entry.getKey().getId()), currentProductQuantity);
+                productDao.findMapProductQuantityByOneParam(ID, String.valueOf(entry.getKey().getId()), currentProductQuantity);
                 if (currentProductQuantity.size() == 0) {
                     currentCart.removeProduct(entry.getKey(), entry.getValue());
                     isEnough = false;

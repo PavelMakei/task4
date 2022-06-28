@@ -284,7 +284,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Map<Product, String> findMapProductQuantityById(String paramName, String paramValue,  Map<Product, String> productQuantity) throws DaoException {
+    public boolean findMapProductQuantityByOneParam(String paramName, String paramValue, Map<Product, String> productQuantity) throws DaoException {
 
         if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
             logger.log(Level.ERROR, "findMapProductQuantityByIdincorrect paramName");
@@ -314,7 +314,7 @@ public class ProductDaoImpl implements ProductDao {
         } finally {
             finallyWhileClosing(proxyConnection, preparedStatement, resultSet);
         }
-        return productQuantity;
+        return true;
     }
 
     @Override

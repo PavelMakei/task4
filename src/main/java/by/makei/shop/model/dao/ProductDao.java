@@ -43,9 +43,30 @@ public interface ProductDao extends BaseDao<Product>{
      */
     int countBySearchParam(int brandId, int typeId, int minPrice, int maxPrice, int minPower, int maxPower, String searchWord, int inStock) throws DaoException;
 
-    Map<Product, String> findMapProductQuantityById(String id, String id1, Map<Product, String> productQuantity) throws DaoException;
+    /**
+     * find {@link Product} and quantity in stock
+     * @param paramName String like("id", "productName" .. etc)
+     * @param paramValue String - value of paramName like("23", "Madrid"...etc)
+     * @param productQuantity map for filling
+     * @return boolean as result
+     * @throws DaoException
+     */
+    boolean findMapProductQuantityByOneParam(String paramName, String paramValue, Map<Product, String> productQuantity) throws DaoException;
 
+    /**
+     * update photo
+     * @param id - {@link Product} id
+     * @param bytesPhoto bytes array
+     * @return boolean as result
+     * @throws DaoException
+     */
     boolean updatePhoto(int id, byte[] bytesPhoto) throws DaoException;
 
+    /**
+     * update product data
+     * @param productDataMap complete set to fill {@link Product} except photo
+     * @return boolean as result
+     * @throws DaoException
+     */
     boolean updateProductData(Map<String, String> productDataMap) throws DaoException;
 }

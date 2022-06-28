@@ -265,7 +265,7 @@ public class ProductServiceImpl implements ProductService {
 //            throw new ServiceException("ProductService findMapProductQuantityById incorrect id :" + id);
 //        }
             ProductDao dao = ProductDaoImpl.getInstance();
-            dao.findMapProductQuantityById(ID, id, productQuantityMap);
+            dao.findMapProductQuantityByOneParam(ID, id, productQuantityMap);
             if (productQuantityMap.isEmpty()) {
                 logger.log(Level.ERROR, "ProductService error while findMapProductQuantityById.  id :{}", id);
                 throw new ServiceException("ProductService findMapProductQuantityById Product was not found by id :" + id);
