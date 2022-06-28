@@ -35,7 +35,7 @@ public class RegistrationSendActivationCodeCommand implements Command {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
         String activationCode;
         try {
-            if (parameterValidator.validateAndMarkUserData(userDataMap)
+            if (parameterValidator.validateAndMarkIncomeData(userDataMap)
                 & parameterValidator.validateAndMarkIfLoginCorrectAndNotExistsInDb(userDataMap)
                 & parameterValidator.validateAndMarkIfPhoneCorrectAndNotExistsInDb(userDataMap)
                 & parameterValidator.validateAndMarkIfEmailCorrectAndNotExistsInDb(userDataMap)

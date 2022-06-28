@@ -8,8 +8,6 @@ import java.util.Map;
 
 public interface ParameterValidator {
 
-    boolean validateAndMarkUserData(Map<String, String> userData) throws ServiceException;
-
     boolean validateAndMarkIfPhoneCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
 
     boolean validateAndMarkIfEmailCorrectAndNotExistsInDb(Map<String, String> userData) throws ServiceException;
@@ -26,5 +24,5 @@ public interface ParameterValidator {
 
     boolean validatePhoto(Map<String, String> productData, byte[] photoJpg) throws ServiceException;
 
-    boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws DaoException, ServiceException;
+    boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws ServiceException;
 }

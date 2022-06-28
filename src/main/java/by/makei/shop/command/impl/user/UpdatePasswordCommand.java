@@ -33,7 +33,7 @@ public class UpdatePasswordCommand implements Command {
         ParameterValidatorImpl parameterValidator = ParameterValidatorImpl.getInstance();
         UserService userService = UserServiceImpl.getInstance();
         try {
-            if (parameterValidator.validateAndMarkUserData(userDataMap)
+            if (parameterValidator.validateAndMarkIncomeData(userDataMap)
                 && userService.findUserByEmail(userDataMap.get(AttributeName.EMAIL)).isPresent()
                 && parameterValidator.validateAndMarkActivationCodeAndSavedEmail(userDataMap, session)) {
                 userService.updatePassword(userDataMap);

@@ -293,12 +293,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws ServiceException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
-        try {
             return parameterValidator.validateAndMarkIncomeData(incomeDataMap);
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "error while validateAndMarkIncomeData", e);
-            throw new ServiceException(e);
-        }
+
     }
 
     /**

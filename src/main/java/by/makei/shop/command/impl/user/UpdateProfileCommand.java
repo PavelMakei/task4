@@ -38,7 +38,7 @@ public class UpdateProfileCommand implements Command {
         userDataMap.put(AttributeName.EMAIL, request.getParameter(AttributeName.EMAIL));
         userDataMap.put(AttributeName.PHONE, request.getParameter(AttributeName.PHONE));
         try {
-            if (parameterValidator.validateAndMarkUserData(userDataMap)) {
+            if (parameterValidator.validateAndMarkIncomeData(userDataMap)) {
                 User user = (User) session.getAttribute(AttributeName.USER);
                 String currentUserid = String.valueOf(user.getId());
                 //not for and switch because only 3params and add to the same map

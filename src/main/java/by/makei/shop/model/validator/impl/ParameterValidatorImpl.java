@@ -324,74 +324,13 @@ public class ParameterValidatorImpl implements ParameterValidator {
         return isCorrect;
     }
 
-    @Override
-    public boolean validateAndMarkUserData(Map<String, String> userData) {
-        Map<String, String> invalidParameters = new HashMap<>();
-        AttributeValidator validator = AttributeValidatorImpl.getInstance();
-        ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
-        accessLevelList.remove(AccessLevel.GUEST);
-        boolean isCorrect = true;
-        for (Map.Entry<String, String> entry : userData.entrySet()) {
-            String key = entry.getKey();
-            switch (key) {
-                case FIRST_NAME -> {
-                    if (!validator.isNameValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_FIRST_NAME, INVALID_FIRST_NAME);
-                        isCorrect = false;
-                    }
-                }
-                case LAST_NAME -> {
-                    if (!validator.isNameValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_LAST_NAME, INVALID_LAST_NAME);
-                        isCorrect = false;
-                    }
-                }
-                case LOGIN -> {
-                    if (!validator.isLoginValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_LOGIN, INVALID_LOGIN);
-                        isCorrect = false;
-                    }
-                }
-                case EMAIL -> {
-                    if (!validator.isEmailValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_EMAIL, INVALID_EMAIL);
-                        isCorrect = false;
-                    }
-                }
-                case PHONE -> {
-                    if (!validator.isPhoneValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_PHONE, INVALID_PHONE);
-                        isCorrect = false;
-                    }
-                }
-                case PASSWORD -> {
-                    if (!validator.isPasswordValid(entry.getValue())) {
-                        invalidParameters.put(INVALID_PASSWORD, INVALID_PASSWORD);
-                        isCorrect = false;
-                    }
-                }
-                case ID -> {
-                    if (!validator.isInt5Valid(entry.getValue())) {
-                        isCorrect = false;
-                    }
-                }
-                case ACCESS_LEVEL -> {
-                    if (accessLevelList.contains(entry.getValue())) {
-                        isCorrect = false;
-                    }
-                }
-            }
-        }
-        userData.putAll(invalidParameters);
-        return isCorrect;
-    }
 
     @Override
     public boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws ServiceException {
         Map<String, String> invalidParameters = new HashMap<>();
         AttributeValidator validator = AttributeValidatorImpl.getInstance();
         ArrayList<AccessLevel> accessLevelList = new ArrayList<>(Arrays.asList(AccessLevel.values()));
-        accessLevelList.remove(AccessLevel.GUEST);
+//        accessLevelList.remove(AccessLevel.GUEST);
         BaseDao<Brand> brandDao = BrandDaoImpl.getInstance();
         ProductTypeDaoImpl productTypeDao = ProductTypeDaoImpl.getInstance();
         boolean isCorrect = true;
@@ -436,7 +375,8 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         }
                     }
                     case ACCESS_LEVEL -> {
-                        if (accessLevelList.contains(entry.getValue())) {
+                        boolean isContains = accessLevelList.stream().anyMatch(elem -> elem.name().equals(entry.getValue()));
+                        if (!isContains) {
                             isCorrect = false;
                         }
                     }
