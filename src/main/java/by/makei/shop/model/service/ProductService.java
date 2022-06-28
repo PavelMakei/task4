@@ -70,7 +70,7 @@ public interface ProductService {
     /**
      * find {@link Brand} by id
      *
-     * @param id
+     * @param id as String
      * @return {@link Brand}
      * @throws ServiceException
      */

@@ -16,28 +16,42 @@ public interface BaseDao< T extends AbstractEntity> {
     Logger logger = LogManager.getLogger();
     String PARAMETER_VALIDATOR_PATTERN = "[a-z_]+";
 
+    /**
+     * check if paramName is valid, else throw DaoException
+     * @param paramName String like ("id", "name"...etc)
+     * @param paramValue String as value of searched paramName like("25", "Ivan"...etc)
+     * @return Optional
+     * @throws DaoException
+     */
     Optional<T> findEntityByOneParam(String paramName, String paramValue) throws DaoException;
 
+    /**
+     * find all entity
+     * @return List of entity
+     * @throws DaoException
+     */
     List<T> findAll()throws DaoException;
 
     boolean delete(T entity)throws DaoException;
 
     boolean delete(int id)throws DaoException;
 
+    /**
+     * create entity
+     * @param entity filled entity
+     * @return boolean as result
+     * @throws DaoException
+     */
     boolean create(T entity)throws DaoException;
 
     T update(T entity)throws DaoException;
 
-    default void close(Statement statement) {
-        if (statement != null) {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                logger.log(Level.ERROR, "statement was not closed. {}", e.getMessage());
-                //TODO need additional action?
-            }
-        }
-    }
+    /**
+     * Check if resources != 0 and close them.
+     * @param proxyConnection as {@link ProxyConnection}
+     * @param preparedStatement as {@link PreparedStatement}
+     * @param resultSets as {@link ResultSet} will be closed [0], can be skipped in arguments
+     */
     default void finallyWhileClosing(ProxyConnection proxyConnection, PreparedStatement preparedStatement, ResultSet...
             resultSets) {
         try {

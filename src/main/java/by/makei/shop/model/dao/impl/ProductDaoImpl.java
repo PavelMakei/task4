@@ -67,6 +67,7 @@ public class ProductDaoImpl implements ProductDao {
         return instance;
     }
 
+
     @Override
     public Optional<Product> findEntityByOneParam(String paramName, String paramValue) throws DaoException {
         if (paramName != null && !paramName.matches(PARAMETER_VALIDATOR_PATTERN)) {
@@ -194,7 +195,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Map<Product, String> findBySearchParam(int brandId, int typeId, int minPrice, int maxPrice,
-                                                  int minPower, int maxPower, int searchFrom, int searchTo,
+                                                  int minPower, int maxPower, int searchFrom, int offset,
                                                   String searchWord, String orderQuery, int inStock) throws DaoException {
         ProxyConnection proxyConnection = null;
         PreparedStatement preparedStatement = null;
@@ -222,7 +223,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(6, maxPower);
             preparedStatement.setInt(7, inStock);
             preparedStatement.setInt(8, searchFrom);
-            preparedStatement.setInt(9, searchTo);
+            preparedStatement.setInt(9, offset);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 optionalProduct = new ProductMapper().mapEntity(resultSet);
