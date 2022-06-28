@@ -26,9 +26,7 @@ public class UpdatePhotoCommand implements Command {
         ProductService productService = ProductServiceImpl.getInstance();
         Router router = new Router();
         Map<String, String> productDataMap = new HashMap();
-
         productDataMap.put(AttributeName.ID, request.getParameter(AttributeName.ID));
-
         byte[] bytesPhoto;
         try (
                 InputStream stream = request.getPart(AttributeName.PHOTO).getInputStream()) {

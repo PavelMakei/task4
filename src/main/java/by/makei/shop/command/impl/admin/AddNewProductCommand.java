@@ -44,7 +44,7 @@ public class AddNewProductCommand implements Command {
                 router.setRedirectType();
                 router.setCurrentPage(PagePath.GO_TO_ADD_NEW_PRODUCT + RedirectMessage.REDIRECT_MESSAGE + RedirectMessage.SUCCESSFULLY_ADDED);
             } else {
-                logger.log(Level.INFO, "Product wasn't validated, cancel adding");
+                logger.log(Level.ERROR, "Product wasn't validated, cancel adding");
                 for (Map.Entry<String, String> entry : productDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }

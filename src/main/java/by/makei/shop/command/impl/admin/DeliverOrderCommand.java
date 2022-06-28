@@ -23,7 +23,7 @@ public class DeliverOrderCommand implements Command {
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_ORDERS + RedirectMessage.REDIRECT_MESSAGE + RedirectMessage.UPDATE_SUCCESS);
             } else {
-                logger.log(Level.INFO, "incorrect input date. Cancel command");
+                logger.log(Level.ERROR, "incorrect input date. Cancel command");
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_ORDERS + RedirectMessage.REDIRECT_MESSAGE + RedirectMessage.UPDATE_FAIL);
             }

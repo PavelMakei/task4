@@ -26,7 +26,6 @@ public class ChangeLanguageCommand implements Command {
         } else {
             session.setAttribute(AttributeName.LOCALE, AttributeName.LOCALE_RU_RU);
         }
-
         if (currentPage != null) {
             router.setCurrentPage(currentUri);
             router.setRedirectType();

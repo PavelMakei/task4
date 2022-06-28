@@ -26,13 +26,11 @@ import static by.makei.shop.command.PagePath.ERROR500;
 import static by.makei.shop.command.PagePath.ORDERS;
 
 public class ShowOrderCommand implements Command {
-    private static final String ERROR = "ShowOrderCommand Service exception : ";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         UserService userService = UserServiceImpl.getInstance();
-//        List<Order> orderList = new ArrayList<>();
         Map<Order, String[]> orderMap = new LinkedHashMap<>();
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);
         logger.log(Level.DEBUG, "ShowOrderCommand currentPage :{}", currentPage);
@@ -43,7 +41,7 @@ public class ShowOrderCommand implements Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(AttributeName.USER);
         if (user.getAccessLevel().equals(AccessLevel.USER)) {
-            incomeParam.put(AttributeName.USER_ID, String.valueOf(user.getId()));
+            incomeParam.put(AttributeName.USER_ID, String.valueOf(user.getId()));//doesn't need to be validated
         }//else (for ADMIN) will be used all ids, and returned all user's orders
         try {
             if (!userService.findOrderMapByParam(orderMap, incomeParam)) {

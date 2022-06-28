@@ -16,7 +16,6 @@ public class Cart extends AbstractEntity {
     private int maxQuantityOfOneProductToBy = MAX_QUANTITY_OF_ONE_PRODUCT_TO_BY;
     private final Map<Product, Integer> productQuantity;
     private int totalQuantity = 0;
-
     private BigDecimal totalCost = BigDecimal.ZERO;
 
     public Cart() {
@@ -32,12 +31,21 @@ public class Cart extends AbstractEntity {
         return new HashMap<>(productQuantity);
     }
 
+    /**
+     * remove all {@link Product} and quantity from cart, set totalCost = 0, set totalQuantity = 0
+     */
     public void clear() {
         productQuantity.clear();
         totalQuantity = 0;
         totalCost = BigDecimal.ZERO;
     }
 
+    /**
+     * reduce {@link Product} by quantity from cart. If total quantity of this {@link Product} == 0, then remove this {@link Product} from cart
+     * @param product {@link Product}
+     * @param quantity int quantity of the Product to reduce
+     * @return reduced Map {@link Product}, Integer quantity
+     */
     public Map<Product, Integer> removeProduct(@NotNull Product product, @NotNull Integer quantity) {
         Integer savedQuantity = this.productQuantity.get(product);
         if (savedQuantity - quantity < 1) {

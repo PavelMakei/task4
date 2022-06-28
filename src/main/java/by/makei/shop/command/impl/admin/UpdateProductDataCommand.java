@@ -37,7 +37,7 @@ public class UpdateProductDataCommand implements Command {
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_UPDATE_PRODUCT + RedirectMessage.REDIRECT_MESSAGE + RedirectMessage.UPDATE_SUCCESS + RedirectMessage.REDIRECT_ID + request.getParameter(AttributeName.ID));
             } else {
-                logger.log(Level.INFO, "UpdateProductDataCommand incorrect data");
+                logger.log(Level.ERROR, "UpdateProductDataCommand incorrect data");
                 Map<String, String> brands;
                 Map<String, String> types;
                 brands = productService.findAllBrandsMap();

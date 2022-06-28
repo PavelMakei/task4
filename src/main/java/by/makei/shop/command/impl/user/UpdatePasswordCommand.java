@@ -19,7 +19,6 @@ import static by.makei.shop.command.PagePath.LOGINATION;
 import static by.makei.shop.command.PagePath.PASSWORD_RECOVERY;
 
 public class UpdatePasswordCommand implements Command {
-    private static final String ERROR = "UpdatePasswordCommand Service exception : ";
     private static final String PASSWORD_UPDATED = "password.updated";
     private static final String PASSWORD_NOT_UPDATED = "password.not.updated";
 

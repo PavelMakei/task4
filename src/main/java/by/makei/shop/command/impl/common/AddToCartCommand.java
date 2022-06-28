@@ -73,7 +73,7 @@ public class AddToCartCommand implements Command {
                 router.setCurrentPage(GO_TO_SHOW_CART + RedirectMessage.REDIRECT_MESSAGE + message);
             } else {
                 //incorrect data
-                logger.log(Level.INFO, "incorrect data. Input quantity: {}", inputQuantity);
+                logger.log(Level.ERROR, "incorrect data. Input quantity: {}", inputQuantity);
                 router.setRedirectType();
                 router.setCurrentPage(GO_TO_SHOW_CART + RedirectMessage.REDIRECT_MESSAGE + RedirectMessage.ADDING_TO_CART_FAIL_INCORRECT_DATA);
             }

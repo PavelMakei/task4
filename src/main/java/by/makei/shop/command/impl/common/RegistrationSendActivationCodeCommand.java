@@ -50,7 +50,7 @@ public class RegistrationSendActivationCodeCommand implements Command {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
             } else {
-                logger.log(Level.INFO, "Incorrect data input");
+                logger.log(Level.ERROR, "Incorrect data input");
                 for (Map.Entry<String, String> entry : userDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
