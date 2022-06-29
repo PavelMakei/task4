@@ -15,7 +15,7 @@
 
 <c:set var="card_number_pattern">${validator_pattern.cardNumberPattern}</c:set>
 <c:set var="card_exp_date_pattern">${validator_pattern.cardExpDatePattern}</c:set>
-<c:set var="card_cvc_pattern">${validator_pattern.integer3StringPattern}</c:set>
+<c:set var="card_cvc_pattern">${validator_pattern.cvcPattern}</c:set>
 <c:set var="card_holder_pattern">${validator_pattern.cardHolderPattern}</c:set>
 <c:set var="amount_to_deposit_pattern">${validator_pattern.decimalStringPattern}</c:set>
 
@@ -36,6 +36,7 @@
 <fmt:message key="amount.to.deposit.placeholder" var="amount_to_deposit_placeholder"/>
 <fmt:message key="deposit.button" var="deposit_button"/>
 <fmt:message key="current.money.amount.label" var="current_money_amount_label"/>
+
 
 
 <html>

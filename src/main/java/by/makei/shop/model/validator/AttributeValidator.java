@@ -16,6 +16,8 @@ public interface AttributeValidator {
 
     boolean isInt3Valid(String idValue);
 
+    boolean isCvcValid(String idValue);
+
     boolean isInt5Valid(String idValue);
 
     boolean isProductNameValid(String productName);

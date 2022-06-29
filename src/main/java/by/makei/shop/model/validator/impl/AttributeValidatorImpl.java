@@ -52,6 +52,10 @@ public class AttributeValidatorImpl implements AttributeValidator {
     public boolean isInt3Valid(String idValue) {
         return (idValue != null && idValue.matches(validatorPattern.getInteger3StringPattern()));
     }
+    @Override
+    public boolean isCvcValid(String idValue) {
+        return (idValue != null && idValue.matches(validatorPattern.getCvcPattern()));
+    }
 
     @Override
     public boolean isInt5Valid(String idValue) {

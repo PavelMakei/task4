@@ -41,12 +41,13 @@ public class DepositMoneyCommand implements Command {
         depositDataMap.put(AttributeName.AMOUNT_TO_DEPOSIT, request.getParameter(AttributeName.AMOUNT_TO_DEPOSIT));
         try {
             if (!userService.validateAndMarkIncomeData(depositDataMap)) {
-                logger.log(Level.INFO, "DepositMoneyCommand incorrect input data. Operation canceled");
+                logger.log(Level.ERROR, "DepositMoneyCommand incorrect input data. Operation canceled");
                 for (Map.Entry<String, String> entry : depositDataMap.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                     router.setCurrentPage(DEPOSIT_MONEY);
                     request.setAttribute(AttributeName.MESSAGE, RedirectMessage.USER_MONEY_AMOUNT_UPDATING_FAIL);
                 }
+                return router;
             }
             currentUser = (User) session.getAttribute(AttributeName.USER);
             currentUserId = currentUser.getId();

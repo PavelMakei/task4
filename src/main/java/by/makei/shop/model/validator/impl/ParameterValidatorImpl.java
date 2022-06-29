@@ -22,6 +22,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -459,13 +461,15 @@ public class ParameterValidatorImpl implements ParameterValidator {
                         }
                     }
                     case CARD_CVC -> {
-                        if (!validator.isInt3Valid(entry.getValue())) {
+                        if (!validator.isCvcValid(entry.getValue())) {
                             invalidParameters.put(INVALID_CARD_CVC, INVALID_CARD_CVC);
                             isCorrect = false;
                         }
                     }
                     case CARD_EXP_DATE -> {
-                        if (!validator.isCardExpDateValid(entry.getValue())) {
+                        SimpleDateFormat format = new SimpleDateFormat("MM/yyyy");
+                        if (!validator.isCardExpDateValid(entry.getValue())
+                            || new Date().after(format.parse(entry.getValue()))) {
                             invalidParameters.put(INVALID_CARD_EXP_DATE, INVALID_CARD_EXP_DATE);
                             isCorrect = false;
                         }
@@ -501,6 +505,8 @@ public class ParameterValidatorImpl implements ParameterValidator {
             throw new ServiceException("ParameterValidator error while validateProductData", e);
             //incorrect work of application. It's not a problem of incorrect input to validation data
 
+        } catch (ParseException e) {
+            logger.log(Level.WARN,"error while parsing date");
         }
         incomeDataMap.putAll(invalidParameters);
         return isCorrect;
