@@ -5,13 +5,7 @@
   Time: 12:10
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
-<fmt:setLocale value="${locale}" scope="session"/>
-<fmt:setBundle basename="language_text"/>
-<c:set var="path">${pageContext.request.contextPath}</c:set>
+<%@include file="../parts/init.jsp" %>
 
 <c:set var="email_pattern">${validator_pattern.emailPattern}</c:set>
 <c:set var="password_pattern">${validator_pattern.passwordPattern}</c:set>
@@ -27,15 +21,6 @@
 
 <html>
 <head>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-    </script>
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -189,22 +174,8 @@
 <%@include file="../parts/modalwindow.jsp" %>
 
 <script>
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }else {
-                        document.getElementById('btn_spinner').style.visibility = 'visible';
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
+    let forms = document.querySelectorAll('.needs-validation');
+    validateForms(forms);
 </script>
 
 </body>

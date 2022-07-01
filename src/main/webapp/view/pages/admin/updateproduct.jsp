@@ -5,15 +5,7 @@
   Time: 22:58
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
-<fmt:setLocale value="${locale}" scope="session"/>
-<fmt:setBundle basename="language_text"/>
-
-<c:set var="path">${pageContext.request.contextPath}</c:set>
-
+<%@include file="../parts/init.jsp" %>
 
 <fmt:message key="update.product" var="head_label"/>
 <fmt:message key="brands.name" var="brands_id_label"/>
@@ -77,27 +69,9 @@
     <link rel="stylesheet" href="${path}/css/enter.css">
     <script src="${path}/bootstrap/js/bootstrap.min.js"></script>
 
-    <%-----------------Prevent to return to previous page---------------%>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
-
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-        history.pushState(null, null, document.URL);
-    </script>
-    <%------------------------------------------%>
-
-
 </head>
 <body>
 <div class="wrapper">
-    <%--    <div class="header">--%>
-    <%--        <%@include file="../header.jsp" %>--%>
-    <%--    </div> <!-- end of header -->--%>
     <div class="content">
         <div class="container" style="max-width: none">
             <div class="row justify-content-center">
@@ -533,20 +507,8 @@
 <%@include file="../parts/modalwindow.jsp" %>
 
 <script>
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
+    let forms = document.querySelectorAll('.needs-validation');
+    validateForms(forms);
 </script>
 <script>
     (function () {
@@ -579,7 +541,6 @@
         if (choice === '') {
             photolbl.style.color = 'red';
             photolbl.style.borderColor = 'red';
-
         } else {
             photolbl.style.color = 'green';
             photolbl.style.borderColor = 'green';

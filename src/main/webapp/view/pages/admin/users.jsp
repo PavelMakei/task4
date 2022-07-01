@@ -5,14 +5,7 @@
   Time: 22:12
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
-<fmt:setLocale value="${locale}" scope="session"/>
-<fmt:setBundle basename="language_text"/>
-
-<c:set var="path">${pageContext.request.contextPath}</c:set>
+<%@include file="../parts/init.jsp" %>
 
 <fmt:message key="first.name" var="first_name"/>
 <fmt:message key="last.name" var="last_name"/>
@@ -37,22 +30,6 @@
     <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${path}/css/enter.css">
-
-
-    <%-----------------Prevent to return to previous page---------------%>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
-
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-        history.pushState(null, null, document.URL);
-    </script>
-    <%------------------------------------------%>
-
 
 </head>
 <body>

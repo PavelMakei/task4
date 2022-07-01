@@ -71,13 +71,6 @@
                     <%@include file="../user/usermenu.jspx" %>
                 </c:if>
             </ul>
-
-            <%--                ---------------%>
-
-            <%--            <li class="nav-item">--%>
-            <%--                <a class="nav-link" style="color: white" href="https://www.nbrb.by/">${exchange_course}</a>--%>
-            <%--            </li>--%>
-
             <ul class="nav nav-pills" style="border-color: goldenrod;padding: 6px; border-width: 1px; border-style: solid; border-radius: .25rem;">
                 <li class="nav-item" style="color: white;" id="curr_scale"></li>
                 <li class="nav-item ">

@@ -6,14 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
-
-<fmt:setLocale value="${locale}" scope="session"/>
-<fmt:setBundle basename="language_text"/>
-
+<%@include file="../parts/init.jsp" %>
 
 <fmt:message key="main.page.label" var="main_page_label"/>
 <fmt:message key="brands.name" var="brands_id_label"/>
@@ -71,18 +64,18 @@
 
     <title>${main_page_label}</title>
 
-    <%-----------------Prevent to return to previous page---------------%>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-        history.pushState(null, null, document.URL);
-    </script>
-    <%------------------------------------------%>
+<%--    &lt;%&ndash;---------------Prevent to return to previous page-------------&ndash;%&gt;--%>
+<%--    <script>--%>
+<%--        function preventBack() {--%>
+<%--            window.history.forward();--%>
+<%--        }--%>
+<%--        setTimeout("preventBack()", 0);--%>
+<%--        window.onunload = function () {--%>
+<%--            null--%>
+<%--        };--%>
+<%--        history.pushState(null, null, document.URL);--%>
+<%--    </script>--%>
+<%--    &lt;%&ndash;--------------------------------------&ndash;%&gt;--%>
 
 </head>
 <body>
@@ -620,22 +613,9 @@
 <%-----------------------Modal window------------------------------%>
 
 <%@include file="../parts/modalwindow.jsp" %>
-
 <script>
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
+    let forms = document.querySelectorAll('.needs-validation');
+    validateForms(forms);
 </script>
 
 <script>

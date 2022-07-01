@@ -5,20 +5,13 @@
   Time: 14:15
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
-<fmt:setLocale value="${locale}" scope="session"/>
-<fmt:setBundle basename="language_text"/>
-<c:set var="path">${pageContext.request.contextPath}</c:set>
+<%@include file="../parts/init.jsp" %>
 
 <c:set var="name_pattern">${validator_pattern.namePattern}</c:set>
 <c:set var="login_pattern">${validator_pattern.loginPattern}</c:set>
 <c:set var="email_pattern">${validator_pattern.emailPattern}</c:set>
 <c:set var="password_pattern">${validator_pattern.passwordPattern}</c:set>
 <c:set var="phone_pattern">${validator_pattern.phonePattern}</c:set>
-
 
 <fmt:message key="registration.user" var="registration_label"/>
 <fmt:message key="first.name" var="first_name_label"/>
@@ -42,15 +35,6 @@
 
 <html>
 <head>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-    </script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>

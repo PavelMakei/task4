@@ -6,23 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ft" uri="/WEB-INF/tld/footertaglib.tld" %>
-
-<fmt:setLocale value="${locale}" scope="session"/>
-<fmt:setBundle basename="language_text"/>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+<%@include file="../parts/init.jsp" %>
 
 <c:set var="login_pattern">${validator_pattern.loginPattern}</c:set>
 <c:set var="password_pattern">${validator_pattern.passwordPattern}</c:set>
 
-
 <fmt:message key="login" var="login_label"/>
 <fmt:message key="enter.login" var="login_placeholder"/>
 <fmt:message key="login.enter.welcome" var="login_page_welcome"/>
-<%--<fmt:message key="invalid.login" var="incorrect_login_message"/>--%>
 <fmt:message key="password" var="password_label"/>
 <fmt:message key="enter.password" var="password_placeholder"/>
 <fmt:message key="return.main.page" var="return_link_label"/>
@@ -30,32 +21,6 @@
 <fmt:message key="forgot.password" var="forgot_password_label"/>
 <fmt:message key="enter.button" var="enter_button"/>
 
-<head>
-
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
-    <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${path}/css/enter.css" rel="stylesheet">
-
-    <title>${login_label}</title>
-
-    <%-----------------Prevent to return to previous page---------------%>
-    <script>
-        function preventBack() {
-            window.history.forward();
-        }
-        setTimeout("preventBack()", 0);
-        window.onunload = function () {
-            null
-        };
-        history.pushState(null, null, document.URL);
-    </script>
-    <%------------------------------------------%>
-
-</head>
 <body>
 <div class="wrapper">
     <div class="header">
@@ -134,21 +99,23 @@
     <div class="footer" style="color: white"><ft:footerTag/></div>
 </div>
 <%@include file="../parts/modalwindow.jsp" %>
+
 <script>
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
+    let forms = document.querySelectorAll('.needs-validation');
+    validateForms(forms);
 </script>
 
 </body>
+<head>
+
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="${path}/icons/favicon.ico" type="image/x-icon"/>
+    <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${path}/css/enter.css" rel="stylesheet">
+
+    <title>${login_label}</title>
+
+</head>
