@@ -5,7 +5,7 @@
   Time: 9:19
   To change this template use File | Settings | File Templates.
 --%>
-<%@include file="../parts/init.jsp" %>
+<%@include file="../parts/common.jsp" %>
 
 <fmt:message key="more.hint" var="more_hint"/>
 <fmt:message key="order.management" var="orders_manage_label"/>

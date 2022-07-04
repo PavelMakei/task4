@@ -1,5 +1,17 @@
-function formValidator2(forms) {
-    window.alert('Validator, forms:' + forms.keys());
+function preventBack() {
+     // window.alert("function preventBack started")
+    window.history.forward();
+}
+
+setTimeout("preventBack()", 0);
+window.onunload = function () {
+    null
+};
+history.pushState(null, null, document.URL);
+
+
+function validateForms(forms) {
+     // window.alert('function validateForm started')
     'use strict'
     // var forms = document.querySelectorAll('.needs-validation')
     Array.prototype.slice.call(forms)
@@ -13,3 +25,4 @@ function formValidator2(forms) {
             }, false)
         })
 }
+

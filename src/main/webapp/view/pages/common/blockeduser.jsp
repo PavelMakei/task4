@@ -5,7 +5,7 @@
   Time: 11:25
   To change this template use File | Settings | File Templates.
 --%>
-<%@include file="../parts/init.jsp" %>
+<%@include file="../parts/common.jsp" %>
 
 <fmt:message key="blocked.account.label" var="blocked_account_label"/>
 <fmt:message key="blocked.account.message" var="blocked_account_message"/>

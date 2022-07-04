@@ -5,7 +5,7 @@
   Time: 10:29
   To change this template use File | Settings | File Templates.
 --%>
-<%@include file="../parts/init.jsp" %>
+<%@include file="../parts/common.jsp" %>
 
 <fmt:message key="add.new.product" var="head_label"/>
 <fmt:message key="brands.name" var="brands_id_label"/>

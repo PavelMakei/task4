@@ -5,7 +5,7 @@
   Time: 15:15
   To change this template use File | Settings | File Templates.
 --%>
-<%@include file="../parts/init.jsp" %>
+<%@include file="../parts/common.jsp" %>
 
 <c:set var="card_number_pattern">${validator_pattern.cardNumberPattern}</c:set>
 <c:set var="card_exp_date_pattern">${validator_pattern.cardExpDatePattern}</c:set>

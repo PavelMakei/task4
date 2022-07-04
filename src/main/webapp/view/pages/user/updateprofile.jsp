@@ -5,7 +5,7 @@
   Time: 11:11
   To change this template use File | Settings | File Templates.
 --%>
-<%@include file="../parts/init.jsp" %>
+<%@include file="../parts/common.jsp" %>
 
 <c:set var="name_pattern">${validator_pattern.namePattern}</c:set>
 <c:set var="login_pattern">${validator_pattern.loginPattern}</c:set>

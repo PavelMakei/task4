@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@include file="../parts/init.jsp" %>
+<%@include file="../parts/common.jsp" %>
 
 <fmt:message key="main.page.label" var="main_page_label"/>
 <fmt:message key="brands.name" var="brands_id_label"/>
