@@ -404,7 +404,9 @@
                 <th scope="col" class="col-lg-9" style="padding-top:16px">
                     <%--                -------------Table of products-----------%>
                     <c:if test="${!empty products_quantity_map}">
+                        <c:set var="count" value="0"/>
                         <c:forEach var="entry" items="${products_quantity_map}">
+                            <c:set var="count" value="${count + 1}"/>
                             <c:set var="current_product" value="${entry.key}"/>
                             <c:set var="current_quantity" value="${entry.value}"/>
                             <table class="product-card table table-bordered"
@@ -521,11 +523,11 @@
                                                 <input type="hidden" name="id"
                                                        value="${current_product.id}">
                                                 <div class="mb-3">
-                                                    <label for="quantityInputId${current_product.id}" class="form-label"
+                                                    <label for="quantityInputId${count}" class="form-label"
                                                            style="color: white">${quantity_name_label}</label>
                                                     <div class="col-6">
                                                         <input type="number" class="form-control"
-                                                               id="quantityInputId${current_product.id}"
+                                                               id="quantityInputId${count}"
                                                                name="quantity" placeholder="${min}-${max}"
                                                                required
                                                                min="${min}"
@@ -538,7 +540,7 @@
                                                             <c:if test="${i == 0}">
                                                                 disabled
                                                             </c:if>
-                                                            id="buttBuy1"
+                                                            id="buttBuy${count}"
                                                             style="color: white"
                                                             onclick="
                                                                     if (!this.form.checkValidity()) {
@@ -546,7 +548,7 @@
                                                                     // window.alert('стоять!!!');
                                                                     return;
                                                                     }
-                                                                    let quantityToSend = '&quantity='+document.getElementById('quantityInputId${current_product.id}').value;
+                                                                    let quantityToSend = '&quantity='+document.getElementById('quantityInputId${count}').value;
                                                                     let fullPath = '${path}/controller?command=add_to_cart&id=${current_product.id}' + quantityToSend;
                                                                     window.open(fullPath,'ShowCart','width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no');"
                                                     >
