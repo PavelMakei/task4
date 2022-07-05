@@ -61,7 +61,7 @@
                     </c:if>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white"
+                    <a class="nav-link" style="color: white" id="aboutRef"
                        href="${path}/controller?command=go_to_about">${about_label}</a>
                 </li>
                 <c:if test="${!empty user && user.accessLevel eq 'ADMIN'}">
@@ -133,6 +133,7 @@
 
             <c:if test="${access_level ne 'BLOCKED'}">
                 <button type="button" class="btn btn-primary"
+                        id="showCartBtn"
                         onclick="
                                 let fullPath = '${path}/controller?command=go_to_show_cart';
                                 window.open(fullPath,'ShowCart','width=1400,height=650,left=300,toolbar=no,status=no,resizable=no,location=no,directories=no');
@@ -152,6 +153,7 @@
                 <c:when test="${sessionScope.access_level eq 'ADMIN' or access_level eq 'USER' or access_level eq 'BLOCKED'}">
                 <input type="hidden" name="command" value="logout">
                 <button class="btn btn-outline-warning"
+                        id="logOutBtn"
                         style="color: black; background-color: white; border-width: 2px; border-color: goldenrod;border-radius: .25rem; "
                         type="submit">
                         ${log_out}
@@ -159,6 +161,7 @@
                     <c:otherwise>
                     <input type="hidden" name="command" value="go_to_login">
                     <button class="btn btn-outline-warning "
+                            id="logInBtn"
                             style="color: black; background-color: white; border-width: 2px; border-color: goldenrod;border-radius: 5% "
                             type="submit">
                             ${log_in}
@@ -171,6 +174,7 @@
             <form class="d-flex" method="get" action="${path}/controller">
                 <input type="hidden" name="command" value="change_language">
                 <button class="btn btn-outline-warning border-0"
+                        id="languageBtn"
                         type="submit">
                     <c:choose>
                         <c:when test="${locale eq 'ru_RU'}">

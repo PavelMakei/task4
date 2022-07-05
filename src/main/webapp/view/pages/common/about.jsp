@@ -10,12 +10,13 @@
 
 <fmt:message key="about.message" var="about_message"/>
 <fmt:message key="about.text" var="about_text"/>
+<fmt:message key="about.label" var="about_title"/>
 
 
 <head>
 
     <meta charset="UTF-8"/>
-    <title>Light Bulb On/Off With Sound</title>
+    <title>${about_title}</title>
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +26,6 @@
     <link href="${path}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${path}/css/enter.css" rel="stylesheet">
     <link href="${path}/css/about.css" rel="stylesheet">
-
 
 </head>
 <body>

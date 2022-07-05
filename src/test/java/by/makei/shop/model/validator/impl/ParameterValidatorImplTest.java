@@ -27,7 +27,6 @@ class ParameterValidatorImplTest {
 
     @BeforeEach
     void init() {
-
         incomeData = new HashMap<>();
     }
 
