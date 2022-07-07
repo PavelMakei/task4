@@ -172,4 +172,14 @@ public interface UserService {
      * @throws ServiceException
      */
     boolean deliveryOrder(HttpServletRequest request) throws ServiceException;
+
+    /**
+     * check if input parameter is correct. If not - return false.
+     * try to delete user by id, return result
+     * @param request should consist ID ({@link User})
+     * @return boolean as result
+     * @throws ServiceException
+     */
+    boolean delete(HttpServletRequest request) throws ServiceException;
+
 }

@@ -26,6 +26,7 @@ public enum CommandType {
     CLEAR_CART(new ClearCartCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.USER, AccessLevel.GUEST)),
     CREATE_ORDER(new CreateOrderCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.USER)),
     DEFAULT(new DefaultCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.GUEST, AccessLevel.USER, AccessLevel.BLOCKED)),
+    DELETE_USER(new DeleteUserCommand(), EnumSet.of(AccessLevel.ADMIN)),
     DELIVER_ORDER(new DeliverOrderCommand(), EnumSet.of(AccessLevel.ADMIN)),
     DEPOSIT_MONEY(new DepositMoneyCommand(), EnumSet.of(AccessLevel.ADMIN, AccessLevel.USER)),
     GO_TO_ADD_NEW_PRODUCT(new GoToAddNewProductCommand(), EnumSet.of(AccessLevel.ADMIN)),

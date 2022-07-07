@@ -17,10 +17,15 @@
 <fmt:message key="users" var="users_lable"/>
 <fmt:message key="purchased.products" var="purchased_products"/>
 <fmt:message key="for.the.amount" var="for_the_amount"/>
+<fmt:message key="delete.user" var="delete_user"/>
+<fmt:message key="delete" var="delete_btn"/>
+
 
 <c:set var="email">email</c:set>
 <c:set var="url_part1">${path}/controller?command=update_access_level&id=</c:set>
 <c:set var="url_part2">&access_level=</c:set>
+<c:set var="url_delete_command">${path}/controller?command=delete_user&id=</c:set>
+
 
 <html>
 <head>
@@ -69,6 +74,7 @@
                                         <th scope="col">${purchased_products}</th>
                                         <th scope="col">${for_the_amount}</th>
                                         <th scope="col">${access_level}</th>
+                                        <th scope="col">${delete_user}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -90,6 +96,7 @@
                                             <td>${user_elem.key.login}</td>
                                             <td>${user_elem.key.email}</td>
                                             <td>${user_elem.key.phone}</td>
+
                                             <fmt:parseDate value="${user_elem.key.date}" pattern="yyyy-MM-dd'T'HH:mm"
                                                            var="parsedDateTime" type="both"/>
                                             <td><fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/></td>
@@ -117,6 +124,15 @@
                                                         </c:if>
                                                     </c:forEach>
                                                 </select>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm"
+                                                type="button"
+                                                id="delete_btn"
+                                                onclick="window.location
+                                                        = '${url_delete_command}${user_elem.key.id}'">
+                                                    ${delete_btn}
+                                                </button>
                                             </td>
                                         </tr>
                                     </c:forEach>

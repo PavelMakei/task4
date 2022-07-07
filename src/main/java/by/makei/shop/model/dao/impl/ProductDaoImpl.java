@@ -380,24 +380,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     //TODO дописать методы
-    @Override
-    public boolean delete(Product entity) throws DaoException {
-        return false;
-    }
 
-    @Override
-    public boolean delete(int id) throws DaoException {
-        return false;
-    }
 
-    @Override
-    public boolean create(Product entity) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public Product update(Product entity) throws DaoException {
-        return null;
-    }
 
 }

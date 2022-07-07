@@ -32,19 +32,6 @@ public interface BaseDao< T extends AbstractEntity> {
      */
     List<T> findAll()throws DaoException;
 
-    boolean delete(T entity)throws DaoException;
-
-    boolean delete(int id)throws DaoException;
-
-    /**
-     * create entity
-     * @param entity filled entity
-     * @return boolean as result
-     * @throws DaoException
-     */
-    boolean create(T entity)throws DaoException;
-
-    T update(T entity)throws DaoException;
 
     /**
      * Check if resources != 0 and close them.

@@ -24,7 +24,7 @@ import static by.makei.shop.command.AttributeName.*;
 public class UserDaoImpl implements UserDao {
     private static final UserDaoImpl instance = new UserDaoImpl();
     private static final String FIND_ANY = "%";
-    public static final String TOTAL_SUM ="total";
+    public static final String TOTAL_SUM = "total";
     private static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = """
             SELECT id, first_name, last_name, login, password, email, phone, access_level, registration_date,money_amount
             FROM lightingshop.users WHERE
@@ -108,7 +108,7 @@ public class UserDaoImpl implements UserDao {
             SUM(CASE WHEN orders.status ='DELIVERED' THEN products.price*order_products.quantity END) AS total_ords_sum FROM lightingshop.users
             LEFT JOIN lightingshop.orders ON users.id = orders.user_id
             LEFT JOIN lightingshop.order_products ON orders.id = order_products.order_id
-            left join lightingshop.products on order_products.product_id = products.id
+            LEFT JOIN lightingshop.products on order_products.product_id = products.id
             GROUP BY users.id
             ORDER BY users.id;
             """;
@@ -122,8 +122,12 @@ public class UserDaoImpl implements UserDao {
                         AND user_id LIKE ?
                         AND orders.status LIKE ?
                         GROUP BY orders.id, orders.status, orders.date_open
-                        ORDER BY orders.status, orders.date_open DESC ;
+                        ORDER BY orders.status, orders.date_open;
             """;
+
+    public static final String SQL_DELETE_USER = """
+            DELETE users FROM users
+            WHERE users.id = ?;""";
 
     private UserDaoImpl() {
     }
@@ -602,7 +606,7 @@ public class UserDaoImpl implements UserDao {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Optional<Order> optionalOrder = new OrderMapper().mapEntity(resultSet);
-                if(optionalOrder.isPresent()){
+                if (optionalOrder.isPresent()) {
                     orderMap.put(optionalOrder.get(), new String[]{
                             resultSet.getString(LOGIN),
                             resultSet.getString(TOTAL_SUM)
@@ -621,24 +625,28 @@ public class UserDaoImpl implements UserDao {
 
 
     //TODO override methods!!!!!!!!!!!
-    @Override
-    public boolean delete(User entity) throws DaoException {
-        return false;
-    }
 
     @Override
     public boolean delete(int id) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public boolean create(User entity) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public User update(User entity) throws DaoException {
-        return null;
+        ProxyConnection proxyConnection = null;
+        PreparedStatement preparedStatement = null;
+        int rowsDeleted;
+        try {
+            proxyConnection = DbConnectionPool.getInstance().takeConnection();
+            preparedStatement = proxyConnection.prepareStatement(SQL_DELETE_USER);
+            preparedStatement.setInt(1, id);
+            rowsDeleted = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            proxyConnection.setForChecking(true);
+            logger.log(Level.ERROR, "error while delete");
+            throw new DaoException("UserDao error while delete", e);
+        } finally {
+            finallyWhileClosing(proxyConnection, preparedStatement);
+        }
+        if (rowsDeleted < 1) {
+            logger.log(Level.ERROR, "no user with id: {} were deleted", id);
+        }
+        return rowsDeleted > 0;
     }
 
 }

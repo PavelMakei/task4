@@ -34,10 +34,6 @@ public class SessionAttributeClearFilter implements Filter {
                 session.removeAttribute(SESS_MESSAGE);
             }
         }
-        logger.log(Level.INFO, "SessionAttributeClearFilter before chain");
-
         chain.doFilter(request, response);
-        logger.log(Level.INFO, "SessionAttributeClearFilter after chain");
-
     }
 }

@@ -80,9 +80,8 @@
                                 <%------------------------------------------------button------------------------------%>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary btn-warning"
-                                            style="color: white">
-                                        ${enter_button}
-                                    </button>
+                                            id="enterBtn"
+                                            style="color: white">${enter_button}</button>
                                 </div>
 
                                 <div class="login-register">

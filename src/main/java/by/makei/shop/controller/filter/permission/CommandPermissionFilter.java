@@ -58,7 +58,7 @@ public class CommandPermissionFilter implements Filter {
                     .forward(httpServletRequest, httpServletResponse);
             return;
         }
-        logger.log(Level.INFO, "accessLevel - {} is correct for command -{}", currentAccessLevel, command);
+        logger.log(Level.DEBUG, "accessLevel - {} is correct for command -{}", currentAccessLevel, command);
         chain.doFilter(request, response);
     }
 }

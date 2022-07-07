@@ -85,25 +85,4 @@ public class ProductTypeDaoImpl implements ProductTypeDao {
         return resultList;
     }
 
-
-    @Override
-    public boolean delete(ProductType entity) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public boolean delete(int id) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public boolean create(ProductType entity) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public ProductType update(ProductType entity) throws DaoException {
-        return null;
-    }
-
 }

@@ -112,25 +112,4 @@ public class BrandDaoImpl implements BrandDao {
         }
     }
 
-
-    @Override
-    public boolean delete(Brand entity) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public boolean delete(int id) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public boolean create(Brand entity) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public Brand update(Brand entity) throws DaoException {
-        return null;
-    }
-
 }

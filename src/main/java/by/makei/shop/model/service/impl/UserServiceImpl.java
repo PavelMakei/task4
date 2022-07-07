@@ -293,7 +293,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean validateAndMarkIncomeData(Map<String, String> incomeDataMap) throws ServiceException {
         ParameterValidator parameterValidator = ParameterValidatorImpl.getInstance();
-            return parameterValidator.validateAndMarkIncomeData(incomeDataMap);
+        return parameterValidator.validateAndMarkIncomeData(incomeDataMap);
 
     }
 
@@ -429,5 +429,24 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(e);
         }
         return true;
+    }
+
+    @Override
+    public boolean delete(HttpServletRequest request) throws ServiceException {
+        ParameterValidator validator = ParameterValidatorImpl.getInstance();
+        Map<String, String> incomeParam = new HashMap<>();
+        UserDao userDao = UserDaoImpl.getInstance();
+        String id = request.getParameter(ID);
+        incomeParam.put(ID, id);
+        try {
+            if (!validator.validateAndMarkIncomeData(incomeParam)) {
+                logger.log(Level.ERROR, "invalid Id {}", id == null ? "null" : id);
+                return false;
+            }
+            return userDao.delete(Integer.parseInt(id));
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "exception in UserDao while delete user with id: {}", id);
+            throw new ServiceException(e);
+        }
     }
 }

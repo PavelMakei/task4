@@ -138,5 +138,7 @@ public interface UserDao extends BaseDao<User> {
      * @throws DaoException
      */
     boolean findOrderMapByParam(Map<Order, String[]> orderMap, Map<String, String> incomeParam) throws DaoException;
+
+    boolean delete(int id) throws DaoException;
 }
 
