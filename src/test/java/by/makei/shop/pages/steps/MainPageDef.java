@@ -21,4 +21,5 @@ public class MainPageDef {
     public void contentWithVisible(String arg0) {
         mainPage.contentIsVisible(arg0);
     }
+
 }

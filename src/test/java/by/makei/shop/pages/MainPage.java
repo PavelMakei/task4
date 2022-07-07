@@ -18,4 +18,11 @@ public class MainPage {
         $(By.xpath(("//*[contains(text(),'" + str + "')]"))).shouldBe(Condition.visible);
     }
 
+    public void chooseOption(String id, String value){
+        SelenideElement dropDown = $(By.id(id));
+        dropDown.selectOptionByValue(value);
+
+        //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    }
+
 }

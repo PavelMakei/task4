@@ -12,16 +12,17 @@
            ${user_menu}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="${path}/controller?command=go_to_deposit_money">${deposit_money_label}</a></li>
+            <li><a class="dropdown-item" id="depositMoneyOption" href="${path}/controller?command=go_to_deposit_money">${deposit_money_label}</a></li>
             <li>
                 <hr class="dropdown-divider"/>
             </li>
             <li><a class="dropdown-item"
+                   id="ordersOption"
                    href="${path}/controller?command=show_order">${my_orders}</a></li>
             <li>
                 <hr class="dropdown-divider"/>
             </li>
-            <li><a class="dropdown-item" href="${path}/controller?command=go_to_update_profile">${update_profile_label}</a></li>
+            <li><a class="dropdown-item" id="updateProfileOption" href="${path}/controller?command=go_to_update_profile">${update_profile_label}</a></li>
         </ul>
     </li>
 </ul>
