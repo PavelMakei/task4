@@ -1,4 +1,4 @@
-package by.makei.shop.pages;
+package by.makei.shop.pages.selenide;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MainPageTest {
+class MainPageTestSelenium {
     private static final Logger logger = LogManager.getLogger();
     private static FirefoxDriver driver;
 
@@ -34,7 +34,7 @@ class MainPageTest {
         aboutRef.click();
         String expected = "О нас";
         String actual = driver.getTitle();
-        logger.log(Level.INFO,"text = {}",actual);
+        logger.log(Level.DEBUG,"text = {}",actual);
         assertEquals(expected,actual);
     }
 
@@ -44,7 +44,7 @@ class MainPageTest {
         aboutRef.click();
         String expected = "Main";
         String actual = driver.getTitle();
-        logger.log(Level.INFO,"text = {}",actual);
+        logger.log(Level.DEBUG,"text = {}",actual);
         assertEquals(expected,actual);
     }
 

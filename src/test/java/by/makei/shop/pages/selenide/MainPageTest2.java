@@ -1,4 +1,4 @@
-package by.makei.shop.pages;
+package by.makei.shop.pages.selenide;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
@@ -45,7 +45,7 @@ public class MainPageTest2 {
     }
 
     @Test
-    public void checkIfCurrencyWorks(){
+    public void checkIfCurrencyWorks() {
         SelenideElement rate = $(By.id("rate"));
         open("http://localhost:8080/");
         String oldValue = rate.getText();
@@ -63,7 +63,7 @@ public class MainPageTest2 {
     }
 
     @AfterAll
-    static void teardown(){
+    static void teardown() {
         closeWebDriver();
     }
 
