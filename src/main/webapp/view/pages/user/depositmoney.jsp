@@ -258,6 +258,7 @@
 
                                 <div class="d-grid gap-1">
                                     <button type="submit" class="btn btn-primary btn-warning "
+                                            id="deposit_btn"
                                             style="color: white">
                                         ${deposit_button}</button>
                                 </div>

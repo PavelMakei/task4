@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static by.makei.shop.command.PagePath.USERS;
@@ -27,7 +26,6 @@ public class GoToManageUserCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         UserService userService = UserServiceImpl.getInstance();
-        List<User> userList;
         Map<User,double[]> userOrderSumMap;
         HttpSession session = request.getSession();
         String currentPage = PagePathExtractor.extractAndSetToSessionPagePathAndContextPath(request);

@@ -4,7 +4,6 @@ import by.makei.shop.pages.MainPage;
 import io.cucumber.java.en.Then;
 
 public class MainPageDef {
-
     MainPage mainPage = new MainPage();
 
     @Then("Click {string} button")
@@ -22,4 +21,8 @@ public class MainPageDef {
         mainPage.contentIsVisible(arg0);
     }
 
+    @Then("Choose {string} dropdown list {string} option")
+    public void chooseOption(String dropListId, String optionId){
+        mainPage.chooseOption(dropListId, optionId);
+    }
 }

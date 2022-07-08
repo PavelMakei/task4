@@ -11,31 +11,31 @@ public class LoginPageDef {
 
     @Then("Input user login")
     public void inputUserLogin() {
-        logInPage.inputLogin(USER_LOGIN);
+        logInPage.inputLogin(TEST_USER_LOGIN);
     }
 
     @Then("Input user password")
     public void inputUserPassword() {
-        logInPage.inputPassword(USER_PASSWORD);
+        logInPage.inputPassword(TEST_USER_PASSWORD);
     }
 
     @Then("Input admin login")
     public void inputAdminLogin() {
-        logInPage.inputLogin(ADMIN_LOGIN);
+        logInPage.inputLogin(TEST_ADMIN_LOGIN);
     }
 
     @Then("Input admin password")
     public void inputAdminPassword() {
-        logInPage.inputPassword(ADMIN_PASSWORD);
+        logInPage.inputPassword(TEST_ADMIN_PASSWORD);
     }
 
     @Then("Input blocked login")
     public void inputBlockedLogin() {
-        logInPage.inputLogin(BLOCKED_LOGIN);
+        logInPage.inputLogin(TEST_BLOCKED_LOGIN);
     }
 
     @Then("Input blocked password")
     public void inputBlockedPassword() {
-        logInPage.inputPassword(BLOCKED_PASSWORD);
+        logInPage.inputPassword(TEST_BLOCKED_PASSWORD);
     }
 }

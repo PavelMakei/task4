@@ -20,9 +20,8 @@ public class MainPage {
 
     public void chooseOption(String id, String value){
         SelenideElement dropDown = $(By.id(id));
-        dropDown.selectOptionByValue(value);
-
-        //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        dropDown.click();
+        $(By.id(value)).click();
     }
 
 }
