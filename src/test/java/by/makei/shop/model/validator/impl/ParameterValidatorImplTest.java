@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ParameterValidatorImplTest {
+    //ты перед каждым тестом объявляешь новый incomeData, надо ли его инициализировать здесь?
     private static Map<String, String> incomeData = new HashMap<>();
     private static ParameterValidator validator;
 
@@ -36,6 +37,11 @@ class ParameterValidatorImplTest {
     void validateAndMarkIncomeDataIdCorrectTest(String word) throws ServiceException {
         incomeData.put(ID, word);
         boolean isCorrect = validator.validateAndMarkIncomeData(incomeData);
+        //почему не assertFalse? нам говорили что лучше избегать отрицаний
+        //тебе ведь нужно сделать две проверки за метод, так и напиши в одном методе:
+        //assertFalse(isCorrect);
+        //assertTrue(incomeData.con...)
+        //они будут работать в режиме: если один из них валится,то валится весь тест
         assertTrue(isCorrect && !incomeData.containsKey(INVALID_ID));
     }
 
@@ -44,6 +50,7 @@ class ParameterValidatorImplTest {
     void validateAndMarkIncomeDataIdIncorrectTest(String word) throws ServiceException {
         incomeData.put(ID, word);
         boolean isCorrect = validator.validateAndMarkIncomeData(incomeData);
+                //assertFalse - по сути тоже и по остальным
         assertTrue(!isCorrect && incomeData.containsKey(INVALID_ID));
     }
 
@@ -442,3 +449,19 @@ class ParameterValidatorImplTest {
         DbConnectionPool.getInstance().shutdown();
     }
 }
+
+
+
+
+/////////////////////////////////////////////////
+в другом классе в этом же пакете сделай класс с проверками на выброс исключения и проверь таким образом:
+void testAssertThrows(){
+    Throwable exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+            //то что обеспечит выброс исключения
+            throw new IllegalArgumentException("Exception message");
+        }
+    );
+    assertEquals("Exception message",exception.getMessage());
+        
