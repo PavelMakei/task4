@@ -1,4 +1,4 @@
-This project is a final task on a cource JAVA WEB by EPAM.
+This project is a final task on a cource JAVA WEB (powered by EPAM)
 
 
 
