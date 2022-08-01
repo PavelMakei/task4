@@ -1,6 +1,8 @@
-INTERNET SHOP
+This project is a final task on a cource JAVA WEB by EPAM.
 
-Project is a part of education task. 
+
+
+INTERNET SHOP
 
 Functional opportunities by roles.
 
